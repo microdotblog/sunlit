@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yZ0-VU-gXT">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Avenir.ttc">
+            <string>Avenir-Book</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="xrS-Zc-vKt">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" id="yZ0-VU-gXT" customClass="LoginViewController" customModule="Sunlit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dt3-2l-dU5">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter the URL of your weblog or enter your Micro.blog email address:" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yoc-na-EpW">
+                                <rect key="frame" x="60" y="108" width="294" height="73"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="73" id="8Z8-Oo-4fr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TYy-Ce-Fsh">
+                                <rect key="frame" x="0.0" y="193" width="414" height="43"/>
+                                <subviews>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="eP3-BZ-GjT">
+                                        <rect key="frame" x="386" y="11.5" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="20" id="gbB-YN-RZT"/>
+                                            <constraint firstAttribute="height" constant="20" id="ufN-xj-HBh"/>
+                                        </constraints>
+                                    </activityIndicatorView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Weblog URL or Micro.blog email address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4rT-rV-Zwk">
+                                        <rect key="frame" x="12" y="4" width="366" height="35"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next" textContentType="email"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="yZ0-VU-gXT" id="L56-TI-DmS"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="eP3-BZ-GjT" secondAttribute="trailing" constant="8" id="40t-MJ-Hvl"/>
+                                    <constraint firstItem="4rT-rV-Zwk" firstAttribute="leading" secondItem="TYy-Ce-Fsh" secondAttribute="leading" constant="12" id="6Jd-Nl-Xzd"/>
+                                    <constraint firstItem="4rT-rV-Zwk" firstAttribute="top" secondItem="TYy-Ce-Fsh" secondAttribute="top" constant="4" id="CCq-v6-ErT"/>
+                                    <constraint firstAttribute="height" constant="43" id="UXN-Tr-R9P"/>
+                                    <constraint firstAttribute="bottom" secondItem="4rT-rV-Zwk" secondAttribute="bottom" constant="4" id="jgz-yF-VpL"/>
+                                    <constraint firstItem="eP3-BZ-GjT" firstAttribute="centerY" secondItem="TYy-Ce-Fsh" secondAttribute="centerY" id="lwd-mY-rVr"/>
+                                    <constraint firstItem="eP3-BZ-GjT" firstAttribute="leading" secondItem="4rT-rV-Zwk" secondAttribute="trailing" constant="8" id="q24-w2-hKZ"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="TYy-Ce-Fsh" firstAttribute="trailing" secondItem="NRI-Ql-psS" secondAttribute="trailing" id="0cZ-bl-KoV"/>
+                            <constraint firstItem="yoc-na-EpW" firstAttribute="leading" secondItem="NRI-Ql-psS" secondAttribute="leading" constant="60" id="aWU-Vy-0Jf"/>
+                            <constraint firstItem="TYy-Ce-Fsh" firstAttribute="top" secondItem="yoc-na-EpW" secondAttribute="bottom" constant="12" id="e2f-uD-Uze"/>
+                            <constraint firstItem="yoc-na-EpW" firstAttribute="top" secondItem="NRI-Ql-psS" secondAttribute="top" constant="64" id="hKf-vW-OBF"/>
+                            <constraint firstItem="NRI-Ql-psS" firstAttribute="trailing" secondItem="yoc-na-EpW" secondAttribute="trailing" constant="60" id="hLU-JH-gur"/>
+                            <constraint firstItem="TYy-Ce-Fsh" firstAttribute="leading" secondItem="NRI-Ql-psS" secondAttribute="leading" id="ynx-XZ-9vH"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="NRI-Ql-psS"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="xqI-mn-mJJ"/>
+                    <connections>
+                        <outlet property="emailField" destination="4rT-rV-Zwk" id="ebe-HF-smG"/>
+                        <outlet property="spinner" destination="eP3-BZ-GjT" id="sD7-bP-Iav"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wx6-qM-uW5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-839" y="200"/>
+        </scene>
+    </scenes>
+</document>
