@@ -75,4 +75,18 @@ public extension UUColor
         let midColor = UUColor.init(red: midColors[0], green: midColors[1], blue: midColors[2], alpha: midColors[3])
         return midColor
     }
+	
+	// Returns a string representing the hex values
+    var uuHexString:String {
+		var r:CGFloat = 0
+        var g:CGFloat = 0
+        var b:CGFloat = 0
+        var a:CGFloat = 0
+        
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        
+        return NSString(format:"#%06x", rgb) as String
+    }
 }

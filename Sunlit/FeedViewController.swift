@@ -35,9 +35,23 @@ class FeedViewController: UIViewController, UITableViewDataSource {
 		
 	}
 
+	func attachTextStyling(_ string : String, font : UIFont = UIFont.systemFont(ofSize: 14.0), color : UIColor = UIColor.black) -> String {
+
+		let cssString = "<style>" +
+		"html *" +
+		"{" +
+		"font-size: \(font.pointSize)pt !important;" +
+		"color: #\(color.uuHexString) !important;" +
+		"font-family: \(font.familyName), Helvetica !important;" +
+		"}</style>"
+
+		return cssString + string
+	}
+	
 	func createDictionaryFromPost(_ snippetPost : SnippetsPost) -> [String : Any] {
+				
+		let html = self.attachTextStyling(snippetPost.htmlText)
 		
-		let html = snippetPost.htmlText
 		let post = HTMLParser.parse(html)
 		let owner = snippetPost.owner
 		
@@ -175,9 +189,10 @@ class FeedTableViewCell : UITableViewCell {
 		self.userName.text = owner.fullName
 		
 		let width : CGFloat = UIApplication.shared.windows.first!.bounds.size.width
+		let maxHeight = UIApplication.shared.windows.first!.bounds.size.height - 100
 		var height : CGFloat = width * CGFloat(post.aspectRatio)
-		if height > 400.0 {
-			height = 400.0
+		if height > maxHeight {
+			height = maxHeight
 		}
 		self.heightConstraint.constant = height
 		
