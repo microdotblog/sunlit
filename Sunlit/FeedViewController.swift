@@ -35,13 +35,13 @@ class FeedViewController: UIViewController, UITableViewDataSource {
 		
 	}
 
-	func attachTextStyling(_ string : String, font : UIFont = UIFont.systemFont(ofSize: 14.0), color : UIColor = UIColor.black) -> String {
+	func attachTextStyling(_ string : String, font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> String {
 
 		let cssString = "<style>" +
 		"html *" +
 		"{" +
 		"font-size: \(font.pointSize)pt !important;" +
-		"color: #\(color.uuHexString) !important;" +
+		"color: \(textColor.uuHexString) !important;" +
 		"font-family: \(font.familyName), Helvetica !important;" +
 		"}</style>"
 
@@ -50,7 +50,7 @@ class FeedViewController: UIViewController, UITableViewDataSource {
 	
 	func createDictionaryFromPost(_ snippetPost : SnippetsPost) -> [String : Any] {
 				
-		let html = self.attachTextStyling(snippetPost.htmlText)
+		let html = self.attachTextStyling(snippetPost.htmlText, font: UIFont(name: "AvenirNext-Regular", size: 16.0)!)
 		
 		let post = HTMLParser.parse(html)
 		let owner = snippetPost.owner
@@ -58,7 +58,6 @@ class FeedViewController: UIViewController, UITableViewDataSource {
 		var dictionary : [String : Any] = [:]
 		dictionary["owner"] = owner
 		dictionary["post"] = post
-		dictionary["html"] = html
 		
 		return dictionary
 	}
@@ -187,6 +186,8 @@ class FeedTableViewCell : UITableViewCell {
 		self.textView.attributedText = post.text
 		self.userHandle.text = "@" + owner.userHandle
 		self.userName.text = owner.fullName
+		
+		self.textView.sizeToFit()
 		
 		let width : CGFloat = UIApplication.shared.windows.first!.bounds.size.width
 		let maxHeight = UIApplication.shared.windows.first!.bounds.size.height - 100

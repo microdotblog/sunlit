@@ -17,7 +17,16 @@ class Post {
 
 class HTMLParser {
 	
-	static func parse(_ string : String) -> Post {
+	static func parse(_ html : String) -> Post {
+
+		var string = html
+		if let whitelist = try? Whitelist.basicWithImages() {
+			_ = try? whitelist.removeTags("p")
+			_ = try? whitelist.addTags("style")
+			if let cleanString = try? SwiftSoup.clean(html, whitelist) {
+				string = cleanString
+			}
+		}
 		
 		let parsedEntry = Post()
 		
@@ -116,6 +125,13 @@ class HTMLParser {
 		}
 
 		return parsedString
+	}
+	
+	static func trimWhitespace(_ string: String) -> String {
+		let trimmed = string.trimmingCharacters(in: .whitespacesAndNewlines)
+		let breaksRemoved = trimmed.replaceAll(of: "<br>", with: "")
+		
+		return breaksRemoved
 	}
 	
 }
