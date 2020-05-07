@@ -93,6 +93,7 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
             // An active UUHttpSession means a request is currently fetching the resource, so
             // no need to re-fetch
             UUDebugLog("Download pending for \(key)")
+			self.appendRemoteHandler(for: key, handler: remoteLoadCompletion)
             return nil
         }
         

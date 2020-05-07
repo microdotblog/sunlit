@@ -266,9 +266,9 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         {
             data = try Data(contentsOf: pathUrl)
         }
-        catch (let err)
+        catch (let _)
         {
-            UUDebugLog("Error loading data: %@", String(describing: err))
+            //UUDebugLog("Error loading data: %@", String(describing: err))
         }
         
         return data

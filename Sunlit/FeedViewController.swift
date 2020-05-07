@@ -187,8 +187,6 @@ class FeedTableViewCell : UITableViewCell {
 		self.userHandle.text = "@" + owner.userHandle
 		self.userName.text = owner.fullName
 		
-		self.textView.sizeToFit()
-		
 		let width : CGFloat = UIApplication.shared.windows.first!.bounds.size.width
 		let maxHeight = UIApplication.shared.windows.first!.bounds.size.height - 100
 		var height : CGFloat = width * CGFloat(post.aspectRatio)
