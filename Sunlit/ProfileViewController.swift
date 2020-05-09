@@ -21,11 +21,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		
 		self.fetchUserInfo(user)
 		self.fetchUserPosts()
-		
-		if let layout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-			layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-		}
-		
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
     }
     
@@ -84,7 +79,12 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
-		return 3
+		if self.updatedUserInfo != nil {
+			return 3
+		}
+		else {
+			return 1
+		}
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -134,13 +134,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		}
 	}
 	
-	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		if indexPath.section == 1 {
-			cell.updateConstraintsIfNeeded()
-			cell.layoutIfNeeded()
-		}
-	}
-	
 	func configureHeaderCell(_ cell : ProfileHeaderCollectionViewCell, _ indexPath : IndexPath) {
 		cell.followButton.clipsToBounds = true
 		cell.followButton.layer.cornerRadius = (cell.followButton.bounds.size.height - 1) / 2.0
@@ -163,21 +156,11 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 
 		// Make sure the cell goes the entire width
 		cell.widthConstraint.constant = collectionView.frame.size.width
-		
-		// This shouldn't be needed...
-		cell.contentView.updateConstraintsIfNeeded()
-		cell.contentView.layoutIfNeeded()
 	}
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
 		cell.bio.attributedText = user.formattedBio
-		cell.widthConstraint.constant = self.collectionView.frame.size.width
-		
-		// This shouldn't be needed...
-		cell.contentView.updateConstraintsIfNeeded()
-		cell.bio.sizeToFit()
-		cell.contentView.layoutIfNeeded()
-		cell.bio.sizeToFit()
+		cell.widthConstraint.constant = self.collectionView.frame.size.width - 16
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
@@ -197,26 +180,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		}
 		
 		cell.widthConstraint.constant = (collectionView.frame.size.width - 16.0) / 2.0
-		
-		// This shouldn't be needed...
-		cell.contentView.updateConstraintsIfNeeded()
-		cell.contentView.layoutIfNeeded()
 	}
-	
-	
-	/*
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-		if indexPath.section == 0 {
-			return UICollectionView.systemLayoutSizeFitting(collectionView)
-			//return CGSize(width: collectionView.bounds.size.width, height: 0)
-		}
-		else {
-			let size = collectionView.bounds.size.width - 8
-			return CGSize(width: size / 2, height: 44.0 + (size / 2))
-		}
-	}
-*/
 	
 }
 
@@ -239,7 +203,7 @@ MARK: -
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 class ProfileBioCollectionViewCell : UICollectionViewCell {
-	@IBOutlet var bio : UITextView!
+	@IBOutlet var bio : UILabel!
 	@IBOutlet var widthConstraint : NSLayoutConstraint!
 }
 

@@ -544,38 +544,36 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProfileBioCollectionViewCell" id="3Mn-Is-lfJ" customClass="ProfileBioCollectionViewCell" customModule="Sunlit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="161.5" width="400" height="202"/>
+                                        <rect key="frame" x="0.0" y="141" width="800" height="36"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="RlR-yv-N11">
-                                            <rect key="frame" x="0.0" y="0.0" width="400" height="202"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="800" height="36"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="2PM-On-Ikm">
-                                                    <rect key="frame" x="0.0" y="8" width="400" height="186"/>
-                                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fcQ-Zc-lx3">
+                                                    <rect key="frame" x="8" y="8" width="800" height="20"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="400" id="qyf-M4-kAQ"/>
+                                                        <constraint firstAttribute="width" constant="800" id="Ket-tz-xcS"/>
                                                     </constraints>
-                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                                    <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                </textView>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="2PM-On-Ikm" firstAttribute="leading" secondItem="RlR-yv-N11" secondAttribute="leading" id="Mn7-6x-mpb"/>
-                                                <constraint firstAttribute="trailing" secondItem="2PM-On-Ikm" secondAttribute="trailing" id="drk-mY-ST6"/>
-                                                <constraint firstAttribute="bottom" secondItem="2PM-On-Ikm" secondAttribute="bottom" constant="8" id="iJP-nB-dfl"/>
-                                                <constraint firstItem="2PM-On-Ikm" firstAttribute="top" secondItem="RlR-yv-N11" secondAttribute="top" constant="8" id="ttC-Ei-FC2"/>
+                                                <constraint firstAttribute="trailing" secondItem="fcQ-Zc-lx3" secondAttribute="trailing" constant="-8" id="GeQ-pP-9Kj"/>
+                                                <constraint firstItem="fcQ-Zc-lx3" firstAttribute="top" secondItem="RlR-yv-N11" secondAttribute="top" constant="8" id="fuS-vQ-4FD"/>
+                                                <constraint firstItem="fcQ-Zc-lx3" firstAttribute="leading" secondItem="RlR-yv-N11" secondAttribute="leading" constant="8" id="nG6-k9-PSr"/>
+                                                <constraint firstAttribute="bottom" secondItem="fcQ-Zc-lx3" secondAttribute="bottom" constant="8" id="ycX-07-QaR"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <connections>
-                                            <outlet property="bio" destination="2PM-On-Ikm" id="Yhz-64-XNr"/>
-                                            <outlet property="widthConstraint" destination="qyf-M4-kAQ" id="8ja-bl-hJT"/>
+                                            <outlet property="bio" destination="fcQ-Zc-lx3" id="ooV-ye-BAq"/>
+                                            <outlet property="widthConstraint" destination="Ket-tz-xcS" id="rB1-qB-AYA"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoEntryCollectionViewCell" id="XmW-X1-lqS" customClass="PhotoEntryCollectionViewCell" customModule="Sunlit" customModuleProvider="target">
-                                        <rect key="frame" x="400" y="141" width="200" height="243"/>
+                                        <rect key="frame" x="300" y="177" width="200" height="243"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="S2k-7Y-yOt">
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="243"/>
