@@ -399,6 +399,9 @@
                         </connections>
                     </collectionView>
                     <tabBarItem key="tabBarItem" title="Profile" image="second" id="cPa-gy-q4n"/>
+                    <connections>
+                        <outlet property="collectionView" destination="8gX-e1-clt" id="d7d-go-arv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
             </objects>

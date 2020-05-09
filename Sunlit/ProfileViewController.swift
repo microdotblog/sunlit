@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout /*, UICollectionViewDataSourcePrefetching */  {
+class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 		
 	var user : SunlitUser!
 	var updatedUserInfo : SunlitUser? = nil
