@@ -88,6 +88,10 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
             return data
         }
         
+		if remoteLoadCompletion == nil {
+			return nil
+		}
+		
         if (self.isDownloadPending(for: key))
         {
             // An active UUHttpSession means a request is currently fetching the resource, so

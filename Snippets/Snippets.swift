@@ -222,6 +222,12 @@ public class Snippets : NSObject {
 		self.fetchTimeline(self.pathForRoute(route), completion: completion)
 	}
 	
+	@objc public func fetchUserMediaPosts(user : SnippetsUser, completion: @escaping(Error?, [SnippetsPost]) -> ())
+	{
+		let route = "/posts/\(user.userHandle)/photos"
+		self.fetchTimeline(self.pathForRoute(route), completion: completion)
+	}
+	
 	@objc public func fetchConversation(post : SnippetsPost, completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
 		let route = "posts/conversation?id=\(post.identifier)"

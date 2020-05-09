@@ -6,20 +6,30 @@
 //  Copyright © 2020 Micro.blog, LLC. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-class Post {
+class SunlitUser : SnippetsUser {
+	var formattedBio : NSAttributedString = NSAttributedString()
+}
+
+
+class SunlitPost {
 	var aspectRatio : Float = 0.0
 	var altText : [String] = []
 	var images : [String] = []
+	var publishedDate : Date? = nil
 	var text : NSAttributedString = NSAttributedString(string: "")
+	var owner = SunlitUser()
 }
 
 class HTMLParser {
 	
-	static func parse(_ html : String) -> Post {
+	static func parse(_ snippet : SnippetsPost, font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> SunlitPost {
 
+		let html = addTextStyle(string: snippet.htmlText, font: font, textColor: textColor)
+		
 		var string = html
+		
 		if let whitelist = try? Whitelist.basicWithImages() {
 			_ = try? whitelist.removeTags("p")
 			_ = try? whitelist.addTags("style")
@@ -28,7 +38,9 @@ class HTMLParser {
 			}
 		}
 		
-		let parsedEntry = Post()
+		let parsedEntry = SunlitPost()
+		parsedEntry.owner = convertUser(user: snippet.owner, font: font, textColor: textColor)
+		parsedEntry.publishedDate = snippet.publishedDate
 		
 		if let document = try? SwiftSoup.parse(string) {
 			let images = findImageElements(document)
@@ -42,7 +54,6 @@ class HTMLParser {
 				parsedEntry.text = NSAttributedString(string: text)
 			}
 
-			
 			var aspectRatio : Float = 0.0
 			
 			for image in images {
@@ -68,6 +79,39 @@ class HTMLParser {
 		}
 		
 		return parsedEntry
+	}
+	
+	static func convertUser(user : SnippetsUser, font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> SunlitUser {
+		let sunlitUser = SunlitUser()
+		sunlitUser.fullName = user.fullName
+		sunlitUser.userHandle = user.userHandle
+		sunlitUser.pathToUserImage = user.pathToUserImage
+		sunlitUser.pathToWebSite = user.pathToWebSite
+		sunlitUser.bio = user.bio
+		sunlitUser.formattedBio = NSAttributedString(string: sunlitUser.bio)
+
+		let formattedBio = addTextStyle(string: user.bio, font: font, textColor: textColor)
+		let htmlData = Data(formattedBio.utf8)
+		if let attributedString = try? NSAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
+			sunlitUser.formattedBio = attributedString
+		}
+
+		return sunlitUser
+	}
+	
+	static func addTextStyle(string : String, font : UIFont, textColor : UIColor) -> String {
+		
+		let cssString = "<style>" +
+		"html *" +
+		"{" +
+		"font-size: \(font.pointSize)pt !important;" +
+		"color: \(textColor.uuHexString) !important;" +
+		"font-family: \(font.familyName), Helvetica !important;" +
+		"}</style>"
+
+		let text = cssString + string
+
+		return text
 	}
 	
 	static func findImageElements(_ document : Document) -> [Element] {
