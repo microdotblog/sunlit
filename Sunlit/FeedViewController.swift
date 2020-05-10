@@ -12,7 +12,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 	@IBOutlet var tableView : UITableView!
 	var refreshControl = UIRefreshControl()
-	
+	var keyboardAccessoryView : UIView!
 	var tableViewData : [SunlitPost] = []
 	
     override func viewDidLoad() {
@@ -28,13 +28,13 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
 		self.setupSnippets()
 	}
 	
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
+		self.loadTagmoji()
 	}
 	
 	func setupNotifications() {
@@ -42,6 +42,8 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: NSNotification.Name("Feed Image Loaded"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleUserProfileSelectedNotification), name: NSNotification.Name("Display User Profile"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: NSNotification.Name("Keyboard Appear"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
 	}
 
@@ -73,7 +75,6 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		let cell = tableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell", for: indexPath) as! FeedTableViewCell
 		let post = self.tableViewData[indexPath.row]
 		cell.setup(indexPath.row, post)
-		
 		return cell
 	}
 	
@@ -103,6 +104,34 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+	@objc func emojiSelected(_ button : UIButton) {
+		if let emoji = button.title(for: .normal) {
+			NotificationCenter.default.post(name: NSNotification.Name("Emoji Selected"), object: emoji)
+		}
+	}
+	
+	@objc func keyboardOnScreenNotification(_ notification : Notification) {
+		
+		if let info : [AnyHashable : Any] = notification.userInfo {
+			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+				let frame = value.cgRectValue
+
+				self.view.addSubview(self.keyboardAccessoryView)
+				self.keyboardAccessoryView.frame = CGRect(x: 0, y: frame.origin.y - 44, width: frame.size.width, height: 44)
+				self.keyboardAccessoryView.alpha = 0.0
+				self.keyboardAccessoryView.isHidden = false
+				
+				UIView.animate(withDuration: 0.25) {
+					self.keyboardAccessoryView.alpha = 1.0
+				}
+			}
+		}
+	}
+
+	@objc func keyboardOffScreenNotification(_ notification : Notification) {
+		self.keyboardAccessoryView.removeFromSuperview()
+	}
 
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
 		if let offset = notification.object as? CGFloat {
@@ -173,6 +202,34 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
+	func loadTagmoji() {
+		let scrollView = UIScrollView()
+		let contentView = UIView()
+		scrollView.addSubview(contentView)
+		scrollView.backgroundColor = UIColor.white
+		
+		var buttonOffset = CGPoint(x: 0, y: 0)
+		Snippets.shared.fetchTagmojiCategories { (error, tagmoji : [[String : Any]]) in
+			DispatchQueue.main.async {
+				for dictionary in tagmoji {
+					if let symbol = dictionary["emoji"] as? String {
+						let button = UIButton(frame: CGRect(x: buttonOffset.x, y: buttonOffset.y, width: 44, height: 44))
+						button.setTitle(symbol, for: .normal)
+						contentView.addSubview(button)
+						buttonOffset.x += 44
+						
+						button.addTarget(self, action: #selector(self.emojiSelected(_:)), for: .touchUpInside)
+					}
+				}
+				contentView.frame = CGRect(x: 0, y: 0, width: buttonOffset.x, height: 44)
+				scrollView.addSubview(contentView)
+				scrollView.contentSize = CGSize(width: buttonOffset.x, height: buttonOffset.y)
+				scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44)
+				self.keyboardAccessoryView = scrollView
+			}
+		}
+	}
+	
 	func loadTimeline() {
 		
 		Snippets.shared.fetchCurrentUserPhotoTimeline { (error, postObjects : [SnippetsPost]) in
@@ -312,7 +369,7 @@ class FeedTableViewCell : UITableViewCell {
 	@IBAction func onActivateReply() {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreen(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreen(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-
+		NotificationCenter.default.addObserver(self, selector: #selector(handleEmojiSelectedNotification(_:)), name: NSNotification.Name("Emoji Selected"), object: nil)
 		self.replyContainer.layer.borderWidth = 0.5;
 
 		self.replyField.isHidden = false
@@ -370,6 +427,8 @@ class FeedTableViewCell : UITableViewCell {
 			self.postButton.alpha = 0.0;
 			self.replyContainer.backgroundColor = UIColor.clear
 		}
+		
+		NotificationCenter.default.removeObserver(self)
 	}
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -389,6 +448,12 @@ class FeedTableViewCell : UITableViewCell {
 	
 	@objc func handleUserTappedGesture() {
 		NotificationCenter.default.post(name: NSNotification.Name("Display User Profile"), object: self.user)
+	}
+	
+	@objc func handleEmojiSelectedNotification(_ notification : Notification) {
+		if let emoji = notification.object as? String {
+			self.replyField.text = self.replyField.text + emoji
+		}
 	}
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
