@@ -20,6 +20,8 @@ class SunlitPost {
 	var publishedDate : Date? = nil
 	var text : NSAttributedString = NSAttributedString(string: "")
 	var owner = SunlitUser()
+	
+	var source : SnippetsPost = SnippetsPost()
 }
 
 class HTMLParser {
@@ -39,6 +41,7 @@ class HTMLParser {
 		}
 		
 		let parsedEntry = SunlitPost()
+		parsedEntry.source = snippet
 		parsedEntry.owner = convertUser(user: snippet.owner, font: font, textColor: textColor)
 		parsedEntry.publishedDate = snippet.publishedDate
 		

@@ -23,9 +23,14 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		self.fetchUserPosts()
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.navigationController?.setNavigationBarHidden(false, animated: true)
+	}
     
 	@objc func dismissViewController() {
-		self.dismiss(animated: true, completion: nil)
+		self.navigationController?.popViewController(animated: true)
 	}
 	
 	

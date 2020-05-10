@@ -8,18 +8,22 @@
 
 import UIKit
 
-class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
+class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching, UITextViewDelegate {
 
 	@IBOutlet var tableView : UITableView!
+	var refreshControl = UIRefreshControl()
 	
 	var tableViewData : [SunlitPost] = []
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		self.setupTableView()
+		self.setupNotifications()
+	}
 
-		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: NSNotification.Name("TemporaryTokenReceivedNotification"), object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: NSNotification.Name("Feed Image Loaded"), object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleUserProfileSelectedNotification), name: NSNotification.Name("Display User Profile"), object: nil)
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.navigationController?.setNavigationBarHidden(true, animated: true)
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -27,10 +31,24 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		
 		self.setupSnippets()
 	}
+	
+	func setupTableView() {
+		self.refreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
+		self.tableView.addSubview(self.refreshControl)
+	}
+	
+	func setupNotifications() {
+		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: NSNotification.Name("TemporaryTokenReceivedNotification"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: NSNotification.Name("Feed Image Loaded"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleUserProfileSelectedNotification), name: NSNotification.Name("Display User Profile"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: NSNotification.Name("Keyboard Appear"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
+	}
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+	
 	
 	func refreshTableView(_ entries : [SnippetsPost]) {
 		
@@ -42,6 +60,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		}
 		
 		self.tableViewData = posts
+		self.refreshControl.endRefreshing()
 		self.tableView.reloadData()
 	}
 	
@@ -85,6 +104,12 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
+	@objc func handleKeyboardShowNotification(_ notification : Notification) {
+		if let offset = notification.object as? CGFloat {
+			self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+		}
+	}
+	
 	@objc func handleImageLoadedNotification(_ notification : Notification) {
 		if let index = notification.object as? Int {
 			self.tableView.reloadRows(at: [ IndexPath(row: index, section: 0)], with: .fade)
@@ -113,12 +138,29 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 			let profileViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
 			profileViewController.user = user
-			
-			let navViewController = UINavigationController(rootViewController: profileViewController)
-			self.present(navViewController, animated: true, completion: nil)
+			self.navigationController?.pushViewController(profileViewController, animated: true)
 		}
 	}
 	
+	@objc func handleReplyResponseNotification(_ notification : Notification) {
+		var message = "Reply posted!"
+		
+		if let error = notification.object as? Error {
+			message = error.localizedDescription
+		}
+		
+		Dialog.information(message, self)
+	}
+	
+	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+		UIView.setAnimationsEnabled(false)
+		self.tableView.beginUpdates()
+		self.tableView.endUpdates()
+		UIView.setAnimationsEnabled(true)
+			
+		return true
+	}
+
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -141,7 +183,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		
 	}
 
-	func setupSnippets() {
+	@objc func setupSnippets() {
 
 		if let token = Settings.permanentToken() {
 			Snippets.shared.configure(permanentToken: token, blogUid: nil)
@@ -149,6 +191,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			self.loadTimeline()
 		}
 		else {
+			self.refreshControl.endRefreshing()
 			self.showLoginDialog()
 		}
 	}
@@ -195,7 +238,6 @@ MARK: -
 
 class FeedTableViewCell : UITableViewCell {
 	
-	//@IBOutlet var collectionView : UICollectionView!
 	@IBOutlet var postImage : UIImageView!
 	@IBOutlet var textView : UITextView!
 	@IBOutlet var dateLabel : UILabel!
@@ -203,13 +245,25 @@ class FeedTableViewCell : UITableViewCell {
 	@IBOutlet var userName : UILabel!
 	@IBOutlet var userHandle : UILabel!
 	@IBOutlet var heightConstraint : NSLayoutConstraint!
+	@IBOutlet var replyContainer : UIView!
+	@IBOutlet var replyField : UITextView!
+	@IBOutlet var replyButton : UIButton!
+	@IBOutlet var replyIconButton : UIButton!
+	@IBOutlet var postButton : UIButton!
 	
 	var user : SunlitUser!
+	var post : SunlitPost!
 	
 	func setup(_ index: Int, _ post : SunlitPost) {
 		
 		let owner = post.owner
+		self.post = post
 		self.user = owner
+		
+		self.replyContainer.layer.cornerRadius = 18.0
+		self.replyContainer.layer.borderColor = UIColor.lightGray.cgColor
+		self.replyContainer.layer.borderWidth = 0.0
+
 		
 		// Configure the user avatar
 		self.userAvatar.clipsToBounds = true
@@ -243,17 +297,84 @@ class FeedTableViewCell : UITableViewCell {
 
 	}
 	
-	func loadPhotos(_ post : SunlitPost, _ owner : SunlitUser, _ index : Int) {
-		let imageSource = post.images[0]
-		if let image = ImageCache.prefetch(imageSource) {
-			self.postImage.image = image
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+	@IBAction func onReply() {
+		Snippets.shared.reply(originalPost: self.post.source, content: self.replyField.text) { (error) in
+			NotificationCenter.default.post(name: NSNotification.Name("Reply Response"), object: error)
 		}
 		
-		let avatarSource = owner.pathToUserImage
-		if let avatar = ImageCache.prefetch(avatarSource) {
-			self.userAvatar.image = avatar
+		self.textView.resignFirstResponder()
+	}
+	
+	@IBAction func onActivateReply() {
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreen(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreen(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+
+		self.replyContainer.layer.borderWidth = 0.5;
+
+		self.replyField.isHidden = false
+		self.replyButton.isHidden = true
+		self.replyIconButton.isHidden = true
+		self.postButton.isHidden = false
+
+		self.replyField.alpha = 0.0
+		self.replyButton.alpha = 1.0
+		self.replyIconButton.alpha = 1.0
+		self.postButton.alpha = 0.0
+
+		UIView.animate(withDuration: 0.35) {
+			self.replyField.alpha = 1.0
+			self.replyButton.alpha = 0.0
+			self.replyIconButton.alpha = 0.0
+			self.postButton.alpha = 1.0
+			self.replyContainer.backgroundColor = UIColor.white
+		}
+		
+		self.replyField.becomeFirstResponder()
+	}
+	
+	@objc func keyboardOnScreen(_ notification : Notification) {
+		if let info : [AnyHashable : Any] = notification.userInfo {
+			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+				let rawFrame = value.cgRectValue
+				
+				var safeArea : CGFloat = 0.0
+				safeArea = safeArea + UIApplication.shared.windows[0].safeAreaInsets.bottom
+				let textBoxOffset = self.replyContainer.frame.origin.y + self.replyContainer.frame.size.height - 10.5
+				let cellOffset : CGFloat = self.frame.origin.y
+				let keyboardSize : CGFloat = rawFrame.size.height
+				let offset = cellOffset + textBoxOffset - keyboardSize - safeArea
+				
+				NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Keyboard Appear"), object: offset)
+			}
+			
 		}
 	}
+	
+	@objc func keyboardOffScreen(_ notification : Notification) {
+			
+		self.replyContainer.layer.borderWidth = 0.0
+
+		self.replyField.isHidden = true
+		self.replyButton.isHidden = false
+		self.replyIconButton.isHidden = false
+		self.postButton.isHidden = true
+
+		UIView.animate(withDuration: 0.35) {
+			self.replyField.alpha = 0.0;
+			self.replyButton.alpha = 1.0;
+			self.replyIconButton.alpha = 1.0;
+			self.postButton.alpha = 0.0;
+			self.replyContainer.backgroundColor = UIColor.clear
+		}
+	}
+	
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func addUserProfileTapGesture(_ view : UIView) {
 		view.isUserInteractionEnabled = true
@@ -268,6 +389,22 @@ class FeedTableViewCell : UITableViewCell {
 	
 	@objc func handleUserTappedGesture() {
 		NotificationCenter.default.post(name: NSNotification.Name("Display User Profile"), object: self.user)
+	}
+	
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+	
+	func loadPhotos(_ post : SunlitPost, _ owner : SunlitUser, _ index : Int) {
+		let imageSource = post.images[0]
+		if let image = ImageCache.prefetch(imageSource) {
+			self.postImage.image = image
+		}
+		
+		let avatarSource = owner.pathToUserImage
+		if let avatar = ImageCache.prefetch(avatarSource) {
+			self.userAvatar.image = avatar
+		}
 	}
 }
 

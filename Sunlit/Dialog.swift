@@ -15,12 +15,13 @@ class Dialog {
 		// Make sure we aren't on a background thread...
 		DispatchQueue.main.async {
 			let alertController = UIAlertController(title: nil, message: string, preferredStyle: .alert)
-			alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+			alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
 				if let done = completion {
 					done()
 				}
 			}))
-			viewController.show(alertController, sender: self)
+			
+			viewController.present(alertController, animated: true, completion: nil)
 		}
 	}
 	
