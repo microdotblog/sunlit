@@ -57,7 +57,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		var posts : [SunlitPost] = []
 		
 		for entry in entries {
-			let post = HTMLParser.parse(entry)
+			let post = SunlitPost.create(entry)
 			posts.append(post)
 		}
 		
@@ -307,6 +307,8 @@ class FeedTableViewCell : UITableViewCell {
 	@IBOutlet var replyButton : UIButton!
 	@IBOutlet var replyIconButton : UIButton!
 	@IBOutlet var postButton : UIButton!
+	@IBOutlet var conversationButton : UIButton!
+	@IBOutlet var conversationHeightConstraint : NSLayoutConstraint!
 	
 	var user : SunlitUser!
 	var post : SunlitPost!
@@ -321,6 +323,8 @@ class FeedTableViewCell : UITableViewCell {
 		self.replyContainer.layer.borderColor = UIColor.lightGray.cgColor
 		self.replyContainer.layer.borderWidth = 0.0
 
+		self.conversationButton.isHidden = !self.post.source.hasConversation
+		self.conversationHeightConstraint.constant = self.post.source.hasConversation ? 44.0 : 0.0
 		
 		// Configure the user avatar
 		self.userAvatar.clipsToBounds = true
@@ -364,6 +368,10 @@ class FeedTableViewCell : UITableViewCell {
 		}
 		
 		self.textView.resignFirstResponder()
+	}
+	
+	@IBAction func onViewConversation() {
+		
 	}
 	
 	@IBAction func onActivateReply() {

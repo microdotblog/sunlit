@@ -28,6 +28,7 @@ public class SnippetsPost : NSObject
 	@objc public var htmlText = ""
 	@objc public var path = ""
 	@objc public var publishedDate : Date?
+	@objc public var hasConversation : Bool = false
 	@objc public var replies : [SnippetsPost] = []
 	@objc public var isDraft : Bool = false
 }
@@ -63,6 +64,12 @@ extension SnippetsPost {
 				self.isDraft = (draftStatus == "draft")
 			}
 			
+		}
+		
+		if let microblogDictionary = dictionary["_microblog"] as? [String : Any] {
+			if let conversation = microblogDictionary["is_conversation"] as? NSNumber {
+				self.hasConversation = conversation.intValue > 0
+			}
 		}
 		
 		if let identifier = dictionary["id"] as? String

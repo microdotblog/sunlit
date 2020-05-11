@@ -22,11 +22,8 @@ class SunlitPost {
 	var owner = SunlitUser()
 	
 	var source : SnippetsPost = SnippetsPost()
-}
 
-class HTMLParser {
-	
-	static func parse(_ snippet : SnippetsPost, font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> SunlitPost {
+	static func create(_ snippet : SnippetsPost, font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> SunlitPost {
 
 		let html = addTextStyle(string: snippet.htmlText, font: font, textColor: textColor)
 		
@@ -49,7 +46,7 @@ class HTMLParser {
 			let images = findImageElements(document)
 			let text = stripImages(document, images)
 			
-			let htmlData = Data(text.utf8)
+			let htmlData = text.data(using: .utf16)!
 			if let attributedString = try? NSAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
 				parsedEntry.text = attributedString
 			}

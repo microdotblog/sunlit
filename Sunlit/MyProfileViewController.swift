@@ -27,7 +27,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	func fetchUserInfo() {
 		Snippets.shared.fetchCurrentUserInfo { (error, snippetsUser) in
 			if let updatedUser = snippetsUser {
-				self.user = HTMLParser.convertUser(user: updatedUser)
+				self.user = SunlitPost.convertUser(user: updatedUser)
 
 				DispatchQueue.main.async {
 					self.collectionView.reloadData()
@@ -36,7 +36,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 				Snippets.shared.fetchUserMediaPosts(user: updatedUser) { (error, snippets : [SnippetsPost]) in
 					self.userPosts = []
 					for snippet in snippets {
-						let sunlitPost = HTMLParser.parse(snippet)
+						let sunlitPost = SunlitPost.create(snippet)
 						self.userPosts.append(sunlitPost)
 					}
 					

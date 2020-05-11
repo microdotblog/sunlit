@@ -42,7 +42,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		Snippets.shared.fetchUserDetails(user: user) { (error, updatedUser, posts : [SnippetsPost]) in
 			
 			if let snippetsUser = updatedUser {
-				self.user = HTMLParser.convertUser(user: snippetsUser)
+				self.user = SunlitPost.convertUser(user: snippetsUser)
 				self.updatedUserInfo = self.user
 			
 				DispatchQueue.main.async {
@@ -57,7 +57,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 
 			self.userPosts = []
 			for snippet in snippets {
-				let post = HTMLParser.parse(snippet)
+				let post = SunlitPost.create(snippet)
 				self.userPosts.append(post)
 			}
 			
