@@ -10,15 +10,17 @@ import UIKit
 
 class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching, UITextViewDelegate {
 
-	@IBOutlet var tableView : UITableView!
+	@IBOutlet var tableView : UITableView!	
 	var refreshControl = UIRefreshControl()
 	var keyboardAccessoryView : UIView!
 	var tableViewData : [SunlitPost] = []
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 		self.setupTableView()
 		self.setupNotifications()
+		self.setupProfilePhoto()
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -46,6 +48,23 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: NSNotification.Name("View Conversation"), object: nil)
+	}
+	
+	func setupProfilePhoto() {
+		if let tab_item = self.tabBarController?.tabBar.items?.last {
+			Snippets.shared.fetchCurrentUserInfo { error, snippets_user in
+				if let u = snippets_user {
+					DispatchQueue.main.async {
+						tab_item.title = "@\(u.userHandle)"
+						u.loadUserImage {
+							if let img = u.userImage {
+								tab_item.image = img.uuScaleToHeight(targetHeight: 40)
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
