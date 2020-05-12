@@ -111,6 +111,7 @@
 		C5D53D452464B67600FFAC71 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53D442464B67600FFAC71 /* ProfileViewController.swift */; };
 		C5FFB1CF2466986E0015368A /* ImageViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFB1CE2466986E0015368A /* ImageViewerViewController.swift */; };
 		C5FFB1D124669D640015368A /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFB1D024669D640015368A /* MyProfileViewController.swift */; };
+		C5FFB1D52469C9130015368A /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFB1D42469C9130015368A /* ConversationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -221,6 +222,7 @@
 		C5D53D442464B67600FFAC71 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		C5FFB1CE2466986E0015368A /* ImageViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerViewController.swift; sourceTree = "<group>"; };
 		C5FFB1D024669D640015368A /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
+		C5FFB1D42469C9130015368A /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -415,6 +417,7 @@
 				C5D53D442464B67600FFAC71 /* ProfileViewController.swift */,
 				C5FFB1D024669D640015368A /* MyProfileViewController.swift */,
 				C5FFB1CE2466986E0015368A /* ImageViewerViewController.swift */,
+				C5FFB1D42469C9130015368A /* ConversationViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -579,6 +582,7 @@
 				C5D53D28246214CE00FFAC71 /* Validate.swift in Sources */,
 				C5AC0438245F640800D7725D /* UUTextField.swift in Sources */,
 				C5B9A71D24563E66003EF82B /* SceneDelegate.swift in Sources */,
+				C5FFB1D52469C9130015368A /* ConversationViewController.swift in Sources */,
 				C5D53D17246214CE00FFAC71 /* DataNode.swift in Sources */,
 				C5AC0440245F640800D7725D /* UUObjectFactory.swift in Sources */,
 				C5D53D0B246214CE00FFAC71 /* Evaluator.swift in Sources */,

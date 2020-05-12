@@ -45,6 +45,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: NSNotification.Name("View Conversation"), object: nil)
 	}
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,6 +169,15 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			let profileViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
 			profileViewController.user = user
 			self.navigationController?.pushViewController(profileViewController, animated: true)
+		}
+	}
+	
+	@objc func handleViewConversationNotification(_ notification : Notification) {
+		if let post = notification.object as? SunlitPost {
+			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+			let conversationViewController = storyBoard.instantiateViewController(withIdentifier: "ConversationViewController") as! ConversationViewController
+			conversationViewController.sourcePost = post
+			self.navigationController?.pushViewController(conversationViewController, animated: true)
 		}
 	}
 	
@@ -313,38 +323,48 @@ class FeedTableViewCell : UITableViewCell {
 	var user : SunlitUser!
 	var post : SunlitPost!
 	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+
+		self.replyContainer.layer.cornerRadius = 18.0
+		self.replyContainer.layer.borderColor = UIColor.lightGray.cgColor
+		self.replyContainer.layer.borderWidth = 0.0
+
+		// Configure the user avatar
+		self.userAvatar.clipsToBounds = true
+		self.userAvatar.layer.cornerRadius = (self.userAvatar.bounds.size.height - 1) / 2.0
+		
+		// Add the user profile tap gestures where appropriate...
+		self.addUserProfileTapGesture(self.userName)
+		self.addUserProfileTapGesture(self.userAvatar)
+		self.addUserProfileTapGesture(self.userHandle)
+	}
+	
 	func setup(_ index: Int, _ post : SunlitPost) {
 		
 		let owner = post.owner
 		self.post = post
 		self.user = owner
 		
-		self.replyContainer.layer.cornerRadius = 18.0
-		self.replyContainer.layer.borderColor = UIColor.lightGray.cgColor
 		self.replyContainer.layer.borderWidth = 0.0
 
 		self.conversationButton.isHidden = !self.post.source.hasConversation
 		self.conversationHeightConstraint.constant = self.post.source.hasConversation ? 44.0 : 0.0
 		
-		// Configure the user avatar
-		self.userAvatar.clipsToBounds = true
-		self.userAvatar.layer.cornerRadius = (self.userAvatar.bounds.size.height - 1) / 2.0
-
 		// Update the text objects
 		self.textView.attributedText = post.text
-		self.userHandle.text = "@" + owner.userHandle
+		self.userHandle.text = owner.userHandle
 		self.userName.text = owner.fullName
+		
+		if let date = post.publishedDate {
+			self.dateLabel.text = date.uuRfc3339String()
+		}
 		
 		// Configure the photo sizes...
 		self.setupPhotoAspectRatio(post)
 		
 		// Kick off the photo loading...
 		self.loadPhotos(post, owner, index)
-		
-		// Add the user profile tap gestures where appropriate...
-		self.addUserProfileTapGesture(self.userName)
-		self.addUserProfileTapGesture(self.userAvatar)
-		self.addUserProfileTapGesture(self.userHandle)
 	}
 	
 	func setupPhotoAspectRatio(_ post : SunlitPost) {
@@ -371,7 +391,7 @@ class FeedTableViewCell : UITableViewCell {
 	}
 	
 	@IBAction func onViewConversation() {
-		
+		NotificationCenter.default.post(name: NSNotification.Name("View Conversation"), object: self.post)
 	}
 	
 	@IBAction func onActivateReply() {
@@ -399,6 +419,12 @@ class FeedTableViewCell : UITableViewCell {
 		}
 		
 		self.replyField.becomeFirstResponder()
+		
+		if replyField.text.count <= 0 {
+			for name in self.post.mentionedUsernames {
+				replyField.text = replyField.text + name + " "
+			}
+		}
 	}
 	
 	@objc func keyboardOnScreen(_ notification : Notification) {
@@ -469,6 +495,9 @@ class FeedTableViewCell : UITableViewCell {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func loadPhotos(_ post : SunlitPost, _ owner : SunlitUser, _ index : Int) {
+		
+		self.postImage.image = UIImage(named: "welcome_waves")
+		
 		let imageSource = post.images[0]
 		if let image = ImageCache.prefetch(imageSource) {
 			self.postImage.image = image

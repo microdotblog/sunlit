@@ -130,7 +130,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 			
 		if let user = self.user {
 			cell.fullName.text = user.fullName
-			cell.userHandle.text = "@" + user.userHandle
+			cell.userHandle.text = user.userHandle
 			cell.blogAddress.setTitle(user.pathToWebSite, for: .normal)
 			
 			if let image = ImageCache.prefetch(user.pathToUserImage) {

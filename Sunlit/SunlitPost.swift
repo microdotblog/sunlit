@@ -20,8 +20,52 @@ class SunlitPost {
 	var publishedDate : Date? = nil
 	var text : NSAttributedString = NSAttributedString(string: "")
 	var owner = SunlitUser()
-	
 	var source : SnippetsPost = SnippetsPost()
+    var mentionedUsernames: [String] {
+        // Setting up our state, which is any partial name that we’re
+        // currently parsing, and an array of all names found.
+        var partialName: String?
+		var names : [String] = [owner.userHandle]
+
+        // A nested parsing function, that we’ll apply to each
+        // character within the string.
+        func parse(_ character: Character) {
+            if var name = partialName {
+                guard character.isLetter else {
+                    // If we encounter a non-letter character
+                    // while parsing a name, it means that the
+                    // name is finished, and we can add it to
+                    // our array (if non-empty):
+                    if !name.isEmpty {
+                        names.append(name)
+                    }
+
+                    // Reset our state, and parse the character
+                    // again, since it might be an @-sign.
+                    partialName = nil
+                    return parse(character)
+                }
+
+                name.append(character)
+                partialName = name
+            } else if character == "@" {
+                // Set an empty state, to signal to our above
+                // code that it’s time to start parsing a name.
+                partialName = ""
+            }
+        }
+
+        // Apply our parsing function to each character
+		source.htmlText.forEach(parse)
+
+        // Once we’ve reached the end, we’ll make sure to
+        // capture any name that was previously found.
+        if let lastName = partialName, !lastName.isEmpty {
+            names.append(lastName)
+        }
+
+        return names
+    }
 
 	static func create(_ snippet : SnippetsPost, font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> SunlitPost {
 
@@ -84,14 +128,14 @@ class SunlitPost {
 	static func convertUser(user : SnippetsUser, font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> SunlitUser {
 		let sunlitUser = SunlitUser()
 		sunlitUser.fullName = user.fullName
-		sunlitUser.userHandle = user.userHandle
+		sunlitUser.userHandle = "@" + user.userHandle
 		sunlitUser.pathToUserImage = user.pathToUserImage
 		sunlitUser.pathToWebSite = user.pathToWebSite
 		sunlitUser.bio = user.bio
 		sunlitUser.formattedBio = NSAttributedString(string: sunlitUser.bio)
 
 		let formattedBio = addTextStyle(string: user.bio, font: font, textColor: textColor)
-		let htmlData = Data(formattedBio.utf8)
+		let htmlData = formattedBio.data(using: .utf16)!
 		if let attributedString = try? NSAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
 			sunlitUser.formattedBio = attributedString
 		}
@@ -179,3 +223,4 @@ class SunlitPost {
 	}
 	
 }
+
