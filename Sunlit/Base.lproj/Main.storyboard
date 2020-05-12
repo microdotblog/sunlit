@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wWv-wA-LdQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wWv-wA-LdQ">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Feed-->
+        <!--Timeline-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
                 <viewController id="9pv-A4-QxB" customClass="FeedViewController" customModule="Sunlit" customModuleProvider="target" sceneMemberID="viewController">
@@ -252,7 +252,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Feed" image="feed" selectedImage="feed" id="acW-dT-cKf"/>
+                    <tabBarItem key="tabBarItem" title="Timeline" image="feed" selectedImage="feed" id="acW-dT-cKf"/>
                     <connections>
                         <outlet property="tableView" destination="qN6-tU-u9w" id="VZ9-ZX-Ar4"/>
                     </connections>
@@ -267,7 +267,7 @@
             </objects>
             <point key="canvasLocation" x="839" y="3"/>
         </scene>
-        <!--Profile-->
+        <!--@username-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
                 <viewController storyboardIdentifier="MyProfileViewController" id="8rJ-Kc-sve" customClass="MyProfileViewController" customModule="Sunlit" customModuleProvider="target" sceneMemberID="viewController">
@@ -460,7 +460,7 @@
                             <outlet property="prefetchDataSource" destination="8rJ-Kc-sve" id="YZv-aQ-QKT"/>
                         </connections>
                     </collectionView>
-                    <tabBarItem key="tabBarItem" title="Profile" image="second" id="cPa-gy-q4n"/>
+                    <tabBarItem key="tabBarItem" title="@username" image="second" id="cPa-gy-q4n"/>
                     <connections>
                         <outlet property="collectionView" destination="8gX-e1-clt" id="d7d-go-arv"/>
                     </connections>
@@ -677,6 +677,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
+                        <segue destination="oIs-Z4-tFH" kind="relationship" relationship="viewControllers" id="Jwv-X3-hDF"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
                     </connections>
                 </tabBarController>
@@ -881,6 +882,22 @@
             </objects>
             <point key="canvasLocation" x="1886" y="3"/>
         </scene>
+        <!--Discover-->
+        <scene sceneID="vC8-hu-m6p">
+            <objects>
+                <viewController id="oIs-Z4-tFH" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7St-pR-d8y">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="sH2-gQ-nXw"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Discover" image="discover" id="5vC-MQ-yWD"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hnc-cO-k6y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="838" y="790"/>
+        </scene>
         <!--Image Viewer View Controller-->
         <scene sceneID="Yl5-kG-nJO">
             <objects>
@@ -912,7 +929,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="feed" width="32" height="32"/>
+        <image name="discover" width="20" height="20"/>
+        <image name="feed" width="40" height="40"/>
         <image name="reply" width="48" height="48"/>
         <image name="second" width="30" height="30"/>
         <image name="welcome_waves" width="320" height="200"/>
