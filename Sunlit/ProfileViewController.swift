@@ -19,6 +19,9 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     override func viewDidLoad() {
         super.viewDidLoad()
 		
+		// Merge if we can/need to from the user cache...
+		self.user = SnippetsUser.save(self.user)
+		
 		self.fetchUserInfo(user)
 		self.fetchUserPosts()
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
@@ -42,7 +45,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		Snippets.shared.fetchUserDetails(user: user) { (error, updatedUser, posts : [SnippetsPost]) in
 			
 			if let snippetsUser = updatedUser {
-				self.user = snippetsUser
+				self.user = SnippetsUser.save(snippetsUser)
+				
 				self.updatedUserInfo = self.user
 			
 				DispatchQueue.main.async {
@@ -72,7 +76,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		ImageCache.fetch(path) { (image) in
 			if let _ = image {
 				DispatchQueue.main.async {
-					self.collectionView.reloadItems(at: [ index ])
+					//self.collectionView.reloadItems(at: [ index ])
+					self.collectionView.reloadData()
 				}
 			}
 		}
@@ -84,12 +89,15 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
-		if self.updatedUserInfo != nil {
-			return 3
+		var sections = 1
+		if self.user.bio.count > 0 {
+			sections = sections + 1
 		}
-		else {
-			return 1
+		if self.userPosts.count > 0 {
+			sections = sections + 1
 		}
+		
+		return sections
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -97,12 +105,13 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		if section == 0 {
 			return 1
 		}
-		else if section == 1 {
+			
+		// If there is a bio...
+		if section == 1 && self.user.bio.count > 0 {
 			return 1
 		}
-		else {
-			return self.userPosts.count
-		}
+
+		return self.userPosts.count
 	}
 		
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -112,7 +121,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			self.configureHeaderCell(cell, indexPath)
 			return cell
 		}
-		else if indexPath.section == 1 {
+		else if indexPath.section == 1 && self.user.bio.count > 0 {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBioCollectionViewCell", for: indexPath) as! ProfileBioCollectionViewCell
 			self.configureBioCell(cell)
 			return cell
@@ -129,7 +138,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
-		if indexPath.section == 2 {
+		if indexPath.section == 2 || (indexPath.section == 1 && self.user.bio.count == 0)  {
 			let post = self.userPosts[indexPath.item]
 			
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -148,7 +157,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		cell.avatar.layer.cornerRadius = (cell.avatar.bounds.size.height - 1) / 2.0
 			
 		cell.fullName.text = user.fullName
-		cell.userHandle.text = user.userHandle
+		cell.userHandle.text = "@" + user.userHandle
 		cell.blogAddress.setTitle(user.pathToWebSite, for: .normal)
 			
 		if let image = ImageCache.prefetch(user.pathToUserImage) {

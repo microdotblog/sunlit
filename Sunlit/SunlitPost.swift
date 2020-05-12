@@ -63,6 +63,10 @@ class SunlitPost : SnippetsPost {
 
         return names
     }
+	
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 	static func create(_ snippet : SnippetsPost, font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> SunlitPost {
 
@@ -82,6 +86,9 @@ class SunlitPost : SnippetsPost {
 		// For now, we are going to keep the original snippet object
 		let parsedEntry = SunlitPost()
 		parsedEntry.source = snippet
+
+		// Calling this both saves and merges any existing user info/data...
+		parsedEntry.owner = SnippetsUser.save(snippet.owner)
 		
 		// Grab the published date...
 		parsedEntry.publishedDate = snippet.publishedDate
@@ -130,6 +137,9 @@ class SunlitPost : SnippetsPost {
 		return parsedEntry
 	}
 	
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	static func addTextStyle(string : String, font : UIFont, textColor : UIColor) -> String {
 		

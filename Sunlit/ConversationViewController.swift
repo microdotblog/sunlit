@@ -93,7 +93,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 					}
 		
 					for user in users {
-						self.replyField.text = self.replyField.text + user + " "
+						self.replyField.text = self.replyField.text + "@" + user + " "
 					}
 				}
 			}
@@ -175,7 +175,7 @@ class ConversationTableViewCell : UITableViewCell {
 		
 		self.replyText.attributedText = post.text
 		self.userName.text = post.owner.fullName
-		self.userHandle.text = post.owner.userHandle
+		self.userHandle.text = "@" + post.owner.userHandle
 		self.loadPhotos(post.owner, indexPath)
 	}
 	

@@ -52,13 +52,21 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	func setupProfilePhoto() {
 		if let tab_item = self.tabBarController?.tabBar.items?.last {
-			Snippets.shared.fetchCurrentUserInfo { error, snippets_user in
-				if let u = snippets_user {
+			
+			if let user = SnippetsUser.current() {
+
+				tab_item.title = "@\(user.userHandle)"
+
+				if let avatar = ImageCache.prefetch(user.pathToUserImage) {
 					DispatchQueue.main.async {
-						tab_item.title = "@\(u.userHandle)"
-						u.loadUserImage {
-							if let img = u.userImage {
-								tab_item.image = img.uuScaleToHeight(targetHeight: 40)
+						tab_item.image = avatar.uuScaleToHeight(targetHeight: 40)
+					}
+				}
+				else {
+					ImageCache.fetch(user.pathToUserImage) { (image) in
+						if let avatar = image {
+							DispatchQueue.main.async {
+								tab_item.image = avatar.uuScaleToHeight(targetHeight: 40)
 							}
 						}
 					}
@@ -174,9 +182,21 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 					Settings.savePermanentToken(permanentToken)
 					Snippets.shared.configure(permanentToken: permanentToken, blogUid: nil)
 					
-					Dialog.information("You have successfully logged in.", self)
-					
-					self.loadTimeline()
+					Snippets.shared.fetchCurrentUserInfo { (error, updatedUser) in
+						
+						if let user = updatedUser {
+							_ = SnippetsUser.saveAsCurrent(user)
+							
+							// Go ahead and go get the avatar for the logged in user
+							if ImageCache.prefetch(user.pathToUserImage) == nil {
+								ImageCache.fetch(user.pathToUserImage) { (image) in
+								}
+							}
+							
+							self.loadTimeline()
+							Dialog.information("You have successfully logged in.", self)
+						}
+					}
 				}
 			}
 		}
@@ -369,7 +389,7 @@ class FeedTableViewCell : UITableViewCell {
 		
 		// Update the text objects
 		self.textView.attributedText = post.text
-		self.userHandle.text = post.owner.userHandle
+		self.userHandle.text = "@" + post.owner.userHandle
 		self.userName.text = post.owner.fullName
 		
 		if let date = post.publishedDate {

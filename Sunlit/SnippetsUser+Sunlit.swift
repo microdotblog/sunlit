@@ -10,12 +10,6 @@ import UIKit
 
 extension SnippetsUser {
 	
-	
-	
-	static func saveAsCurrent(_ user : SnippetsUser) {
-		
-	}
-	
 	func attributedTextBio(font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> NSAttributedString {
 		
 		var attributedBio : NSAttributedString = NSAttributedString(string: self.bio)
@@ -28,18 +22,84 @@ extension SnippetsUser {
 		return attributedBio
 	}
 	
-	static func save(_ user : SnippetsUser) {
-		var dictionary : [String : Any] = [:]
-		dictionary["full_name"] = user.fullName
-		dictionary["user_handle"] = user.userHandle
-		dictionary["path_to_user_image"] = user.pathToUserImage
-		dictionary["path_to_web_site"] = user.pathToWebSite
-		dictionary["bio"] = user.bio
-		dictionary["following_count"] = user.followingCount
-		dictionary["discover_count"] = user.discoverCount
-		dictionary["is_following"] = user.isFollowing
+	
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+	
+	// saveAsCurrent and save both merge the user with any extended attributes that have already been stored...
+	static func saveAsCurrent(_ user : SnippetsUser) -> SnippetsUser {
+		return SnippetsUser.save(user, key: "Current User")
+	}
+	
+	static func current() -> SnippetsUser? {
+		return SnippetsUser.load("Current User")
+	}
+	
+	static func fetchCurrent(_ completion : @escaping (SnippetsUser?) -> Void) {
+		if let user = SnippetsUser.current() {
+			completion(user)
+		}
+		else {
+			Snippets.shared.fetchCurrentUserInfo { (error, user) in
+				if let current = user {
+					_ = SnippetsUser.saveAsCurrent(current)
+				}
+				
+				completion(user)
+			}
+		}
+	}
+	
+	static func save(_ user : SnippetsUser, key : String? = nil) -> SnippetsUser {
 		
-		UserDefaults.standard.set(dictionary, forKey: user.userHandle)
+		var saveKey = user.userHandle
+		if let k = key {
+			saveKey = k
+		}
+		
+		var dictionary : [String : Any] = [:]
+		
+		// See if there is an existing dictionary to see if we need to merge...
+		if let master = UserDefaults.standard.object(forKey: saveKey) as? [String : Any] {
+			dictionary = master
+		}
+		
+		if user.fullName.count > 0 {
+			dictionary["full_name"] = user.fullName
+		}
+	
+		if user.userHandle.count > 0 {
+			dictionary["user_handle"] = user.userHandle
+		}
+		
+		if user.pathToUserImage.count > 0 {
+			dictionary["path_to_user_image"] = user.pathToUserImage
+		}
+		
+		if user.pathToWebSite.count > 0 {
+			dictionary["path_to_web_site"] = user.pathToWebSite
+		}
+		
+		if user.bio.count > 0 {
+			dictionary["bio"] = user.bio
+		}
+		
+		if user.followingCount > 0 {
+			dictionary["following_count"] = user.followingCount
+		}
+		
+		if user.discoverCount > 0 {
+			dictionary["discover_count"] = user.discoverCount
+		}
+		
+		if user.isFollowing {
+			dictionary["is_following"] = user.isFollowing
+		}
+		
+		UserDefaults.standard.set(dictionary, forKey: saveKey)
+		
+		return SnippetsUser.load(saveKey)!
 	}
 	
 	static func load(_ userHandle : String) -> SnippetsUser? {

@@ -14,6 +14,10 @@ extension AppDelegate {
 		// only look at main menu, not contextual menus
 		guard builder.system == .main else { return }
 		
+		if let token = Settings.permanentToken() {
+			Snippets.shared.configure(permanentToken: token, blogUid: nil)
+		}
+		
 		// remove Format menu
 		builder.remove(menu: .format)
 
@@ -29,17 +33,34 @@ extension AppDelegate {
 		let signout_menu = UIMenu(title: "", options: .displayInline, children: [ signout_item ])
 		builder.insertChild(signout_menu, atEndOfMenu: .file)
 
-		// TODO: get current username and profile photo
-		var profile_username = "username"
-		var profile_image: UIImage?
+		SnippetsUser.fetchCurrent { (user) in
+			if let current = user {
+				
+				DispatchQueue.main.async {
+					let profile_username = current.userHandle
+					let profile_image: UIImage? = ImageCache.prefetch(current.pathToUserImage)
 
-		// add View -> Timeline, Discover, profile
-		let timeline_item = UIKeyCommand(title: "Timeline", action: #selector(AppDelegate.showTimeline), input: "1", modifierFlags: .command)
-		let discover_item = UIKeyCommand(title: "Discover", action: #selector(AppDelegate.showDiscover), input: "2", modifierFlags: .command)
-		let profile_item = UIKeyCommand(title: "@\(profile_username)", image: profile_image, action: #selector(AppDelegate.showProfile), input: "3", modifierFlags: .command)
+					// add View -> Timeline, Discover, profile
+					let timeline_item = UIKeyCommand(title: "Timeline", action: #selector(AppDelegate.showTimeline), input: "1", modifierFlags: .command)
+					let discover_item = UIKeyCommand(title: "Discover", action: #selector(AppDelegate.showDiscover), input: "2", modifierFlags: .command)
+					let profile_item = UIKeyCommand(title: "@\(profile_username)", image: profile_image, action: #selector(AppDelegate.showProfile), input: "3", modifierFlags: .command)
 
-		let view_menu = UIMenu(title: "", options: .displayInline, children: [ timeline_item, discover_item, profile_item ])
-		builder.insertChild(view_menu, atStartOfMenu: .view)
+					let view_menu = UIMenu(title: "", options: .displayInline, children: [ timeline_item, discover_item, profile_item ])
+					builder.insertChild(view_menu, atStartOfMenu: .view)
+					
+					if profile_image == nil {
+						ImageCache.fetch(current.pathToUserImage) { (image) in
+							if let profile_image = image {
+								DispatchQueue.main.async {									
+									profile_item.image = profile_image
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
 	}
 
 	@objc func newPost() {

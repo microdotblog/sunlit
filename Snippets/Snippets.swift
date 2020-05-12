@@ -83,7 +83,13 @@ public class Snippets : NSObject {
 	// Returns a SnippetsUser for the currently signed-in user
 	@objc public func fetchCurrentUserInfo(completion: @escaping(Error?, SnippetsUser?)-> ())
 	{
-		let arguments : [String : String] = [ "token" : token ]
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken, nil)
+			return
+		}
+		
+		let arguments : [String : String] = [ "token" : self.token ]
 		let request = self.securePost(path: self.pathForRoute("account/verify"), arguments: arguments)
 		
 		_ = UUHttpSession.executeRequest(request) { (parsedServerResponse) in
@@ -103,6 +109,12 @@ public class Snippets : NSObject {
 	// fetching the configuration will return the list of configured micro.blogs for the signed-in user.
 	@objc public func fetchCurrentUserConfiguration(completion: @escaping(Error?, [String : Any])-> ())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken, [:])
+			return
+		}
+
 		let request = self.secureGet(path: self.pathForRoute("micropub?q=config"), arguments: [:])
 		
 		_ = UUHttpSession.executeRequest(request) { (parsedServerResponse) in
@@ -127,6 +139,12 @@ public class Snippets : NSObject {
 	// Fetch all posts by the current logged in user, including draft posts.
 	@objc public func fetchCurrentUserPosts(completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken, [])
+			return
+		}
+		
 		var arguments = [ "q" : "source" ]
 		if let blogUid = self.uid {
 			arguments["mp-destination"] = blogUid
@@ -298,6 +316,12 @@ public class Snippets : NSObject {
 	
 	@objc public func follow(user : SnippetsUser, completion: @escaping(Error?) -> ())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken)
+			return
+		}
+
 		let arguments : [ String : String ] = [ "username" : user.userHandle ]
 		
 		let request = self.securePost(path: self.pathForRoute("users/follow"), arguments: arguments)
@@ -309,6 +333,12 @@ public class Snippets : NSObject {
 
 	@objc public func unfollow(user : SnippetsUser, completion: @escaping(Error?) -> ())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken)
+			return
+		}
+
 		let arguments : [ String : String ] = [ "username" : user.userHandle ]
 		
 		let request = self.securePost(path: self.pathForRoute("users/unfollow"), arguments: arguments)
@@ -320,6 +350,12 @@ public class Snippets : NSObject {
 	
 	@objc public func checkFollowingStatus(user : SnippetsUser, completion: @escaping(Error?, Bool) -> ())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken, false)
+			return
+		}
+		
 		let route = "users/is_following?username=\(user.userHandle)"
 		let request = self.secureGet(path: self.pathForRoute(route), arguments: [:])
 		
@@ -340,6 +376,12 @@ public class Snippets : NSObject {
 	
 	@objc public func listFollowers(user : SnippetsUser, completeList : Bool, completion: @escaping(Error?, [SnippetsUser]) -> ())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken, [])
+			return
+		}
+		
 		var route = "users/following/\(user.userHandle)"
 		if (!completeList)
 		{
@@ -375,6 +417,12 @@ public class Snippets : NSObject {
 
 	@objc public func favorite(post : SnippetsPost, completion: @escaping(Error?) -> ())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken)
+			return
+		}
+		
 		let arguments : [ String : String ] = [ "id" : post.identifier ]
 
 		let request = self.securePost(path: self.pathForRoute("favorites"), arguments: arguments)
@@ -386,6 +434,12 @@ public class Snippets : NSObject {
 
 	@objc public func unfavorite(post : SnippetsPost, completion: @escaping(Error?) -> ())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken)
+			return
+		}
+		
 		let arguments : [ String : String ] = [ "id" : post.identifier ]
 		let route = "favorites/\(post.identifier)"
 		let request = self.secureDelete(path: self.pathForRoute(route), arguments: arguments)
@@ -402,6 +456,12 @@ public class Snippets : NSObject {
 	
 	@objc public func postText(title : String, content : String, isDraft : Bool = false, photos : [String] = [], altTags : [String] = [], videos : [String] = [], videoAltTags : [String] = [], completion: @escaping(Error?, String?) -> ())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken, nil)
+			return
+		}
+		
 		var bodyText = ""
 		bodyText = self.appendParameter(body: bodyText, name: "name", content: title)
 		bodyText = self.appendParameter(body: bodyText, name: "content", content: content)
@@ -444,6 +504,13 @@ public class Snippets : NSObject {
 	
 	@objc public func postHtml(title : String, content : String, isDraft : Bool = false, completion: @escaping(Error?, String?) -> ())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken, nil)
+			return
+		}
+
+		
 		let properties : [ String : Any ] = [ "name" 	: [ title ],
 											  "content" : [ [ "html" : content ] ],
 											  "photo" 	: [ ]
@@ -510,6 +577,12 @@ public class Snippets : NSObject {
 	
 	@objc public func deletePost(post : SnippetsPost, completion: @escaping(Error?) -> ())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken)
+			return
+		}
+		
 		// There are actually two ways to delete posts. The safer way is if you have the post identifier
 		// The other way is more of the "micropub" way in which you just have the path to the post
 		if (post.identifier.count > 0)
@@ -524,6 +597,12 @@ public class Snippets : NSObject {
 	
 	@objc public func reply(originalPost : SnippetsPost, content : String, completion: @escaping(Error?) -> ())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken)
+			return
+		}
+		
 		var arguments : [ String : String ] = [ "id" : originalPost.identifier,
 											    "text" : content ]
 		
@@ -542,6 +621,12 @@ public class Snippets : NSObject {
 	
 	@objc public func uploadImage(image : SnippetsImage, completion: @escaping(Error?, String?)->())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken, nil)
+			return
+		}
+		
 		let resizedImage = image
 		//var resizedImage = image
 		//if image.size.width > 1800.0
@@ -585,6 +670,12 @@ public class Snippets : NSObject {
 
 	@objc public func uploadVideo(data : Data, completion: @escaping(Error?, String?, String?)->())
 	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken, nil, nil)
+			return
+		}
+
 		var formData : Data = Data()
 		let imageName = "file"
 		let boundary = ProcessInfo.processInfo.globallyUniqueString
@@ -707,6 +798,14 @@ public class Snippets : NSObject {
 			}
 		}
 	}
+}
+
+extension Snippets {
+	
+	public enum SnippetsError : Error {
+		case invalidOrMissingToken
+	}
+
 }
 
 
