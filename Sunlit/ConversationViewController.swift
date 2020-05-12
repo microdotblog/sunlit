@@ -194,7 +194,7 @@ class ConversationTableViewCell : UITableViewCell {
 		NotificationCenter.default.post(name: NSNotification.Name("Display User Profile"), object: self.post)
 	}
 	
-	func loadPhotos(_ owner : SunlitUser, _ indexPath : IndexPath) {
+	func loadPhotos(_ owner : SnippetsUser, _ indexPath : IndexPath) {
 		let avatarSource = owner.pathToUserImage
 		if let avatar = ImageCache.prefetch(avatarSource) {
 			self.avatar.image = avatar

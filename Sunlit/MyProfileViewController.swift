@@ -12,7 +12,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 
 	@IBOutlet var collectionView : UICollectionView!
 	var userPosts : [SunlitPost] = []
-	var user : SunlitUser?
+	var user : SnippetsUser? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +27,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	func fetchUserInfo() {
 		Snippets.shared.fetchCurrentUserInfo { (error, snippetsUser) in
 			if let updatedUser = snippetsUser {
-				self.user = SunlitPost.convertUser(user: updatedUser)
+				self.user = updatedUser
 
 				DispatchQueue.main.async {
 					self.collectionView.reloadData()
@@ -149,7 +149,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
 		
 		if let user = self.user {
-			cell.bio.attributedText = user.formattedBio
+			cell.bio.attributedText = user.attributedTextBio()
 		}
 		cell.widthConstraint.constant = self.collectionView.frame.size.width - 16
 	}

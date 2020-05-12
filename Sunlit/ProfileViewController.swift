@@ -10,8 +10,8 @@ import UIKit
 
 class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 		
-	var user : SunlitUser!
-	var updatedUserInfo : SunlitUser? = nil
+	var user : SnippetsUser!
+	var updatedUserInfo : SnippetsUser? = nil
 	var userPosts : [SunlitPost] = []
 	
 	@IBOutlet var collectionView : UICollectionView!
@@ -38,11 +38,11 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-	func fetchUserInfo(_ user : SunlitUser) {
+	func fetchUserInfo(_ user : SnippetsUser) {
 		Snippets.shared.fetchUserDetails(user: user) { (error, updatedUser, posts : [SnippetsPost]) in
 			
 			if let snippetsUser = updatedUser {
-				self.user = SunlitPost.convertUser(user: snippetsUser)
+				self.user = snippetsUser
 				self.updatedUserInfo = self.user
 			
 				DispatchQueue.main.async {
@@ -164,7 +164,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 	}
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
-		cell.bio.attributedText = user.formattedBio
+		cell.bio.attributedText = user.attributedTextBio()
 		cell.widthConstraint.constant = self.collectionView.frame.size.width - 16
 	}
 	

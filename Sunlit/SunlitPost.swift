@@ -1,5 +1,5 @@
 //
-//  HTMLParser.swift
+//  SunlitPost.swift
 //  Sunlit
 //
 //  Created by Jonathan Hays on 5/5/20.
@@ -8,18 +8,15 @@
 
 import UIKit
 
-class SunlitUser : SnippetsUser {
-	var formattedBio : NSAttributedString = NSAttributedString()
-}
 
-
-class SunlitPost {
+class SunlitPost : SnippetsPost {
+	
+	// Add extra fields that assists with the native display of the post
 	var aspectRatio : Float = 0.0
 	var altText : [String] = []
 	var images : [String] = []
-	var publishedDate : Date? = nil
 	var text : NSAttributedString = NSAttributedString(string: "")
-	var owner = SunlitUser()
+
 	var source : SnippetsPost = SnippetsPost()
     var mentionedUsernames: [String] {
         // Setting up our state, which is any partial name that we’re
@@ -73,6 +70,7 @@ class SunlitPost {
 		
 		var string = html
 		
+		// We whitelist most of the html elements as well as strip out the image tags
 		if let whitelist = try? Whitelist.basicWithImages() {
 			_ = try? whitelist.removeTags("p")
 			_ = try? whitelist.addTags("style")
@@ -81,11 +79,16 @@ class SunlitPost {
 			}
 		}
 		
+		// For now, we are going to keep the original snippet object
 		let parsedEntry = SunlitPost()
 		parsedEntry.source = snippet
-		parsedEntry.owner = convertUser(user: snippet.owner, font: font, textColor: textColor)
+		
+		// Grab the published date...
 		parsedEntry.publishedDate = snippet.publishedDate
 		
+		// Use SwiftSoup to parse the post.
+		// We also calculate the aspect ratio from the width and height tags (if they exists) so that we can properly
+		// size the table cells when it's time to display the images.
 		if let document = try? SwiftSoup.parse(string) {
 			let images = findImageElements(document)
 			let text = stripImages(document, images)
@@ -100,6 +103,7 @@ class SunlitPost {
 
 			var aspectRatio : Float = 0.0
 			
+			// Store the image paths and the alt-text objects (if they exist)
 			for image in images {
 				parsedEntry.images.append(imageTag(tag: "src", image))
 				parsedEntry.altText.append(imageTag(tag: "alt", image))
@@ -115,6 +119,7 @@ class SunlitPost {
 				}
 			}
 			
+			// If there is no aspect ratio, we will default to a square/1.0 aspect ratio
 			if aspectRatio == 0.0 {
 				aspectRatio = 1.0
 			}
@@ -125,23 +130,6 @@ class SunlitPost {
 		return parsedEntry
 	}
 	
-	static func convertUser(user : SnippetsUser, font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> SunlitUser {
-		let sunlitUser = SunlitUser()
-		sunlitUser.fullName = user.fullName
-		sunlitUser.userHandle = "@" + user.userHandle
-		sunlitUser.pathToUserImage = user.pathToUserImage
-		sunlitUser.pathToWebSite = user.pathToWebSite
-		sunlitUser.bio = user.bio
-		sunlitUser.formattedBio = NSAttributedString(string: sunlitUser.bio)
-
-		let formattedBio = addTextStyle(string: user.bio, font: font, textColor: textColor)
-		let htmlData = formattedBio.data(using: .utf16)!
-		if let attributedString = try? NSAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
-			sunlitUser.formattedBio = attributedString
-		}
-
-		return sunlitUser
-	}
 	
 	static func addTextStyle(string : String, font : UIFont, textColor : UIColor) -> String {
 		
@@ -198,28 +186,6 @@ class SunlitPost {
 		}
 
 		return ""
-	}
-	
-	static func stripImageTags(_ string : String, _ images : [Element]) -> String {
-		
-		var parsedString = string
-		
-		for image in images {
-			var html = try? image.html()
-			if html?.count == 0 {
-				html = try? image.outerHtml()
-			}
-			parsedString = parsedString.replacingOccurrences(of: html ?? "", with: "")
-		}
-
-		return parsedString
-	}
-	
-	static func trimWhitespace(_ string: String) -> String {
-		let trimmed = string.trimmingCharacters(in: .whitespacesAndNewlines)
-		let breaksRemoved = trimmed.replaceAll(of: "<br>", with: "")
-		
-		return breaksRemoved
 	}
 	
 }

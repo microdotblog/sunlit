@@ -164,7 +164,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	
 	@objc func handleUserProfileSelectedNotification(_ notification : Notification) {
-		if let user = notification.object as? SunlitUser {
+		if let user = notification.object as? SnippetsUser {
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 			let profileViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
 			profileViewController.user = user
@@ -320,7 +320,6 @@ class FeedTableViewCell : UITableViewCell {
 	@IBOutlet var conversationButton : UIButton!
 	@IBOutlet var conversationHeightConstraint : NSLayoutConstraint!
 	
-	var user : SunlitUser!
 	var post : SunlitPost!
 	
 	override func awakeFromNib() {
@@ -342,9 +341,7 @@ class FeedTableViewCell : UITableViewCell {
 	
 	func setup(_ index: Int, _ post : SunlitPost) {
 		
-		let owner = post.owner
 		self.post = post
-		self.user = owner
 		
 		self.replyContainer.layer.borderWidth = 0.0
 
@@ -353,8 +350,8 @@ class FeedTableViewCell : UITableViewCell {
 		
 		// Update the text objects
 		self.textView.attributedText = post.text
-		self.userHandle.text = owner.userHandle
-		self.userName.text = owner.fullName
+		self.userHandle.text = post.owner.userHandle
+		self.userName.text = post.owner.fullName
 		
 		if let date = post.publishedDate {
 			self.dateLabel.text = date.uuRfc3339String()
@@ -364,7 +361,7 @@ class FeedTableViewCell : UITableViewCell {
 		self.setupPhotoAspectRatio(post)
 		
 		// Kick off the photo loading...
-		self.loadPhotos(post, owner, index)
+		self.loadPhotos(post, index)
 	}
 	
 	func setupPhotoAspectRatio(_ post : SunlitPost) {
@@ -481,7 +478,7 @@ class FeedTableViewCell : UITableViewCell {
 	}
 	
 	@objc func handleUserTappedGesture() {
-		NotificationCenter.default.post(name: NSNotification.Name("Display User Profile"), object: self.user)
+		NotificationCenter.default.post(name: NSNotification.Name("Display User Profile"), object: self.post.owner)
 	}
 	
 	@objc func handleEmojiSelectedNotification(_ notification : Notification) {
@@ -494,7 +491,7 @@ class FeedTableViewCell : UITableViewCell {
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
-	func loadPhotos(_ post : SunlitPost, _ owner : SunlitUser, _ index : Int) {
+	func loadPhotos(_ post : SunlitPost, _ index : Int) {
 		
 		self.postImage.image = UIImage(named: "welcome_waves")
 		
@@ -503,7 +500,7 @@ class FeedTableViewCell : UITableViewCell {
 			self.postImage.image = image
 		}
 		
-		let avatarSource = owner.pathToUserImage
+		let avatarSource = post.owner.pathToUserImage
 		if let avatar = ImageCache.prefetch(avatarSource) {
 			self.userAvatar.image = avatar
 		}

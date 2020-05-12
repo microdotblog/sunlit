@@ -21,4 +21,5 @@ class Settings {
 		//return UUKeychain.getString(key: "SunlitToken")
 		return UserDefaults.standard.string(forKey: "SunlitToken")
 	}
+	
 }
