@@ -930,7 +930,7 @@
     </scenes>
     <resources>
         <image name="discover" width="20" height="20"/>
-        <image name="feed" width="40" height="40"/>
+        <image name="feed" width="20" height="20"/>
         <image name="reply" width="48" height="48"/>
         <image name="second" width="30" height="30"/>
         <image name="welcome_waves" width="320" height="200"/>
