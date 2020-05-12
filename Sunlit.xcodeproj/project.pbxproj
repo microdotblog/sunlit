@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B4659E8246B272C00C4E84A /* AppDelegate+Menus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4659E7246B272C00C4E84A /* AppDelegate+Menus.swift */; };
 		C5066BA22461BFF600D9B2E8 /* UUKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5066B9D2461BFF600D9B2E8 /* UUKeychain.swift */; };
 		C5066BA32461BFF600D9B2E8 /* UULocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5066B9E2461BFF600D9B2E8 /* UULocalization.swift */; };
 		C5066BA42461BFF600D9B2E8 /* UUThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5066B9F2461BFF600D9B2E8 /* UUThread.swift */; };
@@ -115,6 +116,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4B4659E7246B272C00C4E84A /* AppDelegate+Menus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Menus.swift"; sourceTree = "<group>"; };
 		C5066B9D2461BFF600D9B2E8 /* UUKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUKeychain.swift; path = UUSwift/UUKeychain.swift; sourceTree = SOURCE_ROOT; };
 		C5066B9E2461BFF600D9B2E8 /* UULocalization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UULocalization.swift; path = UUSwift/UULocalization.swift; sourceTree = SOURCE_ROOT; };
 		C5066B9F2461BFF600D9B2E8 /* UUThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUThread.swift; path = UUSwift/UUThread.swift; sourceTree = SOURCE_ROOT; };
@@ -319,6 +321,7 @@
 				C5FFB1D22469C7A20015368A /* Data */,
 				C5B9A71A24563E66003EF82B /* AppDelegate.swift */,
 				C5B9A71C24563E66003EF82B /* SceneDelegate.swift */,
+				4B4659E7246B272C00C4E84A /* AppDelegate+Menus.swift */,
 				C5AC0453245FC9B900D7725D /* Resources */,
 				C5B9A731245640AD003EF82B /* Dependencies */,
 			);
@@ -541,6 +544,7 @@
 				C5066BA32461BFF600D9B2E8 /* UULocalization.swift in Sources */,
 				C5D53D27246214CE00FFAC71 /* TreeBuilder.swift in Sources */,
 				C5FFB1D124669D640015368A /* MyProfileViewController.swift in Sources */,
+				4B4659E8246B272C00C4E84A /* AppDelegate+Menus.swift in Sources */,
 				C5D53D2D246214CE00FFAC71 /* BooleanAttribute.swift in Sources */,
 				C5D53D3C246214CE00FFAC71 /* String.swift in Sources */,
 				C5D53D31246214CE00FFAC71 /* CharacterReader.swift in Sources */,
