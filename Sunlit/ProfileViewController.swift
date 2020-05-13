@@ -82,6 +82,34 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			}
 		}
 	}
+	
+	@objc func onFollowUser() {
+		if self.user.isFollowing {
+			Snippets.shared.unfollow(user: self.user) { (error) in
+				if error == nil {
+					self.user.isFollowing = false
+					self.user = SnippetsUser.save(self.user)
+					
+					DispatchQueue.main.async {
+						self.collectionView.reloadData()
+					}
+				}
+			}
+		}
+		else {
+			Snippets.shared.follow(user: self.user) { (error) in
+				if error == nil {
+					self.user.isFollowing = true
+					self.user = SnippetsUser.save(self.user)
+					
+					DispatchQueue.main.async {
+						self.collectionView.reloadData()
+					}
+				}
+			}
+
+		}
+	}
 
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -152,6 +180,17 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		cell.followButton.clipsToBounds = true
 		cell.followButton.layer.cornerRadius = (cell.followButton.bounds.size.height - 1) / 2.0
 		cell.followButton.setTitle("Unfollow", for: .normal)
+		cell.followButton.isHidden = true
+		cell.followButton.addTarget(self, action: #selector(onFollowUser), for: .touchUpInside)
+		
+		if self.user.isFollowing {
+			cell.followButton.setTitle("Unfollow", for: .normal)
+			cell.followButton.isHidden = false
+		}
+		else if self.updatedUserInfo != nil {
+			cell.followButton.isHidden = false
+			cell.followButton.setTitle("Follow", for: .normal)
+		}
 			
 		cell.avatar.clipsToBounds = true
 		cell.avatar.layer.cornerRadius = (cell.avatar.bounds.size.height - 1) / 2.0

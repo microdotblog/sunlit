@@ -93,9 +93,7 @@ extension SnippetsUser {
 			dictionary["discover_count"] = user.discoverCount
 		}
 		
-		if user.isFollowing {
-			dictionary["is_following"] = user.isFollowing
-		}
+		dictionary["is_following"] = user.isFollowing
 		
 		UserDefaults.standard.set(dictionary, forKey: saveKey)
 		

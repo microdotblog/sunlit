@@ -27,7 +27,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	func fetchUserInfo() {
 		Snippets.shared.fetchCurrentUserInfo { (error, snippetsUser) in
 			if let updatedUser = snippetsUser {
-				self.user = updatedUser
+				self.user = SnippetsUser.save(updatedUser)
 
 				DispatchQueue.main.async {
 					self.collectionView.reloadData()
