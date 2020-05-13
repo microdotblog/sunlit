@@ -36,7 +36,14 @@ public class UURemoteImage: NSObject
     public func imageSize(for path: String) -> CGSize?
     {
         let md = UUDataCache.shared.metaData(for: path)
-        return md[MetaData.ImageSize] as? CGSize
+        
+        if let w = md[MetaData.ImageWidth] as? NSNumber,
+           let h = md[MetaData.ImageHeight] as? NSNumber
+        {
+            return CGSize(width: CGFloat(w.floatValue), height: CGFloat(h.floatValue))
+        }
+        
+        return nil
     }
     
     public func clearCache()
@@ -91,7 +98,8 @@ public class UURemoteImage: NSObject
                 self.systemImageCache.setObject(img, forKey: path as NSString)
                 
                 var md = UUDataCache.shared.metaData(for: path)
-                md[MetaData.ImageSize] = img.size
+                md[MetaData.ImageWidth] = NSNumber(value: Float(img.size.width))
+                md[MetaData.ImageHeight] = NSNumber(value: Float(img.size.height))
                 UUDataCache.shared.set(metaData: md, for: path)
                 
                 var metaData : [String:Any] = [:]
@@ -118,7 +126,8 @@ public class UURemoteImage: NSObject
     
     private struct MetaData
     {
-        static let ImageSize = "ImageSize"
+        static let ImageWidth = "ImageWidth"
+        static let ImageHeight = "ImageHeight"
     }
 
 }

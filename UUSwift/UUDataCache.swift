@@ -112,6 +112,25 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         set(metaData: md, for: key)
     }
     
+    public func moveIntoCache(localData: URL, for key: String)
+    {
+        let pathUrl = diskCacheURL(for: key)
+        
+        do
+        {
+            let fm = FileManager.default
+            try fm.moveItem(at: localData, to: pathUrl)
+            
+            var md = metaData(for: key)
+            md[MetaDataKeys.timestamp] = Date()
+            set(metaData: md, for: key)
+        }
+        catch (let err)
+        {
+            UUDebugLog("Error moving URL into cache: %@", String(describing: err))
+        }
+    }
+    
     public func metaData(for key: String) -> [String:Any]
     {
         return UUDataCacheDb.shared.metaData(for: key)
@@ -233,18 +252,12 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         }
     }
     
-    private func sanitizeKey(_ key: String) -> String
+    public func diskCacheURL(for key: String) -> URL
     {
-        let split = key.components(separatedBy: CharacterSet.alphanumerics.inverted)
-        let joined = split.joined(separator: "-")
-        return joined
-    }
-    
-    private func diskCacheURL(for key: String) -> URL
-    {
-        let safeFileName = sanitizeKey(key)
-        let path = (cacheFolder as NSString).appendingPathComponent(safeFileName)
+        let fileName = UUDataCacheDb.shared.fileName(for: key)
+        let path = (cacheFolder as NSString).appendingPathComponent(fileName)
         let pathUrl = URL(fileURLWithPath: path)
+        UUDebugLog("Key: \(key), DiskCacheURL: \(pathUrl)")
         return pathUrl
     }
     
@@ -266,9 +279,9 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         {
             data = try Data(contentsOf: pathUrl)
         }
-        catch (_)
+        catch (let err)
         {
-            //UUDebugLog("Error loading data: %@", String(describing: err))
+            UUDebugLog("Error loading data: %@", String(describing: err))
         }
         
         return data
@@ -329,7 +342,6 @@ private class UUDataCacheDb : NSObject
         coreDataStack = UUCoreData(url: storeUrl, model: storeModel)
     }
     
-    
     private class func objectModel() -> NSManagedObjectModel
     {
         let model = NSManagedObjectModel()
@@ -347,6 +359,12 @@ private class UUDataCacheDb : NSObject
         properties.append(attr)
         
         attr = NSAttributeDescription()
+        attr.name = "fileName"
+        attr.attributeType = .stringAttributeType
+        attr.isOptional = false
+        properties.append(attr)
+        
+        attr = NSAttributeDescription()
         attr.name = "timestamp"
         attr.attributeType = .dateAttributeType
         attr.isOptional = false
@@ -355,6 +373,7 @@ private class UUDataCacheDb : NSObject
         attr = NSAttributeDescription()
         attr.name = "metaData"
         attr.attributeType = .transformableAttributeType
+        attr.valueTransformerName = "NSSecureUnarchiveFromData"
         attr.isOptional = false
         properties.append(attr)
         
@@ -384,6 +403,21 @@ private class UUDataCacheDb : NSObject
         return md!
     }
     
+    public func fileName(for key: String) -> String
+    {
+        var result: String? = nil
+        
+        let ctx = coreDataStack.mainThreadContext!
+        ctx.performAndWait
+        {
+            let obj = self.underlyingMetaData(for: key)
+            result = obj.fileName
+        }
+        
+        assert(result != nil, "Expect that fileName is always non nil")
+        return result ?? ""
+    }
+    
     public func setMetaData(_ metaData: [String:Any], for key: String)
     {
         let ctx = coreDataStack.mainThreadContext!
@@ -391,7 +425,11 @@ private class UUDataCacheDb : NSObject
         {
             let obj = self.underlyingMetaData(for: key)
             obj.timestamp = Date()
-            obj.metaData = metaData as NSDictionary
+            
+            let d = NSDictionary(dictionary: metaData)
+            
+            obj.metaData = d
+            
             _ = ctx.uuSubmitChanges()
         }
     }
@@ -429,6 +467,7 @@ private class UUDataCacheDb : NSObject
             {
                 obj = UUDataCacheMetaData.uuCreate(context: ctx)
                 obj!.name = key
+                obj!.fileName = UUID().uuidString
                 obj!.timestamp = Date()
                 obj!.metaData = NSDictionary()
                 _ = ctx.uuSubmitChanges()
@@ -443,6 +482,7 @@ private class UUDataCacheDb : NSObject
 public class UUDataCacheMetaData : NSManagedObject
 {
     @NSManaged var name : String?
+    @NSManaged var fileName : String?
     @NSManaged var timestamp : Date?
     @NSManaged var metaData : NSDictionary?
 }
