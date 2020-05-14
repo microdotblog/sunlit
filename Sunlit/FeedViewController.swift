@@ -117,7 +117,6 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		self.prefetchImages(indexPath)
 	}
 	
-	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
@@ -168,8 +167,8 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	
 	@objc func handleImageLoadedNotification(_ notification : Notification) {
-		if let index = notification.object as? Int {
-			self.tableView.reloadRows(at: [ IndexPath(row: index, section: 0)], with: .fade)
+		if let indexPath = notification.object as? IndexPath {
+			self.tableView.reloadRows(at: [ indexPath ], with: .fade)
 		}
 	}
 	
@@ -317,7 +316,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			ImageCache.fetch(imageSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Feed Image Loaded"), object: indexPath.row)
+						NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Feed Image Loaded"), object: indexPath)
 					}
 				}
 			}
@@ -328,7 +327,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			ImageCache.fetch(avatarSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Feed Image Loaded"), object: indexPath.row)
+						NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Feed Image Loaded"), object: indexPath)
 					}
 				}
 			}
@@ -532,7 +531,8 @@ class FeedTableViewCell : UITableViewCell {
 	
 	func loadPhotos(_ post : SunlitPost, _ index : Int) {
 		
-		self.postImage.image = UIImage(named: "welcome_waves")
+		self.postImage.image = nil //UIImage(named: "welcome_waves")
+		self.userAvatar.image = nil
 		
 		let imageSource = post.images[0]
 		if let image = ImageCache.prefetch(imageSource) {

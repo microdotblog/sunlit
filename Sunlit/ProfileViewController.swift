@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
 		
 	var user : SnippetsUser!
 	var updatedUserInfo : SnippetsUser? = nil
@@ -19,11 +19,20 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     override func viewDidLoad() {
         super.viewDidLoad()
 		
+		if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+			flowLayout.estimatedItemSize = CGSize(width: self.view.frame.size.width, height: 200)
+		}
+		
 		// Merge if we can/need to from the user cache...
 		self.user = SnippetsUser.save(self.user)
 		
-		self.fetchUserInfo(user)
-		self.fetchUserPosts()
+		if self.user.bio.count > 0 {
+			self.fetchUserPosts()
+		}
+		else {
+			self.fetchUserInfo(user)
+		}
+		
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
     }
 	
@@ -51,6 +60,10 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			
 				DispatchQueue.main.async {
 					self.collectionView.reloadData()
+					
+					if self.userPosts.count <= 0 {
+						self.fetchUserPosts()
+					}
 				}
 			}
 		}
@@ -59,25 +72,32 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 	func fetchUserPosts() {
 		Snippets.shared.fetchUserMediaPosts(user: self.user) { (error, snippets: [SnippetsPost]) in
 
-			self.userPosts = []
+			var posts : [SunlitPost] = []
 			for snippet in snippets {
 				let post = SunlitPost.create(snippet)
-				self.userPosts.append(post)
+				posts.append(post)
 			}
 			
 			DispatchQueue.main.async {
+				self.userPosts = posts
 				self.collectionView.reloadData()
+				
+				self.fetchUserInfo(self.user)
 			}
-
 		}
 	}
 	
 	func loadPhoto(_ path : String,  _ index : IndexPath) {
+		
+		// If the photo exists, bail!
+		if ImageCache.prefetch(path) != nil {
+			return
+		}
+		
 		ImageCache.fetch(path) { (image) in
 			if let _ = image {
 				DispatchQueue.main.async {
-					//self.collectionView.reloadItems(at: [ index ])
-					self.collectionView.reloadData()
+					self.collectionView.reloadItems(at: [ index ])
 				}
 			}
 		}
@@ -117,25 +137,16 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
-		var sections = 1
-		if self.user.bio.count > 0 {
-			sections = sections + 1
-		}
-		if self.userPosts.count > 0 {
-			sections = sections + 1
+		if self.userPosts.count == 0 {
+			return 2
 		}
 		
-		return sections
+		return 3
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		
-		if section == 0 {
-			return 1
-		}
-			
-		// If there is a bio...
-		if section == 1 && self.user.bio.count > 0 {
+		if section == 0 || section == 1 {
 			return 1
 		}
 
@@ -149,7 +160,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			self.configureHeaderCell(cell, indexPath)
 			return cell
 		}
-		else if indexPath.section == 1 && self.user.bio.count > 0 {
+		else if indexPath.section == 1 {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBioCollectionViewCell", for: indexPath) as! ProfileBioCollectionViewCell
 			self.configureBioCell(cell)
 			return cell
@@ -166,13 +177,29 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
-		if indexPath.section == 2 || (indexPath.section == 1 && self.user.bio.count == 0)  {
+		if indexPath.section == 2 {
 			let post = self.userPosts[indexPath.item]
 			
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 			let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
 			imageViewController.pathToImage = post.images[0]
 			self.navigationController?.pushViewController(imageViewController, animated: true)
+		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+		for indexPath in indexPaths {
+			if indexPath.section == 2 {
+				let post = self.userPosts[indexPath.item]
+				self.loadPhoto(post.images.first ?? "", indexPath)
+			}
+		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		if indexPath.section == 2 {
+			let post = self.userPosts[indexPath.item]
+			self.loadPhoto(post.images.first ?? "", indexPath)
 		}
 	}
 	
@@ -223,16 +250,15 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			cell.date.text = date.uuRfc3339String()
 		}
 
-		cell.photo.image = UIImage(named: "welcome_waves")
+		cell.photo.image = nil
 
 		if let image = ImageCache.prefetch(post.images.first ?? "") {
 			cell.photo.image = image
 		}
-		else {
-			self.loadPhoto(post.images.first ?? "", indexPath)
-		}
 		
-		cell.widthConstraint.constant = (collectionView.frame.size.width - 16.0) / 2.0
+		let size = (collectionView.frame.size.width - 8.0) / 2.0
+		cell.widthConstraint.constant = size
+		cell.heightConstraint.constant = size + 40
 	}
 	
 }
@@ -268,4 +294,6 @@ class PhotoEntryCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var photo : UIImageView!
 	@IBOutlet var date : UILabel!
 	@IBOutlet var widthConstraint : NSLayoutConstraint!
+	@IBOutlet var heightConstraint : NSLayoutConstraint!
+	@IBOutlet var cellHeightConstraint : NSLayoutConstraint!
 }

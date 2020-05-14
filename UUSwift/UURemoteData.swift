@@ -87,6 +87,10 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
         {
             return data
         }
+		
+		if remoteLoadCompletion == nil {
+			return nil
+		}
         
         if (self.isDownloadPending(for: key))
         {
