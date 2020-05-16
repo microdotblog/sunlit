@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
+class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 		
 	var user : SnippetsUser!
 	var updatedUserInfo : SnippetsUser? = nil
@@ -19,9 +19,10 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-			flowLayout.estimatedItemSize = CGSize(width: self.view.frame.size.width, height: 200)
-		}
+		//if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+		//	flowLayout.estimatedItemSize = CGSize(width: self.view.frame.size.width / 2.0, height: self.view.frame.size.width + 40)
+		//	flowLayout.itemSize = UICollectionViewFlowLayout.automaticSize
+		//}
 		
 		// Merge if we can/need to from the user cache...
 		self.user = SnippetsUser.save(self.user)
@@ -187,12 +188,27 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		}
 	}
 	
-	func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-		for indexPath in indexPaths {
-			if indexPath.section == 2 {
-				let post = self.userPosts[indexPath.item]
-				self.loadPhoto(post.images.first ?? "", indexPath)
-			}
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+		var collectionViewWidth = collectionView.bounds.size.width
+		
+		if let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout {
+			collectionViewWidth = collectionViewWidth - flowLayout.sectionInset.left
+			collectionViewWidth = collectionViewWidth - flowLayout.sectionInset.right
+			
+			collectionViewWidth = collectionViewWidth - collectionView.contentInset.left
+			collectionViewWidth = collectionViewWidth - collectionView.contentInset.right
+		}
+		
+		if indexPath.section == 0 {
+			return ProfileHeaderCollectionViewCell.sizeOf(self.user, collectionViewWidth: collectionViewWidth)
+		}
+		else if indexPath.section == 1 {
+			return ProfileBioCollectionViewCell.sizeOf(self.user, collectionViewWidth:collectionViewWidth)
+		}
+		else {
+			return PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: collectionViewWidth)
 		}
 	}
 	
@@ -234,13 +250,10 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			self.loadPhoto(user.pathToUserImage, indexPath)
 		}
 
-		// Make sure the cell goes the entire width
-		cell.widthConstraint.constant = collectionView.frame.size.width
 	}
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
 		cell.bio.attributedText = user.attributedTextBio()
-		cell.widthConstraint.constant = self.collectionView.frame.size.width - 16
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
@@ -251,14 +264,9 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		}
 
 		cell.photo.image = nil
-
 		if let image = ImageCache.prefetch(post.images.first ?? "") {
 			cell.photo.image = image
 		}
-		
-		let size = (collectionView.frame.size.width - 8.0) / 2.0
-		cell.widthConstraint.constant = size
-		cell.heightConstraint.constant = size + 40
 	}
 	
 }
@@ -274,7 +282,21 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var fullName : UILabel!
 	@IBOutlet var userHandle : UILabel!
 	@IBOutlet var blogAddress : UIButton!
-	@IBOutlet var widthConstraint : NSLayoutConstraint!
+	
+	static func sizeOf(_ owner : SnippetsUser, collectionViewWidth : CGFloat) -> CGSize {
+		var size = CGSize(width: collectionViewWidth, height: 0)
+		
+		size.height = size.height + 24
+		size.height = size.height + 60
+		size.height = size.height + 8
+		
+		if owner.pathToWebSite.count > 0 {
+			size.height = size.height + 16
+			size.height = size.height + 32
+		}
+		
+		return size
+	}
 }
 
 /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -283,7 +305,19 @@ MARK: -
 
 class ProfileBioCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var bio : UILabel!
-	@IBOutlet var widthConstraint : NSLayoutConstraint!
+	
+	static func sizeOf(_ owner : SnippetsUser, collectionViewWidth : CGFloat) -> CGSize {
+		var size = CGSize(width: collectionViewWidth, height: 0)
+		
+		if owner.bio.count > 0 {
+			let text = owner.attributedTextBio()
+			let rect = text.boundingRect(with: size, options: .usesLineFragmentOrigin , context: nil)
+			size.height = rect.size.height
+		}
+
+		return size
+	}
+
 }
 
 /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -293,7 +327,11 @@ MARK: -
 class PhotoEntryCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var photo : UIImageView!
 	@IBOutlet var date : UILabel!
-	@IBOutlet var widthConstraint : NSLayoutConstraint!
-	@IBOutlet var heightConstraint : NSLayoutConstraint!
-	@IBOutlet var cellHeightConstraint : NSLayoutConstraint!
+
+	static func sizeOf(collectionViewWidth : CGFloat) -> CGSize {
+		var size = CGSize(width: 0, height: 0)
+		size.width = (collectionViewWidth / 2.0) - 4.0
+		size.height = size.width + 40.0
+		return size
+	}
 }

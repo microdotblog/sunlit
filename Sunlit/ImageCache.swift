@@ -20,6 +20,7 @@ class ImageCache {
 		
 		if let imageData = UURemoteData.shared.data(for: path) {
 			if let image = UIImage(data: imageData) {
+				systemCache.setObject(image, forKey: path as NSString)
 				return image
 			}
 		}

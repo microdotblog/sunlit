@@ -257,7 +257,6 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         let fileName = UUDataCacheDb.shared.fileName(for: key)
         let path = (cacheFolder as NSString).appendingPathComponent(fileName)
         let pathUrl = URL(fileURLWithPath: path)
-        UUDebugLog("Key: \(key), DiskCacheURL: \(pathUrl)")
         return pathUrl
     }
     

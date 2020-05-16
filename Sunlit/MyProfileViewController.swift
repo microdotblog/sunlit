@@ -9,21 +9,31 @@
 import UIKit
 
 class MyProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-
-	@IBOutlet var collectionView : UICollectionView!
+		
+	var user : SnippetsUser!
+	var updatedUserInfo : SnippetsUser? = nil
 	var userPosts : [SunlitPost] = []
-	var user : SnippetsUser? = nil
-
+	
+	@IBOutlet var collectionView : UICollectionView!
+	
     override func viewDidLoad() {
         super.viewDidLoad()
-		self.fetchUserInfo()
+		
+		if let user = SnippetsUser.current() {
+			self.user = user
+			self.fetchUserInfo()
+		}
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.navigationController?.setNavigationBarHidden(true, animated: true)
+	}
     
-
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
+	@objc func dismissViewController() {
+		self.navigationController?.popViewController(animated: true)
+	}
+	
 	func fetchUserInfo() {
 		Snippets.shared.fetchCurrentUserInfo { (error, snippetsUser) in
 			if let updatedUser = snippetsUser {
@@ -48,14 +58,88 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		}
 	}
 	
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+	func fetchUserInfo(_ user : SnippetsUser) {
+		Snippets.shared.fetchUserDetails(user: user) { (error, updatedUser, posts : [SnippetsPost]) in
+			
+			if let snippetsUser = updatedUser {
+				self.user = SnippetsUser.save(snippetsUser)
+				
+				self.updatedUserInfo = self.user
+			
+				DispatchQueue.main.async {
+					self.collectionView.reloadData()
+					
+					if self.userPosts.count <= 0 {
+						self.fetchUserPosts()
+					}
+				}
+			}
+		}
+	}
+	
+	func fetchUserPosts() {
+		Snippets.shared.fetchUserMediaPosts(user: self.user) { (error, snippets: [SnippetsPost]) in
+
+			var posts : [SunlitPost] = []
+			for snippet in snippets {
+				let post = SunlitPost.create(snippet)
+				posts.append(post)
+			}
+			
+			DispatchQueue.main.async {
+				self.userPosts = posts
+				self.collectionView.reloadData()
+				
+				self.fetchUserInfo(self.user)
+			}
+		}
+	}
 	
 	func loadPhoto(_ path : String,  _ index : IndexPath) {
+		
+		// If the photo exists, bail!
+		if ImageCache.prefetch(path) != nil {
+			return
+		}
+		
 		ImageCache.fetch(path) { (image) in
 			if let _ = image {
 				DispatchQueue.main.async {
 					self.collectionView.reloadItems(at: [ index ])
 				}
 			}
+		}
+	}
+	
+	@objc func onFollowUser() {
+		if self.user.isFollowing {
+			Snippets.shared.unfollow(user: self.user) { (error) in
+				if error == nil {
+					self.user.isFollowing = false
+					self.user = SnippetsUser.save(self.user)
+					
+					DispatchQueue.main.async {
+						self.collectionView.reloadData()
+					}
+				}
+			}
+		}
+		else {
+			Snippets.shared.follow(user: self.user) { (error) in
+				if error == nil {
+					self.user.isFollowing = true
+					self.user = SnippetsUser.save(self.user)
+					
+					DispatchQueue.main.async {
+						self.collectionView.reloadData()
+					}
+				}
+			}
+
 		}
 	}
 
@@ -65,25 +149,20 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
-		if self.user != nil {
-			return 3
+		if self.userPosts.count == 0 {
+			return 2
 		}
-		else {
-			return 0
-		}
+		
+		return 3
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		
-		if section == 0 {
+		if section == 0 || section == 1 {
 			return 1
 		}
-		else if section == 1 {
-			return 1
-		}
-		else {
-			return self.userPosts.count
-		}
+
+		return self.userPosts.count
 	}
 		
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -120,40 +199,73 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		}
 	}
 	
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+		var collectionViewWidth = collectionView.bounds.size.width
+		
+		if let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout {
+			collectionViewWidth = collectionViewWidth - flowLayout.sectionInset.left
+			collectionViewWidth = collectionViewWidth - flowLayout.sectionInset.right
+			
+			collectionViewWidth = collectionViewWidth - collectionView.contentInset.left
+			collectionViewWidth = collectionViewWidth - collectionView.contentInset.right
+		}
+		
+		if indexPath.section == 0 {
+			return ProfileHeaderCollectionViewCell.sizeOf(self.user, collectionViewWidth: collectionViewWidth)
+		}
+		else if indexPath.section == 1 {
+			return ProfileBioCollectionViewCell.sizeOf(self.user, collectionViewWidth:collectionViewWidth)
+		}
+		else {
+			return PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: collectionViewWidth)
+		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		if indexPath.section == 2 {
+			let post = self.userPosts[indexPath.item]
+			self.loadPhoto(post.images.first ?? "", indexPath)
+		}
+	}
+	
 	func configureHeaderCell(_ cell : ProfileHeaderCollectionViewCell, _ indexPath : IndexPath) {
 		cell.followButton.clipsToBounds = true
 		cell.followButton.layer.cornerRadius = (cell.followButton.bounds.size.height - 1) / 2.0
 		cell.followButton.setTitle("Unfollow", for: .normal)
+		cell.followButton.isHidden = true
+		cell.followButton.addTarget(self, action: #selector(onFollowUser), for: .touchUpInside)
+		
+		if self.user.isFollowing {
+			cell.followButton.setTitle("Unfollow", for: .normal)
+			cell.followButton.isHidden = false
+		}
+		else if self.updatedUserInfo != nil {
+			cell.followButton.isHidden = false
+			cell.followButton.setTitle("Follow", for: .normal)
+		}
 			
 		cell.avatar.clipsToBounds = true
 		cell.avatar.layer.cornerRadius = (cell.avatar.bounds.size.height - 1) / 2.0
 			
-		if let user = self.user {
-			cell.fullName.text = user.fullName
-			cell.userHandle.text = user.userHandle
-			cell.blogAddress.setTitle(user.pathToWebSite, for: .normal)
+		cell.fullName.text = user.fullName
+		cell.userHandle.text = "@" + user.userHandle
+		cell.blogAddress.setTitle(user.pathToWebSite, for: .normal)
 			
-			if let image = ImageCache.prefetch(user.pathToUserImage) {
-				cell.avatar.image = image
-			}
-			else {
-				cell.avatar.image = UIImage(named: "welcome_waves")
-				self.loadPhoto(user.pathToUserImage, indexPath)
-			}
+		if let image = ImageCache.prefetch(user.pathToUserImage) {
+			cell.avatar.image = image
 		}
-		
-		// Make sure the cell goes the entire width
-		cell.widthConstraint.constant = collectionView.frame.size.width
+		else {
+			cell.avatar.image = UIImage(named: "welcome_waves")
+			self.loadPhoto(user.pathToUserImage, indexPath)
+		}
+
 	}
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
-		
-		if let user = self.user {
-			cell.bio.attributedText = user.attributedTextBio()
-		}
-		cell.widthConstraint.constant = self.collectionView.frame.size.width - 16
+		cell.bio.attributedText = user.attributedTextBio()
 	}
-	
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
 		let post = self.userPosts[indexPath.item]
@@ -162,17 +274,10 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 			cell.date.text = date.uuRfc3339String()
 		}
 
-		cell.photo.image = UIImage(named: "welcome_waves")
-
+		cell.photo.image = nil
 		if let image = ImageCache.prefetch(post.images.first ?? "") {
 			cell.photo.image = image
 		}
-		else {
-			self.loadPhoto(post.images.first ?? "", indexPath)
-		}
-		
-		cell.widthConstraint.constant = (collectionView.frame.size.width - 16.0) / 2.0
 	}
 	
-
 }
