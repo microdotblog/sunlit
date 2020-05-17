@@ -14,6 +14,8 @@
 		C5066BA52461BFF600D9B2E8 /* UUObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5066BA02461BFF600D9B2E8 /* UUObject.swift */; };
 		C5066BA62461BFF600D9B2E8 /* UUStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5066BA12461BFF600D9B2E8 /* UUStyling.swift */; };
 		C51CBB87246B1429005981B5 /* SnippetsUser+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */; };
+		C5A507A82470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */; };
+		C5A507AA2470C05E00D60CB4 /* Date+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A507A92470C05E00D60CB4 /* Date+Sunlit.swift */; };
 		C5AC0407245F52C800D7725D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC0406245F52C800D7725D /* LoginViewController.swift */; };
 		C5AC040E245F535000D7725D /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5AC040D245F535000D7725D /* Login.storyboard */; };
 		C5AC0419245F63E300D7725D /* Snippets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC0414245F63E300D7725D /* Snippets.swift */; };
@@ -124,6 +126,8 @@
 		C5066BA02461BFF600D9B2E8 /* UUObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUObject.swift; path = UUSwift/UUObject.swift; sourceTree = SOURCE_ROOT; };
 		C5066BA12461BFF600D9B2E8 /* UUStyling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUStyling.swift; path = UUSwift/UUStyling.swift; sourceTree = SOURCE_ROOT; };
 		C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetsUser+Sunlit.swift"; sourceTree = "<group>"; };
+		C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetsPost+Sunlit.swift"; sourceTree = "<group>"; };
+		C5A507A92470C05E00D60CB4 /* Date+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Sunlit.swift"; sourceTree = "<group>"; };
 		C5AC0406245F52C800D7725D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C5AC040D245F535000D7725D /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		C5AC0414245F63E300D7725D /* Snippets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Snippets.swift; path = Snippets/Snippets.swift; sourceTree = SOURCE_ROOT; };
@@ -406,11 +410,13 @@
 		C5FFB1D22469C7A20015368A /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				C5A507A92470C05E00D60CB4 /* Date+Sunlit.swift */,
 				C5AC044D245F66C000D7725D /* Settings.swift */,
 				C5AC044F245F690600D7725D /* Dialog.swift */,
 				C5D53CC32461CA2D00FFAC71 /* ImageCache.swift */,
 				C5D53CC524620EB900FFAC71 /* SunlitPost.swift */,
 				C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */,
+				C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -539,6 +545,7 @@
 				C5D53D3D246214CE00FFAC71 /* Cleaner.swift in Sources */,
 				C5D53D2B246214CE00FFAC71 /* OrderedSet.swift in Sources */,
 				C5AC041D245F63E300D7725D /* Snippets+XMLRPC.swift in Sources */,
+				C5A507AA2470C05E00D60CB4 /* Date+Sunlit.swift in Sources */,
 				C5D53D32246214CE00FFAC71 /* CharacterExt.swift in Sources */,
 				C5AC0442245F640800D7725D /* UUData.swift in Sources */,
 				C5D53D16246214CE00FFAC71 /* CssSelector.swift in Sources */,
@@ -598,6 +605,7 @@
 				C5D53CC624620EB900FFAC71 /* SunlitPost.swift in Sources */,
 				C5D53D06246214CE00FFAC71 /* SimpleDictionary.swift in Sources */,
 				C5D53D09246214CE00FFAC71 /* DocumentType.swift in Sources */,
+				C5A507A82470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift in Sources */,
 				C5D53D3E246214CE00FFAC71 /* Comment.swift in Sources */,
 				C5D53D23246214CE00FFAC71 /* Parser.swift in Sources */,
 				C5D53D22246214CE00FFAC71 /* UnicodeScalar.swift in Sources */,

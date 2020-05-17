@@ -254,19 +254,25 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
 		cell.bio.attributedText = user.attributedTextBio()
+		cell.widthConstraint.constant = self.collectionView.bounds.size.width
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
 		let post = self.userPosts[indexPath.item]
 		cell.date.text = ""
 		if let date = post.publishedDate {
-			cell.date.text = date.uuRfc3339String()
+			cell.date.text = date.friendlyFormat()
 		}
 
 		cell.photo.image = nil
 		if let image = ImageCache.prefetch(post.images.first ?? "") {
 			cell.photo.image = image
 		}
+		
+		cell.contentView.layer.cornerRadius = 8.0
+		cell.contentView.clipsToBounds = true
+		cell.contentView.layer.borderWidth = 0.5
+		cell.contentView.layer.borderColor = UIColor.darkGray.cgColor
 	}
 	
 }
@@ -282,6 +288,9 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var fullName : UILabel!
 	@IBOutlet var userHandle : UILabel!
 	@IBOutlet var blogAddress : UIButton!
+	@IBOutlet var followingCount : UILabel!
+	@IBOutlet var postCount : UILabel!
+	@IBOutlet var widthConstraint : NSLayoutConstraint!
 	
 	static func sizeOf(_ owner : SnippetsUser, collectionViewWidth : CGFloat) -> CGSize {
 		var size = CGSize(width: collectionViewWidth, height: 0)
@@ -305,7 +314,8 @@ MARK: -
 
 class ProfileBioCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var bio : UILabel!
-	
+	@IBOutlet var widthConstraint : NSLayoutConstraint!
+
 	static func sizeOf(_ owner : SnippetsUser, collectionViewWidth : CGFloat) -> CGSize {
 		var size = CGSize(width: collectionViewWidth, height: 0)
 		
@@ -329,8 +339,9 @@ class PhotoEntryCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var date : UILabel!
 
 	static func sizeOf(collectionViewWidth : CGFloat) -> CGSize {
+		let sections = collectionViewWidth / 200.0
 		var size = CGSize(width: 0, height: 0)
-		size.width = (collectionViewWidth / 2.0) - 4.0
+		size.width = (collectionViewWidth / sections) - (2 * sections)
 		size.height = size.width + 40.0
 		return size
 	}

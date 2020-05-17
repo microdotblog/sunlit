@@ -40,7 +40,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 	
 	func loadConversation() {
 		if let post = sourcePost {
-			Snippets.shared.fetchConversation(post: post.source) { (error, posts : [SnippetsPost]) in
+			Snippets.shared.fetchConversation(post: post) { (error, posts : [SnippetsPost]) in
 				self.posts = [ ]
 				
 				for post in posts {
@@ -60,7 +60,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 	}
 	
 	@IBAction func onPostReply() {
-		Snippets.shared.reply(originalPost: self.sourcePost!.source, content: self.replyField.text) { (error) in
+		Snippets.shared.reply(originalPost: self.sourcePost!, content: self.replyField.text) { (error) in
 			if let err = error {
 				Dialog.information(err.localizedDescription, self)
 			}

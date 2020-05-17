@@ -22,10 +22,73 @@ extension SnippetsUser {
 		return attributedBio
 	}
 	
+	var posts : [SnippetsPost] {
+		get {
+			var postArray : [SnippetsPost] = []
+			if let array = UserDefaults.standard.object(forKey: self.userHandle + "-Posts") as? [[String : Any]] {
+				for dictionary in array {
+					let post = SnippetsPost(dictionary)
+					postArray.append(post)
+				}
+			}
+			return postArray
+		}
+		set(posts) {
+			var dictionaryArray : [[String : Any]] = []
+			for post in posts {
+				let dictionary = post.dictionary()
+				dictionaryArray.append(dictionary)
+			}
+			
+			UserDefaults.standard.set(dictionaryArray, forKey: self.userHandle + "-Posts")
+		}
+	}
+	
+	func dictionary(mergeWith: [String : Any]? = nil) -> [String : Any] {
+		
+		var dictionary : [String : Any] = [:]
+		if let mergeDictionary = mergeWith {
+			dictionary = mergeDictionary
+		}
+						
+		if self.fullName.count > 0 {
+			dictionary["full_name"] = self.fullName
+		}
+		
+		if self.userHandle.count > 0 {
+			dictionary["user_handle"] = self.userHandle
+		}
+			
+		if self.pathToUserImage.count > 0 {
+			dictionary["path_to_user_image"] = self.pathToUserImage
+		}
+			
+		if self.pathToWebSite.count > 0 {
+			dictionary["path_to_web_site"] = self.pathToWebSite
+		}
+			
+		if self.bio.count > 0 {
+			dictionary["bio"] = self.bio
+		}
+			
+		if self.followingCount > 0 {
+			dictionary["following_count"] = self.followingCount
+		}
+			
+		if self.discoverCount > 0 {
+			dictionary["discover_count"] = self.discoverCount
+		}
+			
+		dictionary["is_following"] = self.isFollowing
+		
+		return dictionary
+	}
+	
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
 	
 	// saveAsCurrent and save both merge the user with any extended attributes that have already been stored...
 	static func saveAsCurrent(_ user : SnippetsUser) -> SnippetsUser {
@@ -51,6 +114,7 @@ extension SnippetsUser {
 		}
 	}
 	
+	
 	static func save(_ user : SnippetsUser, key : String? = nil) -> SnippetsUser {
 		
 		var saveKey = user.userHandle
@@ -58,42 +122,9 @@ extension SnippetsUser {
 			saveKey = k
 		}
 		
-		var dictionary : [String : Any] = [:]
-		
 		// See if there is an existing dictionary to see if we need to merge...
-		if let master = UserDefaults.standard.object(forKey: saveKey) as? [String : Any] {
-			dictionary = master
-		}
-		
-		if user.fullName.count > 0 {
-			dictionary["full_name"] = user.fullName
-		}
-	
-		if user.userHandle.count > 0 {
-			dictionary["user_handle"] = user.userHandle
-		}
-		
-		if user.pathToUserImage.count > 0 {
-			dictionary["path_to_user_image"] = user.pathToUserImage
-		}
-		
-		if user.pathToWebSite.count > 0 {
-			dictionary["path_to_web_site"] = user.pathToWebSite
-		}
-		
-		if user.bio.count > 0 {
-			dictionary["bio"] = user.bio
-		}
-		
-		if user.followingCount > 0 {
-			dictionary["following_count"] = user.followingCount
-		}
-		
-		if user.discoverCount > 0 {
-			dictionary["discover_count"] = user.discoverCount
-		}
-		
-		dictionary["is_following"] = user.isFollowing
+		let master = UserDefaults.standard.object(forKey: saveKey) as? [String : Any]
+		let dictionary = user.dictionary(mergeWith: master)
 		
 		UserDefaults.standard.set(dictionary, forKey: saveKey)
 		
@@ -119,3 +150,5 @@ extension SnippetsUser {
 		return nil
 	}
 }
+
+

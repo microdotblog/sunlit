@@ -383,8 +383,8 @@ class FeedTableViewCell : UITableViewCell {
 		
 		self.replyContainer.layer.borderWidth = 0.0
 
-		self.conversationButton.isHidden = !self.post.source.hasConversation
-		self.conversationHeightConstraint.constant = self.post.source.hasConversation ? 44.0 : 0.0
+		self.conversationButton.isHidden = !self.post.hasConversation
+		self.conversationHeightConstraint.constant = self.post.hasConversation ? 44.0 : 0.0
 		
 		// Update the text objects
 		self.textView.attributedText = post.text
@@ -392,7 +392,7 @@ class FeedTableViewCell : UITableViewCell {
 		self.userName.text = post.owner.fullName
 		
 		if let date = post.publishedDate {
-			self.dateLabel.text = date.uuRfc3339String()
+			self.dateLabel.text = date.friendlyFormat()
 		}
 		
 		// Configure the photo sizes...
@@ -418,7 +418,7 @@ class FeedTableViewCell : UITableViewCell {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 	@IBAction func onReply() {
-		Snippets.shared.reply(originalPost: self.post.source, content: self.replyField.text) { (error) in
+		Snippets.shared.reply(originalPost: self.post, content: self.replyField.text) { (error) in
 			NotificationCenter.default.post(name: NSNotification.Name("Reply Response"), object: error)
 		}
 		

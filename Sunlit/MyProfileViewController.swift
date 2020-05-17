@@ -13,6 +13,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	var user : SnippetsUser!
 	var updatedUserInfo : SnippetsUser? = nil
 	var userPosts : [SunlitPost] = []
+	var followingUsers : [SnippetsUser] = []
 	
 	@IBOutlet var collectionView : UICollectionView!
 	
@@ -35,6 +36,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	}
 	
 	func fetchUserInfo() {
+		
 		Snippets.shared.fetchCurrentUserInfo { (error, snippetsUser) in
 			if let updatedUser = snippetsUser {
 				self.user = SnippetsUser.save(updatedUser)
@@ -54,6 +56,16 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 						self.collectionView.reloadData()
 					}
 				}
+				
+				Snippets.shared.listFollowers(user: self.user, completeList: true) { (error, users) in
+					self.followingUsers = users
+					self.user.followingCount = users.count
+					self.user = SnippetsUser.saveAsCurrent(self.user)
+					
+					DispatchQueue.main.async {
+						self.collectionView.reloadData()
+					}
+				}
 			}
 		}
 	}
@@ -61,43 +73,6 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-	func fetchUserInfo(_ user : SnippetsUser) {
-		Snippets.shared.fetchUserDetails(user: user) { (error, updatedUser, posts : [SnippetsPost]) in
-			
-			if let snippetsUser = updatedUser {
-				self.user = SnippetsUser.save(snippetsUser)
-				
-				self.updatedUserInfo = self.user
-			
-				DispatchQueue.main.async {
-					self.collectionView.reloadData()
-					
-					if self.userPosts.count <= 0 {
-						self.fetchUserPosts()
-					}
-				}
-			}
-		}
-	}
-	
-	func fetchUserPosts() {
-		Snippets.shared.fetchUserMediaPosts(user: self.user) { (error, snippets: [SnippetsPost]) in
-
-			var posts : [SunlitPost] = []
-			for snippet in snippets {
-				let post = SunlitPost.create(snippet)
-				posts.append(post)
-			}
-			
-			DispatchQueue.main.async {
-				self.userPosts = posts
-				self.collectionView.reloadData()
-				
-				self.fetchUserInfo(self.user)
-			}
-		}
-	}
 	
 	func loadPhoto(_ path : String,  _ index : IndexPath) {
 		
@@ -112,34 +87,6 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 					self.collectionView.reloadItems(at: [ index ])
 				}
 			}
-		}
-	}
-	
-	@objc func onFollowUser() {
-		if self.user.isFollowing {
-			Snippets.shared.unfollow(user: self.user) { (error) in
-				if error == nil {
-					self.user.isFollowing = false
-					self.user = SnippetsUser.save(self.user)
-					
-					DispatchQueue.main.async {
-						self.collectionView.reloadData()
-					}
-				}
-			}
-		}
-		else {
-			Snippets.shared.follow(user: self.user) { (error) in
-				if error == nil {
-					self.user.isFollowing = true
-					self.user = SnippetsUser.save(self.user)
-					
-					DispatchQueue.main.async {
-						self.collectionView.reloadData()
-					}
-				}
-			}
-
 		}
 	}
 
@@ -231,21 +178,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	}
 	
 	func configureHeaderCell(_ cell : ProfileHeaderCollectionViewCell, _ indexPath : IndexPath) {
-		cell.followButton.clipsToBounds = true
-		cell.followButton.layer.cornerRadius = (cell.followButton.bounds.size.height - 1) / 2.0
-		cell.followButton.setTitle("Unfollow", for: .normal)
-		cell.followButton.isHidden = true
-		cell.followButton.addTarget(self, action: #selector(onFollowUser), for: .touchUpInside)
 		
-		if self.user.isFollowing {
-			cell.followButton.setTitle("Unfollow", for: .normal)
-			cell.followButton.isHidden = false
-		}
-		else if self.updatedUserInfo != nil {
-			cell.followButton.isHidden = false
-			cell.followButton.setTitle("Follow", for: .normal)
-		}
-			
 		cell.avatar.clipsToBounds = true
 		cell.avatar.layer.cornerRadius = (cell.avatar.bounds.size.height - 1) / 2.0
 			
@@ -260,7 +193,16 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 			cell.avatar.image = UIImage(named: "welcome_waves")
 			self.loadPhoto(user.pathToUserImage, indexPath)
 		}
-
+		
+		cell.followingCount.text = "---"
+		cell.postCount.text = "---"
+		
+		if self.user.followingCount > 0 {
+			cell.followingCount.text = "\(self.user.followingCount)"
+		}
+		if self.userPosts.count > 0 {
+			cell.postCount.text = "\(self.userPosts.count)"
+		}
 	}
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
@@ -271,13 +213,18 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		let post = self.userPosts[indexPath.item]
 		cell.date.text = ""
 		if let date = post.publishedDate {
-			cell.date.text = date.uuRfc3339String()
+			cell.date.text = date.friendlyFormat()
 		}
 
 		cell.photo.image = nil
 		if let image = ImageCache.prefetch(post.images.first ?? "") {
 			cell.photo.image = image
 		}
+		
+		cell.contentView.layer.cornerRadius = 8.0
+		cell.contentView.clipsToBounds = true
+		cell.contentView.layer.borderWidth = 0.5
+		cell.contentView.layer.borderColor = UIColor.darkGray.cgColor
 	}
 	
 }

@@ -17,7 +17,7 @@ class SunlitPost : SnippetsPost {
 	var images : [String] = []
 	var text : NSAttributedString = NSAttributedString(string: "")
 
-	var source : SnippetsPost = SnippetsPost()
+	//var source : SnippetsPost = SnippetsPost()
     var mentionedUsernames: [String] {
         // Setting up our state, which is any partial name that we’re
         // currently parsing, and an array of all names found.
@@ -53,7 +53,7 @@ class SunlitPost : SnippetsPost {
         }
 
         // Apply our parsing function to each character
-		source.htmlText.forEach(parse)
+		self.htmlText.forEach(parse)
 
         // Once we’ve reached the end, we’ll make sure to
         // capture any name that was previously found.
@@ -82,10 +82,17 @@ class SunlitPost : SnippetsPost {
 				string = cleanString
 			}
 		}
-		
+
 		// For now, we are going to keep the original snippet object
 		let parsedEntry = SunlitPost()
-		parsedEntry.source = snippet
+		parsedEntry.identifier = snippet.identifier
+		parsedEntry.owner = snippet.owner
+		parsedEntry.htmlText = snippet.htmlText
+		parsedEntry.path = snippet.path
+		parsedEntry.publishedDate = snippet.publishedDate
+		parsedEntry.hasConversation = snippet.hasConversation
+		parsedEntry.replies = snippet.replies
+		parsedEntry.isDraft = snippet.isDraft
 
 		// Calling this both saves and merges any existing user info/data...
 		parsedEntry.owner = SnippetsUser.save(snippet.owner)
@@ -151,9 +158,7 @@ class SunlitPost : SnippetsPost {
 		"font-family: \(font.familyName), Helvetica !important;" +
 		"}</style>"
 
-		let text = cssString + string
-
-		return text
+		return cssString + string
 	}
 	
 	static func findImageElements(_ document : Document) -> [Element] {
