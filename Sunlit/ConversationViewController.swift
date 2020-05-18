@@ -85,17 +85,6 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 					self.view.layoutIfNeeded()
 					self.replyFieldPlaceholder.alpha = 0.0
 				}
-				
-				if self.replyField.text.count <= 0 {
-					var users = Set<String>()
-					for reply in self.posts {
-						users.insert(reply.owner.userHandle)
-					}
-		
-					for user in users {
-						self.replyField.text = self.replyField.text + "@" + user + " "
-					}
-				}
 			}
 		}
 	}
@@ -127,6 +116,19 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 			let profileViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
 			profileViewController.user = post.owner
 			self.navigationController?.pushViewController(profileViewController, animated: true)
+		}
+	}
+	
+	func textViewDidBeginEditing(_ textView: UITextView) {
+		if self.replyField.text.count <= 0 {
+			var users = Set<String>()
+			for reply in self.posts {
+				users.insert(reply.owner.userHandle)
+			}
+	
+			for user in users {
+				self.replyField.text = self.replyField.text + "@" + user + " "
+			}
 		}
 	}
 	
