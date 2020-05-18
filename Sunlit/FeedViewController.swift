@@ -162,7 +162,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
 		if let offset = notification.object as? CGFloat {
-			self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+			self.tableView.setContentOffset(CGPoint(x: 0, y: offset - 100.0), animated: true)
 		}
 	}
 	
@@ -251,7 +251,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 	func loadFrequentlyUsedEmoji() {
-		let emoji = ["🙂","😂","😭","❤️","🤣","😍","😌","🔥","🤔", "😫", "🙄", "🙏"]
+		let emoji = Tagmoji.shared.frequentlyUsedEmoji()
 		let scrollView = UIScrollView()
 		let contentView = UIView()
 		scrollView.addSubview(contentView)

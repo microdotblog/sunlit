@@ -238,7 +238,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 	}
 	
 	func loadFrequentlyUsedEmoji() {
-		let emoji = ["🙂","😂","😭","❤️","🤣","😍","😌","🔥","🤔", "😫", "🙄", "🙏"]
+		let emoji = Tagmoji.shared.frequentlyUsedEmoji()
 		let scrollView = UIScrollView()
 		let contentView = UIView()
 		scrollView.addSubview(contentView)

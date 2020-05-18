@@ -16,9 +16,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Gt9-JL-4Vx">
+                                <rect key="frame" x="188.66666666666666" y="388" width="37" height="37"/>
+                            </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qN6-tU-u9w">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="FeedTableViewCell" id="D5S-go-oyb" customClass="FeedTableViewCell" customModule="Sunlit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="533.33331298828125"/>
@@ -209,7 +213,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="OgU-2e-wra" secondAttribute="bottom" constant="16" id="hdJ-eH-Afm"/>
                                                 <constraint firstItem="S1K-ln-YoC" firstAttribute="top" secondItem="iHv-Bs-jQH" secondAttribute="bottom" constant="8" id="jZq-Ob-O2x"/>
                                                 <constraint firstItem="o3t-GU-uzm" firstAttribute="top" secondItem="5DS-aq-EJD" secondAttribute="top" id="l2D-v5-Y6H"/>
-                                                <constraint firstAttribute="trailing" secondItem="ii9-sD-hF6" secondAttribute="trailing" constant="26" id="niS-3c-W9d"/>
+                                                <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ii9-sD-hF6" secondAttribute="trailing" constant="26" id="niS-3c-W9d"/>
                                                 <constraint firstItem="ii9-sD-hF6" firstAttribute="leading" secondItem="5DS-aq-EJD" secondAttribute="leadingMargin" id="q8J-7H-pej"/>
                                                 <constraint firstAttribute="trailing" secondItem="OgU-2e-wra" secondAttribute="trailing" constant="8" id="rjY-Z1-ZXy"/>
                                                 <constraint firstItem="iHv-Bs-jQH" firstAttribute="top" secondItem="SQb-S0-I4h" secondAttribute="bottom" constant="8" id="tpg-UK-nkF"/>
@@ -248,7 +252,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="qN6-tU-u9w" firstAttribute="top" secondItem="tsR-hK-woN" secondAttribute="top" id="4UG-jG-Foz"/>
+                            <constraint firstItem="Gt9-JL-4Vx" firstAttribute="centerY" secondItem="qN6-tU-u9w" secondAttribute="centerY" id="Aja-AG-Sdw"/>
                             <constraint firstItem="qN6-tU-u9w" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="CMO-Z6-DBU"/>
+                            <constraint firstItem="Gt9-JL-4Vx" firstAttribute="centerX" secondItem="qN6-tU-u9w" secondAttribute="centerX" id="Q3B-5r-MGe"/>
                             <constraint firstItem="qN6-tU-u9w" firstAttribute="trailing" secondItem="PQr-Ze-W5v" secondAttribute="trailing" id="WH9-nY-ZVv"/>
                             <constraint firstItem="qN6-tU-u9w" firstAttribute="bottom" secondItem="PQr-Ze-W5v" secondAttribute="bottom" id="WSn-UI-6kL"/>
                         </constraints>

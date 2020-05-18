@@ -40,6 +40,10 @@ class Tagmoji {
 		}
 	}
 	
+	func frequentlyUsedEmoji() -> [String] {
+		return ["🙂","😂","😭","❤️","🤣","😍","😌","🔥","🤔", "😫", "🙄", "🙏"]
+	}
+	
 	func all() -> [String] {
 		var tagmoji : [String] = []
 		for key in self.dictionary.keys {
