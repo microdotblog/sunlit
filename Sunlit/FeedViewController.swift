@@ -36,7 +36,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
-		self.loadTagmoji()
+		self.loadFrequentlyUsedEmoji()
 	}
 	
 	func setupNotifications() {
@@ -250,33 +250,29 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-	func loadTagmoji() {
+	func loadFrequentlyUsedEmoji() {
+		let emoji = ["🙂","😂","😭","❤️","🤣","😍","😌","🔥","🤔", "😫", "🙄", "🙏"]
 		let scrollView = UIScrollView()
 		let contentView = UIView()
 		scrollView.addSubview(contentView)
 		scrollView.backgroundColor = UIColor.white
 		
 		var buttonOffset = CGPoint(x: 0, y: 0)
-		Snippets.shared.fetchTagmojiCategories { (error, tagmoji : [[String : Any]]) in
-			DispatchQueue.main.async {
-				for dictionary in tagmoji {
-					if let symbol = dictionary["emoji"] as? String {
-						let button = UIButton(frame: CGRect(x: buttonOffset.x, y: buttonOffset.y, width: 44, height: 44))
-						button.setTitle(symbol, for: .normal)
-						contentView.addSubview(button)
-						buttonOffset.x += 44
-						
-						button.addTarget(self, action: #selector(self.emojiSelected(_:)), for: .touchUpInside)
-					}
-				}
-				contentView.frame = CGRect(x: 0, y: 0, width: buttonOffset.x, height: 44)
-				scrollView.addSubview(contentView)
-				scrollView.contentSize = CGSize(width: buttonOffset.x, height: buttonOffset.y)
-				scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44)
-				self.keyboardAccessoryView = scrollView
-			}
+		for symbol in emoji {
+			let button = UIButton(frame: CGRect(x: buttonOffset.x, y: buttonOffset.y, width: 44, height: 44))
+			button.setTitle(symbol, for: .normal)
+			contentView.addSubview(button)
+			buttonOffset.x += 44
+			button.addTarget(self, action: #selector(self.emojiSelected(_:)), for: .touchUpInside)
 		}
+		
+		contentView.frame = CGRect(x: 0, y: 0, width: buttonOffset.x, height: 44)
+		scrollView.addSubview(contentView)
+		scrollView.contentSize = CGSize(width: buttonOffset.x, height: buttonOffset.y)
+		scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44)
+		self.keyboardAccessoryView = scrollView
 	}
+	
 	
 	func loadTimeline() {
 		

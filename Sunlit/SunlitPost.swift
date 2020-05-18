@@ -22,7 +22,7 @@ class SunlitPost : SnippetsPost {
         // Setting up our state, which is any partial name that we’re
         // currently parsing, and an array of all names found.
         var partialName: String?
-		var names : [String] = [owner.userHandle]
+		var names : [String] = ["@" + owner.userHandle]
 
         // A nested parsing function, that we’ll apply to each
         // character within the string.
@@ -34,7 +34,7 @@ class SunlitPost : SnippetsPost {
                     // name is finished, and we can add it to
                     // our array (if non-empty):
                     if !name.isEmpty {
-                        names.append(name)
+                        names.append("@" + name)
                     }
 
                     // Reset our state, and parse the character
@@ -58,7 +58,7 @@ class SunlitPost : SnippetsPost {
         // Once we’ve reached the end, we’ll make sure to
         // capture any name that was previously found.
         if let lastName = partialName, !lastName.isEmpty {
-            names.append(lastName)
+            names.append("@" + lastName)
         }
 
         return names

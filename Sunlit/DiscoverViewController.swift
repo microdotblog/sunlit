@@ -14,6 +14,8 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 	@IBOutlet var tableView : UITableView!
 	@IBOutlet var scrollView : UIScrollView!
 	@IBOutlet var stackView : UIStackView!
+	var keyboardAccessoryView : UIView!
+
 	@IBOutlet var stackViewWidthConstraint : NSLayoutConstraint!
 	var selectedButton : UIButton? = nil
 	
@@ -26,6 +28,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         
 		self.setupTableView()
+		self.loadFrequentlyUsedEmoji()
 		self.setupNotifications()
 		self.titleView.text = "Discover Photos"
 		
@@ -60,6 +63,8 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: NSNotification.Name("Keyboard Appear"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: NSNotification.Name("View Conversation"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,6 +127,12 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 	@objc func emojiSelected(_ button : UIButton) {
+		if let emoji = button.title(for: .normal) {
+			NotificationCenter.default.post(name: NSNotification.Name("Emoji Selected"), object: emoji)
+		}
+	}
+	
+	@objc func tagmojiSelected(_ button : UIButton) {
 		if let selected = self.selectedButton {
 			selected.isSelected = false
 		}
@@ -144,6 +155,29 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 		}
 	}
 	
+	@objc func keyboardOnScreenNotification(_ notification : Notification) {
+		
+		if let info : [AnyHashable : Any] = notification.userInfo {
+			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+				let frame = value.cgRectValue
+
+				self.view.addSubview(self.keyboardAccessoryView)
+				self.keyboardAccessoryView.frame = CGRect(x: 0, y: frame.origin.y - 88, width: frame.size.width, height: 44)
+				self.keyboardAccessoryView.alpha = 0.0
+				self.keyboardAccessoryView.isHidden = false
+				
+				UIView.animate(withDuration: 0.25) {
+					self.keyboardAccessoryView.alpha = 1.0
+				}
+			}
+		}
+	}
+
+	@objc func keyboardOffScreenNotification(_ notification : Notification) {
+		self.keyboardAccessoryView.removeFromSuperview()
+	}
+
+	
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
 		if let offset = notification.object as? CGFloat {
 			self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
@@ -152,7 +186,9 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 	
 	@objc func handleImageLoadedNotification(_ notification : Notification) {
 		if let indexPath = notification.object as? IndexPath {
-			self.tableView.reloadRows(at: [ indexPath ], with: .fade)
+			if indexPath.row < self.tableViewData.count {
+				self.tableView.reloadRows(at: [ indexPath ], with: .fade)
+			}
 		}
 	}
 		
@@ -200,6 +236,30 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 			}
 		}
 	}
+	
+	func loadFrequentlyUsedEmoji() {
+		let emoji = ["🙂","😂","😭","❤️","🤣","😍","😌","🔥","🤔", "😫", "🙄", "🙏"]
+		let scrollView = UIScrollView()
+		let contentView = UIView()
+		scrollView.addSubview(contentView)
+		scrollView.backgroundColor = UIColor.white
+		
+		var buttonOffset = CGPoint(x: 0, y: 0)
+		for symbol in emoji {
+			let button = UIButton(frame: CGRect(x: buttonOffset.x, y: buttonOffset.y, width: 44, height: 44))
+			button.setTitle(symbol, for: .normal)
+			contentView.addSubview(button)
+			buttonOffset.x += 44
+			button.addTarget(self, action: #selector(self.emojiSelected(_:)), for: .touchUpInside)
+		}
+		
+		contentView.frame = CGRect(x: 0, y: 0, width: buttonOffset.x, height: 44)
+		scrollView.addSubview(contentView)
+		scrollView.contentSize = CGSize(width: buttonOffset.x, height: buttonOffset.y)
+		scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44)
+		self.keyboardAccessoryView = scrollView
+	}
+
 
 	func loadTagmoji() {
 		
@@ -224,7 +284,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 						self.stackView.addArrangedSubview(button)
 					}
 					buttonOffset.x += 44
-					button.addTarget(self, action: #selector(self.emojiSelected(_:)), for: .touchUpInside)
+					button.addTarget(self, action: #selector(self.tagmojiSelected(_:)), for: .touchUpInside)
 				}
 			}
 			self.stackViewWidthConstraint.constant = buttonOffset.x
