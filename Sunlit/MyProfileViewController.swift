@@ -224,7 +224,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		cell.contentView.layer.cornerRadius = 8.0
 		cell.contentView.clipsToBounds = true
 		cell.contentView.layer.borderWidth = 0.5
-		cell.contentView.layer.borderColor = UIColor.darkGray.cgColor
+		cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
 	}
 	
 }

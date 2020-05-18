@@ -102,6 +102,11 @@ extension SnippetsUser {
 			self.userHandle = userName
 		}
 		
+		if let bio = authorDictionary["bio"] as? String
+		{
+			self.bio = bio
+		}
+		
 		if let snippetsDictionary = authorDictionary["_microblog"] as? [String : Any]
 		{
 			self.loadFromMicroblogDictionary(snippetsDictionary)

@@ -14,6 +14,8 @@
 		C5066BA52461BFF600D9B2E8 /* UUObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5066BA02461BFF600D9B2E8 /* UUObject.swift */; };
 		C5066BA62461BFF600D9B2E8 /* UUStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5066BA12461BFF600D9B2E8 /* UUStyling.swift */; };
 		C51CBB87246B1429005981B5 /* SnippetsUser+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */; };
+		C53C08EB2471FFF000C919E0 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */; };
+		C53C08ED2472133F00C919E0 /* Tagmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C08EC2472133F00C919E0 /* Tagmoji.swift */; };
 		C5A507A82470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */; };
 		C5A507AA2470C05E00D60CB4 /* Date+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A507A92470C05E00D60CB4 /* Date+Sunlit.swift */; };
 		C5AC0407245F52C800D7725D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC0406245F52C800D7725D /* LoginViewController.swift */; };
@@ -126,6 +128,8 @@
 		C5066BA02461BFF600D9B2E8 /* UUObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUObject.swift; path = UUSwift/UUObject.swift; sourceTree = SOURCE_ROOT; };
 		C5066BA12461BFF600D9B2E8 /* UUStyling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUStyling.swift; path = UUSwift/UUStyling.swift; sourceTree = SOURCE_ROOT; };
 		C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetsUser+Sunlit.swift"; sourceTree = "<group>"; };
+		C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
+		C53C08EC2472133F00C919E0 /* Tagmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tagmoji.swift; sourceTree = "<group>"; };
 		C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetsPost+Sunlit.swift"; sourceTree = "<group>"; };
 		C5A507A92470C05E00D60CB4 /* Date+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Sunlit.swift"; sourceTree = "<group>"; };
 		C5AC0406245F52C800D7725D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -417,6 +421,7 @@
 				C5D53CC524620EB900FFAC71 /* SunlitPost.swift */,
 				C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */,
 				C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */,
+				C53C08EC2472133F00C919E0 /* Tagmoji.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -430,6 +435,7 @@
 				C5FFB1D024669D640015368A /* MyProfileViewController.swift */,
 				C5FFB1CE2466986E0015368A /* ImageViewerViewController.swift */,
 				C5FFB1D42469C9130015368A /* ConversationViewController.swift */,
+				C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -541,6 +547,7 @@
 				C5066BA22461BFF600D9B2E8 /* UUKeychain.swift in Sources */,
 				C5D53D10246214CE00FFAC71 /* Connection.swift in Sources */,
 				C5D53D0E246214CE00FFAC71 /* ParseSettings.swift in Sources */,
+				C53C08EB2471FFF000C919E0 /* DiscoverViewController.swift in Sources */,
 				C5AC044B245F640800D7725D /* UUDictionary.swift in Sources */,
 				C5D53D3D246214CE00FFAC71 /* Cleaner.swift in Sources */,
 				C5D53D2B246214CE00FFAC71 /* OrderedSet.swift in Sources */,
@@ -586,6 +593,7 @@
 				C5AC043A245F640800D7725D /* UUDate.swift in Sources */,
 				C5D53D3F246214CE00FFAC71 /* SwiftSoup.swift in Sources */,
 				C5D53D38246214CE00FFAC71 /* ArrayExt.swift in Sources */,
+				C53C08ED2472133F00C919E0 /* Tagmoji.swift in Sources */,
 				C5D53D1D246214CE00FFAC71 /* Exception.swift in Sources */,
 				C5066BA52461BFF600D9B2E8 /* UUObject.swift in Sources */,
 				C5D53D0A246214CE00FFAC71 /* Elements.swift in Sources */,
