@@ -9,7 +9,7 @@
 import UIKit
 
 extension AppDelegate {
-
+/*
 	override func buildMenu(with builder: UIMenuBuilder) {
 		// only look at main menu, not contextual menus
 		guard builder.system == .main else { return }
@@ -33,12 +33,17 @@ extension AppDelegate {
 		let signout_menu = UIMenu(title: "", options: .displayInline, children: [ signout_item ])
 		builder.insertChild(signout_menu, atEndOfMenu: .file)
 
-		SnippetsUser.fetchCurrent { (user) in
-			if let current = user {
+		if let current = SnippetsUser.current() {
+		//SnippetsUser.fetchCurrent { (user) in
+			//if let current = user {
 				
 				DispatchQueue.main.async {
 					let profile_username = current.userHandle
-					let profile_image: UIImage? = ImageCache.prefetch(current.pathToUserImage)
+					var profile_image: UIImage? = ImageCache.prefetch(current.pathToUserImage)
+					
+					if let image = profile_image {
+						profile_image = image.withRenderingMode(.alwaysOriginal)
+					}
 
 					// add View -> Timeline, Discover, profile
 					let timeline_item = UIKeyCommand(title: "Timeline", action: #selector(AppDelegate.showTimeline), input: "1", modifierFlags: .command)
@@ -51,18 +56,18 @@ extension AppDelegate {
 					if profile_image == nil {
 						ImageCache.fetch(current.pathToUserImage) { (image) in
 							if let profile_image = image {
-								DispatchQueue.main.async {									
-									profile_item.image = profile_image
+								DispatchQueue.main.async {
+									profile_item.image = profile_image.withRenderingMode(.alwaysOriginal)
 								}
 							}
 						}
 					}
 				}
-			}
+			//}
 		}
 		
 	}
-
+*/
 	@objc func newPost() {
 	}
 

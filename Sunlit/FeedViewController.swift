@@ -21,18 +21,33 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		self.setupTableView()
 		self.setupNotifications()
 		self.setupProfilePhoto()
-	}
 
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		self.navigationController?.setNavigationBarHidden(true, animated: true)
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
 		self.setupSnippets()
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+	}
+
+	override func viewDidAppear(_ animated: Bool) {
+		if let parent = self.parent as? UITabBarController {
+			if let items = parent.tabBar.items {
+				
+				if items.count > 2 {
+					let item = items[2]
+					if let user = SnippetsUser.current() {
+						if let image = ImageCache.prefetch(user.pathToUserImage) {
+							let formattedImage = image.uuScaleToSize(targetSize: CGSize(width: 32, height: 32)).withRenderingMode(.alwaysOriginal)
+							item.image = formattedImage
+							item.selectedImage = formattedImage
+						}
+					}
+				}
+			}
+		}
+	}
+	
+
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
@@ -100,9 +115,9 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let cell = tableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell", for: indexPath) as! FeedTableViewCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
 		let post = self.tableViewData[indexPath.row]
-		cell.setup(indexPath.row, post)
+		cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
 		return cell
 	}
 	
@@ -126,6 +141,11 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
 		imageViewController.pathToImage = post.images[0]
 		self.navigationController?.pushViewController(imageViewController, animated: true)
+	}
+	
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		let post = self.tableViewData[indexPath.row]
+		return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 	}
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -331,224 +351,4 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	
 }
-
-
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-class FeedTableViewCell : UITableViewCell {
-	
-	@IBOutlet var postImage : UIImageView!
-	@IBOutlet var textView : UITextView!
-	@IBOutlet var dateLabel : UILabel!
-	@IBOutlet var userAvatar : UIImageView!
-	@IBOutlet var userName : UILabel!
-	@IBOutlet var userHandle : UILabel!
-	@IBOutlet var heightConstraint : NSLayoutConstraint!
-	@IBOutlet var replyContainer : UIView!
-	@IBOutlet var replyField : UITextView!
-	@IBOutlet var replyButton : UIButton!
-	@IBOutlet var replyIconButton : UIButton!
-	@IBOutlet var postButton : UIButton!
-	@IBOutlet var conversationButton : UIButton!
-	@IBOutlet var conversationHeightConstraint : NSLayoutConstraint!
-	
-	var post : SunlitPost!
-	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-
-		self.replyContainer.layer.cornerRadius = 18.0
-		self.replyContainer.layer.borderColor = UIColor.lightGray.cgColor
-		self.replyContainer.layer.borderWidth = 0.0
-
-		// Configure the user avatar
-		self.userAvatar.clipsToBounds = true
-		self.userAvatar.layer.cornerRadius = (self.userAvatar.bounds.size.height - 1) / 2.0
-		
-		// Add the user profile tap gestures where appropriate...
-		self.addUserProfileTapGesture(self.userName)
-		self.addUserProfileTapGesture(self.userAvatar)
-		self.addUserProfileTapGesture(self.userHandle)
-	}
-	
-	func setup(_ index: Int, _ post : SunlitPost) {
-		
-		self.post = post
-		
-		self.replyContainer.layer.borderWidth = 0.0
-
-		self.conversationButton.isHidden = !self.post.hasConversation
-		self.conversationHeightConstraint.constant = self.post.hasConversation ? 44.0 : 0.0
-		
-		// Update the text objects
-		self.textView.attributedText = post.text
-		self.userHandle.text = "@" + post.owner.userHandle
-		self.userName.text = post.owner.fullName
-		
-		if let date = post.publishedDate {
-			self.dateLabel.text = date.friendlyFormat()
-		}
-		
-		// Configure the photo sizes...
-		self.setupPhotoAspectRatio(post)
-		
-		// Kick off the photo loading...
-		self.loadPhotos(post, index)
-	}
-	
-	func setupPhotoAspectRatio(_ post : SunlitPost) {
-		let width : CGFloat = UIApplication.shared.windows.first!.bounds.size.width
-		let maxHeight = UIApplication.shared.windows.first!.bounds.size.height - 100
-		var height : CGFloat = width * CGFloat(post.aspectRatio)
-		if height > maxHeight {
-			height = maxHeight
-		}
-		self.heightConstraint.constant = height
-
-	}
-	
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-	@IBAction func onReply() {
-		Snippets.shared.reply(originalPost: self.post, content: self.replyField.text) { (error) in
-			NotificationCenter.default.post(name: NSNotification.Name("Reply Response"), object: error)
-		}
-		
-		self.textView.resignFirstResponder()
-	}
-	
-	@IBAction func onViewConversation() {
-		NotificationCenter.default.post(name: NSNotification.Name("View Conversation"), object: self.post)
-	}
-	
-	@IBAction func onActivateReply() {
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreen(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreen(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleEmojiSelectedNotification(_:)), name: NSNotification.Name("Emoji Selected"), object: nil)
-		self.replyContainer.layer.borderWidth = 0.5;
-
-		self.replyField.isHidden = false
-		self.replyButton.isHidden = true
-		self.replyIconButton.isHidden = true
-		self.postButton.isHidden = false
-
-		self.replyField.alpha = 0.0
-		self.replyButton.alpha = 1.0
-		self.replyIconButton.alpha = 1.0
-		self.postButton.alpha = 0.0
-
-		UIView.animate(withDuration: 0.35) {
-			self.replyField.alpha = 1.0
-			self.replyButton.alpha = 0.0
-			self.replyIconButton.alpha = 0.0
-			self.postButton.alpha = 1.0
-			self.replyContainer.backgroundColor = UIColor.white
-		}
-		
-		self.replyField.becomeFirstResponder()
-		
-		if replyField.text.count <= 0 {
-			for name in self.post.mentionedUsernames {
-				replyField.text = replyField.text + name + " "
-			}
-		}
-	}
-	
-	@objc func keyboardOnScreen(_ notification : Notification) {
-		if let info : [AnyHashable : Any] = notification.userInfo {
-			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-				let rawFrame = value.cgRectValue
-				
-				var safeArea : CGFloat = 0.0
-				safeArea = safeArea + UIApplication.shared.windows[0].safeAreaInsets.bottom
-				let textBoxOffset = self.replyContainer.frame.origin.y + self.replyContainer.frame.size.height - 10.5
-				let cellOffset : CGFloat = self.frame.origin.y
-				let keyboardSize : CGFloat = rawFrame.size.height
-				let offset = cellOffset + textBoxOffset - keyboardSize - safeArea
-				
-				NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Keyboard Appear"), object: offset)
-			}
-			
-		}
-	}
-	
-	@objc func keyboardOffScreen(_ notification : Notification) {
-			
-		self.replyContainer.layer.borderWidth = 0.0
-
-		self.replyField.isHidden = true
-		self.replyButton.isHidden = false
-		self.replyIconButton.isHidden = false
-		self.postButton.isHidden = true
-
-		UIView.animate(withDuration: 0.35) {
-			self.replyField.alpha = 0.0;
-			self.replyButton.alpha = 1.0;
-			self.replyIconButton.alpha = 1.0;
-			self.postButton.alpha = 0.0;
-			self.replyContainer.backgroundColor = UIColor.clear
-		}
-		
-		NotificationCenter.default.removeObserver(self)
-	}
-	
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-	
-	func addUserProfileTapGesture(_ view : UIView) {
-		view.isUserInteractionEnabled = true
-
-		for gesture in view.gestureRecognizers ?? [] {
-			view.removeGestureRecognizer(gesture)
-		}
-
-		let gesture = UITapGestureRecognizer(target: self, action: #selector(handleUserTappedGesture))
-		view.addGestureRecognizer(gesture)
-	}
-	
-	@objc func handleUserTappedGesture() {
-		NotificationCenter.default.post(name: NSNotification.Name("Display User Profile"), object: self.post.owner)
-	}
-	
-	@objc func handleEmojiSelectedNotification(_ notification : Notification) {
-		if let emoji = notification.object as? String {
-			self.replyField.text = self.replyField.text + emoji
-		}
-	}
-	
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-	
-	func loadPhotos(_ post : SunlitPost, _ index : Int) {
-		
-		self.postImage.image = nil //UIImage(named: "welcome_waves")
-		self.userAvatar.image = nil
-		
-		let imageSource = post.images[0]
-		if let image = ImageCache.prefetch(imageSource) {
-			self.postImage.image = image
-		}
-		
-		let avatarSource = post.owner.pathToUserImage
-		if let avatar = ImageCache.prefetch(avatarSource) {
-			self.userAvatar.image = avatar
-		}
-	}
-}
-
-
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-class FeedCollectionViewCell : UICollectionViewCell {
-	
-}
-
 

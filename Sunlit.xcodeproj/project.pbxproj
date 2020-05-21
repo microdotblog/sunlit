@@ -115,6 +115,11 @@
 		C5D53D3F246214CE00FFAC71 /* SwiftSoup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53D03246214CE00FFAC71 /* SwiftSoup.swift */; };
 		C5D53D40246214CE00FFAC71 /* Pattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53D04246214CE00FFAC71 /* Pattern.swift */; };
 		C5D53D452464B67600FFAC71 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53D442464B67600FFAC71 /* ProfileViewController.swift */; };
+		C5F606CA2474A05700AB070C /* SunlitPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F606C92474A05700AB070C /* SunlitPostTableViewCell.swift */; };
+		C5FC6AD72476076C00ACB77E /* PhotoEntryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FC6AD62476076C00ACB77E /* PhotoEntryCollectionViewCell.swift */; };
+		C5FC6AD92476079600ACB77E /* ProfileBioCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FC6AD82476079600ACB77E /* ProfileBioCollectionViewCell.swift */; };
+		C5FC6ADB247607C300ACB77E /* ProfileHeaderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FC6ADA247607C300ACB77E /* ProfileHeaderCollectionViewCell.swift */; };
+		C5FC6ADD2476081C00ACB77E /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FC6ADC2476081C00ACB77E /* ConversationTableViewCell.swift */; };
 		C5FFB1CF2466986E0015368A /* ImageViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFB1CE2466986E0015368A /* ImageViewerViewController.swift */; };
 		C5FFB1D124669D640015368A /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFB1D024669D640015368A /* MyProfileViewController.swift */; };
 		C5FFB1D52469C9130015368A /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFB1D42469C9130015368A /* ConversationViewController.swift */; };
@@ -232,6 +237,11 @@
 		C5D53D04246214CE00FFAC71 /* Pattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Pattern.swift; path = SwiftSoup/Pattern.swift; sourceTree = SOURCE_ROOT; };
 		C5D53D4124632B0B00FFAC71 /* Sunlit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sunlit.entitlements; sourceTree = "<group>"; };
 		C5D53D442464B67600FFAC71 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		C5F606C92474A05700AB070C /* SunlitPostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitPostTableViewCell.swift; sourceTree = "<group>"; };
+		C5FC6AD62476076C00ACB77E /* PhotoEntryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEntryCollectionViewCell.swift; sourceTree = "<group>"; };
+		C5FC6AD82476079600ACB77E /* ProfileBioCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBioCollectionViewCell.swift; sourceTree = "<group>"; };
+		C5FC6ADA247607C300ACB77E /* ProfileHeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCollectionViewCell.swift; sourceTree = "<group>"; };
+		C5FC6ADC2476081C00ACB77E /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
 		C5FFB1CE2466986E0015368A /* ImageViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerViewController.swift; sourceTree = "<group>"; };
 		C5FFB1D024669D640015368A /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		C5FFB1D42469C9130015368A /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
@@ -327,6 +337,8 @@
 		C5B9A71924563E66003EF82B /* Sunlit */ = {
 			isa = PBXGroup;
 			children = (
+				C5FC6ADF2476084E00ACB77E /* CollectionViewCells */,
+				C5FC6ADE2476083D00ACB77E /* TableViewCells */,
 				C5FFB1D32469C7AD0015368A /* ViewControllers */,
 				C5FFB1D22469C7A20015368A /* Data */,
 				C5B9A71A24563E66003EF82B /* AppDelegate.swift */,
@@ -411,6 +423,25 @@
 			name = SwiftSoup;
 			sourceTree = "<group>";
 		};
+		C5FC6ADE2476083D00ACB77E /* TableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				C5FC6ADC2476081C00ACB77E /* ConversationTableViewCell.swift */,
+				C5F606C92474A05700AB070C /* SunlitPostTableViewCell.swift */,
+			);
+			name = TableViewCells;
+			sourceTree = "<group>";
+		};
+		C5FC6ADF2476084E00ACB77E /* CollectionViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				C5FC6AD82476079600ACB77E /* ProfileBioCollectionViewCell.swift */,
+				C5FC6ADA247607C300ACB77E /* ProfileHeaderCollectionViewCell.swift */,
+				C5FC6AD62476076C00ACB77E /* PhotoEntryCollectionViewCell.swift */,
+			);
+			name = CollectionViewCells;
+			sourceTree = "<group>";
+		};
 		C5FFB1D22469C7A20015368A /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -431,11 +462,11 @@
 			children = (
 				C5AC0406245F52C800D7725D /* LoginViewController.swift */,
 				C5AC0451245FC86D00D7725D /* FeedViewController.swift */,
-				C5D53D442464B67600FFAC71 /* ProfileViewController.swift */,
+				C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */,
 				C5FFB1D024669D640015368A /* MyProfileViewController.swift */,
+				C5D53D442464B67600FFAC71 /* ProfileViewController.swift */,
 				C5FFB1CE2466986E0015368A /* ImageViewerViewController.swift */,
 				C5FFB1D42469C9130015368A /* ConversationViewController.swift */,
-				C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -536,6 +567,7 @@
 				C5AC043E245F640800D7725D /* UURemoteImage.swift in Sources */,
 				C5D53D30246214CE00FFAC71 /* Attribute.swift in Sources */,
 				C5D53D29246214CE00FFAC71 /* HttpStatusException.swift in Sources */,
+				C5FC6ADD2476081C00ACB77E /* ConversationTableViewCell.swift in Sources */,
 				C5AC044E245F66C000D7725D /* Settings.swift in Sources */,
 				C5AC0446245F640800D7725D /* UUView.swift in Sources */,
 				C5AC0447245F640800D7725D /* UUViewController.swift in Sources */,
@@ -548,9 +580,11 @@
 				C5D53D10246214CE00FFAC71 /* Connection.swift in Sources */,
 				C5D53D0E246214CE00FFAC71 /* ParseSettings.swift in Sources */,
 				C53C08EB2471FFF000C919E0 /* DiscoverViewController.swift in Sources */,
+				C5F606CA2474A05700AB070C /* SunlitPostTableViewCell.swift in Sources */,
 				C5AC044B245F640800D7725D /* UUDictionary.swift in Sources */,
 				C5D53D3D246214CE00FFAC71 /* Cleaner.swift in Sources */,
 				C5D53D2B246214CE00FFAC71 /* OrderedSet.swift in Sources */,
+				C5FC6ADB247607C300ACB77E /* ProfileHeaderCollectionViewCell.swift in Sources */,
 				C5AC041D245F63E300D7725D /* Snippets+XMLRPC.swift in Sources */,
 				C5A507AA2470C05E00D60CB4 /* Date+Sunlit.swift in Sources */,
 				C5D53D32246214CE00FFAC71 /* CharacterExt.swift in Sources */,
@@ -558,6 +592,7 @@
 				C5D53D16246214CE00FFAC71 /* CssSelector.swift in Sources */,
 				C5AC041C245F63E300D7725D /* Snippets+XMLParsing.swift in Sources */,
 				C5AC0450245F690600D7725D /* Dialog.swift in Sources */,
+				C5FC6AD92476079600ACB77E /* ProfileBioCollectionViewCell.swift in Sources */,
 				C5D53D12246214CE00FFAC71 /* Element.swift in Sources */,
 				C5066BA32461BFF600D9B2E8 /* UULocalization.swift in Sources */,
 				C5D53D27246214CE00FFAC71 /* TreeBuilder.swift in Sources */,
@@ -618,6 +653,7 @@
 				C5D53D23246214CE00FFAC71 /* Parser.swift in Sources */,
 				C5D53D22246214CE00FFAC71 /* UnicodeScalar.swift in Sources */,
 				C5AC041A245F63E300D7725D /* SnippetsPost.swift in Sources */,
+				C5FC6AD72476076C00ACB77E /* PhotoEntryCollectionViewCell.swift in Sources */,
 				C5AC0419245F63E300D7725D /* Snippets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -10,7 +10,6 @@ import UIKit
 
 class DiscoverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
 	
-	@IBOutlet var titleView : UILabel!
 	@IBOutlet var tableView : UITableView!
 	@IBOutlet var scrollView : UIScrollView!
 	@IBOutlet var stackView : UIStackView!
@@ -30,27 +29,16 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 		self.setupTableView()
 		self.loadFrequentlyUsedEmoji()
 		self.setupNotifications()
-		self.titleView.text = "Discover Photos"
-		
-		// Go ahead and load it if it's already in the cache...
-		if Tagmoji.shared.all().count > 0 {
-			self.loadTagmoji()
-		}
+		self.title = "Discover photos"
+		self.navigationItem.title = "Discover photos"
 		
 		Tagmoji.shared.refresh { (updated) in
 			self.loadTagmoji()
 		}
-	}
-
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		self.navigationController?.setNavigationBarHidden(true, animated: true)
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
+		
 		self.setupSnippets()
 	}
+	
 	
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
@@ -67,11 +55,13 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 	
+	
+	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
-	
+
 	func refreshTableView(_ entries : [SnippetsPost]) {
 		
 		var posts : [SunlitPost] = []
@@ -94,9 +84,9 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let cell = tableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell", for: indexPath) as! FeedTableViewCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
 		let post = self.tableViewData[indexPath.row]
-		cell.setup(indexPath.row, post)
+		cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
 		return cell
 	}
 	
@@ -122,6 +112,11 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 		self.navigationController?.pushViewController(imageViewController, animated: true)
 	}
 	
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		let post = self.tableViewData[indexPath.row]
+		return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+	}
+	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -143,12 +138,15 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 		if let emoji = button.title(for: .normal),
 			let title = Tagmoji.shared.tileFor(tagmoji: emoji),
 			let collection = Tagmoji.shared.routeFor(tagmoji: emoji) {
-			
-			self.refreshTableView([])
+
+			DispatchQueue.main.async {
+				//self.navigationController?.title = "Discover " + title
+				self.navigationController?.navigationBar.topItem?.title = "Discover " + title
+				self.refreshTableView([])
+			}
 			
 			Snippets.shared.fetchDiscoverTimeline(collection: collection) { (error, postObjects, tagmoji) in
 				DispatchQueue.main.async {
-					self.titleView.text = "Discover " + title
 					self.refreshTableView(postObjects)
 				}
 			}

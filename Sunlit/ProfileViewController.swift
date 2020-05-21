@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
 		
 	var user : SnippetsUser!
 	var updatedUserInfo : SnippetsUser? = nil
@@ -18,11 +18,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		
-		//if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-		//	flowLayout.estimatedItemSize = CGSize(width: self.view.frame.size.width / 2.0, height: self.view.frame.size.width + 40)
-		//	flowLayout.itemSize = UICollectionViewFlowLayout.automaticSize
-		//}
 		
 		// Merge if we can/need to from the user cache...
 		self.user = SnippetsUser.save(self.user)
@@ -37,11 +32,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
     }
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		self.navigationController?.setNavigationBarHidden(false, animated: true)
-	}
-    
 	@objc func dismissViewController() {
 		self.navigationController?.popViewController(animated: true)
 	}
@@ -219,6 +209,15 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		}
 	}
 	
+	func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+		for indexPath in indexPaths {
+			if indexPath.section == 2 {
+				let post = self.userPosts[indexPath.item]
+				self.loadPhoto(post.images.first ?? "", indexPath)
+			}
+		}
+	}
+	
 	func configureHeaderCell(_ cell : ProfileHeaderCollectionViewCell, _ indexPath : IndexPath) {
 		cell.followButton.clipsToBounds = true
 		cell.followButton.layer.cornerRadius = (cell.followButton.bounds.size.height - 1) / 2.0
@@ -278,71 +277,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 }
 
 
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-class ProfileHeaderCollectionViewCell : UICollectionViewCell {
-	@IBOutlet var avatar : UIImageView!
-	@IBOutlet var followButton : UIButton!
-	@IBOutlet var fullName : UILabel!
-	@IBOutlet var userHandle : UILabel!
-	@IBOutlet var blogAddress : UIButton!
-	@IBOutlet var followingCount : UILabel!
-	@IBOutlet var postCount : UILabel!
-	@IBOutlet var widthConstraint : NSLayoutConstraint!
-	
-	static func sizeOf(_ owner : SnippetsUser, collectionViewWidth : CGFloat) -> CGSize {
-		var size = CGSize(width: collectionViewWidth, height: 0)
-		
-		size.height = size.height + 24
-		size.height = size.height + 60
-		size.height = size.height + 8
-		
-		if owner.pathToWebSite.count > 0 {
-			size.height = size.height + 16
-			size.height = size.height + 32
-		}
-		
-		return size
-	}
-}
 
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-class ProfileBioCollectionViewCell : UICollectionViewCell {
-	@IBOutlet var bio : UILabel!
-	@IBOutlet var widthConstraint : NSLayoutConstraint!
 
-	static func sizeOf(_ owner : SnippetsUser, collectionViewWidth : CGFloat) -> CGSize {
-		var size = CGSize(width: collectionViewWidth, height: 0)
-		
-		if owner.bio.count > 0 {
-			let text = owner.attributedTextBio()
-			let rect = text.boundingRect(with: size, options: .usesLineFragmentOrigin , context: nil)
-			size.height = rect.size.height
-		}
 
-		return size
-	}
-
-}
-
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-class PhotoEntryCollectionViewCell : UICollectionViewCell {
-	@IBOutlet var photo : UIImageView!
-	@IBOutlet var date : UILabel!
-
-	static func sizeOf(collectionViewWidth : CGFloat) -> CGSize {
-		let sections = collectionViewWidth / 200.0
-		var size = CGSize(width: 0, height: 0)
-		size.width = (collectionViewWidth / sections) - (2 * sections)
-		size.height = size.width + 40.0
-		return size
-	}
-}

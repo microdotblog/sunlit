@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class MyProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
 		
 	var user : SnippetsUser!
 	var updatedUserInfo : SnippetsUser? = nil
@@ -26,14 +26,6 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		}
     }
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		self.navigationController?.setNavigationBarHidden(true, animated: true)
-	}
-    
-	@objc func dismissViewController() {
-		self.navigationController?.popViewController(animated: true)
-	}
 	
 	func fetchUserInfo() {
 		
@@ -174,6 +166,15 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		if indexPath.section == 2 {
 			let post = self.userPosts[indexPath.item]
 			self.loadPhoto(post.images.first ?? "", indexPath)
+		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+		for indexPath in indexPaths {
+			if indexPath.section == 2 {
+				let post = self.userPosts[indexPath.item]
+				self.loadPhoto(post.images.first ?? "", indexPath)
+			}
 		}
 	}
 	
