@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SafariServices
 
-class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
+class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching, UITextViewDelegate {
 		
 	var user : SnippetsUser!
 	var updatedUserInfo : SnippetsUser? = nil
@@ -31,6 +32,12 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.navigationController?.navigationBar.topItem?.title = self.user.fullName
+	}
+
 	
 	@objc func dismissViewController() {
 		self.navigationController?.popViewController(animated: true)
@@ -122,6 +129,17 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		}
 	}
 
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+	
+	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+		let safariViewController = SFSafariViewController(url: URL)
+		self.present(safariViewController, animated: true, completion: nil)
+		return false
+	}
+	
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -239,7 +257,12 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			
 		cell.fullName.text = user.fullName
 		cell.userHandle.text = "@" + user.userHandle
-		cell.blogAddress.setTitle(user.pathToWebSite, for: .normal)
+		
+		var address = user.pathToWebSite
+		if !address.contains("http") {
+			address = "https://" + address
+		}
+		cell.blogAddress.text = address
 			
 		if let image = ImageCache.prefetch(user.pathToUserImage) {
 			cell.avatar.image = image
@@ -253,7 +276,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
 		cell.bio.attributedText = user.attributedTextBio()
-		cell.widthConstraint.constant = self.collectionView.bounds.size.width
+		cell.widthConstraint.constant = self.collectionView.bounds.size.width //- 16.0
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {

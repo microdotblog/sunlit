@@ -13,7 +13,7 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var followButton : UIButton!
 	@IBOutlet var fullName : UILabel!
 	@IBOutlet var userHandle : UILabel!
-	@IBOutlet var blogAddress : UIButton!
+	@IBOutlet var blogAddress : UITextView!
 	@IBOutlet var followingCount : UILabel!
 	@IBOutlet var postCount : UILabel!
 	@IBOutlet var widthConstraint : NSLayoutConstraint!

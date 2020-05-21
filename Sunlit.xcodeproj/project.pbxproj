@@ -435,8 +435,8 @@
 		C5FC6ADF2476084E00ACB77E /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				C5FC6AD82476079600ACB77E /* ProfileBioCollectionViewCell.swift */,
 				C5FC6ADA247607C300ACB77E /* ProfileHeaderCollectionViewCell.swift */,
+				C5FC6AD82476079600ACB77E /* ProfileBioCollectionViewCell.swift */,
 				C5FC6AD62476076C00ACB77E /* PhotoEntryCollectionViewCell.swift */,
 			);
 			name = CollectionViewCells;

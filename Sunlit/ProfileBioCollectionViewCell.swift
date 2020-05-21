@@ -13,12 +13,13 @@ class ProfileBioCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var widthConstraint : NSLayoutConstraint!
 
 	static func sizeOf(_ owner : SnippetsUser, collectionViewWidth : CGFloat) -> CGSize {
-		var size = CGSize(width: collectionViewWidth, height: 0)
+		var size = CGSize(width: collectionViewWidth - 16.0, height: 0)
 		
 		if owner.bio.count > 0 {
 			let text = owner.attributedTextBio()
 			let rect = text.boundingRect(with: size, options: .usesLineFragmentOrigin , context: nil)
 			size.height = rect.size.height
+			size.height = size.height + 16.0
 		}
 
 		return size

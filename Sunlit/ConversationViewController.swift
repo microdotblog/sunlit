@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class ConversationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
 
@@ -26,6 +27,12 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 		self.setupNotifications()
 		self.title = "Conversation"
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.navigationController?.navigationBar.topItem?.title = "Conversation"
+	}
+
 
 	func setupNotifications() {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleAvatarLoadedNotification(_:)), name: Notification.Name("Avatar Loaded"), object: nil)
@@ -136,6 +143,12 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 		}
 		
 		return true
+	}
+	
+	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+		let safariViewController = SFSafariViewController(url: URL)
+		self.present(safariViewController, animated: true, completion: nil)
+		return false
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

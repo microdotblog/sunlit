@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SafariServices
 
-class DiscoverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+class DiscoverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate {
 	
 	@IBOutlet var tableView : UITableView!
 	@IBOutlet var scrollView : UIScrollView!
@@ -140,7 +141,6 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 			let collection = Tagmoji.shared.routeFor(tagmoji: emoji) {
 
 			DispatchQueue.main.async {
-				//self.navigationController?.title = "Discover " + title
 				self.navigationController?.navigationBar.topItem?.title = "Discover " + title
 				self.refreshTableView([])
 			}
@@ -218,6 +218,11 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 		Dialog.information(message, self)
 	}
 	
+
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+	
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
 		UIView.setAnimationsEnabled(false)
 		self.tableView.beginUpdates()
@@ -227,9 +232,21 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 		return true
 	}
 	
+	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+		let safariViewController = SFSafariViewController(url: URL)
+		self.present(safariViewController, animated: true, completion: nil)
+		return false
+	}
+
+
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
 	func loadTimeline() {
 		Snippets.shared.fetchDiscoverTimeline(collection: "photos") { (error, postObjects, tagmoji) in
 			DispatchQueue.main.async {
+				self.navigationController?.navigationBar.topItem?.title = "Discover photos"
 				self.refreshTableView(postObjects)
 			}
 		}

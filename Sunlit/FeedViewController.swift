@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching, UITextViewDelegate {
 
@@ -27,6 +28,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		self.navigationController?.navigationBar.topItem?.title = "Timeline"
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
@@ -249,6 +251,11 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		Dialog.information(message, self)
 	}
 	
+
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
 		UIView.setAnimationsEnabled(false)
 		self.tableView.beginUpdates()
@@ -256,6 +263,12 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		UIView.setAnimationsEnabled(true)
 			
 		return true
+	}
+	
+	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+		let safariViewController = SFSafariViewController(url: URL)
+		self.present(safariViewController, animated: true, completion: nil)
+		return false
 	}
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
