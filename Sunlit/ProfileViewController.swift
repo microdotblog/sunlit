@@ -30,6 +30,11 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			self.fetchUserInfo(user)
 		}
 		
+		//if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+		//	flowLayout.estimatedItemSize = .zero //CGSize(width: 0, height: 0)
+		//	self.collectionView.collectionViewLayout = flowLayout
+		//}
+		
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
     }
 	
@@ -271,7 +276,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			cell.avatar.image = UIImage(named: "welcome_waves")
 			self.loadPhoto(user.pathToUserImage, indexPath)
 		}
-
+		
+		cell.widthConstraint.constant = self.collectionView.bounds.size.width
 	}
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
@@ -295,6 +301,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		cell.contentView.clipsToBounds = true
 		cell.contentView.layer.borderWidth = 0.5
 		cell.contentView.layer.borderColor = UIColor.darkGray.cgColor
+		cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 	}
 	
 }

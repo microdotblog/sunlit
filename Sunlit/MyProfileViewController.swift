@@ -33,6 +33,12 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		self.navigationController?.navigationBar.topItem?.title = self.user.fullName
 	}
 	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		NotificationCenter.default.removeObserver(self)
+	}
+
+	
 	func fetchUserInfo() {
 		
 		Snippets.shared.fetchCurrentUserInfo { (error, snippetsUser) in
@@ -224,6 +230,8 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		if self.userPosts.count > 0 {
 			cell.postCount.text = "\(self.userPosts.count)"
 		}
+		
+		cell.widthConstraint.constant = self.collectionView.bounds.size.width
 	}
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
@@ -247,6 +255,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		cell.contentView.clipsToBounds = true
 		cell.contentView.layer.borderWidth = 0.5
 		cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
+		cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 	}
 	
 }

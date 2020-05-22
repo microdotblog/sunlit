@@ -24,13 +24,18 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.loadConversation()
-		self.setupNotifications()
 		self.title = "Conversation"
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.navigationController?.navigationBar.topItem?.title = "Conversation"
+		self.setupNotifications()
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		NotificationCenter.default.removeObserver(self)
 	}
 
 

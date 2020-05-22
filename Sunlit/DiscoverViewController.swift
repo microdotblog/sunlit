@@ -29,7 +29,6 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
         
 		self.setupTableView()
 		self.loadFrequentlyUsedEmoji()
-		self.setupNotifications()
 		self.title = "Discover photos"
 		self.navigationItem.title = "Discover photos"
 		
@@ -56,7 +55,16 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.setupNotifications()
+	}
 	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		NotificationCenter.default.removeObserver(self)
+	}
+
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -185,7 +193,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 	@objc func handleImageLoadedNotification(_ notification : Notification) {
 		if let indexPath = notification.object as? IndexPath {
 			if indexPath.row < self.tableViewData.count {
-				self.tableView.reloadRows(at: [ indexPath ], with: .fade)
+				self.tableView.reloadRows(at: [ indexPath ], with: .none)
 			}
 		}
 	}

@@ -20,7 +20,6 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         
 		self.setupTableView()
-		self.setupNotifications()
 		self.setupProfilePhoto()
 
 		self.setupSnippets()
@@ -29,6 +28,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.navigationController?.navigationBar.topItem?.title = "Timeline"
+		self.setupNotifications()
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
@@ -49,6 +49,10 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		}
 	}
 	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		NotificationCenter.default.removeObserver(self)
+	}
 
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
@@ -190,7 +194,9 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	@objc func handleImageLoadedNotification(_ notification : Notification) {
 		if let indexPath = notification.object as? IndexPath {
-			self.tableView.reloadRows(at: [ indexPath ], with: .fade)
+			if indexPath.row < self.tableViewData.count {
+				self.tableView.reloadRows(at: [ indexPath ], with: .none)
+			}
 		}
 	}
 	
