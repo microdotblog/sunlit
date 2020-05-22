@@ -120,6 +120,10 @@
 		C5FC6AD92476079600ACB77E /* ProfileBioCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FC6AD82476079600ACB77E /* ProfileBioCollectionViewCell.swift */; };
 		C5FC6ADB247607C300ACB77E /* ProfileHeaderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FC6ADA247607C300ACB77E /* ProfileHeaderCollectionViewCell.swift */; };
 		C5FC6ADD2476081C00ACB77E /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FC6ADC2476081C00ACB77E /* ConversationTableViewCell.swift */; };
+		C5FC6AE3247787FA00ACB77E /* Compose.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5FC6AE2247787FA00ACB77E /* Compose.storyboard */; };
+		C5FC6AE52477886900ACB77E /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5FC6AE42477886900ACB77E /* Settings.storyboard */; };
+		C5FC6AE7247788A200ACB77E /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5FC6AE6247788A200ACB77E /* About.storyboard */; };
+		C5FC6AE9247788D200ACB77E /* Drafts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5FC6AE8247788D200ACB77E /* Drafts.storyboard */; };
 		C5FFB1CF2466986E0015368A /* ImageViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFB1CE2466986E0015368A /* ImageViewerViewController.swift */; };
 		C5FFB1D124669D640015368A /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFB1D024669D640015368A /* MyProfileViewController.swift */; };
 		C5FFB1D52469C9130015368A /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFB1D42469C9130015368A /* ConversationViewController.swift */; };
@@ -242,6 +246,10 @@
 		C5FC6AD82476079600ACB77E /* ProfileBioCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBioCollectionViewCell.swift; sourceTree = "<group>"; };
 		C5FC6ADA247607C300ACB77E /* ProfileHeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCollectionViewCell.swift; sourceTree = "<group>"; };
 		C5FC6ADC2476081C00ACB77E /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
+		C5FC6AE2247787FA00ACB77E /* Compose.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Compose.storyboard; sourceTree = "<group>"; };
+		C5FC6AE42477886900ACB77E /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		C5FC6AE6247788A200ACB77E /* About.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = About.storyboard; sourceTree = "<group>"; };
+		C5FC6AE8247788D200ACB77E /* Drafts.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Drafts.storyboard; sourceTree = "<group>"; };
 		C5FFB1CE2466986E0015368A /* ImageViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerViewController.swift; sourceTree = "<group>"; };
 		C5FFB1D024669D640015368A /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		C5FFB1D42469C9130015368A /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
@@ -310,6 +318,10 @@
 			children = (
 				C5B9A72224563E66003EF82B /* Main.storyboard */,
 				C5AC040D245F535000D7725D /* Login.storyboard */,
+				C5FC6AE2247787FA00ACB77E /* Compose.storyboard */,
+				C5FC6AE42477886900ACB77E /* Settings.storyboard */,
+				C5FC6AE6247788A200ACB77E /* About.storyboard */,
+				C5FC6AE8247788D200ACB77E /* Drafts.storyboard */,
 				C5B9A72724563E66003EF82B /* LaunchScreen.storyboard */,
 				C5B9A72524563E66003EF82B /* Assets.xcassets */,
 				C5D53D4124632B0B00FFAC71 /* Sunlit.entitlements */,
@@ -530,7 +542,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5B9A72924563E66003EF82B /* LaunchScreen.storyboard in Resources */,
+				C5FC6AE7247788A200ACB77E /* About.storyboard in Resources */,
 				C5B9A72624563E66003EF82B /* Assets.xcassets in Resources */,
+				C5FC6AE3247787FA00ACB77E /* Compose.storyboard in Resources */,
+				C5FC6AE9247788D200ACB77E /* Drafts.storyboard in Resources */,
+				C5FC6AE52477886900ACB77E /* Settings.storyboard in Resources */,
 				C5AC040E245F535000D7725D /* Login.storyboard in Resources */,
 				C5B9A72424563E66003EF82B /* Main.storyboard in Resources */,
 			);

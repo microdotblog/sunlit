@@ -11,6 +11,7 @@ import SafariServices
 
 class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching, UITextViewDelegate {
 
+	@IBOutlet var menuView : UIView!
 	@IBOutlet var tableView : UITableView!	
 	var refreshControl = UIRefreshControl()
 	var keyboardAccessoryView : UIView!
@@ -29,6 +30,13 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		super.viewWillAppear(animated)
 		self.navigationController?.navigationBar.topItem?.title = "Timeline"
 		self.setupNotifications()
+		
+		let hamburgerMenuButton = UIBarButtonItem(image: UIImage(named: "hamburger"), style: .plain, target: self, action: #selector(onToggleHamburgerMenu))
+		self.navigationController?.navigationBar.topItem?.leftBarButtonItem = hamburgerMenuButton
+		
+		let postButton = UIBarButtonItem(image: UIImage(named: "post"), style: .plain, target: self, action: #selector(onNewPost))
+		self.navigationController?.navigationBar.topItem?.rightBarButtonItem = postButton
+	
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
@@ -257,6 +265,64 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		Dialog.information(message, self)
 	}
 	
+	@objc func onToggleHamburgerMenu() {
+		let width : CGFloat = 140.0
+		let closedRect = CGRect(x: -width, y: 0.0, width: width, height: self.view.bounds.size.height)
+		let openRect = CGRect(x: 0.0, y: 0.0, width: width, height: self.view.bounds.size.height)
+		
+		if self.menuView.superview == nil {
+			self.menuView.frame = closedRect
+			self.view.addSubview(self.menuView)
+			self.view.updateConstraints()
+			self.view.layoutIfNeeded()
+			
+			self.menuView.isUserInteractionEnabled = true
+			let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(onToggleHamburgerMenu))
+			swipeGestureRecognizer.direction = .left
+			self.menuView.addGestureRecognizer(swipeGestureRecognizer)
+		
+			UIView.animate(withDuration: 0.15) {
+				self.menuView.frame = openRect
+			}
+		}
+		else {
+			UIView.animate(withDuration: 0.15, animations: {
+				self.menuView.frame = closedRect
+			}) { (complete) in
+				self.menuView.removeFromSuperview()
+			}
+		}
+	}
+	
+	@objc func onNewPost() {
+		let storyBoard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
+		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "ComposeViewController")
+		self.present(newPostViewController, animated: true, completion: nil)
+	}
+	
+	@IBAction func onAbout() {
+		let storyBoard: UIStoryboard = UIStoryboard(name: "About", bundle: nil)
+		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "AboutViewController")
+		self.present(newPostViewController, animated: true, completion: nil)
+
+		self.onToggleHamburgerMenu()
+	}
+	
+	@IBAction func onDrafts() {
+		let storyBoard: UIStoryboard = UIStoryboard(name: "Drafts", bundle: nil)
+		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "DraftsViewController")
+		self.present(newPostViewController, animated: true, completion: nil)
+
+		self.onToggleHamburgerMenu()
+	}
+	
+	@IBAction func onSettings() {
+		let storyBoard: UIStoryboard = UIStoryboard(name: "Settings", bundle: nil)
+		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "SettingsViewController")
+		self.present(newPostViewController, animated: true, completion: nil)
+
+		self.onToggleHamburgerMenu()
+	}
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
