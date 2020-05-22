@@ -168,7 +168,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 				let frame = value.cgRectValue
 
 				self.view.addSubview(self.keyboardAccessoryView)
-				self.keyboardAccessoryView.frame = CGRect(x: 0, y: frame.origin.y - 88, width: frame.size.width, height: 44)
+				self.keyboardAccessoryView.frame = CGRect(x: 0, y: frame.origin.y - 44, width: frame.size.width, height: 44)
 				self.keyboardAccessoryView.alpha = 0.0
 				self.keyboardAccessoryView.isHidden = false
 				
@@ -186,7 +186,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 	
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
 		if let offset = notification.object as? CGFloat {
-			self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+			self.tableView.setContentOffset(CGPoint(x: 0, y: offset + 100.0), animated: true)
 		}
 	}
 	

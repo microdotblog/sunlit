@@ -188,7 +188,7 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
 		if let offset = notification.object as? CGFloat {
-			self.tableView.setContentOffset(CGPoint(x: 0, y: offset - 100.0), animated: true)
+			self.tableView.setContentOffset(CGPoint(x: 0, y: offset - 40.0), animated: true)
 		}
 	}
 	
