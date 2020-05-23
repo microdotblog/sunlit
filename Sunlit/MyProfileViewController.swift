@@ -25,7 +25,6 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 			self.user = user
 			self.fetchUserInfo()
 			self.navigationItem.title = user.fullName
-			//self.navigationItem.backBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
 		}
     }
 	
@@ -206,7 +205,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		cell.userHandle.text = "@" + user.userHandle
 		
 		var address = user.pathToWebSite
-		if !address.contains("http") {
+		if address.count > 0 && !address.contains("http") {
 			address = "https://" + address
 		}
 		cell.blogAddress.text = address

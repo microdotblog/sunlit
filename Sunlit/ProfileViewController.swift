@@ -31,11 +31,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			self.fetchUserInfo(user)
 		}
 		
-		//if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-		//	flowLayout.estimatedItemSize = .zero //CGSize(width: 0, height: 0)
-		//	self.collectionView.collectionViewLayout = flowLayout
-		//}
-		
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
     }
 	
@@ -261,7 +256,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		cell.userHandle.text = "@" + user.userHandle
 		
 		var address = user.pathToWebSite
-		if !address.contains("http") {
+		if address.count > 0 && !address.contains("http") {
 			address = "https://" + address
 		}
 		cell.blogAddress.text = address

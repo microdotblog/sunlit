@@ -46,7 +46,7 @@ class MainViewController: UIViewController {
 	}
 	
 	@objc func onToggleHamburgerMenu() {
-		let width : CGFloat = 140.0
+		let width : CGFloat = 180.0
 		let closedRect = CGRect(x: -width, y: 0.0, width: width, height: self.view.bounds.size.height)
 		let openRect = CGRect(x: 0.0, y: 0.0, width: width, height: self.view.bounds.size.height)
 		
@@ -66,6 +66,8 @@ class MainViewController: UIViewController {
 			
 			self.menuDimView.alpha = 0.0
 			
+			var frame = self.contentView.frame
+			frame.origin.x = frame.origin.x + 15
 			self.menuView.isUserInteractionEnabled = true
 			let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(onToggleHamburgerMenu))
 			swipeGestureRecognizer.direction = .left
@@ -73,16 +75,22 @@ class MainViewController: UIViewController {
 		
 			UIView.animate(withDuration: 0.15) {
 				self.menuDimView.alpha = 1.0
+				//self.contentView.frame = frame
 			}
 			
 			UIView.animate(withDuration: 0.2, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseInOut, animations: {
 				self.menuView.frame = openRect
+				self.contentView.transform = CGAffineTransform(translationX: 10.0, y: 0.0)
 			}, completion: nil)
 		}
 		else {
+			var frame = self.contentView.frame
+			frame.origin.x = 0
 			UIView.animate(withDuration: 0.15, animations: {
 				self.menuView.frame = closedRect
 				self.menuDimView.alpha = 0.0
+				//self.contentView.frame = frame
+				self.contentView.transform = CGAffineTransform.identity
 			}) { (complete) in
 				self.menuView.removeFromSuperview()
 				self.menuDimView.removeFromSuperview()
@@ -183,7 +191,7 @@ class MainViewController: UIViewController {
 		self.contentView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.self.width, height: self.view.bounds.size.height)
 		self.contentView.translatesAutoresizingMaskIntoConstraints = false
 		let topConstraint = NSLayoutConstraint(item: self.contentView!, attribute: .top, relatedBy: .equal, toItem: self.view!, attribute: .top, multiplier: 1.0, constant: 0.0)
-		let bottomConstraint = NSLayoutConstraint(item: self.contentView!, attribute: .bottomMargin, relatedBy: .equal, toItem: self.tabBar!, attribute: .top, multiplier: 1.0, constant: 0.0)
+		let bottomConstraint = NSLayoutConstraint(item: self.contentView!, attribute: .bottomMargin, relatedBy: .equal, toItem: self.tabBar!, attribute: .top, multiplier: 1.0, constant: -10.0)
 		let leftConstraint = NSLayoutConstraint(item: self.contentView!, attribute: .left, relatedBy: .equal, toItem: self.view!, attribute: .left, multiplier: 1.0, constant: 0.0)
 		let rightConstraint = NSLayoutConstraint(item: self.contentView!, attribute: .right, relatedBy: .equal, toItem: self.view!, attribute: .right, multiplier: 1.0, constant: 0.0)
 		self.view.addConstraints([topConstraint, bottomConstraint, leftConstraint, rightConstraint])
@@ -193,6 +201,7 @@ class MainViewController: UIViewController {
 		self.setupPhoneTabBar()
 		self.setupPhoneContentView()
 		self.setupPhoneNavigationBar()
+		self.view.bringSubviewToFront(self.tabBar)
 		self.menuVersionLabel.text = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
 	}
 }
@@ -205,7 +214,7 @@ MARK: -
 extension MainViewController : UITabBarDelegate {
 	
 	func setupPhoneTabBar() {
-		let tabBarHeight : CGFloat = 80.0
+		let tabBarHeight : CGFloat = 90.0
 
 		self.tabBar = UITabBar()
 		self.view.addSubview(self.tabBar)

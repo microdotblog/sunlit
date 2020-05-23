@@ -10,29 +10,36 @@
         <!--About-->
         <scene sceneID="SkJ-VN-2Zc">
             <objects>
-                <viewController storyboardIdentifier="AboutViewController" title="About" id="oMw-O0-Nur" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AboutViewController" title="About" id="oMw-O0-Nur" customClass="AboutViewController" customModule="Sunlit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gzi-0H-lAx">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="88i-J8-jXF">
-                                <rect key="frame" x="183.5" y="437.5" width="47" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o3Z-U1-qyT">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="88i-J8-jXF" firstAttribute="centerY" secondItem="gzi-0H-lAx" secondAttribute="centerY" id="6Fs-yF-8r5"/>
-                            <constraint firstItem="88i-J8-jXF" firstAttribute="centerX" secondItem="gzi-0H-lAx" secondAttribute="centerX" id="BtQ-EZ-7iL"/>
+                            <constraint firstItem="o3Z-U1-qyT" firstAttribute="leading" secondItem="wFK-QA-CxX" secondAttribute="leading" id="Xgm-84-dj1"/>
+                            <constraint firstItem="o3Z-U1-qyT" firstAttribute="trailing" secondItem="wFK-QA-CxX" secondAttribute="trailing" id="dKX-Z2-4Es"/>
+                            <constraint firstAttribute="bottom" secondItem="o3Z-U1-qyT" secondAttribute="bottom" id="fI3-Tv-Pso"/>
+                            <constraint firstItem="o3Z-U1-qyT" firstAttribute="top" secondItem="wFK-QA-CxX" secondAttribute="top" id="tWf-Kz-Pt5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wFK-QA-CxX"/>
                     </view>
+                    <connections>
+                        <outlet property="webview" destination="o3Z-U1-qyT" id="Pta-0D-ihP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1QU-XK-20n" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="197" y="175"/>
+            <point key="canvasLocation" x="195.6521739130435" y="174.77678571428569"/>
         </scene>
     </scenes>
 </document>

@@ -11,6 +11,7 @@ import SafariServices
 
 class ConversationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
 
+	@IBOutlet var spinner : UIActivityIndicatorView!
 	@IBOutlet var tableView : UITableView!
 	@IBOutlet var replyContainer : UIView!
 	@IBOutlet var replyField : UITextView!
@@ -30,6 +31,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.setupNotifications()
+		self.spinner.isHidden = false
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -57,6 +59,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 				
 				DispatchQueue.main.async {
 					self.tableView.reloadData()
+					self.spinner.isHidden = true
 				}
 			}
 		}
