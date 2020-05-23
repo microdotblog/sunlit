@@ -24,14 +24,11 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		if let user = SnippetsUser.current() {
 			self.user = user
 			self.fetchUserInfo()
-			self.title = user.fullName
+			self.navigationItem.title = user.fullName
+			//self.navigationItem.backBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
 		}
     }
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		self.navigationController?.navigationBar.topItem?.title = self.user.fullName
-	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)

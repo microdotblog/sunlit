@@ -9,7 +9,7 @@
 import UIKit
 
 extension AppDelegate {
-/*
+
 	override func buildMenu(with builder: UIMenuBuilder) {
 		// only look at main menu, not contextual menus
 		guard builder.system == .main else { return }
@@ -67,7 +67,7 @@ extension AppDelegate {
 		}
 		
 	}
-*/
+
 	@objc func newPost() {
 	}
 

@@ -22,6 +22,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		
 		// Merge if we can/need to from the user cache...
 		self.user = SnippetsUser.save(self.user)
+		self.navigationItem.title = self.user.fullName
 		
 		if self.user.bio.count > 0 {
 			self.fetchUserPosts()
@@ -38,10 +39,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
     }
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		self.navigationController?.navigationBar.topItem?.title = self.user.fullName
-	}
 
 	
 	@objc func dismissViewController() {

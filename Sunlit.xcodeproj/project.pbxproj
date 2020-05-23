@@ -50,7 +50,7 @@
 		C5AC044C245F640800D7725D /* UURemoteData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC0435245F640800D7725D /* UURemoteData.swift */; };
 		C5AC044E245F66C000D7725D /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC044D245F66C000D7725D /* Settings.swift */; };
 		C5AC0450245F690600D7725D /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC044F245F690600D7725D /* Dialog.swift */; };
-		C5AC0452245FC86D00D7725D /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC0451245FC86D00D7725D /* FeedViewController.swift */; };
+		C5AC0452245FC86D00D7725D /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC0451245FC86D00D7725D /* TimelineViewController.swift */; };
 		C5B9A71B24563E66003EF82B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B9A71A24563E66003EF82B /* AppDelegate.swift */; };
 		C5B9A71D24563E66003EF82B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B9A71C24563E66003EF82B /* SceneDelegate.swift */; };
 		C5B9A72424563E66003EF82B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5B9A72224563E66003EF82B /* Main.storyboard */; };
@@ -124,6 +124,7 @@
 		C5FC6AE52477886900ACB77E /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5FC6AE42477886900ACB77E /* Settings.storyboard */; };
 		C5FC6AE7247788A200ACB77E /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5FC6AE6247788A200ACB77E /* About.storyboard */; };
 		C5FC6AE9247788D200ACB77E /* Drafts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5FC6AE8247788D200ACB77E /* Drafts.storyboard */; };
+		C5FC6AEB24788B9100ACB77E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FC6AEA24788B9100ACB77E /* MainViewController.swift */; };
 		C5FFB1CF2466986E0015368A /* ImageViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFB1CE2466986E0015368A /* ImageViewerViewController.swift */; };
 		C5FFB1D124669D640015368A /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFB1D024669D640015368A /* MyProfileViewController.swift */; };
 		C5FFB1D52469C9130015368A /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FFB1D42469C9130015368A /* ConversationViewController.swift */; };
@@ -173,7 +174,7 @@
 		C5AC0435245F640800D7725D /* UURemoteData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UURemoteData.swift; path = UUSwift/UURemoteData.swift; sourceTree = SOURCE_ROOT; };
 		C5AC044D245F66C000D7725D /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		C5AC044F245F690600D7725D /* Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
-		C5AC0451245FC86D00D7725D /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		C5AC0451245FC86D00D7725D /* TimelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		C5B9A71724563E66003EF82B /* Sunlit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sunlit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5B9A71A24563E66003EF82B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C5B9A71C24563E66003EF82B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -250,6 +251,7 @@
 		C5FC6AE42477886900ACB77E /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		C5FC6AE6247788A200ACB77E /* About.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = About.storyboard; sourceTree = "<group>"; };
 		C5FC6AE8247788D200ACB77E /* Drafts.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Drafts.storyboard; sourceTree = "<group>"; };
+		C5FC6AEA24788B9100ACB77E /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		C5FFB1CE2466986E0015368A /* ImageViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerViewController.swift; sourceTree = "<group>"; };
 		C5FFB1D024669D640015368A /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		C5FFB1D42469C9130015368A /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
@@ -472,8 +474,9 @@
 		C5FFB1D32469C7AD0015368A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				C5FC6AEA24788B9100ACB77E /* MainViewController.swift */,
 				C5AC0406245F52C800D7725D /* LoginViewController.swift */,
-				C5AC0451245FC86D00D7725D /* FeedViewController.swift */,
+				C5AC0451245FC86D00D7725D /* TimelineViewController.swift */,
 				C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */,
 				C5FFB1D024669D640015368A /* MyProfileViewController.swift */,
 				C5D53D442464B67600FFAC71 /* ProfileViewController.swift */,
@@ -576,7 +579,7 @@
 				C5D53D1E246214CE00FFAC71 /* TokeniserState.swift in Sources */,
 				C5D53D14246214CE00FFAC71 /* HtmlTreeBuilder.swift in Sources */,
 				C5D53D15246214CE00FFAC71 /* TokenQueue.swift in Sources */,
-				C5AC0452245FC86D00D7725D /* FeedViewController.swift in Sources */,
+				C5AC0452245FC86D00D7725D /* TimelineViewController.swift in Sources */,
 				C5AC0445245F640800D7725D /* UUJson.swift in Sources */,
 				C5D53D19246214CE00FFAC71 /* HtmlTreeBuilderState.swift in Sources */,
 				C5066BA62461BFF600D9B2E8 /* UUStyling.swift in Sources */,
@@ -584,6 +587,7 @@
 				C5D53D30246214CE00FFAC71 /* Attribute.swift in Sources */,
 				C5D53D29246214CE00FFAC71 /* HttpStatusException.swift in Sources */,
 				C5FC6ADD2476081C00ACB77E /* ConversationTableViewCell.swift in Sources */,
+				C5FC6AEB24788B9100ACB77E /* MainViewController.swift in Sources */,
 				C5AC044E245F66C000D7725D /* Settings.swift in Sources */,
 				C5AC0446245F640800D7725D /* UUView.swift in Sources */,
 				C5AC0447245F640800D7725D /* UUViewController.swift in Sources */,

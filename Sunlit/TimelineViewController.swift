@@ -1,5 +1,5 @@
 //
-//  FeedViewController.swift
+//  TimelineViewController.swift
 //  Sunlit
 //
 //  Created by Jonathan Hays on 5/3/20.
@@ -9,9 +9,8 @@
 import UIKit
 import SafariServices
 
-class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching, UITextViewDelegate {
+class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching, UITextViewDelegate {
 
-	@IBOutlet var menuView : UIView!
 	@IBOutlet var tableView : UITableView!	
 	var refreshControl = UIRefreshControl()
 	var keyboardAccessoryView : UIView!
@@ -21,40 +20,12 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         
 		self.setupTableView()
-		self.setupProfilePhoto()
-
-		self.setupSnippets()
+		self.loadTimeline()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		self.navigationController?.navigationBar.topItem?.title = "Timeline"
 		self.setupNotifications()
-		
-		let hamburgerMenuButton = UIBarButtonItem(image: UIImage(named: "hamburger"), style: .plain, target: self, action: #selector(onToggleHamburgerMenu))
-		self.navigationController?.navigationBar.topItem?.leftBarButtonItem = hamburgerMenuButton
-		
-		let postButton = UIBarButtonItem(image: UIImage(named: "post"), style: .plain, target: self, action: #selector(onNewPost))
-		self.navigationController?.navigationBar.topItem?.rightBarButtonItem = postButton
-	
-	}
-
-	override func viewDidAppear(_ animated: Bool) {
-		if let parent = self.parent as? UITabBarController {
-			if let items = parent.tabBar.items {
-				
-				if items.count > 2 {
-					let item = items[2]
-					if let user = SnippetsUser.current() {
-						if let image = ImageCache.prefetch(user.pathToUserImage) {
-							let formattedImage = image.uuScaleToSize(targetSize: CGSize(width: 32, height: 32)).withRenderingMode(.alwaysOriginal)
-							item.image = formattedImage
-							item.selectedImage = formattedImage
-						}
-					}
-				}
-			}
-		}
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -63,13 +34,12 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	func setupTableView() {
-		self.refreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
+		self.refreshControl.addTarget(self, action: #selector(loadTimeline), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
 		self.loadFrequentlyUsedEmoji()
 	}
 	
 	func setupNotifications() {
-		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: NSNotification.Name("TemporaryTokenReceivedNotification"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: NSNotification.Name("Feed Image Loaded"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleUserProfileSelectedNotification), name: NSNotification.Name("Display User Profile"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: NSNotification.Name("Keyboard Appear"), object: nil)
@@ -79,35 +49,10 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: NSNotification.Name("View Conversation"), object: nil)
 	}
 	
-	func setupProfilePhoto() {
-		if let tab_item = self.tabBarController?.tabBar.items?.last {
-			
-			if let user = SnippetsUser.current() {
-
-				tab_item.title = "@\(user.userHandle)"
-
-				if let avatar = ImageCache.prefetch(user.pathToUserImage) {
-					DispatchQueue.main.async {
-						tab_item.image = avatar.uuScaleToHeight(targetHeight: 40)
-					}
-				}
-				else {
-					ImageCache.fetch(user.pathToUserImage) { (image) in
-						if let avatar = image {
-							DispatchQueue.main.async {
-								tab_item.image = avatar.uuScaleToHeight(targetHeight: 40)
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
+	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-	
 	
 	func refreshTableView(_ entries : [SnippetsPost]) {
 		
@@ -208,35 +153,6 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		}
 	}
 	
-	@objc func handleTemporaryTokenReceivedNotification(_ notification : Notification) {
-		if let temporaryToken = notification.object as? String
-		{
-			Snippets.shared.requestPermanentTokenFromTemporaryToken(token: temporaryToken) { (error, token) in
-				if let permanentToken = token
-				{
-					Settings.savePermanentToken(permanentToken)
-					Snippets.shared.configure(permanentToken: permanentToken, blogUid: nil)
-					
-					Snippets.shared.fetchCurrentUserInfo { (error, updatedUser) in
-						
-						if let user = updatedUser {
-							_ = SnippetsUser.saveAsCurrent(user)
-							
-							// Go ahead and go get the avatar for the logged in user
-							if ImageCache.prefetch(user.pathToUserImage) == nil {
-								ImageCache.fetch(user.pathToUserImage) { (image) in
-								}
-							}
-							
-							self.loadTimeline()
-							Dialog.information("You have successfully logged in.", self)
-						}
-					}
-				}
-			}
-		}
-	}
-	
 	@objc func handleUserProfileSelectedNotification(_ notification : Notification) {
 		if let user = notification.object as? SnippetsUser {
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -265,64 +181,6 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		Dialog.information(message, self)
 	}
 	
-	@objc func onToggleHamburgerMenu() {
-		let width : CGFloat = 140.0
-		let closedRect = CGRect(x: -width, y: 0.0, width: width, height: self.view.bounds.size.height)
-		let openRect = CGRect(x: 0.0, y: 0.0, width: width, height: self.view.bounds.size.height)
-		
-		if self.menuView.superview == nil {
-			self.menuView.frame = closedRect
-			self.view.addSubview(self.menuView)
-			self.view.updateConstraints()
-			self.view.layoutIfNeeded()
-			
-			self.menuView.isUserInteractionEnabled = true
-			let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(onToggleHamburgerMenu))
-			swipeGestureRecognizer.direction = .left
-			self.menuView.addGestureRecognizer(swipeGestureRecognizer)
-		
-			UIView.animate(withDuration: 0.15) {
-				self.menuView.frame = openRect
-			}
-		}
-		else {
-			UIView.animate(withDuration: 0.15, animations: {
-				self.menuView.frame = closedRect
-			}) { (complete) in
-				self.menuView.removeFromSuperview()
-			}
-		}
-	}
-	
-	@objc func onNewPost() {
-		let storyBoard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
-		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "ComposeViewController")
-		self.present(newPostViewController, animated: true, completion: nil)
-	}
-	
-	@IBAction func onAbout() {
-		let storyBoard: UIStoryboard = UIStoryboard(name: "About", bundle: nil)
-		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "AboutViewController")
-		self.present(newPostViewController, animated: true, completion: nil)
-
-		self.onToggleHamburgerMenu()
-	}
-	
-	@IBAction func onDrafts() {
-		let storyBoard: UIStoryboard = UIStoryboard(name: "Drafts", bundle: nil)
-		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "DraftsViewController")
-		self.present(newPostViewController, animated: true, completion: nil)
-
-		self.onToggleHamburgerMenu()
-	}
-	
-	@IBAction func onSettings() {
-		let storyBoard: UIStoryboard = UIStoryboard(name: "Settings", bundle: nil)
-		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "SettingsViewController")
-		self.present(newPostViewController, animated: true, completion: nil)
-
-		self.onToggleHamburgerMenu()
-	}
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -379,35 +237,15 @@ class FeedViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	
 	
-	func loadTimeline() {
+	@objc func loadTimeline() {
 		
 		Snippets.shared.fetchCurrentUserPhotoTimeline { (error, postObjects : [SnippetsPost]) in
 			DispatchQueue.main.async {
 				self.refreshTableView(postObjects)
 			}
 		}
-		
 	}
 
-	@objc func setupSnippets() {
-
-		if let token = Settings.permanentToken() {
-			Snippets.shared.configure(permanentToken: token, blogUid: nil)
-			
-			self.loadTimeline()
-		}
-		else {
-			self.refreshControl.endRefreshing()
-			self.showLoginDialog()
-		}
-	}
-	
-	func showLoginDialog() {
-		let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let loginViewController = storyboard.instantiateViewController(identifier: "LoginViewController")
-
-        show(loginViewController, sender: self)
-	}
 	
 	func prefetchImages(_ indexPath : IndexPath) {
 		let post = self.tableViewData[indexPath.row]

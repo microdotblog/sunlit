@@ -24,12 +24,11 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.loadConversation()
-		self.title = "Conversation"
+		self.navigationItem.title = "Conversation"
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		self.navigationController?.navigationBar.topItem?.title = "Conversation"
 		self.setupNotifications()
 	}
 	
