@@ -147,7 +147,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		
 		// Special case for the "Add new section" button cell...
 		if indexPath.section >= self.sections.count {
-			let size = PostImageCollectionViewCell.size(collectionView.bounds.size.width)
+			let size = PostAddSectionCollectionViewCell.size(collectionView.bounds.size.width)
 			return size
 		}
 		
@@ -172,11 +172,21 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		}
 	}
 	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+		if section >= self.sections.count {
+			// New Section
+			return UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+		}
+		else {
+			return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+		}
+	}
+
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		
 		// Special case for the "Add new section" button cell...
 		if indexPath.section >= self.sections.count {
-			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostAddPhotoCollectionViewCell", for: indexPath) as! PostAddPhotoCollectionViewCell
+			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostAddSectionCollectionViewCell", for: indexPath) as! PostAddSectionCollectionViewCell
 			return cell
 		}
 		
