@@ -55,6 +55,34 @@ class ComposeViewController: UIViewController {
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
+	func onImageTapped(_ section : Int, _ item : Int) {
+		let deleteAction = UIAlertAction(title: "Remove", style: .default) { (action) in
+			let sectionData = self.sections[section]
+			sectionData.images.remove(at: item)
+			
+			if sectionData.images.count == 0 {
+				self.sections.remove(at: section)
+			}
+			
+			self.collectionView.reloadData()
+		}
+		
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+			
+		}
+		
+		let altTextAction = UIAlertAction(title: "Add Alt Text", style: .default) { (action) in
+			
+		}
+		
+		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		alertController.addAction(deleteAction)
+		alertController.addAction(altTextAction)
+		alertController.addAction(cancelAction)
+		
+		self.present(alertController, animated: true, completion: nil)
+	}
+	
 	@objc func onAddPhoto(_ section : Int) {
 		self.sectionToAddImage = section
 		
@@ -118,6 +146,11 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 
 		
 		// Special case for the "Add new section" button cell...
+		if indexPath.section >= self.sections.count {
+			let size = PostImageCollectionViewCell.size(collectionView.bounds.size.width)
+			return size
+		}
+		
 		if indexPath.section >= self.sections.count {
 			let size = PostImageCollectionViewCell.size(collectionView.bounds.size.width)
 			return size
@@ -187,6 +220,9 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			if indexPath.item > sectionData.images.count {
 				self.onAddPhoto(indexPath.section)
 			}
+			else if indexPath.item > 0 {
+				self.onImageTapped(indexPath.section, indexPath.item - 1)
+			}
 		}
 		
 		collectionView.deselectItem(at: indexPath, animated: true)
@@ -233,7 +269,8 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 		}
 		else {
 			// For now, we aren't going to support deleting from here...
-			let proposal = UICollectionViewDropProposal(operation: .move, intent: .insertIntoDestinationIndexPath)
+			//let proposal = UICollectionViewDropProposal(operation: .move, intent: .insertIntoDestinationIndexPath)
+			let proposal = UICollectionViewDropProposal(operation: .forbidden)
 			return proposal
 		}
 	}
@@ -275,10 +312,13 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 					let destIndexPath = IndexPath(item: destinationIndexPath.item, section: destinationIndexPath.section - 1)
 					self.collectionView.deleteSections(NSIndexSet(index: sourceIndexPath.section) as IndexSet)
 					if insertSection {
+						let destIndexPath = IndexPath(item: 0, section: destinationIndexPath.section - 1)
 						self.collectionView.insertSections(NSIndexSet(index: destIndexPath.section) as IndexSet)
+						self.collectionView.insertItems(at: [destIndexPath])
 					}
-					
-					self.collectionView.insertItems(at: [destIndexPath])
+					else {
+						self.collectionView.insertItems(at: [destIndexPath])
+					}
 				}
 				else {
 					self.collectionView.deleteItems(at: deleteItems)
