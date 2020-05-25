@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehI-KN-yqo">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" keyboardDismissMode="onDrag" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehI-KN-yqo">
                                 <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="iJd-OI-jXi">
@@ -108,6 +108,7 @@
                                 <connections>
                                     <outlet property="dataSource" destination="Xuq-8W-x41" id="Uxt-CO-r5t"/>
                                     <outlet property="delegate" destination="Xuq-8W-x41" id="VlO-0a-7O9"/>
+                                    <outlet property="dragDelegate" destination="Xuq-8W-x41" id="jxO-zr-Kw6"/>
                                     <outlet property="dropDelegate" destination="Xuq-8W-x41" id="972-7v-KDm"/>
                                 </connections>
                             </collectionView>
