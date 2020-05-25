@@ -29,11 +29,12 @@ class MainViewController: UIViewController {
 		self.constructPhoneInterface()
 		self.setupSnippets()
 	}
+
 	
-	func setupNotifications() {
-		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: NSNotification.Name("TemporaryTokenReceivedNotification"), object: nil)
-	}
-	
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
 	func setupSnippets() {
 		
 		if let token = Settings.permanentToken() {
@@ -41,7 +42,47 @@ class MainViewController: UIViewController {
 			self.onShowTimeline()
 		}
 		else {
-			self.showLoginDialog()
+			self.onShowLogin()
+		}
+	}
+
+
+
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+	func setupNotifications() {
+		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: NSNotification.Name("TemporaryTokenReceivedNotification"), object: nil)
+	}
+
+	
+	@objc func handleTemporaryTokenReceivedNotification(_ notification : Notification) {
+		if let temporaryToken = notification.object as? String
+		{
+			Snippets.shared.requestPermanentTokenFromTemporaryToken(token: temporaryToken) { (error, token) in
+				if let permanentToken = token
+				{
+					Settings.savePermanentToken(permanentToken)
+					Snippets.shared.configure(permanentToken: permanentToken, blogUid: nil)
+					
+					Snippets.shared.fetchCurrentUserInfo { (error, updatedUser) in
+						
+						if let user = updatedUser {
+							_ = SnippetsUser.saveAsCurrent(user)
+							
+							// Go ahead and go get the avatar for the logged in user
+							if ImageCache.prefetch(user.pathToUserImage) == nil {
+								ImageCache.fetch(user.pathToUserImage) { (image) in
+								}
+							}
+							
+							self.onShowTimeline()
+							Dialog.information("You have successfully logged in.", self)
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -98,12 +139,6 @@ class MainViewController: UIViewController {
 		}
 	}
 	
-	@objc func onNewPost() {
-		let storyBoard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
-		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "ComposeViewController")
-		self.present(newPostViewController, animated: true, completion: nil)
-	}
-	
 	@IBAction func onAbout() {
 		let storyBoard: UIStoryboard = UIStoryboard(name: "About", bundle: nil)
 		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "AboutViewController")
@@ -127,42 +162,68 @@ class MainViewController: UIViewController {
 
 		self.onToggleHamburgerMenu()
 	}
-
 	
-	@objc func handleTemporaryTokenReceivedNotification(_ notification : Notification) {
-		if let temporaryToken = notification.object as? String
-		{
-			Snippets.shared.requestPermanentTokenFromTemporaryToken(token: temporaryToken) { (error, token) in
-				if let permanentToken = token
-				{
-					Settings.savePermanentToken(permanentToken)
-					Snippets.shared.configure(permanentToken: permanentToken, blogUid: nil)
-					
-					Snippets.shared.fetchCurrentUserInfo { (error, updatedUser) in
-						
-						if let user = updatedUser {
-							_ = SnippetsUser.saveAsCurrent(user)
-							
-							// Go ahead and go get the avatar for the logged in user
-							if ImageCache.prefetch(user.pathToUserImage) == nil {
-								ImageCache.fetch(user.pathToUserImage) { (image) in
-								}
-							}
-							
-							self.onShowTimeline()
-							Dialog.information("You have successfully logged in.", self)
-						}
-					}
-				}
-			}
-		}
+	@objc func onNewPost() {
+		let pickerController = UIImagePickerController()
+		pickerController.delegate = self
+		pickerController.allowsEditing = true
+		pickerController.mediaTypes = ["public.image", "public.movie"]
+		pickerController.sourceType = .photoLibrary
+		self.present(pickerController, animated: true, completion: nil)
 	}
 	
-	func showLoginDialog() {
+	@objc func onShowLogin() {
 		let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let loginViewController = storyboard.instantiateViewController(identifier: "LoginViewController")
 
         show(loginViewController, sender: self)
+	}
+	
+	@objc func onShowTimeline() {
+		self.discoverViewController.removeFromParent()
+		self.discoverViewController.view.removeFromSuperview()
+		self.profileViewController.removeFromParent()
+		self.profileViewController.view.removeFromSuperview()
+		
+		self.addChild(timelineViewController)
+		self.contentView.addSubview(timelineViewController.view)
+		timelineViewController.view.frame = self.contentView.frame
+
+		self.pinToContentView(timelineViewController.view)
+	}
+	
+	@objc func onShowProfile() {
+		self.discoverViewController.removeFromParent()
+		self.discoverViewController.view.removeFromSuperview()
+		self.timelineViewController.removeFromParent()
+		self.timelineViewController.view.removeFromSuperview()
+
+		self.addChild(profileViewController)
+		self.contentView.addSubview(profileViewController.view)
+		profileViewController.view.frame = self.contentView.frame
+
+		self.pinToContentView(profileViewController.view)
+	}
+	
+	@objc func onShowDiscover() {
+		self.profileViewController.removeFromParent()
+		self.profileViewController.view.removeFromSuperview()
+		self.timelineViewController.removeFromParent()
+		self.timelineViewController.view.removeFromSuperview()
+
+		self.addChild(discoverViewController)
+		self.contentView.addSubview(discoverViewController.view)
+		discoverViewController.view.frame = self.contentView.frame
+
+		self.pinToContentView(discoverViewController.view)
+	}
+	
+	func pinToContentView(_ view : UIView) {
+		let topConstraint = NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: self.contentView!, attribute: .top, multiplier: 1.0, constant: 0.0)
+		let bottomConstraint = NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: self.contentView!, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+		let leftConstraint = NSLayoutConstraint(item: view, attribute: .left, relatedBy: .equal, toItem: self.contentView!, attribute: .left, multiplier: 1.0, constant: 0.0)
+		let rightConstraint = NSLayoutConstraint(item: view, attribute: .right, relatedBy: .equal, toItem: self.contentView!, attribute: .right, multiplier: 1.0, constant: 0.0)
+		self.contentView.addConstraints([topConstraint, bottomConstraint, leftConstraint, rightConstraint])
 	}
 	
 	func loadPrimaryViewsFromStoryboards() {
@@ -171,6 +232,7 @@ class MainViewController: UIViewController {
 		self.profileViewController = storyboard.instantiateViewController(identifier: "MyProfileViewController")
 		self.discoverViewController = storyboard.instantiateViewController(identifier: "DiscoverViewController")
 	}
+
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -196,22 +258,6 @@ class MainViewController: UIViewController {
 		let rightConstraint = NSLayoutConstraint(item: self.contentView!, attribute: .right, relatedBy: .equal, toItem: self.view!, attribute: .right, multiplier: 1.0, constant: 0.0)
 		self.view.addConstraints([topConstraint, bottomConstraint, leftConstraint, rightConstraint])
 	}
-	
-	func constructPhoneInterface() {
-		self.setupPhoneTabBar()
-		self.setupPhoneContentView()
-		self.setupPhoneNavigationBar()
-		self.view.bringSubviewToFront(self.tabBar)
-		self.menuVersionLabel.text = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
-	}
-}
-
-
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-extension MainViewController : UITabBarDelegate {
 	
 	func setupPhoneTabBar() {
 		let tabBarHeight : CGFloat = 90.0
@@ -249,6 +295,26 @@ extension MainViewController : UITabBarDelegate {
 
 	}
 	
+	func constructPhoneInterface() {
+		self.setupPhoneTabBar()
+		self.setupPhoneContentView()
+		self.setupPhoneNavigationBar()
+		
+		// Make sure the tab bar ends up on top...
+		self.view.bringSubviewToFront(self.tabBar)
+		
+		// Update the version label...
+		self.menuVersionLabel.text = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+	}
+}
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: -
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension MainViewController : UITabBarDelegate {
+	
 	func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
 		if item.tag == 1 {
 			self.onShowDiscover()
@@ -260,52 +326,25 @@ extension MainViewController : UITabBarDelegate {
 			self.onShowProfile()
 		}
 	}
+}
+
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: -
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension MainViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
-	func onShowTimeline() {
-		self.discoverViewController.removeFromParent()
-		self.discoverViewController.view.removeFromSuperview()
-		self.profileViewController.removeFromParent()
-		self.profileViewController.view.removeFromSuperview()
-		
-		self.addChild(timelineViewController)
-		self.contentView.addSubview(timelineViewController.view)
-		timelineViewController.view.frame = self.contentView.frame
-
-		self.pinToContentView(timelineViewController.view)
-	}
-	
-	func onShowProfile() {
-		self.discoverViewController.removeFromParent()
-		self.discoverViewController.view.removeFromSuperview()
-		self.timelineViewController.removeFromParent()
-		self.timelineViewController.view.removeFromSuperview()
-
-		self.addChild(profileViewController)
-		self.contentView.addSubview(profileViewController.view)
-		profileViewController.view.frame = self.contentView.frame
-
-		self.pinToContentView(profileViewController.view)
-	}
-	
-	func onShowDiscover() {
-		self.profileViewController.removeFromParent()
-		self.profileViewController.view.removeFromSuperview()
-		self.timelineViewController.removeFromParent()
-		self.timelineViewController.view.removeFromSuperview()
-
-		self.addChild(discoverViewController)
-		self.contentView.addSubview(discoverViewController.view)
-		discoverViewController.view.frame = self.contentView.frame
-
-		self.pinToContentView(discoverViewController.view)
-	}
-	
-	func pinToContentView(_ view : UIView) {
-		let topConstraint = NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: self.contentView!, attribute: .top, multiplier: 1.0, constant: 0.0)
-		let bottomConstraint = NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: self.contentView!, attribute: .bottom, multiplier: 1.0, constant: 0.0)
-		let leftConstraint = NSLayoutConstraint(item: view, attribute: .left, relatedBy: .equal, toItem: self.contentView!, attribute: .left, multiplier: 1.0, constant: 0.0)
-		let rightConstraint = NSLayoutConstraint(item: view, attribute: .right, relatedBy: .equal, toItem: self.contentView!, attribute: .right, multiplier: 1.0, constant: 0.0)
-		self.contentView.addConstraints([topConstraint, bottomConstraint, leftConstraint, rightConstraint])
-
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+		if let image = info[.editedImage] as? UIImage {
+			let storyBoard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
+			let postViewController = storyBoard.instantiateViewController(withIdentifier: "ComposeViewController") as! ComposeViewController
+			postViewController.addImage(image)
+			picker.pushViewController(postViewController, animated: true)
+		}
+		else {
+			picker.dismiss(animated: true, completion: nil)
+		}
 	}
 }

@@ -595,6 +595,33 @@ public class Snippets : NSObject {
 		}
 	}
 	
+	private func updatePostByUrl(path : String, completion: @escaping(Error?) -> ())
+	{
+		var bodyText = ""
+		bodyText = self.appendParameter(body: bodyText, name: "action", content: "update")
+		bodyText = self.appendParameter(body: bodyText, name: "url", content: path)
+		if let blogUid = self.uid {
+			bodyText = self.appendParameter(body: bodyText, name: "mp-destination", content: blogUid)
+		}
+
+		let body : Data = bodyText.data(using: .utf8)!
+		let request = self.securePost(path: self.pathForRoute("micropub"), arguments: [:], body: body)
+		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
+			completion(parsedServerResponse.httpError)
+		})
+	}
+	
+	@objc public func updatePost(post : SnippetsPost, completion: @escaping(Error?) -> ())
+	{
+		// Pre-flight check to see if we are even configured...
+		if self.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken)
+			return
+		}
+		
+		self.updatePostByUrl(path: post.path, completion: completion)
+	}
+
 	@objc public func reply(originalPost : SnippetsPost, content : String, completion: @escaping(Error?) -> ())
 	{
 		// Pre-flight check to see if we are even configured...

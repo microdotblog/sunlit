@@ -21,7 +21,8 @@ class ProfileBioCollectionViewCell : UICollectionViewCell {
 			size.height = rect.size.height
 			size.height = size.height + 16.0
 		}
-
+		
+		size.width = collectionViewWidth
 		return size
 	}
 

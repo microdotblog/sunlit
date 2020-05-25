@@ -16,6 +16,7 @@
 		C50E654E2478D2A800C46B61 /* credits.html in Resources */ = {isa = PBXBuildFile; fileRef = C50E654D2478D2A800C46B61 /* credits.html */; };
 		C50E65502478D63900C46B61 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E654F2478D63900C46B61 /* AboutViewController.swift */; };
 		C50E65522478DB0400C46B61 /* olive.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C50E65512478DB0400C46B61 /* olive.jpg */; };
+		C50E6554247AEE9A00C46B61 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E6553247AEE9A00C46B61 /* ComposeViewController.swift */; };
 		C51CBB87246B1429005981B5 /* SnippetsUser+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */; };
 		C53C08EB2471FFF000C919E0 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */; };
 		C53C08ED2472133F00C919E0 /* Tagmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C08EC2472133F00C919E0 /* Tagmoji.swift */; };
@@ -143,6 +144,7 @@
 		C50E654D2478D2A800C46B61 /* credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = credits.html; sourceTree = "<group>"; };
 		C50E654F2478D63900C46B61 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		C50E65512478DB0400C46B61 /* olive.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = olive.jpg; sourceTree = "<group>"; };
+		C50E6553247AEE9A00C46B61 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetsUser+Sunlit.swift"; sourceTree = "<group>"; };
 		C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
 		C53C08EC2472133F00C919E0 /* Tagmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tagmoji.swift; sourceTree = "<group>"; };
@@ -484,6 +486,7 @@
 			children = (
 				C5FC6AEA24788B9100ACB77E /* MainViewController.swift */,
 				C5AC0406245F52C800D7725D /* LoginViewController.swift */,
+				C50E6553247AEE9A00C46B61 /* ComposeViewController.swift */,
 				C5AC0451245FC86D00D7725D /* TimelineViewController.swift */,
 				C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */,
 				C5FFB1D024669D640015368A /* MyProfileViewController.swift */,
@@ -623,6 +626,7 @@
 				C5D53D16246214CE00FFAC71 /* CssSelector.swift in Sources */,
 				C5AC041C245F63E300D7725D /* Snippets+XMLParsing.swift in Sources */,
 				C5AC0450245F690600D7725D /* Dialog.swift in Sources */,
+				C50E6554247AEE9A00C46B61 /* ComposeViewController.swift in Sources */,
 				C5FC6AD92476079600ACB77E /* ProfileBioCollectionViewCell.swift in Sources */,
 				C5D53D12246214CE00FFAC71 /* Element.swift in Sources */,
 				C5066BA32461BFF600D9B2E8 /* UULocalization.swift in Sources */,

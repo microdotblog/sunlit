@@ -61,6 +61,16 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Sunlit needs access to your media library to help you create beautiful stories.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Sunlit needs access to your camera to help you create beautiful stories.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Sunlit uses your location to add a check-in to a story.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Sunlit uses your location to add a check-in to a story.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Sunlit needs access to your photos to help you create beautiful stories.</string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
