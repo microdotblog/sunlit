@@ -19,8 +19,7 @@ public class Snippets : NSObject {
 
 	@objc public static let shared = Snippets()
 	
-	@objc public func configure(permanentToken : String, blogUid : String?, mediaEndPoint : String? = nil)
-	{
+	@objc public func configure(permanentToken : String, blogUid : String?, mediaEndPoint : String? = nil) {
 		self.uid = blogUid
 		self.token = permanentToken
 		
@@ -29,14 +28,16 @@ public class Snippets : NSObject {
 		}
 	}
 
-	@objc public func setMediaEndPoint(_ path : String)
-	{
+	@objc public func setMediaEndPoint(_ path : String) {
 		self.mediaEndPoint = path
 	}
 
-	@objc public func setServerPath(_ path : String)
-	{
+	@objc public func setServerPath(_ path : String) {
 		self.serverPath = path
+	}
+	
+	@objc public func setBlogIdentifier(_ blogUid : String) {
+		self.uid = blogUid
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
