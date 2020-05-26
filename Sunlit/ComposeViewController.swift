@@ -8,16 +8,10 @@
 
 import UIKit
 
-class SunlitStorySection {
-	var text = ""
-	var images : [UIImage] = []
-}
-
-
 class ComposeViewController: UIViewController {
 
 	@IBOutlet var collectionView : UICollectionView!
-	var sections : [SunlitStorySection] = []
+	var sections : [SunlitComposition] = []
 	var needsInitialFirstResponder = true
 	var sectionToAddImage = 0
 	
@@ -104,7 +98,7 @@ class ComposeViewController: UIViewController {
 	
 	func addImage(_ image : UIImage) {
 		if self.sectionToAddImage >= self.sections.count {
-			let section = SunlitStorySection()
+			let section = SunlitComposition()
 			section.text = ""
 			section.images.append(image)
 			self.sections.append(section)
@@ -144,26 +138,19 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-		
 		// Special case for the "Add new section" button cell...
 		if indexPath.section >= self.sections.count {
 			let size = PostAddSectionCollectionViewCell.size(collectionView.bounds.size.width)
 			return size
 		}
 		
-		if indexPath.section >= self.sections.count {
-			let size = PostImageCollectionViewCell.size(collectionView.bounds.size.width)
-			return size
-		}
-		
 		let section = self.sections[indexPath.section]
-
 		if indexPath.item == 0 {
 			let size = PostTextCollectionViewCell.size(collectionView.bounds.size.width, section.text)
 			return size
 		}
 		else if indexPath.item > section.images.count {
-			let size = PostImageCollectionViewCell.size(collectionView.bounds.size.width)
+			let size = PostAddPhotoCollectionViewCell.size(collectionView.bounds.size.width)
 			return size
 		}
 		else {
@@ -209,6 +196,8 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		}
 		else if indexPath.item > sectionData.images.count {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostAddPhotoCollectionViewCell", for: indexPath) as! PostAddPhotoCollectionViewCell
+			let size = PostAddPhotoCollectionViewCell.size(collectionView.bounds.size.width)
+			cell.widthConstraint.constant = size.width
 			return cell
 		}
 		else {
@@ -309,7 +298,7 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			}
 			else {
 				// If we are here, it's being move to a destination that doesn't yet exist...
-				let section = SunlitStorySection()
+				let section = SunlitComposition()
 				section.text = ""
 				section.images.append(image)
 				self.sections.append(section)
@@ -373,49 +362,6 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			
 		}
 	}
-	
-	
-	/*
-	
-	- (void) collectionView:(UICollectionView *)collectionView performDropWithCoordinator:(id<UICollectionViewDropCoordinator>)coordinator
-	{
-		NSIndexPath* destinationIndexPath = coordinator.destinationIndexPath;
-	  
-		id<UICollectionViewDropItem> drop = [coordinator.items firstObject];
-		UIDragItem* item = drop.dragItem;
-		
-		SLEntry* dragged_e = item.localObject;
-		
-		NSIndexSet* deleting_section = [self.story removeEntry:dragged_e];
-		if (deleting_section)
-		{
-			NSUInteger removedSection = deleting_section.firstIndex;
-			
-			if (removedSection < destinationIndexPath.section)
-			{
-				destinationIndexPath = [NSIndexPath indexPathForItem:destinationIndexPath.item inSection:destinationIndexPath.section - 1];
-			}
-		}
-		
-		[self.story move:dragged_e to:destinationIndexPath];
-		
-		[self.entriesCollectionView performBatchUpdates:^{
-			if (deleting_section) {
-				[self.entriesCollectionView deleteSections:deleting_section];
-			}
-			else {
-				[self.entriesCollectionView deleteItemsAtIndexPaths:@[ drop.sourceIndexPath ]];
-			}
-			[self.entriesCollectionView insertItemsAtIndexPaths:@[ destinationIndexPath ]];
-		}
-		completion:^(BOOL finished)
-		{
-		}];
-
-	}
-
-
-	*/
 }
 
 
@@ -465,47 +411,3 @@ extension ComposeViewController : UIImagePickerControllerDelegate, UINavigationC
 	
 }
 
-
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-class PostImageCollectionViewCell : UICollectionViewCell {
-	@IBOutlet var postImage : UIImageView!
-	@IBOutlet var widthConstraint : NSLayoutConstraint!
-
-	static func size(_ collectionViewWidth : CGFloat) -> CGSize {
-		let size : CGFloat = (collectionViewWidth / 3.0)
-		return CGSize(width: size, height: size)
-	}
-}
-
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-class PostTextCollectionViewCell : UICollectionViewCell {
-	@IBOutlet var postText : UITextView!
-	@IBOutlet var widthConstraint : NSLayoutConstraint!
-
-	static func size(_ collectionViewWidth : CGFloat, _ text : String) -> CGSize {
-		var size = CGSize(width: collectionViewWidth - 16.0, height: 0)
-		let rect = text.boundingRect(with: size, options: .usesLineFragmentOrigin , context: nil)
-		size.height = rect.size.height
-		size.height = size.height + 32.0
-		size.width = collectionViewWidth - 8.0
-		if size.height < 60.0 {
-			size.height = 60.0
-		}
-		return size
-	}
-
-}
-
-
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-class PostAddPhotoCollectionViewCell : UICollectionViewCell {
-}

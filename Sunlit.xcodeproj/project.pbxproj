@@ -61,6 +61,10 @@
 		C5B9A72424563E66003EF82B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5B9A72224563E66003EF82B /* Main.storyboard */; };
 		C5B9A72624563E66003EF82B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5B9A72524563E66003EF82B /* Assets.xcassets */; };
 		C5B9A72924563E66003EF82B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5B9A72724563E66003EF82B /* LaunchScreen.storyboard */; };
+		C5C3AC3F247C9DA000D31A0A /* SunlitComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC3E247C9DA000D31A0A /* SunlitComposition.swift */; };
+		C5C3AC41247C9E3500D31A0A /* PostImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC40247C9E3500D31A0A /* PostImageCollectionViewCell.swift */; };
+		C5C3AC43247C9E5600D31A0A /* PostTextCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC42247C9E5600D31A0A /* PostTextCollectionViewCell.swift */; };
+		C5C3AC45247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC44247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift */; };
 		C5D53CC42461CA2D00FFAC71 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53CC32461CA2D00FFAC71 /* ImageCache.swift */; };
 		C5D53CC624620EB900FFAC71 /* SunlitPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53CC524620EB900FFAC71 /* SunlitPost.swift */; };
 		C5D53D05246214CE00FFAC71 /* Whitelist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53CC8246214CD00FFAC71 /* Whitelist.swift */; };
@@ -192,6 +196,10 @@
 		C5B9A72524563E66003EF82B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C5B9A72824563E66003EF82B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C5B9A72A24563E66003EF82B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C5C3AC3E247C9DA000D31A0A /* SunlitComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitComposition.swift; sourceTree = "<group>"; };
+		C5C3AC40247C9E3500D31A0A /* PostImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		C5C3AC42247C9E5600D31A0A /* PostTextCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTextCollectionViewCell.swift; sourceTree = "<group>"; };
+		C5C3AC44247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		C5D53CC32461CA2D00FFAC71 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		C5D53CC524620EB900FFAC71 /* SunlitPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitPost.swift; sourceTree = "<group>"; };
 		C5D53CC8246214CD00FFAC71 /* Whitelist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Whitelist.swift; path = SwiftSoup/Whitelist.swift; sourceTree = SOURCE_ROOT; };
@@ -464,6 +472,9 @@
 				C5FC6ADA247607C300ACB77E /* ProfileHeaderCollectionViewCell.swift */,
 				C5FC6AD82476079600ACB77E /* ProfileBioCollectionViewCell.swift */,
 				C5FC6AD62476076C00ACB77E /* PhotoEntryCollectionViewCell.swift */,
+				C5C3AC40247C9E3500D31A0A /* PostImageCollectionViewCell.swift */,
+				C5C3AC42247C9E5600D31A0A /* PostTextCollectionViewCell.swift */,
+				C5C3AC44247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift */,
 			);
 			name = CollectionViewCells;
 			sourceTree = "<group>";
@@ -475,6 +486,7 @@
 				C5AC044D245F66C000D7725D /* Settings.swift */,
 				C5AC044F245F690600D7725D /* Dialog.swift */,
 				C5D53CC32461CA2D00FFAC71 /* ImageCache.swift */,
+				C5C3AC3E247C9DA000D31A0A /* SunlitComposition.swift */,
 				C5D53CC524620EB900FFAC71 /* SunlitPost.swift */,
 				C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */,
 				C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */,
@@ -638,6 +650,7 @@
 				4B4659E8246B272C00C4E84A /* AppDelegate+Menus.swift in Sources */,
 				C5D53D2D246214CE00FFAC71 /* BooleanAttribute.swift in Sources */,
 				C5D53D3C246214CE00FFAC71 /* String.swift in Sources */,
+				C5C3AC43247C9E5600D31A0A /* PostTextCollectionViewCell.swift in Sources */,
 				C5D53D31246214CE00FFAC71 /* CharacterReader.swift in Sources */,
 				C5D53D36246214CE00FFAC71 /* Attributes.swift in Sources */,
 				C5D53D24246214CE00FFAC71 /* StructuralEvaluator.swift in Sources */,
@@ -657,6 +670,7 @@
 				C5D53D08246214CE00FFAC71 /* ParseErrorList.swift in Sources */,
 				C5AC043D245F640800D7725D /* UUImage.swift in Sources */,
 				C5AC0448245F640800D7725D /* UURandom.swift in Sources */,
+				C5C3AC45247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift in Sources */,
 				C5AC0436245F640800D7725D /* UUHttpSession.swift in Sources */,
 				C5AC0444245F640800D7725D /* UUCircularView.swift in Sources */,
 				C5AC0439245F640800D7725D /* UUCoreData.swift in Sources */,
@@ -677,12 +691,14 @@
 				C5D53D2C246214CE00FFAC71 /* ParseError.swift in Sources */,
 				C5D53D11246214CE00FFAC71 /* DataUtil.swift in Sources */,
 				C5AC0407245F52C800D7725D /* LoginViewController.swift in Sources */,
+				C5C3AC41247C9E3500D31A0A /* PostImageCollectionViewCell.swift in Sources */,
 				C5D53D28246214CE00FFAC71 /* Validate.swift in Sources */,
 				C5AC0438245F640800D7725D /* UUTextField.swift in Sources */,
 				C5B9A71D24563E66003EF82B /* SceneDelegate.swift in Sources */,
 				C5FFB1D52469C9130015368A /* ConversationViewController.swift in Sources */,
 				C5D53D17246214CE00FFAC71 /* DataNode.swift in Sources */,
 				C5AC0440245F640800D7725D /* UUObjectFactory.swift in Sources */,
+				C5C3AC3F247C9DA000D31A0A /* SunlitComposition.swift in Sources */,
 				C5D53D0B246214CE00FFAC71 /* Evaluator.swift in Sources */,
 				C5D53D2E246214CE00FFAC71 /* TextNode.swift in Sources */,
 				C5D53CC624620EB900FFAC71 /* SunlitPost.swift in Sources */,
