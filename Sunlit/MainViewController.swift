@@ -19,6 +19,7 @@ class MainViewController: UIViewController {
 	var discoverViewController : DiscoverViewController!
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
+	var loginViewController : LoginViewController?
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,9 +37,9 @@ class MainViewController: UIViewController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 	func setupSnippets() {
-		
+		let blogIdentifier = Settings.blogIdentifier()
 		if let token = Settings.permanentToken() {
-			Snippets.shared.configure(permanentToken: token, blogUid: nil)
+			Snippets.shared.configure(permanentToken: token, blogUid: blogIdentifier)
 			self.onShowTimeline()
 		}
 		else {
@@ -77,8 +78,7 @@ class MainViewController: UIViewController {
 								}
 							}
 							
-							self.onShowTimeline()
-							Dialog.information("You have successfully logged in.", self)
+							self.onSelectBlogConfiguration()
 						}
 					}
 				}
@@ -174,12 +174,16 @@ class MainViewController: UIViewController {
 	
 	@objc func onShowLogin() {
 		let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let loginViewController = storyboard.instantiateViewController(identifier: "LoginViewController")
-
-        show(loginViewController, sender: self)
+		self.loginViewController = storyboard.instantiateViewController(identifier: "LoginViewController")
+		show(self.loginViewController!, sender: self)
 	}
 	
 	@objc func onShowTimeline() {
+		if let loginViewController = self.loginViewController {
+			loginViewController.dismiss(animated: true, completion: nil)
+			self.loginViewController = nil
+		}
+
 		self.discoverViewController.removeFromParent()
 		self.discoverViewController.view.removeFromSuperview()
 		self.profileViewController.removeFromParent()
@@ -193,7 +197,12 @@ class MainViewController: UIViewController {
 	}
 	
 	@objc func onShowProfile() {
-		self.discoverViewController.removeFromParent()
+		if let loginViewController = self.loginViewController {
+			loginViewController.dismiss(animated: true, completion: nil)
+			self.loginViewController = nil
+		}
+		
+ 		self.discoverViewController.removeFromParent()
 		self.discoverViewController.view.removeFromSuperview()
 		self.timelineViewController.removeFromParent()
 		self.timelineViewController.view.removeFromSuperview()
@@ -216,6 +225,63 @@ class MainViewController: UIViewController {
 		discoverViewController.view.frame = self.contentView.frame
 
 		self.pinToContentView(discoverViewController.view)
+	}
+	
+	@objc func onSelectBlogConfiguration() {
+		Snippets.shared.fetchCurrentUserConfiguration { (error, configuration) in
+			
+			// Check for a media endpoint definition...
+			if let mediaEndPoint = configuration["media-endpoint"] as? String {
+				Settings.saveMediaEndpoint(mediaEndPoint)
+				Snippets.shared.setMediaEndPoint(mediaEndPoint)
+			}
+			
+			DispatchQueue.main.async {
+
+				if let destinations = configuration["destination"] as? [[String : Any]] {
+					
+					if destinations.count > 1 {
+						self.onSelectBlogConfiguration(destinations)
+						return
+					}
+				
+					if let destination = destinations.first {
+						if let blogIdentifier = destination["uid"] as? String {
+							Settings.saveBlogIdentifier(blogIdentifier)
+						}
+					}
+				}
+			
+				Dialog.information("You have successfully logged in.", self) {
+					self.onShowTimeline()
+				}
+			}
+		}
+	}
+	
+	@objc func onSelectBlogConfiguration(_ destinations : [[String : Any]]) {
+
+		let actionSheet = UIAlertController(title: nil, message: "Please select which Micro.blog to use when publishing.", preferredStyle: .actionSheet)
+
+		for destination in destinations {
+			if let title = destination["name"] as? String,
+				let blogId = destination["uid"] as? String {
+				let action = UIAlertAction(title: title, style: .default) { (action) in
+					Settings.saveBlogIdentifier(blogId)
+					Snippets.shared.setBlogIdentifier(blogId)
+					
+					Dialog.information("You have successfully logged in.", self) {
+						self.onShowTimeline()
+					}
+				}
+				
+				actionSheet.addAction(action)
+			}
+		}
+		
+		self.present(actionSheet, animated: true) {
+		}
+
 	}
 	
 	func pinToContentView(_ view : UIView) {
