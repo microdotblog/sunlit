@@ -9,11 +9,11 @@
 import UIKit
 
 class SunlitComposition {
+		
 	var text = ""
 	var images : [UIImage] = []
-	
-	static func createHTML(_ sections : [SunlitComposition]) -> String {
-		
-		return ""
-	}
+	var imagePaths : [UIImage : String] = [:]
 }
+
+
+

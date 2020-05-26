@@ -65,6 +65,8 @@
 		C5C3AC41247C9E3500D31A0A /* PostImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC40247C9E3500D31A0A /* PostImageCollectionViewCell.swift */; };
 		C5C3AC43247C9E5600D31A0A /* PostTextCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC42247C9E5600D31A0A /* PostTextCollectionViewCell.swift */; };
 		C5C3AC45247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC44247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift */; };
+		C5C3AC47247DCB3100D31A0A /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC46247DCB3100D31A0A /* ImageUploader.swift */; };
+		C5C3AC49247DCB3E00D31A0A /* HTMLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC48247DCB3E00D31A0A /* HTMLBuilder.swift */; };
 		C5D53CC42461CA2D00FFAC71 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53CC32461CA2D00FFAC71 /* ImageCache.swift */; };
 		C5D53CC624620EB900FFAC71 /* SunlitPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53CC524620EB900FFAC71 /* SunlitPost.swift */; };
 		C5D53D05246214CE00FFAC71 /* Whitelist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53CC8246214CD00FFAC71 /* Whitelist.swift */; };
@@ -200,6 +202,8 @@
 		C5C3AC40247C9E3500D31A0A /* PostImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		C5C3AC42247C9E5600D31A0A /* PostTextCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTextCollectionViewCell.swift; sourceTree = "<group>"; };
 		C5C3AC44247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		C5C3AC46247DCB3100D31A0A /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
+		C5C3AC48247DCB3E00D31A0A /* HTMLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLBuilder.swift; sourceTree = "<group>"; };
 		C5D53CC32461CA2D00FFAC71 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		C5D53CC524620EB900FFAC71 /* SunlitPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitPost.swift; sourceTree = "<group>"; };
 		C5D53CC8246214CD00FFAC71 /* Whitelist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Whitelist.swift; path = SwiftSoup/Whitelist.swift; sourceTree = SOURCE_ROOT; };
@@ -491,6 +495,8 @@
 				C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */,
 				C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */,
 				C53C08EC2472133F00C919E0 /* Tagmoji.swift */,
+				C5C3AC46247DCB3100D31A0A /* ImageUploader.swift */,
+				C5C3AC48247DCB3E00D31A0A /* HTMLBuilder.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -616,6 +622,7 @@
 				C5D53D30246214CE00FFAC71 /* Attribute.swift in Sources */,
 				C5D53D29246214CE00FFAC71 /* HttpStatusException.swift in Sources */,
 				C5FC6ADD2476081C00ACB77E /* ConversationTableViewCell.swift in Sources */,
+				C5C3AC47247DCB3100D31A0A /* ImageUploader.swift in Sources */,
 				C5FC6AEB24788B9100ACB77E /* MainViewController.swift in Sources */,
 				C5AC044E245F66C000D7725D /* Settings.swift in Sources */,
 				C5AC0446245F640800D7725D /* UUView.swift in Sources */,
@@ -656,6 +663,7 @@
 				C5D53D24246214CE00FFAC71 /* StructuralEvaluator.swift in Sources */,
 				C5FFB1CF2466986E0015368A /* ImageViewerViewController.swift in Sources */,
 				C5D53D1C246214CE00FFAC71 /* SerializationException.swift in Sources */,
+				C5C3AC49247DCB3E00D31A0A /* HTMLBuilder.swift in Sources */,
 				C5D53D2A246214CE00FFAC71 /* Collector.swift in Sources */,
 				C5AC043F245F640800D7725D /* UUCircularImageView.swift in Sources */,
 				C5066BA42461BFF600D9B2E8 /* UUThread.swift in Sources */,

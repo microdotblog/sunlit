@@ -89,7 +89,7 @@ class ComposeViewController: UIViewController {
 	}
 
 	@objc func onPost() {
-		
+		self.uploadComposition()
 	}
 	
 	@objc func onCancel() {
@@ -112,7 +112,43 @@ class ComposeViewController: UIViewController {
 			self.collectionView.reloadData()
 		}
 	}
+	
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+	
+	func uploadComposition() {
+		self.uploadImages { (imageDictionary : [UIImage : String]) in
+			let string = HTMLBuilder.createHTML(sections: self.sections, imagePathDictionary: imageDictionary)
+			Snippets.shared.postHtml(title: "", content: string) { (error, remotePath) in
+				DispatchQueue.main.async {
+					Dialog.information("Upload successful! (\(remotePath!)", self) {
+						// TODO: Maybe we leave the VC now?
+					}
+				}
+			}
+		}
+	}
+
+	func uploadImages(_ completion : @escaping ([UIImage : String]) -> Void) {
+		var uploadQueue : [UIImage] = []
+		for composition in self.sections {
+			for image in composition.images {
+				uploadQueue.append(image)
+			}
+		}
+		
+		let imageLoader = ImageUploader()
+		imageLoader.uploadImages(uploadQueue) { (error, dictionary) in
+			//TODO: Need to implement error handling here...
+			
+			completion(dictionary)
+		}
+	}
 }
+
+
+
 
 
 
