@@ -187,6 +187,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		// Special case for the "Add new section" button cell...
 		if indexPath.section >= self.sections.count {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostAddSectionCollectionViewCell", for: indexPath) as! PostAddSectionCollectionViewCell
+			cell.widthConstraint.constant = collectionView.bounds.size.width - 16.0
 			return cell
 		}
 		
@@ -259,10 +260,13 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 	func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
 		
 		if let destination = destinationIndexPath {
-			
+
+			//print("Section = \(destination.section) Item = \(destination.item)")
+
 			// Check to see if it's being dragged to an uncreated section (at the bottom)
 			if destination.section >= self.sections.count {
-				let proposal = UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+				let proposal = UICollectionViewDropProposal(operation: .forbidden)
+				//let proposal = UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
 				return proposal
 			}
 			
@@ -278,8 +282,6 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			return proposal
 		}
 		else {
-			// For now, we aren't going to support deleting from here...
-			//let proposal = UICollectionViewDropProposal(operation: .move, intent: .insertIntoDestinationIndexPath)
 			let proposal = UICollectionViewDropProposal(operation: .forbidden)
 			return proposal
 		}
@@ -289,50 +291,81 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 		if let destinationIndexPath = coordinator.destinationIndexPath,
 		   let drop = coordinator.items.first,
 		   let sourceIndexPath = drop.sourceIndexPath{
-			
+
+			// Find and remove the image from the source section...
+			let imageIndex = sourceIndexPath.item - 1
 			let sourceSection = self.sections[sourceIndexPath.section]
-			let image = sourceSection.images[sourceIndexPath.item - 1]
-			sourceSection.images.remove(at: sourceIndexPath.item - 1)
+			let image = sourceSection.images[imageIndex]
+			sourceSection.images.remove(at: imageIndex)
 			
-			let deleteSection = sourceSection.images.count == 0
-			var insertSection = false
+			// Do we need to delete this section?
+			let sectionNeedsDelete = sourceSection.images.count == 0
+			var sectionNeedsInsert = false
 			
+			// If the destination is less than the total, it just means we are moving it to a different section...
 			if destinationIndexPath.section < self.sections.count {
 				let destSection = self.sections[destinationIndexPath.section]
 				destSection.images.insert(image, at: destinationIndexPath.item - 1)
 			}
 			else {
+				// If we are here, it's being move to a destination that doesn't yet exist...
 				let section = SunlitStorySection()
 				section.text = ""
 				section.images.append(image)
 				self.sections.append(section)
-				insertSection = true
+				sectionNeedsInsert = true
 			}
 			
-			let insertItems = [destinationIndexPath]
-			let deleteItems = [sourceIndexPath]
 			
-			if deleteSection {
-				self.sections.remove(at: sourceIndexPath.section)
-			}
-			
-			self.collectionView.performBatchUpdates({
+			// Setup the index paths for the collection view updates...
+			var sectionToInsert : IndexSet? = nil
+			var sectionToDelete : IndexSet? = nil
+			var insertItems : [IndexPath] = [destinationIndexPath]
+			var deleteItems : [IndexPath] = [sourceIndexPath]
+
+			let sourceSectionIndex = sourceIndexPath.section
+			var destSectionIndex = destinationIndexPath.section
+			let deleteSectionIndex = sourceSectionIndex
+			var insertSectionIndex = destSectionIndex
+
+			if sectionNeedsDelete {
 				
-				if deleteSection {
-					let destIndexPath = IndexPath(item: destinationIndexPath.item, section: destinationIndexPath.section - 1)
-					self.collectionView.deleteSections(NSIndexSet(index: sourceIndexPath.section) as IndexSet)
-					if insertSection {
-						let destIndexPath = IndexPath(item: 0, section: destinationIndexPath.section - 1)
-						self.collectionView.insertSections(NSIndexSet(index: destIndexPath.section) as IndexSet)
-						self.collectionView.insertItems(at: [destIndexPath])
-					}
-					else {
-						self.collectionView.insertItems(at: [destIndexPath])
-					}
+				// Do we need to reduce the indexes?
+				if sourceSectionIndex < destSectionIndex {
+					destSectionIndex = destSectionIndex - 1
+					insertSectionIndex = insertSectionIndex - 1
 				}
-				else {
-					self.collectionView.deleteItems(at: deleteItems)
+
+				self.sections.remove(at: sourceIndexPath.section)
+				
+				sectionToDelete = NSIndexSet(index: deleteSectionIndex) as IndexSet
+				deleteItems.removeAll()
+				insertItems.removeAll()
+				insertItems.append(IndexPath(item: destinationIndexPath.item, section: destSectionIndex))
+			}
+			
+			if sectionNeedsInsert {
+				sectionToInsert = NSIndexSet(index: insertSectionIndex) as IndexSet
+			}
+			
+	
+			// Update the collection view in a batch update so it looks smooth...
+			self.collectionView.performBatchUpdates({
+
+				if let deleteSection = sectionToDelete {
+					self.collectionView.deleteSections(deleteSection)
+				}
+				
+				if let insertSection = sectionToInsert {
+					self.collectionView.insertSections(insertSection)
+				}
+				
+				if insertItems.count > 0 {
 					self.collectionView.insertItems(at: insertItems)
+				}
+				
+				if deleteItems.count > 0 {
+					self.collectionView.deleteItems(at: deleteItems)
 				}
 			})
 			{ (complete) in

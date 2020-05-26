@@ -9,6 +9,8 @@
 import UIKit
 
 class PostAddSectionCollectionViewCell: UICollectionViewCell {
+	
+	@IBOutlet var widthConstraint : NSLayoutConstraint!
 
 	static func size(_ collectionViewWidth : CGFloat) -> CGSize {
 		return CGSize(width: collectionViewWidth, height: 60)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -130,6 +130,7 @@
                                                     <constraints>
                                                         <constraint firstItem="cep-ft-7VK" firstAttribute="centerX" secondItem="KBL-Cb-N0t" secondAttribute="centerX" id="9pO-Q2-QPY"/>
                                                         <constraint firstItem="cep-ft-7VK" firstAttribute="centerY" secondItem="KBL-Cb-N0t" secondAttribute="centerY" id="RgW-Gg-Ym6"/>
+                                                        <constraint firstAttribute="width" constant="377" id="jFB-RK-jgb"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="uuCornerRadius">
@@ -146,6 +147,9 @@
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="393" height="74"/>
+                                        <connections>
+                                            <outlet property="widthConstraint" destination="jFB-RK-jgb" id="Bf1-gP-9ZS"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
