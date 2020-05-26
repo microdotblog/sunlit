@@ -22,8 +22,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
 	func attemptLogin(_ emailAddress : String?) {
 		
-		if let email = emailAddress {
+		if let input = emailAddress {
 
+			let email = input.uuTrimWhitespace()
+			
 			if !email.uuIsValidEmail() {
 				Dialog.information("Please enter a valid email address.", self)
 				return
