@@ -177,7 +177,7 @@ class MainViewController: UIViewController {
 	@objc func onNewPost() {
 		let pickerController = UIImagePickerController()
 		pickerController.delegate = self
-		pickerController.allowsEditing = true
+		pickerController.allowsEditing = false
 		pickerController.mediaTypes = ["public.image", "public.movie"]
 		pickerController.sourceType = .photoLibrary
 		self.present(pickerController, animated: true, completion: nil)
@@ -414,7 +414,17 @@ MARK: -
 extension MainViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-		if let image = info[.editedImage] as? UIImage {
+		var image : UIImage? = nil
+
+		if let img = info[.editedImage] as? UIImage {
+			image = img
+		}
+		else if let img = info[.originalImage] as? UIImage {
+			image = img
+		}
+
+		
+		if let image = image {
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
 			let postViewController = storyBoard.instantiateViewController(withIdentifier: "ComposeViewController") as! ComposeViewController
 			postViewController.addImage(image)

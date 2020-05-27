@@ -115,9 +115,9 @@ class ComposeViewController: UIViewController {
 		
 		let pickerController = UIImagePickerController()
 		pickerController.delegate = self
-		pickerController.allowsEditing = true
 		pickerController.mediaTypes = ["public.image"]// TODO: Need to support videos. But not today. , "public.movie"]
 		pickerController.sourceType = .photoLibrary
+		pickerController.allowsEditing = false
 		self.present(pickerController, animated: true, completion: nil)
 	}
 
@@ -565,6 +565,9 @@ extension ComposeViewController : UIImagePickerControllerDelegate, UINavigationC
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 		
 		if let image = info[.editedImage] as? UIImage {
+			self.addImage(image)
+		}
+		else if let image = info[.originalImage] as? UIImage {
 			self.addImage(image)
 		}
 		
