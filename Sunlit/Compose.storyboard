@@ -69,7 +69,7 @@
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zi2-Jg-TIo">
                                             <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n5S-Q4-UNQ">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="n5S-Q4-UNQ">
                                                     <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
@@ -78,7 +78,7 @@
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="412" id="0N2-QS-0lX"/>
+                                                <constraint firstAttribute="width" constant="120" id="0N2-QS-0lX"/>
                                                 <constraint firstItem="n5S-Q4-UNQ" firstAttribute="top" secondItem="Zi2-Jg-TIo" secondAttribute="top" id="JXH-C5-Ar1"/>
                                                 <constraint firstAttribute="width" secondItem="Zi2-Jg-TIo" secondAttribute="height" multiplier="1:1" id="fwI-oH-3wL"/>
                                                 <constraint firstAttribute="trailing" secondItem="n5S-Q4-UNQ" secondAttribute="trailing" id="nxf-YF-Jne"/>
@@ -163,19 +163,38 @@
                                     <outlet property="dropDelegate" destination="Xuq-8W-x41" id="972-7v-KDm"/>
                                 </connections>
                             </collectionView>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y7O-Qg-4a1">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="0OK-ip-ecK">
+                                        <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
+                                        <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.5" alpha="0.84218199823943662" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="0OK-ip-ecK" firstAttribute="centerX" secondItem="Y7O-Qg-4a1" secondAttribute="centerX" id="4r3-jW-Jn6"/>
+                                    <constraint firstItem="0OK-ip-ecK" firstAttribute="centerY" secondItem="Y7O-Qg-4a1" secondAttribute="centerY" id="tjp-dl-fdQ"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="ehI-KN-yqo" firstAttribute="trailing" secondItem="ZVb-fk-Mtm" secondAttribute="trailing" id="46C-vo-3Ea"/>
+                            <constraint firstItem="Y7O-Qg-4a1" firstAttribute="top" secondItem="yQX-NT-ibg" secondAttribute="top" id="DvB-cV-eEg"/>
+                            <constraint firstItem="Y7O-Qg-4a1" firstAttribute="trailing" secondItem="ZVb-fk-Mtm" secondAttribute="trailing" id="KGj-FT-A0C"/>
                             <constraint firstAttribute="bottom" secondItem="ehI-KN-yqo" secondAttribute="bottom" id="fL5-nd-VFt"/>
+                            <constraint firstAttribute="bottom" secondItem="Y7O-Qg-4a1" secondAttribute="bottom" id="jUA-qI-Tjw"/>
                             <constraint firstItem="ehI-KN-yqo" firstAttribute="top" secondItem="ZVb-fk-Mtm" secondAttribute="top" id="mz1-QJ-Nqy"/>
                             <constraint firstItem="ehI-KN-yqo" firstAttribute="leading" secondItem="ZVb-fk-Mtm" secondAttribute="leading" id="oi4-rS-Exp"/>
+                            <constraint firstItem="Y7O-Qg-4a1" firstAttribute="leading" secondItem="ZVb-fk-Mtm" secondAttribute="leading" id="orQ-c7-Ror"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ZVb-fk-Mtm"/>
                     </view>
                     <navigationItem key="navigationItem" id="UOj-RJ-nJQ"/>
                     <connections>
                         <outlet property="collectionView" destination="ehI-KN-yqo" id="xgo-44-go4"/>
+                        <outlet property="disabledInterface" destination="Y7O-Qg-4a1" id="jvg-rx-dbH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OBq-o8-7AM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

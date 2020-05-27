@@ -10,8 +10,10 @@ import UIKit
 
 class ComposeViewController: UIViewController {
 
+	@IBOutlet var disabledInterface : UIView!
 	@IBOutlet var collectionView : UICollectionView!
 	var sections : [SunlitComposition] = []
+	var textViewDictionary : [UITextView : SunlitComposition] = [ : ]
 	var needsInitialFirstResponder = true
 	var sectionToAddImage = 0
 	
@@ -49,24 +51,43 @@ class ComposeViewController: UIViewController {
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-	func onImageTapped(_ section : Int, _ item : Int) {
-		let deleteAction = UIAlertAction(title: "Remove", style: .default) { (action) in
-			let sectionData = self.sections[section]
-			sectionData.images.remove(at: item)
-			
-			if sectionData.images.count == 0 {
-				self.sections.remove(at: section)
-			}
-			
+	func addImage(_ image : UIImage) {
+		if self.sectionToAddImage >= self.sections.count {
+			let section = SunlitComposition()
+			section.text = ""
+			section.images.append(image)
+			section.altText.append("")
+			self.sections.append(section)
+		}
+		else {
+			let section = self.sections[self.sectionToAddImage]
+			section.images.append(image)
+			section.altText.append("")
+		}
+
+		if self.collectionView != nil {
 			self.collectionView.reloadData()
+		}
+	}
+	
+	func onImageTapped(_ section : Int, _ item : Int) {
+
+		let sectionData = self.sections[section]
+
+		var editTextTitle = "Add Alt Text"
+		if sectionData.altText[item].count > 0 {
+			editTextTitle = "Edit Alt Text"
+		}
+		
+		let altTextAction = UIAlertAction(title: editTextTitle, style: .default) { (action) in
+			self.onEditAltText(sectionData, item)
+		}
+
+		let deleteAction = UIAlertAction(title: "Remove", style: .default) { (action) in
+			self.onRemoveImage(sectionData, item: item, section: section)
 		}
 		
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-			
-		}
-		
-		let altTextAction = UIAlertAction(title: "Add Alt Text", style: .default) { (action) in
-			
 		}
 		
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -83,34 +104,64 @@ class ComposeViewController: UIViewController {
 		let pickerController = UIImagePickerController()
 		pickerController.delegate = self
 		pickerController.allowsEditing = true
-		pickerController.mediaTypes = ["public.image", "public.movie"]
+		pickerController.mediaTypes = ["public.image"]// TODO: Need to support videos. But not today. , "public.movie"]
 		pickerController.sourceType = .photoLibrary
 		self.present(pickerController, animated: true, completion: nil)
 	}
 
 	@objc func onPost() {
+		
+		// Force the keyboard to go away...
+		self.view.endEditing(true)
+		
+		UIView.animate(withDuration: 0.15) {
+			self.disabledInterface.alpha = 1.0
+		}
 		self.uploadComposition()
 	}
 	
 	@objc func onCancel() {
 		self.navigationController?.dismiss(animated: true, completion: nil)
 	}
-	
-	func addImage(_ image : UIImage) {
-		if self.sectionToAddImage >= self.sections.count {
-			let section = SunlitComposition()
-			section.text = ""
-			section.images.append(image)
-			self.sections.append(section)
+
+	func onRemoveImage(_ sectionData : SunlitComposition, item : Int, section : Int) {
+		sectionData.images.remove(at: item)
+		sectionData.altText.remove(at: item)
+		
+		if sectionData.images.count == 0 {
+			self.sections.remove(at: section)
 		}
-		else {
-			let section = self.sections[self.sectionToAddImage]
-			section.images.append(image)
+		
+		self.collectionView.reloadData()
+	}
+	
+	func onEditAltText(_ section : SunlitComposition, _ item : Int) {
+		
+		let currentAltText = section.altText[item]
+		var alertTextField : UITextField? = nil
+		let alertController = UIAlertController(title: "Accessibility Description", message: nil, preferredStyle: .alert)
+		alertController.addTextField { (textField) in
+			textField.text = currentAltText
+			alertTextField = textField
 		}
 
-		if self.collectionView != nil {
-			self.collectionView.reloadData()
+		let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
 		}
+
+		var saveTitle = "Add"
+		if currentAltText.count > 0 {
+			saveTitle = "Update"
+		}
+
+		let update = UIAlertAction(title: saveTitle, style: .default) { (action) in
+			let altText : String = alertTextField?.text ?? ""
+			section.altText[item] = altText
+		}
+		
+		alertController.addAction(update)
+		alertController.addAction(cancel)
+		
+		self.present(alertController, animated: true, completion: nil)
 	}
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,9 +173,7 @@ class ComposeViewController: UIViewController {
 			let string = HTMLBuilder.createHTML(sections: self.sections, imagePathDictionary: imageDictionary)
 			Snippets.shared.postHtml(title: "", content: string) { (error, remotePath) in
 				DispatchQueue.main.async {
-					Dialog.information("Upload successful! (\(remotePath!)", self) {
-						// TODO: Maybe we leave the VC now?
-					}
+					self.handleUploadCompletion(error, remotePath)
 				}
 			}
 		}
@@ -140,9 +189,39 @@ class ComposeViewController: UIViewController {
 		
 		let imageLoader = ImageUploader()
 		imageLoader.uploadImages(uploadQueue) { (error, dictionary) in
-			//TODO: Need to implement error handling here...
+
+			if let err = error {
+				Dialog.information(err.localizedDescription, self)
+			}
+			else {
+				completion(dictionary)
+			}
+		}
+	}
+	
+	func handleUploadCompletion(_ error : Error?, _ remotePath : String?) {
+		
+		if let err = error {
+			Dialog.information(err.localizedDescription, self, completion: {
+				UIView.animate(withDuration: 0.15) {
+					self.disabledInterface.alpha = 0.0
+				}
+			})
+		}
+		else {
+			let alert = UIAlertController(title: nil, message: "Successfully posted!", preferredStyle: .alert)
 			
-			completion(dictionary)
+			alert.addAction(UIAlertAction(title: "View Post", style: .default, handler: { (action) in
+				self.dismiss(animated: true) {
+					NotificationCenter.default.post(name: NSNotification.Name("OpenURLNotification"), object: remotePath)
+				}
+			}))
+				
+			alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: { (action) in
+				self.dismiss(animated: true, completion: nil)
+			}))
+				
+			self.present(alert, animated: true, completion: nil)
 		}
 	}
 }
@@ -218,6 +297,10 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		
 		if indexPath.item == 0 {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostTextCollectionViewCell", for: indexPath) as! PostTextCollectionViewCell
+			
+			// This is sort of an interesting way to tie the data model behind a text view to the UI object
+			self.textViewDictionary[cell.postText] = sectionData
+			
 			cell.postText.text = sectionData.text
 			cell.widthConstraint.constant = collectionView.bounds.size.width
 			
@@ -321,8 +404,10 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			let imageIndex = sourceIndexPath.item - 1
 			let sourceSection = self.sections[sourceIndexPath.section]
 			let image = sourceSection.images[imageIndex]
+			let altText = sourceSection.altText[imageIndex]
 			sourceSection.images.remove(at: imageIndex)
-			
+			sourceSection.altText.remove(at: imageIndex)
+
 			// Do we need to delete this section?
 			let sectionNeedsDelete = sourceSection.images.count == 0
 			var sectionNeedsInsert = false
@@ -331,12 +416,14 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			if destinationIndexPath.section < self.sections.count {
 				let destSection = self.sections[destinationIndexPath.section]
 				destSection.images.insert(image, at: destinationIndexPath.item - 1)
+				destSection.altText.insert(altText, at: destinationIndexPath.item - 1)
 			}
 			else {
 				// If we are here, it's being move to a destination that doesn't yet exist...
 				let section = SunlitComposition()
 				section.text = ""
 				section.images.append(image)
+				section.altText.append(altText)
 				self.sections.append(section)
 				sectionNeedsInsert = true
 			}
@@ -407,6 +494,16 @@ MARK: -
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 extension ComposeViewController : UITextViewDelegate {
+	
+	func textViewDidBeginEditing(_ textView: UITextView) {
+		
+	}
+	
+	func textViewDidChange(_ textView: UITextView) {
+		if let sectionData = self.textViewDictionary[textView] {
+			sectionData.text = textView.text
+		}
+	}
 	
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
 		

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class MainViewController: UIViewController {
 
@@ -55,8 +56,18 @@ class MainViewController: UIViewController {
 
 	func setupNotifications() {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: NSNotification.Name("TemporaryTokenReceivedNotification"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleOpenURLNotification(_:)), name: NSNotification.Name("OpenURLNotification"), object: nil)
 	}
 
+	@objc func handleOpenURLNotification(_ notification : Notification) {
+		if let path = notification.object as? String,
+			let url = URL(string: path){
+			
+			let safariViewController = SFSafariViewController(url: url)
+			self.present(safariViewController, animated: true, completion: nil)
+		}
+	}
+	
 	
 	@objc func handleTemporaryTokenReceivedNotification(_ notification : Notification) {
 		if let temporaryToken = notification.object as? String

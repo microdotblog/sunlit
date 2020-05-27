@@ -11,8 +11,46 @@ import UIKit
 class HTMLBuilder {
 
 	static func createHTML(sections : [SunlitComposition], imagePathDictionary : [UIImage : String]) -> String {
+		var html = ""
 		
-		return ""
+		for index in 0 ... sections.count - 1 {
+			let section = sections[index]
+			html = html + HTMLBuilder.htmlForComposition(section, imagePathDictionary)
+			
+			if index < sections.count - 1 {
+				html = html + "\n\n"
+			}
+		}
+		
+		return html
 	}
 
+	static func htmlForComposition(_ section : SunlitComposition, _ imageDictionary : [UIImage : String]) -> String {
+		var html = ""
+		
+		if section.text.count > 0 {
+			html = html + section.text
+			html = html + "\n\n"
+		}
+		
+		var index = 0
+		for image in section.images {
+			let imagePath = imageDictionary[image]!
+			let imageWidth = "\(image.size.width)"
+			let imageHeight = "\(image.size.height)"
+			let imageAlt = section.altText[index]
+			var imageText = "<img src=\"{{url}}\" width=\"{{width}}\" height=\"{{height}}\" alt=\"{{alt}}\" style=\"height: auto;\" class=\"sunlit_image\" />"
+			
+			imageText = imageText.replacingOccurrences(of: "{{url}}", with: imagePath)
+			imageText = imageText.replacingOccurrences(of: "{{width}}", with: imageWidth)
+			imageText = imageText.replacingOccurrences(of: "{{height}}", with: imageHeight)
+			imageText = imageText.replacingOccurrences(of: "{{alt}}", with: imageAlt)
+			
+			html = html + imageText
+			index = index + 1
+		}
+		
+		return html
+	}
+	
 }

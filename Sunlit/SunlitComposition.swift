@@ -12,7 +12,7 @@ class SunlitComposition {
 		
 	var text = ""
 	var images : [UIImage] = []
-	var imagePaths : [UIImage : String] = [:]
+	var altText : [String] = []
 }
 
 
