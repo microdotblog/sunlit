@@ -294,9 +294,12 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 			for tagmoji in tagmojiArray {
 				if let name = Tagmoji.shared.tileFor(tagmoji: tagmoji) {
 						
-					let button = UIButton(type: .system)
+					let button = UIButton(type: .custom)
 					button.frame = CGRect(x: buttonOffset.x, y: buttonOffset.y, width: 44, height: 44)
 					button.setTitle(tagmoji, for: .normal)
+					if let color_img = UIImage.uuSolidColorImage(color: UIColor(named: "color_emoji_selection")!) {
+						button.setBackgroundImage(color_img, for: .selected)
+					}
 						
 					if name == "photos" {
 						self.stackView.insertArrangedSubview(button, at: 0)
