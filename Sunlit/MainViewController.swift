@@ -177,6 +177,7 @@ class MainViewController: UIViewController {
 	
 	@objc func onNewPost() {
 		let pickerController = UIImagePickerController()
+		pickerController.modalPresentationCapturesStatusBarAppearance = true
 		pickerController.delegate = self
 		pickerController.allowsEditing = false
 		pickerController.mediaTypes = ["public.image", "public.movie"]
