@@ -65,8 +65,9 @@
 		C5C3AC41247C9E3500D31A0A /* PostImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC40247C9E3500D31A0A /* PostImageCollectionViewCell.swift */; };
 		C5C3AC43247C9E5600D31A0A /* PostTextCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC42247C9E5600D31A0A /* PostTextCollectionViewCell.swift */; };
 		C5C3AC45247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC44247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift */; };
-		C5C3AC47247DCB3100D31A0A /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC46247DCB3100D31A0A /* ImageUploader.swift */; };
+		C5C3AC47247DCB3100D31A0A /* MediaUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC46247DCB3100D31A0A /* MediaUploader.swift */; };
 		C5C3AC49247DCB3E00D31A0A /* HTMLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC48247DCB3E00D31A0A /* HTMLBuilder.swift */; };
+		C5C3AC4B247ED92100D31A0A /* SunlitMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC4A247ED92100D31A0A /* SunlitMedia.swift */; };
 		C5D53CC42461CA2D00FFAC71 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53CC32461CA2D00FFAC71 /* ImageCache.swift */; };
 		C5D53CC624620EB900FFAC71 /* SunlitPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53CC524620EB900FFAC71 /* SunlitPost.swift */; };
 		C5D53D05246214CE00FFAC71 /* Whitelist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53CC8246214CD00FFAC71 /* Whitelist.swift */; };
@@ -202,8 +203,9 @@
 		C5C3AC40247C9E3500D31A0A /* PostImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		C5C3AC42247C9E5600D31A0A /* PostTextCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTextCollectionViewCell.swift; sourceTree = "<group>"; };
 		C5C3AC44247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
-		C5C3AC46247DCB3100D31A0A /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
+		C5C3AC46247DCB3100D31A0A /* MediaUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUploader.swift; sourceTree = "<group>"; };
 		C5C3AC48247DCB3E00D31A0A /* HTMLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLBuilder.swift; sourceTree = "<group>"; };
+		C5C3AC4A247ED92100D31A0A /* SunlitMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitMedia.swift; sourceTree = "<group>"; };
 		C5D53CC32461CA2D00FFAC71 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		C5D53CC524620EB900FFAC71 /* SunlitPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitPost.swift; sourceTree = "<group>"; };
 		C5D53CC8246214CD00FFAC71 /* Whitelist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Whitelist.swift; path = SwiftSoup/Whitelist.swift; sourceTree = SOURCE_ROOT; };
@@ -479,6 +481,7 @@
 				C5C3AC40247C9E3500D31A0A /* PostImageCollectionViewCell.swift */,
 				C5C3AC42247C9E5600D31A0A /* PostTextCollectionViewCell.swift */,
 				C5C3AC44247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift */,
+				4BFCFC30247C3F7800E86E2C /* PostAddSectionCollectionViewCell.swift */,
 			);
 			name = CollectionViewCells;
 			sourceTree = "<group>";
@@ -495,8 +498,9 @@
 				C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */,
 				C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */,
 				C53C08EC2472133F00C919E0 /* Tagmoji.swift */,
-				C5C3AC46247DCB3100D31A0A /* ImageUploader.swift */,
+				C5C3AC46247DCB3100D31A0A /* MediaUploader.swift */,
 				C5C3AC48247DCB3E00D31A0A /* HTMLBuilder.swift */,
+				C5C3AC4A247ED92100D31A0A /* SunlitMedia.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -507,7 +511,6 @@
 				C5FC6AEA24788B9100ACB77E /* MainViewController.swift */,
 				C5AC0406245F52C800D7725D /* LoginViewController.swift */,
 				C50E6553247AEE9A00C46B61 /* ComposeViewController.swift */,
-				4BFCFC30247C3F7800E86E2C /* PostAddSectionCollectionViewCell.swift */,
 				C5AC0451245FC86D00D7725D /* TimelineViewController.swift */,
 				C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */,
 				C5FFB1D024669D640015368A /* MyProfileViewController.swift */,
@@ -622,7 +625,7 @@
 				C5D53D30246214CE00FFAC71 /* Attribute.swift in Sources */,
 				C5D53D29246214CE00FFAC71 /* HttpStatusException.swift in Sources */,
 				C5FC6ADD2476081C00ACB77E /* ConversationTableViewCell.swift in Sources */,
-				C5C3AC47247DCB3100D31A0A /* ImageUploader.swift in Sources */,
+				C5C3AC47247DCB3100D31A0A /* MediaUploader.swift in Sources */,
 				C5FC6AEB24788B9100ACB77E /* MainViewController.swift in Sources */,
 				C5AC044E245F66C000D7725D /* Settings.swift in Sources */,
 				C5AC0446245F640800D7725D /* UUView.swift in Sources */,
@@ -685,6 +688,7 @@
 				C5D53D40246214CE00FFAC71 /* Pattern.swift in Sources */,
 				C5B9A71B24563E66003EF82B /* AppDelegate.swift in Sources */,
 				C5D53D05246214CE00FFAC71 /* Whitelist.swift in Sources */,
+				C5C3AC4B247ED92100D31A0A /* SunlitMedia.swift in Sources */,
 				4BFCFC31247C3F7800E86E2C /* PostAddSectionCollectionViewCell.swift in Sources */,
 				C5D53D18246214CE00FFAC71 /* CombiningEvaluator.swift in Sources */,
 				C5AC043A245F640800D7725D /* UUDate.swift in Sources */,

@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import AVFoundation
 
 class MainViewController: UIViewController {
 
@@ -414,20 +415,23 @@ MARK: -
 extension MainViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-		var image : UIImage? = nil
+		var media : SunlitMedia? = nil
 
-		if let img = info[.editedImage] as? UIImage {
-			image = img
+		if let image = info[.editedImage] as? UIImage {
+			media = SunlitMedia(withImage: image)
 		}
-		else if let img = info[.originalImage] as? UIImage {
-			image = img
+		else if let image = info[.originalImage] as? UIImage {
+			media = SunlitMedia(withImage: image)
+		}
+		else if let video = info[.mediaURL] as? URL {
+			media = SunlitMedia(withVideo: video)
 		}
 
 		
-		if let image = image {
+		if let media = media {
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
 			let postViewController = storyBoard.instantiateViewController(withIdentifier: "ComposeViewController") as! ComposeViewController
-			postViewController.addImage(image)
+			postViewController.addMedia(media)
 			picker.pushViewController(postViewController, animated: true)
 		}
 		else {

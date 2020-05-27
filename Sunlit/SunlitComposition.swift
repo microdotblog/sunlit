@@ -11,7 +11,7 @@ import UIKit
 class SunlitComposition {
 		
 	var text = ""
-	var images : [UIImage] = []
+	var media : [SunlitMedia] = []
 	var altText : [String] = []
 }
 

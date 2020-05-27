@@ -10,12 +10,12 @@ import UIKit
 
 class HTMLBuilder {
 
-	static func createHTML(sections : [SunlitComposition], imagePathDictionary : [UIImage : String]) -> String {
+	static func createHTML(sections : [SunlitComposition], mediaPathDictionary : [SunlitMedia : String]) -> String {
 		var html = ""
 		
 		for index in 0 ... sections.count - 1 {
 			let section = sections[index]
-			html = html + HTMLBuilder.htmlForComposition(section, imagePathDictionary)
+			html = html + HTMLBuilder.htmlForComposition(section, mediaPathDictionary)
 			
 			if index < sections.count - 1 {
 				html = html + "\n\n"
@@ -25,7 +25,7 @@ class HTMLBuilder {
 		return html
 	}
 
-	static func htmlForComposition(_ section : SunlitComposition, _ imageDictionary : [UIImage : String]) -> String {
+	static func htmlForComposition(_ section : SunlitComposition, _ mediaDictionary : [SunlitMedia : String]) -> String {
 		var html = ""
 		
 		if section.text.count > 0 {
@@ -34,15 +34,17 @@ class HTMLBuilder {
 		}
 		
 		var index = 0
-		let num_images = section.images.count
-		for image in section.images {
-			let imagePath = imageDictionary[image]!
+		let mediaCount = section.media.count
+		for media in section.media {
+			let imagePath = mediaDictionary[media]!
+			
+			let image = media.getImage()
 			let imageWidth = "\(image.size.width)"
 			let imageHeight = "\(image.size.height)"
 			let imageAlt = section.altText[index]
 			var imageText = ""
 			
-			if num_images > 1 {
+			if mediaCount > 1 {
 				imageText = "<a href=\"{{url}}\"><img src=\"{{url}}\" width=\"{{width}}\" height=\"{{height}}\" alt=\"{{alt}}\" style=\"display: inline-block; max-height: 200px; width: auto; padding: 1px;\" class=\"sunlit_image\" /></a>"
 			}
 			else {

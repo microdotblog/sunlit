@@ -17,7 +17,7 @@ class ComposeViewController: UIViewController {
 	var sections : [SunlitComposition] = []
 	var textViewDictionary : [UITextView : SunlitComposition] = [ : ]
 	var needsInitialFirstResponder = true
-	var sectionToAddImage = 0
+	var sectionToAddMedia = 0
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,27 +46,30 @@ class ComposeViewController: UIViewController {
 	
 	func configureNavigationController() {
 		self.navigationItem.title = "New Post"
-		let rightItems : [UIBarButtonItem] = [UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(onPost)) ,
-											  /*UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(onAddPhoto))*/ ]
+		let rightItems : [UIBarButtonItem] = [UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(onPost)) ]
 		self.navigationItem.rightBarButtonItems = rightItems
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(onCancel))
+	}
+	
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		.darkContent
 	}
     
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-	func addImage(_ image : UIImage) {
-		if self.sectionToAddImage >= self.sections.count {
+	func addMedia(_ media : SunlitMedia) {
+		if self.sectionToAddMedia >= self.sections.count {
 			let section = SunlitComposition()
 			section.text = ""
-			section.images.append(image)
+			section.media.append(media)
 			section.altText.append("")
 			self.sections.append(section)
 		}
 		else {
-			let section = self.sections[self.sectionToAddImage]
-			section.images.append(image)
+			let section = self.sections[self.sectionToAddMedia]
+			section.media.append(media)
 			section.altText.append("")
 		}
 
@@ -111,11 +114,11 @@ class ComposeViewController: UIViewController {
 	}
 	
 	@objc func onAddPhoto(_ section : Int) {
-		self.sectionToAddImage = section
+		self.sectionToAddMedia = section
 		
 		let pickerController = UIImagePickerController()
 		pickerController.delegate = self
-		pickerController.mediaTypes = ["public.image"]// TODO: Need to support videos. But not today. , "public.movie"]
+		pickerController.mediaTypes = ["public.image", "public.movie"]
 		pickerController.sourceType = .photoLibrary
 		pickerController.allowsEditing = false
 		self.present(pickerController, animated: true, completion: nil)
@@ -137,10 +140,10 @@ class ComposeViewController: UIViewController {
 	}
 
 	func onRemoveImage(_ sectionData : SunlitComposition, item : Int, section : Int) {
-		sectionData.images.remove(at: item)
+		sectionData.media.remove(at: item)
 		sectionData.altText.remove(at: item)
 		
-		if sectionData.images.count == 0 {
+		if sectionData.media.count == 0 {
 			self.sections.remove(at: section)
 		}
 		
@@ -185,8 +188,8 @@ class ComposeViewController: UIViewController {
 	
 	func uploadComposition() {
 		let title : String = self.titleField.text ?? ""
-		self.uploadImages { (imageDictionary : [UIImage : String]) in
-			let string = HTMLBuilder.createHTML(sections: self.sections, imagePathDictionary: imageDictionary)
+		self.uploadMedia { (mediaDictionary : [SunlitMedia : String]) in
+			let string = HTMLBuilder.createHTML(sections: self.sections, mediaPathDictionary: mediaDictionary)
 			Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
 				DispatchQueue.main.async {
 					self.handleUploadCompletion(error, remotePath)
@@ -195,16 +198,16 @@ class ComposeViewController: UIViewController {
 		}
 	}
 
-	func uploadImages(_ completion : @escaping ([UIImage : String]) -> Void) {
-		var uploadQueue : [UIImage] = []
+	func uploadMedia(_ completion : @escaping ([SunlitMedia : String]) -> Void) {
+		var uploadQueue : [SunlitMedia] = []
 		for composition in self.sections {
-			for image in composition.images {
-				uploadQueue.append(image)
+			for media in composition.media {
+				uploadQueue.append(media)
 			}
 		}
 		
-		let imageLoader = ImageUploader()
-		imageLoader.uploadImages(uploadQueue) { (error, dictionary) in
+		let mediaUpLoader = MediaUploader()
+		mediaUpLoader.uploadMedia(uploadQueue) { (error, dictionary) in
 
 			if let err = error {
 				Dialog.information(err.localizedDescription, self)
@@ -264,7 +267,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			return 1
 		}
 		
-		return self.sections[section].images.count + 2
+		return self.sections[section].media.count + 2
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -280,7 +283,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			let size = PostTextCollectionViewCell.size(collectionView.bounds.size.width, section.text)
 			return size
 		}
-		else if indexPath.item > section.images.count {
+		else if indexPath.item > section.media.count {
 			let size = PostAddPhotoCollectionViewCell.size(collectionView.bounds.size.width)
 			return size
 		}
@@ -329,7 +332,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			
 			return cell
 		}
-		else if indexPath.item > sectionData.images.count {
+		else if indexPath.item > sectionData.media.count {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostAddPhotoCollectionViewCell", for: indexPath) as! PostAddPhotoCollectionViewCell
 			let size = PostAddPhotoCollectionViewCell.size(collectionView.bounds.size.width)
 			cell.widthConstraint.constant = size.width
@@ -337,7 +340,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		}
 		else {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostImageCollectionViewCell", for: indexPath) as! PostImageCollectionViewCell
-			cell.postImage.image = sectionData.images[indexPath.item - 1]
+			cell.postImage.image = sectionData.media[indexPath.item - 1].getImage()
 			let size = PostImageCollectionViewCell.size(collectionView.bounds.size.width)
 			cell.widthConstraint.constant = size.width
 			return cell
@@ -352,7 +355,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		}
 		else {
 			let sectionData = self.sections[indexPath.section]
-			if indexPath.item > sectionData.images.count {
+			if indexPath.item > sectionData.media.count {
 				self.onAddPhoto(indexPath.section)
 			}
 			else if indexPath.item > 0 {
@@ -381,12 +384,12 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 		let section = self.sections[indexPath.section]
 		
 		// Another fail safe...
-		if indexPath.item > section.images.count {
+		if indexPath.item > section.media.count {
 			return []
 		}
 		
-		let image = section.images[indexPath.item - 1]
-		let itemProvider = NSItemProvider(object: image)
+		let media = section.media[indexPath.item - 1]
+		let itemProvider = NSItemProvider(object: media.getImage())
 		let dragItem = UIDragItem(itemProvider: itemProvider)
 		
 		return [dragItem]
@@ -406,7 +409,7 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			
 			// Check to see if it's being dragged to the title section or to the "add photo" button and deny it...
 			let section = self.sections[destination.section]
-			if destination.item > section.images.count || destination.item == 0 {
+			if destination.item > section.media.count || destination.item == 0 {
 				let proposal = UICollectionViewDropProposal(operation: .forbidden)
 				return proposal
 			}
@@ -427,28 +430,28 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 		   let sourceIndexPath = drop.sourceIndexPath{
 
 			// Find and remove the image from the source section...
-			let imageIndex = sourceIndexPath.item - 1
+			let mediaIndex = sourceIndexPath.item - 1
 			let sourceSection = self.sections[sourceIndexPath.section]
-			let image = sourceSection.images[imageIndex]
-			let altText = sourceSection.altText[imageIndex]
-			sourceSection.images.remove(at: imageIndex)
-			sourceSection.altText.remove(at: imageIndex)
+			let media = sourceSection.media[mediaIndex]
+			let altText = sourceSection.altText[mediaIndex]
+			sourceSection.media.remove(at: mediaIndex)
+			sourceSection.altText.remove(at: mediaIndex)
 
 			// Do we need to delete this section?
-			let sectionNeedsDelete = sourceSection.images.count == 0
+			let sectionNeedsDelete = sourceSection.media.count == 0
 			var sectionNeedsInsert = false
 			
 			// If the destination is less than the total, it just means we are moving it to a different section...
 			if destinationIndexPath.section < self.sections.count {
 				let destSection = self.sections[destinationIndexPath.section]
-				destSection.images.insert(image, at: destinationIndexPath.item - 1)
+				destSection.media.insert(media, at: destinationIndexPath.item - 1)
 				destSection.altText.insert(altText, at: destinationIndexPath.item - 1)
 			}
 			else {
 				// If we are here, it's being move to a destination that doesn't yet exist...
 				let section = SunlitComposition()
 				section.text = ""
-				section.images.append(image)
+				section.media.append(media)
 				section.altText.append(altText)
 				self.sections.append(section)
 				sectionNeedsInsert = true
@@ -565,10 +568,16 @@ extension ComposeViewController : UIImagePickerControllerDelegate, UINavigationC
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 		
 		if let image = info[.editedImage] as? UIImage {
-			self.addImage(image)
+			let media = SunlitMedia(withImage: image)
+			self.addMedia(media)
 		}
 		else if let image = info[.originalImage] as? UIImage {
-			self.addImage(image)
+			let media = SunlitMedia(withImage: image)
+			self.addMedia(media)
+		}
+		else if let video = info[.mediaURL] as? URL {
+			let media = SunlitMedia(withVideo: video)
+			self.addMedia(media)
 		}
 		
 		picker.dismiss(animated: true) {
