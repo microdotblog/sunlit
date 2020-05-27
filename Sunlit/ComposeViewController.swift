@@ -10,6 +10,8 @@ import UIKit
 
 class ComposeViewController: UIViewController {
 
+	@IBOutlet var titleField : UITextField!
+	@IBOutlet var titleHeightConstraint : NSLayoutConstraint!
 	@IBOutlet var disabledInterface : UIView!
 	@IBOutlet var collectionView : UICollectionView!
 	var sections : [SunlitComposition] = []
@@ -19,6 +21,9 @@ class ComposeViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		self.view.bringSubviewToFront(self.disabledInterface)
+		self.titleHeightConstraint.constant = 0.0
 		
 		self.configureCollectionView()
 		self.configureNavigationController()
@@ -67,6 +72,13 @@ class ComposeViewController: UIViewController {
 
 		if self.collectionView != nil {
 			self.collectionView.reloadData()
+		}
+		
+		if self.sections.count > 1 {
+			UIView.animate(withDuration: 0.15) {
+				self.titleHeightConstraint.constant = 60.0
+				self.view.layoutIfNeeded()
+			}
 		}
 	}
 	
@@ -171,7 +183,8 @@ class ComposeViewController: UIViewController {
 	func uploadComposition() {
 		self.uploadImages { (imageDictionary : [UIImage : String]) in
 			let string = HTMLBuilder.createHTML(sections: self.sections, imagePathDictionary: imageDictionary)
-			Snippets.shared.postHtml(title: "", content: string) { (error, remotePath) in
+			let title : String = self.titleField.text ?? ""
+			Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
 				DispatchQueue.main.async {
 					self.handleUploadCompletion(error, remotePath)
 				}
