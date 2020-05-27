@@ -154,6 +154,9 @@ class ComposeViewController: UIViewController {
 		let alertController = UIAlertController(title: "Accessibility Description", message: nil, preferredStyle: .alert)
 		alertController.addTextField { (textField) in
 			textField.text = currentAltText
+			textField.autocorrectionType = .yes
+			textField.keyboardType = .asciiCapable
+			textField.autocapitalizationType = .sentences
 			alertTextField = textField
 		}
 
@@ -369,7 +372,19 @@ MARK: -
 extension ComposeViewController : UICollectionViewDropDelegate, UICollectionViewDragDelegate {
 
 	func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+		
+		// A fail safe/defensive coding...
+		if indexPath.section >= self.sections.count {
+			return []
+		}
+		
 		let section = self.sections[indexPath.section]
+		
+		// Another fail safe...
+		if indexPath.item > section.images.count {
+			return []
+		}
+		
 		let image = section.images[indexPath.item - 1]
 		let itemProvider = NSItemProvider(object: image)
 		let dragItem = UIDragItem(itemProvider: itemProvider)
@@ -501,6 +516,16 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 }
 
 
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: -
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension ComposeViewController : UITextFieldDelegate {
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		textField.resignFirstResponder()
+		return false
+	}
+}
 
 /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 MARK: -
