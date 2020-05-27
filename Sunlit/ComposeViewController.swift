@@ -233,7 +233,7 @@ class ComposeViewController: UIViewController {
 				}
 			}))
 				
-			alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: { (action) in
+			alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
 				self.dismiss(animated: true, completion: nil)
 			}))
 				
