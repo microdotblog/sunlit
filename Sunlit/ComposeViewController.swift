@@ -372,7 +372,7 @@ MARK: -
 extension ComposeViewController : UICollectionViewDropDelegate, UICollectionViewDragDelegate {
 
 	func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-		
+
 		// A fail safe/defensive coding...
 		if indexPath.section >= self.sections.count {
 			return []
@@ -397,12 +397,10 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 		
 		if let destination = destinationIndexPath {
 
-			//print("Section = \(destination.section) Item = \(destination.item)")
-
 			// Check to see if it's being dragged to an uncreated section (at the bottom)
 			if destination.section >= self.sections.count {
-				let proposal = UICollectionViewDropProposal(operation: .forbidden)
-				//let proposal = UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+				//let proposal = UICollectionViewDropProposal(operation: .forbidden)
+				let proposal = UICollectionViewDropProposal(operation: .move, intent: .insertIntoDestinationIndexPath)
 				return proposal
 			}
 			
