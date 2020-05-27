@@ -184,9 +184,9 @@ class ComposeViewController: UIViewController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func uploadComposition() {
+		let title : String = self.titleField.text ?? ""
 		self.uploadImages { (imageDictionary : [UIImage : String]) in
 			let string = HTMLBuilder.createHTML(sections: self.sections, imagePathDictionary: imageDictionary)
-			let title : String = self.titleField.text ?? ""
 			Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
 				DispatchQueue.main.async {
 					self.handleUploadCompletion(error, remotePath)
