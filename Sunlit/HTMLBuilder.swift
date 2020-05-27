@@ -34,12 +34,20 @@ class HTMLBuilder {
 		}
 		
 		var index = 0
+		let num_images = section.images.count
 		for image in section.images {
 			let imagePath = imageDictionary[image]!
 			let imageWidth = "\(image.size.width)"
 			let imageHeight = "\(image.size.height)"
 			let imageAlt = section.altText[index]
-			var imageText = "<img src=\"{{url}}\" width=\"{{width}}\" height=\"{{height}}\" alt=\"{{alt}}\" style=\"height: auto;\" class=\"sunlit_image\" />"
+			var imageText = ""
+			
+			if num_images > 1 {
+				imageText = "<img src=\"{{url}}\" width=\"{{width}}\" height=\"{{height}}\" alt=\"{{alt}}\" style=\"display: inline-block; max-height: 200px; width: auto; padding: 1px;\" class=\"sunlit_image\" />"
+			}
+			else {
+				imageText = "<img src=\"{{url}}\" width=\"{{width}}\" height=\"{{height}}\" alt=\"{{alt}}\" style=\"height: auto;\" class=\"sunlit_image\" />"
+			}
 			
 			imageText = imageText.replacingOccurrences(of: "{{url}}", with: imagePath)
 			imageText = imageText.replacingOccurrences(of: "{{width}}", with: imageWidth)
