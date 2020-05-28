@@ -8,12 +8,17 @@
 
 import UIKit
 
+class MediaLocation : NSObject {
+	var path : String = ""
+	var thumbnailPath : String = ""
+}
+
 class MediaUploader {
 	
 	var mediaQueue : [SunlitMedia] = []
-	var results : [SunlitMedia : String] = [ : ]
+	var results : [SunlitMedia : MediaLocation] = [ : ]
 	
-	func uploadMedia(_ media : [SunlitMedia], completion: @escaping (Error?, [SunlitMedia : String]) -> Void) {
+	func uploadMedia(_ media : [SunlitMedia], completion: @escaping (Error?, [SunlitMedia : MediaLocation]) -> Void) {
 		self.mediaQueue = media
 		self.results = [ : ]
 		
@@ -25,7 +30,7 @@ class MediaUploader {
 		}
 	}
 	
-	func processUploadQueue(_ completion : @escaping (Error?, [SunlitMedia : String]) -> Void) {
+	func processUploadQueue(_ completion : @escaping (Error?, [SunlitMedia : MediaLocation]) -> Void) {
 
 		let media = self.mediaQueue.removeFirst()
 		
@@ -33,7 +38,11 @@ class MediaUploader {
 			Snippets.shared.uploadImage(image: media.getImage()) { (error, remotePath) in
 			
 				if let path = remotePath {
-					self.results[media] = path
+					let location = MediaLocation()
+					location.path = path
+					location.thumbnailPath = path
+					
+					self.results[media] = location
 			
 					if self.mediaQueue.count > 0 {
 						self.processUploadQueue(completion)
@@ -49,8 +58,12 @@ class MediaUploader {
 			VideoTranscoder.exportVideo(sourceUrl: media.videoURL) { (videoURL) in
 				if let data = try? Data(contentsOf: videoURL) {
 					Snippets.shared.uploadVideo(data: data) { (error, publishedPath, posterPath) in
-						if let path = publishedPath {
-							self.results[media] = path
+						if let path = publishedPath,
+							let thumbnailPath = posterPath {
+							let location = MediaLocation()
+							location.path = path
+							location.thumbnailPath = thumbnailPath
+							self.results[media] = location
 					
 							if self.mediaQueue.count > 0 {
 								self.processUploadQueue(completion)

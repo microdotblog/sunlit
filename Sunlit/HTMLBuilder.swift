@@ -10,7 +10,7 @@ import UIKit
 
 class HTMLBuilder {
 
-	static func createHTML(sections : [SunlitComposition], mediaPathDictionary : [SunlitMedia : String]) -> String {
+	static func createHTML(sections : [SunlitComposition], mediaPathDictionary : [SunlitMedia : MediaLocation]) -> String {
 		var html = ""
 		
 		for index in 0 ... sections.count - 1 {
@@ -25,7 +25,7 @@ class HTMLBuilder {
 		return html
 	}
 
-	static func htmlForComposition(_ section : SunlitComposition, _ mediaDictionary : [SunlitMedia : String]) -> String {
+	static func htmlForComposition(_ section : SunlitComposition, _ mediaDictionary : [SunlitMedia : MediaLocation]) -> String {
 		var html = ""
 		
 		if section.text.count > 0 {
@@ -36,7 +36,12 @@ class HTMLBuilder {
 		var index = 0
 		let mediaCount = section.media.count
 		for media in section.media {
-			let imagePath = mediaDictionary[media]!
+			let mediaLocation = mediaDictionary[media]!
+			
+			// Right now, for images, imagePath and thumbnailPath are the same, however, for videos the thumbnailPath represents the poster.
+			// In theory, we could have the Snippets + server API return a URL for an image thumbnail but it currently doesn't do that.
+			let imagePath = mediaLocation.path
+			let thumbnailPath = mediaLocation.thumbnailPath
 			
 			let image = media.getImage()
 			let imageWidth = "\(image.size.width)"
@@ -45,7 +50,7 @@ class HTMLBuilder {
 			var imageText = ""
 			
 			if mediaCount > 1 {
-				imageText = "<a href=\"{{url}}\"><img src=\"{{url}}\" width=\"{{width}}\" height=\"{{height}}\" alt=\"{{alt}}\" style=\"display: inline-block; max-height: 200px; width: auto; padding: 1px;\" class=\"sunlit_image\" /></a>"
+				imageText = "<a href=\"{{url}}\"><img src=\"{{thumbnail}}\" width=\"{{width}}\" height=\"{{height}}\" alt=\"{{alt}}\" style=\"display: inline-block; max-height: 200px; width: auto; padding: 1px;\" class=\"sunlit_image\" /></a>"
 			}
 			else {
 				imageText = "<img src=\"{{url}}\" width=\"{{width}}\" height=\"{{height}}\" alt=\"{{alt}}\" style=\"height: auto;\" class=\"sunlit_image\" />"
@@ -55,6 +60,7 @@ class HTMLBuilder {
 			imageText = imageText.replacingOccurrences(of: "{{width}}", with: imageWidth)
 			imageText = imageText.replacingOccurrences(of: "{{height}}", with: imageHeight)
 			imageText = imageText.replacingOccurrences(of: "{{alt}}", with: imageAlt)
+			imageText = imageText.replacingOccurrences(of: "{{thumbnail}}", with: thumbnailPath)
 			
 			html = html + imageText
 			index = index + 1

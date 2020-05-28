@@ -188,7 +188,7 @@ class ComposeViewController: UIViewController {
 	
 	func uploadComposition() {
 		let title : String = self.titleField.text ?? ""
-		self.uploadMedia { (mediaDictionary : [SunlitMedia : String]) in
+		self.uploadMedia { (mediaDictionary : [SunlitMedia : MediaLocation]) in
 			let string = HTMLBuilder.createHTML(sections: self.sections, mediaPathDictionary: mediaDictionary)
 			Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
 				DispatchQueue.main.async {
@@ -198,7 +198,7 @@ class ComposeViewController: UIViewController {
 		}
 	}
 
-	func uploadMedia(_ completion : @escaping ([SunlitMedia : String]) -> Void) {
+	func uploadMedia(_ completion : @escaping ([SunlitMedia : MediaLocation]) -> Void) {
 		var uploadQueue : [SunlitMedia] = []
 		for composition in self.sections {
 			for media in composition.media {
