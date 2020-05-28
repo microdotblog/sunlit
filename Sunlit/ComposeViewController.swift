@@ -64,13 +64,11 @@ class ComposeViewController: UIViewController {
 			let section = SunlitComposition()
 			section.text = ""
 			section.media.append(media)
-			section.altText.append("")
 			self.sections.append(section)
 		}
 		else {
 			let section = self.sections[self.sectionToAddMedia]
 			section.media.append(media)
-			section.altText.append("")
 		}
 
 		if self.collectionView != nil {
@@ -90,7 +88,7 @@ class ComposeViewController: UIViewController {
 		let sectionData = self.sections[section]
 
 		var editTextTitle = "Add Alt Text"
-		if sectionData.altText[item].count > 0 {
+		if sectionData.media[item].altText.count > 0 {
 			editTextTitle = "Edit Alt Text"
 		}
 		
@@ -141,7 +139,6 @@ class ComposeViewController: UIViewController {
 
 	func onRemoveImage(_ sectionData : SunlitComposition, item : Int, section : Int) {
 		sectionData.media.remove(at: item)
-		sectionData.altText.remove(at: item)
 		
 		if sectionData.media.count == 0 {
 			self.sections.remove(at: section)
@@ -152,7 +149,7 @@ class ComposeViewController: UIViewController {
 	
 	func onEditAltText(_ section : SunlitComposition, _ item : Int) {
 		
-		let currentAltText = section.altText[item]
+		let currentAltText = section.media[item].altText
 		var alertTextField : UITextField? = nil
 		let alertController = UIAlertController(title: "Accessibility Description", message: nil, preferredStyle: .alert)
 		alertController.addTextField { (textField) in
@@ -173,7 +170,7 @@ class ComposeViewController: UIViewController {
 
 		let update = UIAlertAction(title: saveTitle, style: .default) { (action) in
 			let altText : String = alertTextField?.text ?? ""
-			section.altText[item] = altText
+			section.media[item].altText = altText
 		}
 		
 		alertController.addAction(update)
@@ -433,9 +430,7 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			let mediaIndex = sourceIndexPath.item - 1
 			let sourceSection = self.sections[sourceIndexPath.section]
 			let media = sourceSection.media[mediaIndex]
-			let altText = sourceSection.altText[mediaIndex]
 			sourceSection.media.remove(at: mediaIndex)
-			sourceSection.altText.remove(at: mediaIndex)
 
 			// Do we need to delete this section?
 			let sectionNeedsDelete = sourceSection.media.count == 0
@@ -445,14 +440,12 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			if destinationIndexPath.section < self.sections.count {
 				let destSection = self.sections[destinationIndexPath.section]
 				destSection.media.insert(media, at: destinationIndexPath.item - 1)
-				destSection.altText.insert(altText, at: destinationIndexPath.item - 1)
 			}
 			else {
 				// If we are here, it's being move to a destination that doesn't yet exist...
 				let section = SunlitComposition()
 				section.text = ""
 				section.media.append(media)
-				section.altText.append(altText)
 				self.sections.append(section)
 				sectionNeedsInsert = true
 			}

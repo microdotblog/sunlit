@@ -8,11 +8,9 @@
 
 import UIKit
 
-class SunlitComposition {
-		
+class SunlitComposition {		
 	var text = ""
 	var media : [SunlitMedia] = []
-	var altText : [String] = []
 }
 
 
