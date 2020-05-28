@@ -45,20 +45,22 @@ class MediaUploader {
 			}
 		}
 		else if media.type == .video {
-			if let data = try? Data(contentsOf: media.videoURL) {
-				Snippets.shared.uploadVideo(data: data) { (error, publishedPath, posterPath) in
-					if let path = publishedPath {
-						self.results[media] = path
-				
-						if self.mediaQueue.count > 0 {
-							self.processUploadQueue(completion)
-							return
+			
+			VideoTranscoder.exportVideo(sourceUrl: media.videoURL) { (videoURL) in
+				if let data = try? Data(contentsOf: videoURL) {
+					Snippets.shared.uploadVideo(data: data) { (error, publishedPath, posterPath) in
+						if let path = publishedPath {
+							self.results[media] = path
+					
+							if self.mediaQueue.count > 0 {
+								self.processUploadQueue(completion)
+								return
+							}
 						}
+						completion(error, self.results)
 					}
-					completion(error, self.results)
-				}				
+				}
 			}
-
 		}
 	}
 }

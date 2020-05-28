@@ -68,6 +68,8 @@
 		C5C3AC47247DCB3100D31A0A /* MediaUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC46247DCB3100D31A0A /* MediaUploader.swift */; };
 		C5C3AC49247DCB3E00D31A0A /* HTMLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC48247DCB3E00D31A0A /* HTMLBuilder.swift */; };
 		C5C3AC4B247ED92100D31A0A /* SunlitMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC4A247ED92100D31A0A /* SunlitMedia.swift */; };
+		C5C3AC4D247F27D000D31A0A /* VideoTranscoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC4C247F27D000D31A0A /* VideoTranscoder.swift */; };
+		C5C3AC4F247F2A7400D31A0A /* URL+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C3AC4E247F2A7400D31A0A /* URL+Sunlit.swift */; };
 		C5D53CC42461CA2D00FFAC71 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53CC32461CA2D00FFAC71 /* ImageCache.swift */; };
 		C5D53CC624620EB900FFAC71 /* SunlitPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53CC524620EB900FFAC71 /* SunlitPost.swift */; };
 		C5D53D05246214CE00FFAC71 /* Whitelist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D53CC8246214CD00FFAC71 /* Whitelist.swift */; };
@@ -206,6 +208,8 @@
 		C5C3AC46247DCB3100D31A0A /* MediaUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUploader.swift; sourceTree = "<group>"; };
 		C5C3AC48247DCB3E00D31A0A /* HTMLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLBuilder.swift; sourceTree = "<group>"; };
 		C5C3AC4A247ED92100D31A0A /* SunlitMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitMedia.swift; sourceTree = "<group>"; };
+		C5C3AC4C247F27D000D31A0A /* VideoTranscoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTranscoder.swift; sourceTree = "<group>"; };
+		C5C3AC4E247F2A7400D31A0A /* URL+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Sunlit.swift"; sourceTree = "<group>"; };
 		C5D53CC32461CA2D00FFAC71 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		C5D53CC524620EB900FFAC71 /* SunlitPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitPost.swift; sourceTree = "<group>"; };
 		C5D53CC8246214CD00FFAC71 /* Whitelist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Whitelist.swift; path = SwiftSoup/Whitelist.swift; sourceTree = SOURCE_ROOT; };
@@ -489,6 +493,7 @@
 		C5FFB1D22469C7A20015368A /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				C5C3AC4E247F2A7400D31A0A /* URL+Sunlit.swift */,
 				C5A507A92470C05E00D60CB4 /* Date+Sunlit.swift */,
 				C5AC044D245F66C000D7725D /* Settings.swift */,
 				C5AC044F245F690600D7725D /* Dialog.swift */,
@@ -501,6 +506,7 @@
 				C5C3AC46247DCB3100D31A0A /* MediaUploader.swift */,
 				C5C3AC48247DCB3E00D31A0A /* HTMLBuilder.swift */,
 				C5C3AC4A247ED92100D31A0A /* SunlitMedia.swift */,
+				C5C3AC4C247F27D000D31A0A /* VideoTranscoder.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -629,6 +635,7 @@
 				C5FC6AEB24788B9100ACB77E /* MainViewController.swift in Sources */,
 				C5AC044E245F66C000D7725D /* Settings.swift in Sources */,
 				C5AC0446245F640800D7725D /* UUView.swift in Sources */,
+				C5C3AC4F247F2A7400D31A0A /* URL+Sunlit.swift in Sources */,
 				C5AC0447245F640800D7725D /* UUViewController.swift in Sources */,
 				C5AC044C245F640800D7725D /* UURemoteData.swift in Sources */,
 				C5D53D0F246214CE00FFAC71 /* Tag.swift in Sources */,
@@ -700,6 +707,7 @@
 				C5D53D0A246214CE00FFAC71 /* Elements.swift in Sources */,
 				C5D53D33246214CE00FFAC71 /* XmlTreeBuilder.swift in Sources */,
 				C5D53D37246214CE00FFAC71 /* NodeTraversor.swift in Sources */,
+				C5C3AC4D247F27D000D31A0A /* VideoTranscoder.swift in Sources */,
 				C5D53D2C246214CE00FFAC71 /* ParseError.swift in Sources */,
 				C5D53D11246214CE00FFAC71 /* DataUtil.swift in Sources */,
 				C5AC0407245F52C800D7725D /* LoginViewController.swift in Sources */,
