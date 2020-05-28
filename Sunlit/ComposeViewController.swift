@@ -119,7 +119,7 @@ class ComposeViewController: UIViewController {
 		let pickerController = UIImagePickerController()
 		pickerController.delegate = self
 		pickerController.mediaTypes = ["public.image", "public.movie"]
-		pickerController.sourceType = .photoLibrary
+		pickerController.sourceType = .savedPhotosAlbum
 		pickerController.allowsEditing = false
 		self.present(pickerController, animated: true, completion: nil)
 	}
@@ -308,7 +308,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		// Special case for the "Add new section" button cell...
 		if indexPath.section >= self.sections.count {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostAddSectionCollectionViewCell", for: indexPath) as! PostAddSectionCollectionViewCell
-			cell.widthConstraint.constant = collectionView.bounds.size.width - 16.0
+			cell.widthConstraint.constant = collectionView.bounds.size.width - 24
 			return cell
 		}
 		
