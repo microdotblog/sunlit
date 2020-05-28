@@ -181,7 +181,7 @@ class MainViewController: UIViewController {
 		pickerController.delegate = self
 		pickerController.allowsEditing = false
 		pickerController.mediaTypes = ["public.image", "public.movie"]
-		pickerController.sourceType = .photoLibrary
+		pickerController.sourceType = .savedPhotosAlbum
 		self.present(pickerController, animated: true, completion: nil)
 	}
 	
