@@ -47,6 +47,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: NSNotification.Name("View Conversation"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleViewImageNotification(_:)), name: NSNotification.Name("View Image"), object: nil)
 	}
 	
 	
@@ -128,7 +129,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 				self.keyboardAccessoryView.alpha = 0.0
 				self.keyboardAccessoryView.isHidden = false
 				
-				UIView.animate(withDuration: 0.25) {
+				UIView.animate(withDuration: 0.05) {
 					self.keyboardAccessoryView.alpha = 1.0
 				}
 			}
@@ -171,6 +172,15 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		}
 	}
 	
+	@objc func handleViewImageNotification(_ notification : Notification) {
+		if let imagePath = notification.object as? String {
+			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+			let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
+			imageViewController.pathToImage = imagePath
+			self.navigationController?.pushViewController(imageViewController, animated: true)
+		}
+	}
+	
 	@objc func handleReplyResponseNotification(_ notification : Notification) {
 		var message = "Reply posted!"
 		
@@ -199,13 +209,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		let safariViewController = SFSafariViewController(url: URL)
 		self.present(safariViewController, animated: true, completion: nil)
 		return false
-	}
-
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-	func configureCollectionView() {
-		
 	}
 	
 	
@@ -249,13 +252,14 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	
 	func prefetchImages(_ indexPath : IndexPath) {
 		let post = self.tableViewData[indexPath.row]
-		let imageSource = post.images[0]
 		
-		if ImageCache.prefetch(imageSource) == nil {
-			ImageCache.fetch(imageSource) { (image) in
-				if let _ = image {
-					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Feed Image Loaded"), object: indexPath)
+		for imageSource in post.images {
+			if ImageCache.prefetch(imageSource) == nil {
+				ImageCache.fetch(imageSource) { (image) in
+					if let _ = image {
+						DispatchQueue.main.async {
+							NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Feed Image Loaded"), object: indexPath)
+						}
 					}
 				}
 			}

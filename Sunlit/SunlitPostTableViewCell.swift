@@ -10,13 +10,15 @@ import UIKit
 
 class SunlitPostTableViewCell : UITableViewCell {
 	
-	@IBOutlet var postImage : UIImageView!
+	@IBOutlet var pageViewIndicator : UIPageControl!
+	@IBOutlet var collectionView : UICollectionView!
 	@IBOutlet var textView : UITextView!
 	@IBOutlet var dateLabel : UILabel!
 	@IBOutlet var userAvatar : UIImageView!
 	@IBOutlet var userName : UILabel!
 	@IBOutlet var userHandle : UILabel!
-	@IBOutlet var heightConstraint : NSLayoutConstraint!
+	@IBOutlet var collectionViewHeightConstraint : NSLayoutConstraint!
+	@IBOutlet var collectionViewWidthConstraint : NSLayoutConstraint!
 	@IBOutlet var replyContainer : UIView!
 	@IBOutlet var replyField : UITextView!
 	@IBOutlet var replyButton : UIButton!
@@ -35,7 +37,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 	
 	static func photoHeight(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
 		let width : CGFloat = parentWidth
-		let maxHeight : CGFloat = 400.0
+		let maxHeight : CGFloat = 600.0
 		var height : CGFloat = width * CGFloat(post.aspectRatio)
 		if height > maxHeight {
 			height = maxHeight
@@ -93,11 +95,6 @@ class SunlitPostTableViewCell : UITableViewCell {
 		self.addUserProfileTapGesture(self.userHandle)
 	}
 	
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-	
 	func setup(_ index: Int, _ post : SunlitPost, parentWidth : CGFloat) {
 		
 		self.post = post
@@ -115,16 +112,26 @@ class SunlitPostTableViewCell : UITableViewCell {
 		if let date = post.publishedDate {
 			self.dateLabel.text = date.friendlyFormat()
 		}
-		
+		else {
+			self.dateLabel.text = ""
+		}
+
+		self.pageViewIndicator.hidesForSinglePage = true
+		self.pageViewIndicator.numberOfPages = self.post.images.count
+
+		self.setupAvatar()
+
 		// Configure the photo sizes...
-		self.setupPhotoAspectRatio(post, parentWidth: parentWidth)
-		
-		// Kick off the photo loading...
-		self.loadPhotos(post, index)
+		let height = self.setupPhotoAspectRatio(post, parentWidth: parentWidth)
+		self.configureCollectionView(CGSize(width: self.bounds.size.width, height: height))
+		self.collectionView.reloadData() // Needed to force the collection view to reload itself...
 	}
 	
-	func setupPhotoAspectRatio(_ post : SunlitPost, parentWidth : CGFloat) {
-		self.heightConstraint.constant = SunlitPostTableViewCell.photoHeight(post, parentWidth: parentWidth)
+	func setupPhotoAspectRatio(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
+		let height = SunlitPostTableViewCell.photoHeight(post, parentWidth: parentWidth)
+		self.collectionViewWidthConstraint.constant = parentWidth
+		self.collectionViewHeightConstraint.constant = height
+		return height
 	}
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,7 +197,6 @@ class SunlitPostTableViewCell : UITableViewCell {
 				
 				NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Keyboard Appear"), object: offset)
 			}
-			
 		}
 	}
 	
@@ -243,19 +249,55 @@ class SunlitPostTableViewCell : UITableViewCell {
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
-	func loadPhotos(_ post : SunlitPost, _ index : Int) {
+	func setupAvatar() {
 		
-		self.postImage.image = nil //UIImage(named: "welcome_waves")
 		self.userAvatar.image = nil
-		
-		let imageSource = post.images[0]
-		if let image = ImageCache.prefetch(imageSource) {
-			self.postImage.image = image
-		}
-		
-		let avatarSource = post.owner.pathToUserImage
+		let avatarSource = self.post.owner.pathToUserImage
 		if let avatar = ImageCache.prefetch(avatarSource) {
 			self.userAvatar.image = avatar
 		}
+	}
+}
+
+extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionViewDelegate {
+	
+	func configureCollectionView(_ size: CGSize) {
+		
+		if let layout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+			layout.itemSize = size
+			//layout.estimatedItemSize = size
+			layout.headerReferenceSize = CGSize(width: 0.0, height: 0.0)
+			layout.footerReferenceSize = CGSize(width: 0.0, height: 0.0)
+			layout.sectionInset = UIEdgeInsets()
+			layout.minimumInteritemSpacing = 0.0
+			layout.minimumLineSpacing = 0.0
+		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+		return self.post.images.count
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+		let imagePath = self.post.images[indexPath.item]
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SunlitPostCollectionViewCell", for: indexPath) as! SunlitPostCollectionViewCell
+		cell.videoPlayIndicator.isHidden = true
+		cell.timeStampLabel.isHidden = true
+		if let image = ImageCache.prefetch(imagePath) {
+			cell.postImage.image = image
+		}
+		else {
+			cell.postImage.image = nil
+		}
+		return cell
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		self.pageViewIndicator.currentPage = indexPath.item
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		let imagePath = self.post.images[indexPath.item]
+		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "View Image"), object: imagePath)
 	}
 }

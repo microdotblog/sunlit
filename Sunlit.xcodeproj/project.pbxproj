@@ -18,6 +18,7 @@
 		C50E65502478D63900C46B61 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E654F2478D63900C46B61 /* AboutViewController.swift */; };
 		C50E65522478DB0400C46B61 /* olive.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C50E65512478DB0400C46B61 /* olive.jpg */; };
 		C50E6554247AEE9A00C46B61 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E6553247AEE9A00C46B61 /* ComposeViewController.swift */; };
+		C51A0AF82480ACCF0068A4D3 /* SunlitPostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51A0AF72480ACCF0068A4D3 /* SunlitPostCollectionViewCell.swift */; };
 		C51CBB87246B1429005981B5 /* SnippetsUser+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */; };
 		C53C08EB2471FFF000C919E0 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */; };
 		C53C08ED2472133F00C919E0 /* Tagmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C08EC2472133F00C919E0 /* Tagmoji.swift */; };
@@ -156,6 +157,7 @@
 		C50E654F2478D63900C46B61 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		C50E65512478DB0400C46B61 /* olive.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = olive.jpg; sourceTree = "<group>"; };
 		C50E6553247AEE9A00C46B61 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
+		C51A0AF72480ACCF0068A4D3 /* SunlitPostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitPostCollectionViewCell.swift; sourceTree = "<group>"; };
 		C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetsUser+Sunlit.swift"; sourceTree = "<group>"; };
 		C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
 		C53C08EC2472133F00C919E0 /* Tagmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tagmoji.swift; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 				C5C3AC42247C9E5600D31A0A /* PostTextCollectionViewCell.swift */,
 				C5C3AC44247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift */,
 				4BFCFC30247C3F7800E86E2C /* PostAddSectionCollectionViewCell.swift */,
+				C51A0AF72480ACCF0068A4D3 /* SunlitPostCollectionViewCell.swift */,
 			);
 			name = CollectionViewCells;
 			sourceTree = "<group>";
@@ -721,6 +724,7 @@
 				C5C3AC3F247C9DA000D31A0A /* SunlitComposition.swift in Sources */,
 				C5D53D0B246214CE00FFAC71 /* Evaluator.swift in Sources */,
 				C5D53D2E246214CE00FFAC71 /* TextNode.swift in Sources */,
+				C51A0AF82480ACCF0068A4D3 /* SunlitPostCollectionViewCell.swift in Sources */,
 				C5D53CC624620EB900FFAC71 /* SunlitPost.swift in Sources */,
 				C5D53D06246214CE00FFAC71 /* SimpleDictionary.swift in Sources */,
 				C5D53D09246214CE00FFAC71 /* DocumentType.swift in Sources */,
