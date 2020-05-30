@@ -72,8 +72,8 @@ import Foundation
  *
  * @see Element#select(String)
  */
-@available(*, deprecated, renamed: "CssSelector")
-typealias Selector = CssSelector
+//@available(*, deprecated, renamed: "CssSelector")
+//typealias Selector = CssSelector
 
 open class CssSelector {
     private let evaluator: Evaluator

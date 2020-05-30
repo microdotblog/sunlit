@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B106E33248150CE004F3E38 /* UIBarButtonItem+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B106E32248150CE004F3E38 /* UIBarButtonItem+Sunlit.swift */; };
 		4B4659E8246B272C00C4E84A /* AppDelegate+Menus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4659E7246B272C00C4E84A /* AppDelegate+Menus.swift */; };
 		4BFCFC31247C3F7800E86E2C /* PostAddSectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFCFC30247C3F7800E86E2C /* PostAddSectionCollectionViewCell.swift */; };
 		C5066BA22461BFF600D9B2E8 /* UUKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5066B9D2461BFF600D9B2E8 /* UUKeychain.swift */; };
@@ -146,6 +147,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4B106E32248150CE004F3E38 /* UIBarButtonItem+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Sunlit.swift"; sourceTree = "<group>"; };
 		4B4659E7246B272C00C4E84A /* AppDelegate+Menus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Menus.swift"; sourceTree = "<group>"; };
 		4BFCFC30247C3F7800E86E2C /* PostAddSectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAddSectionCollectionViewCell.swift; sourceTree = "<group>"; };
 		C5066B9D2461BFF600D9B2E8 /* UUKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUKeychain.swift; path = UUSwift/UUKeychain.swift; sourceTree = SOURCE_ROOT; };
@@ -390,6 +392,7 @@
 				C5B9A71A24563E66003EF82B /* AppDelegate.swift */,
 				C5B9A71C24563E66003EF82B /* SceneDelegate.swift */,
 				4B4659E7246B272C00C4E84A /* AppDelegate+Menus.swift */,
+				4B106E32248150CE004F3E38 /* UIBarButtonItem+Sunlit.swift */,
 				C5AC0453245FC9B900D7725D /* Resources */,
 				C5B9A731245640AD003EF82B /* Dependencies */,
 			);
@@ -638,6 +641,7 @@
 				C5FC6AEB24788B9100ACB77E /* MainViewController.swift in Sources */,
 				C5AC044E245F66C000D7725D /* Settings.swift in Sources */,
 				C5AC0446245F640800D7725D /* UUView.swift in Sources */,
+				4B106E33248150CE004F3E38 /* UIBarButtonItem+Sunlit.swift in Sources */,
 				C5C3AC4F247F2A7400D31A0A /* URL+Sunlit.swift in Sources */,
 				C5AC0447245F640800D7725D /* UUViewController.swift in Sources */,
 				C5AC044C245F640800D7725D /* UURemoteData.swift in Sources */,

@@ -31,7 +31,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			self.fetchUserInfo(user)
 		}
 		
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissViewController))
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonWithImage(named: "back_button", target: self, action: #selector(dismissViewController))
     }
 	
 

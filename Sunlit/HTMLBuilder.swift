@@ -81,8 +81,23 @@ class HTMLBuilder {
 	}
 	
 	static func htmlForVideo(media : SunlitMedia, location : MediaLocation) -> String {
+		// thumbnail path is the poster frame
+		let imagePath = location.path
+		let thumbnailPath = location.thumbnailPath
 		
-		// TODO: Need to make html formatted better for video...
-		return HTMLBuilder.htmlForImage(media: media, location: location, useSmallerImages: true)
+		let image = media.getImage()
+		let imageWidth = "\(image.size.width)"
+		let imageHeight = "\(image.size.height)"
+		let imageAlt = media.altText
+
+		var imageText = "<video controls=\"controls\" playsinline=\"playsinline\" src=\"{{url}}\" width=\"{{width}}\" height=\"{{height}}\" alt=\"{{alt}}\" poster=\"{{thumbnail}}\" preload=\"none\" />"
+		
+		imageText = imageText.replacingOccurrences(of: "{{url}}", with: imagePath)
+		imageText = imageText.replacingOccurrences(of: "{{width}}", with: imageWidth)
+		imageText = imageText.replacingOccurrences(of: "{{height}}", with: imageHeight)
+		imageText = imageText.replacingOccurrences(of: "{{alt}}", with: imageAlt)
+		imageText = imageText.replacingOccurrences(of: "{{thumbnail}}", with: thumbnailPath)
+
+		return imageText
 	}
 }

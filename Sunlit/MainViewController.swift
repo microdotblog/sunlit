@@ -363,13 +363,13 @@ class MainViewController: UIViewController {
 			}
 		}
 		
-		let discoverButton = UITabBarItem(title: "Discover", image: UIImage(named: "discover"), tag: 1)
-		let timelineButton = UITabBarItem(title: "Timeline", image: UIImage(named: "feed"), tag: 2)
+		let timelineButton = UITabBarItem(title: "Timeline", image: UIImage(named: "feed"), tag: 1)
+		let discoverButton = UITabBarItem(title: "Discover", image: UIImage(named: "discover"), tag: 2)
 		let profileButton = UITabBarItem(title: profileUsername, image: profileImage, tag: 3)
 		
 		self.tabBar.delegate = self
 
-		self.tabBar.setItems([discoverButton, timelineButton, profileButton], animated: true)
+		self.tabBar.setItems([timelineButton, discoverButton, profileButton], animated: true)
 		self.tabBar.selectedItem = timelineButton
 
 	}
@@ -396,12 +396,12 @@ extension MainViewController : UITabBarDelegate {
 	
 	func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
 		if item.tag == 1 {
-			self.onShowDiscover()
-		}
-		if item.tag == 2 {
 			self.onShowTimeline()
 		}
-		if item.tag == 3 {
+		else if item.tag == 2 {
+			self.onShowDiscover()
+		}
+		else if item.tag == 3 {
 			self.onShowProfile()
 		}
 	}
