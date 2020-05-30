@@ -356,7 +356,7 @@ public class UUHttpSession: NSObject
         
         request.startTime = Date.timeIntervalSinceReferenceDate
         
-        UUDebugLog("Begin Request\n\nMethod: %@\nURL: %@\nHeaders: %@)",
+        /*UUDebugLog("Begin Request\n\nMethod: %@\nURL: %@\nHeaders: %@)",
             String(describing: request.httpRequest?.httpMethod),
             String(describing: request.httpRequest?.url),
             String(describing: request.httpRequest?.allHTTPHeaderFields))
@@ -375,7 +375,7 @@ public class UUHttpSession: NSObject
                 }
             }
         }
-        
+        */
         let task = urlSession!.dataTask(with: request.httpRequest!)
         { (data : Data?, response: URLResponse?, error : Error?) in
             
@@ -457,12 +457,14 @@ public class UUHttpSession: NSObject
             httpResponseCode = httpResponse!.statusCode
         }
         
+		/*
         UUDebugLog("Http Response Code: %d", httpResponseCode)
         
         if let responseHeaders = httpResponse?.allHeaderFields
         {
             UUDebugLog("Response Headers: %@", responseHeaders)
         }
+		*/
         
         if (error != nil)
         {
@@ -509,7 +511,7 @@ public class UUHttpSession: NSObject
             
             let mimeType = httpResponse!.mimeType
             
-            UUDebugLog("Parsing response,\n%@ %@", String(describing: httpRequest?.httpMethod), String(describing: httpRequest?.url))
+            /*UUDebugLog("Parsing response,\n%@ %@", String(describing: httpRequest?.httpMethod), String(describing: httpRequest?.url))
             UUDebugLog("Response Mime: %@", String(describing: mimeType))
             
             if let responseData = data
@@ -525,9 +527,9 @@ public class UUHttpSession: NSObject
                     responseStr = String(data: responseData, encoding: .utf8)
                 }
                 
-                UUDebugLog("Raw Response: %@", String(describing: responseStr))
+                //UUDebugLog("Raw Response: %@", String(describing: responseStr))
             }
-            
+            */
             var handler = request.responseHandler
             
             if (handler == nil && mimeType != nil)
