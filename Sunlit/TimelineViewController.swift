@@ -242,7 +242,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	
 	@objc func loadTimeline() {
 		
-		Snippets.shared.fetchCurrentUserPhotoTimeline { (error, postObjects : [SnippetsPost]) in
+		Snippets.shared.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
 			DispatchQueue.main.async {
 				self.refreshTableView(postObjects)
 			}

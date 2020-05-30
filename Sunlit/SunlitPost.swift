@@ -15,6 +15,7 @@ class SunlitPost : SnippetsPost {
 	var aspectRatio : Float = 0.0
 	var altText : [String] = []
 	var images : [String] = []
+	var videos : [String] = []
 	var text : NSAttributedString = NSAttributedString(string: "")
 
 	
@@ -32,6 +33,7 @@ class SunlitPost : SnippetsPost {
 		if let whitelist = try? Whitelist.basicWithImages() {
 			_ = try? whitelist.removeTags("p")
 			_ = try? whitelist.addTags("style")
+			_ = try? whitelist.addTags("video").addAttributes("video", "src", "width", "height", "alt", "poster")
 			if let cleanString = try? SwiftSoup.clean(html, whitelist) {
 				string = cleanString
 			}
@@ -59,15 +61,9 @@ class SunlitPost : SnippetsPost {
 		// size the table cells when it's time to display the images.
 		if let document = try? SwiftSoup.parse(string) {
 			let images = findImageElements(document)
-			let text = stripImages(document, images)
-			if let video = findVideoElement(document) {
-				let source = imageTag(tag: "src", video)
-				let poster = imageTag(tag: "poster", video)
-				let alt = imageTag(tag: "alt", video)
-				let shouldIgnore = imageTag(tag: "mb-ignore", video)
-				print("Got here!")
-			}
-			
+			let videos = findVideoElements(document)
+			let text = stripImagesAndVideos(document, images, videos)
+
 			let htmlData = text.data(using: .utf16)!
 			if let attributedString = try? NSAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
 				parsedEntry.text = attributedString
@@ -76,12 +72,15 @@ class SunlitPost : SnippetsPost {
 				parsedEntry.text = NSAttributedString(string: text)
 			}
 
-			var aspectRatio : Float = 0.0
 			
+			var aspectRatio : Float = 0.0
+
 			// Store the image paths and the alt-text objects (if they exist)
 			for image in images {
-				parsedEntry.images.append(imageTag(tag: "src", image))
-				parsedEntry.altText.append(imageTag(tag: "alt", image))
+				let source = imageTag(tag: "src", image)
+				let altText = imageTag(tag: "alt", image)
+				parsedEntry.images.append(source)
+				parsedEntry.altText.append(altText)
 			
 				let width = imageTag(tag: "width", image) as NSString
 				let height = imageTag(tag: "height", image) as NSString
@@ -93,6 +92,25 @@ class SunlitPost : SnippetsPost {
 					}
 				}
 			}
+			
+			for video in videos {
+				let source = imageTag(tag: "src", video)
+				let poster = imageTag(tag: "poster", video)
+				let altText = imageTag(tag: "alt", video)
+				let width = imageTag(tag: "width", video) as NSString
+				let height = imageTag(tag: "height", video) as NSString
+
+				parsedEntry.altText.append(altText)
+				parsedEntry.videos.append(source)
+				parsedEntry.images.append(poster)
+				if width.floatValue > 0.0 && height.floatValue > 0.0 {
+					let ratio = height.floatValue / width.floatValue
+					if ratio > aspectRatio {
+						aspectRatio = ratio
+					}
+				}
+			}
+
 			
 			// If there is no aspect ratio, we will default to a square/1.0 aspect ratio
 			if aspectRatio == 0.0 {
@@ -122,12 +140,16 @@ class SunlitPost : SnippetsPost {
 		return cssString + string
 	}
 	
-	static func findVideoElement(_ document : Document) -> Element? {
+	static func findVideoElements(_ document : Document) -> [Element] {
+		var elements : [Element] = []
 		
 		if let sources : Elements = try? document.select("video[src]") {
-			return sources.first()
+			for video in sources.array() {
+				elements.append(video)
+			}
 		}
-		return nil
+		
+		return elements
 	}
 	
 	static func findImageElements(_ document : Document) -> [Element] {
@@ -159,10 +181,14 @@ class SunlitPost : SnippetsPost {
 		return ""
 	}
 		
-	static func stripImages(_ document : Document, _ images : [Element]) -> String {
+	static func stripImagesAndVideos(_ document : Document, _ images : [Element], _ videos : [Element]) -> String {
 		
 		for image in images {
 			try? image.remove()
+		}
+		
+		for video in videos {
+			try? video.remove()
 		}
 		
 		if let text = try? document.html() {
