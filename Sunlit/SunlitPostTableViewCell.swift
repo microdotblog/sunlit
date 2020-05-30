@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import AVKit
+
 
 class SunlitPostTableViewCell : UITableViewCell {
-	
+
 	@IBOutlet var pageViewIndicator : UIPageControl!
 	@IBOutlet var collectionView : UICollectionView!
 	@IBOutlet var textView : UITextView!
@@ -29,11 +31,15 @@ class SunlitPostTableViewCell : UITableViewCell {
 	
 	var post : SunlitPost!
 	
+	// Video playback interface...
+	var player : AVQueuePlayer? = nil
+	var playerLayer : AVPlayerLayer? = nil
+	var playerLooper : AVPlayerLooper? = nil
+
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
 	
 	static func photoHeight(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
 		let width : CGFloat = parentWidth
@@ -71,7 +77,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 		let rect = text.boundingRect(with: size, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics] , context: nil)
 		return ceil(rect.size.height)
 	}
-	
+		
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -80,7 +86,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-
+		
 		self.replyContainer.layer.cornerRadius = 18.0
 		self.replyContainer.layer.borderColor = UIColor.lightGray.cgColor
 		self.replyContainer.layer.borderWidth = 0.0
@@ -274,6 +280,45 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 		}
 	}
 	
+	func configureVideoPlayer(_ cell : SunlitPostCollectionViewCell, _ indexPath : IndexPath) {
+	
+		cell.timeStampLabel.text = "00:00:00"
+		cell.timeStampLabel.alpha = 0.0
+		cell.timeStampLabel.isHidden = false
+
+		if let url = URL(string: self.post.videos[indexPath.item]) {
+			let playerItem = AVPlayerItem(url: url)
+			let player = AVQueuePlayer(playerItem: playerItem)
+			let playerLayer = AVPlayerLayer(player: player)
+			cell.contentView.layer.addSublayer(playerLayer)
+			cell.contentView.bringSubviewToFront(cell.timeStampLabel)
+
+			playerLayer.frame = self.collectionView.bounds
+			playerLayer.isHidden = true
+
+			self.player = player
+			self.playerLayer = playerLayer
+			self.playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
+
+			player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main) { (time : CMTime) in
+				let rawTime = Double(CMTimeGetSeconds(time))
+				var seconds = Int(CMTimeGetSeconds(time))
+				let milliseconds = Int((rawTime - Double(seconds)) * 100)
+				let minutes = (seconds / 60)
+				seconds = seconds - (60 * minutes)
+				let timeString = String(format: "%02d:%02d:%02d", minutes, seconds, milliseconds)
+				cell.timeStampLabel.text = timeString
+				
+				// Animate in the timestamp label
+				if player.rate > 0.0 && cell.timeStampLabel.alpha == 0.0 {
+					UIView.animate(withDuration: 0.15) {
+						cell.timeStampLabel.alpha = 1.0
+					}
+				}
+			}
+		}
+	}
+	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.post.images.count
 	}
@@ -283,12 +328,19 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SunlitPostCollectionViewCell", for: indexPath) as! SunlitPostCollectionViewCell
 		cell.videoPlayIndicator.isHidden = true
 		cell.timeStampLabel.isHidden = true
+		cell.postImage.image = nil
+		cell.timeStampLabel.isHidden = true
+
 		if let image = ImageCache.prefetch(imagePath) {
 			cell.postImage.image = image
 		}
-		else {
-			cell.postImage.image = nil
+
+		let hasVideo = (self.post.videos.count > 0)
+		cell.videoPlayIndicator.isHidden = !hasVideo
+		if hasVideo {
+			self.configureVideoPlayer(cell, indexPath)
 		}
+		
 		return cell
 	}
 	
@@ -296,8 +348,36 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 		self.pageViewIndicator.currentPage = indexPath.item
 	}
 	
+	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		
+		// See if we have a valid player...
+		if let player = self.player,
+			let playerLayer = self.playerLayer {
+				player.pause()
+				playerLayer.removeFromSuperlayer()
+		}
+	}
+	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		let imagePath = self.post.images[indexPath.item]
-		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "View Image"), object: imagePath)
+		
+		if self.post.videos.count > 0 {
+
+			if let player = self.player,
+				let playerLayer = self.playerLayer {
+				if player.rate == 0.0 {
+					//playerLayer.frame = collectionView.bounds
+					playerLayer.isHidden = false
+					player.play()
+				}
+				else {
+					player.pause()
+				}
+			}
+			
+		}
+		else {
+			let imagePath = self.post.images[indexPath.item]
+			NotificationCenter.default.post(name: NSNotification.Name(rawValue: "View Image"), object: imagePath)
+		}
 	}
 }
