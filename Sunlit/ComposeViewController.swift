@@ -85,6 +85,8 @@ class ComposeViewController: UIViewController {
 	
 	func onImageTapped(_ section : Int, _ item : Int) {
 
+		self.view.endEditing(true)
+
 		let sectionData = self.sections[section]
 
 		var editTextTitle = "Add Alt Text"
@@ -134,6 +136,8 @@ class ComposeViewController: UIViewController {
 	}
 	
 	@objc func onCancel() {
+		self.view.endEditing(true)
+
 		self.navigationController?.dismiss(animated: true, completion: nil)
 	}
 
@@ -345,6 +349,8 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		
+		self.view.endEditing(true)
 		
 		// Special case for the "Add new section" button cell...
 		if indexPath.section >= self.sections.count {
