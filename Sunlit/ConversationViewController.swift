@@ -81,7 +81,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 			
 			DispatchQueue.main.async {
 				if let err = error {
-					Dialog.information(err.localizedDescription, self)
+					Dialog(self).information(err.localizedDescription)
 				}
 				else {
 					self.replyField.text = ""

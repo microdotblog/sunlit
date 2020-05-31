@@ -188,7 +188,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 			message = error.localizedDescription
 		}
 		
-		Dialog.information(message, self)
+		Dialog(self).information(message)
 	}
 	
 

@@ -21,6 +21,8 @@
 		C50E6554247AEE9A00C46B61 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E6553247AEE9A00C46B61 /* ComposeViewController.swift */; };
 		C51A0AF82480ACCF0068A4D3 /* SunlitPostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51A0AF72480ACCF0068A4D3 /* SunlitPostCollectionViewCell.swift */; };
 		C51CBB87246B1429005981B5 /* SnippetsUser+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */; };
+		C5226A87248420FA00EAADE3 /* UIView+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5226A86248420FA00EAADE3 /* UIView+Sunlit.swift */; };
+		C5226A892484451D00EAADE3 /* ChooseBlog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5226A882484451D00EAADE3 /* ChooseBlog.storyboard */; };
 		C53C08EB2471FFF000C919E0 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */; };
 		C53C08ED2472133F00C919E0 /* Tagmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C08EC2472133F00C919E0 /* Tagmoji.swift */; };
 		C5A507A82470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */; };
@@ -161,6 +163,8 @@
 		C50E6553247AEE9A00C46B61 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		C51A0AF72480ACCF0068A4D3 /* SunlitPostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitPostCollectionViewCell.swift; sourceTree = "<group>"; };
 		C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetsUser+Sunlit.swift"; sourceTree = "<group>"; };
+		C5226A86248420FA00EAADE3 /* UIView+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Sunlit.swift"; sourceTree = "<group>"; };
+		C5226A882484451D00EAADE3 /* ChooseBlog.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChooseBlog.storyboard; sourceTree = "<group>"; };
 		C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
 		C53C08EC2472133F00C919E0 /* Tagmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tagmoji.swift; sourceTree = "<group>"; };
 		C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetsPost+Sunlit.swift"; sourceTree = "<group>"; };
@@ -300,6 +304,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C5226A8A2484460100EAADE3 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4B106E32248150CE004F3E38 /* UIBarButtonItem+Sunlit.swift */,
+				C5226A86248420FA00EAADE3 /* UIView+Sunlit.swift */,
+				C5C3AC4E247F2A7400D31A0A /* URL+Sunlit.swift */,
+				C5A507A92470C05E00D60CB4 /* Date+Sunlit.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		C5AC0413245F63D300D7725D /* Snippets */ = {
 			isa = PBXGroup;
 			children = (
@@ -356,6 +371,7 @@
 				C5FC6AE42477886900ACB77E /* Settings.storyboard */,
 				C5FC6AE6247788A200ACB77E /* About.storyboard */,
 				C5FC6AE8247788D200ACB77E /* Drafts.storyboard */,
+				C5226A882484451D00EAADE3 /* ChooseBlog.storyboard */,
 				C5B9A72724563E66003EF82B /* LaunchScreen.storyboard */,
 				C5B9A72524563E66003EF82B /* Assets.xcassets */,
 				C50E654D2478D2A800C46B61 /* credits.html */,
@@ -389,10 +405,10 @@
 				C5FC6ADE2476083D00ACB77E /* TableViewCells */,
 				C5FFB1D32469C7AD0015368A /* ViewControllers */,
 				C5FFB1D22469C7A20015368A /* Data */,
+				C5226A8A2484460100EAADE3 /* Extensions */,
 				C5B9A71A24563E66003EF82B /* AppDelegate.swift */,
 				C5B9A71C24563E66003EF82B /* SceneDelegate.swift */,
 				4B4659E7246B272C00C4E84A /* AppDelegate+Menus.swift */,
-				4B106E32248150CE004F3E38 /* UIBarButtonItem+Sunlit.swift */,
 				C5AC0453245FC9B900D7725D /* Resources */,
 				C5B9A731245640AD003EF82B /* Dependencies */,
 			);
@@ -499,19 +515,17 @@
 		C5FFB1D22469C7A20015368A /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				C5C3AC4E247F2A7400D31A0A /* URL+Sunlit.swift */,
-				C5A507A92470C05E00D60CB4 /* Date+Sunlit.swift */,
+				C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */,
+				C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */,
+				C5C3AC3E247C9DA000D31A0A /* SunlitComposition.swift */,
+				C5C3AC4A247ED92100D31A0A /* SunlitMedia.swift */,
+				C5D53CC524620EB900FFAC71 /* SunlitPost.swift */,
 				C5AC044D245F66C000D7725D /* Settings.swift */,
 				C5AC044F245F690600D7725D /* Dialog.swift */,
 				C5D53CC32461CA2D00FFAC71 /* ImageCache.swift */,
-				C5C3AC3E247C9DA000D31A0A /* SunlitComposition.swift */,
-				C5D53CC524620EB900FFAC71 /* SunlitPost.swift */,
-				C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */,
-				C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */,
 				C53C08EC2472133F00C919E0 /* Tagmoji.swift */,
 				C5C3AC46247DCB3100D31A0A /* MediaUploader.swift */,
 				C5C3AC48247DCB3E00D31A0A /* HTMLBuilder.swift */,
-				C5C3AC4A247ED92100D31A0A /* SunlitMedia.swift */,
 				C5C3AC4C247F27D000D31A0A /* VideoTranscoder.swift */,
 			);
 			name = Data;
@@ -594,6 +608,7 @@
 			files = (
 				C5B9A72924563E66003EF82B /* LaunchScreen.storyboard in Resources */,
 				C5FC6AE7247788A200ACB77E /* About.storyboard in Resources */,
+				C5226A892484451D00EAADE3 /* ChooseBlog.storyboard in Resources */,
 				C5B9A72624563E66003EF82B /* Assets.xcassets in Resources */,
 				C5FC6AE3247787FA00ACB77E /* Compose.storyboard in Resources */,
 				C5FC6AE9247788D200ACB77E /* Drafts.storyboard in Resources */,
@@ -693,6 +708,7 @@
 				C5D53D07246214CE00FFAC71 /* FormElement.swift in Sources */,
 				C5AC044A245F640800D7725D /* UUEditViewController.swift in Sources */,
 				C5D53D08246214CE00FFAC71 /* ParseErrorList.swift in Sources */,
+				C5226A87248420FA00EAADE3 /* UIView+Sunlit.swift in Sources */,
 				C5AC043D245F640800D7725D /* UUImage.swift in Sources */,
 				C5AC0448245F640800D7725D /* UURandom.swift in Sources */,
 				C5C3AC45247C9E7600D31A0A /* PostAddPhotoCollectionViewCell.swift in Sources */,

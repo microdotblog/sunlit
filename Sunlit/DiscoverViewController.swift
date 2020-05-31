@@ -336,7 +336,7 @@ class DiscoverViewController: UIViewController {
 			message = error.localizedDescription
 		}
 		
-		Dialog.information(message, self)
+		Dialog(self).information(message)
 	}
 	
 	@objc func handleViewImageNotification(_ notification : Notification) {

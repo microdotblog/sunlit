@@ -20,14 +20,31 @@ class Settings {
 		return UserDefaults.standard.string(forKey: "SunlitToken")
 	}
 	
-	static func saveBlogIdentifier(_ blogId : String) {
-		UserDefaults.standard.setValue(blogId, forKey: "SunlitBlogIdentifier")
-	}
 	
-	static func blogIdentifier() -> String? {
-		return UserDefaults.standard.string(forKey: "SunlitBlogIdentifier")
+	static func selectedBlogIdentifier() -> String? {
+		if let dictionary = Settings.blogDictionary() {
+			return dictionary["uid"] as? String
+		}
+		
+		return nil
 	}
 
+	static func selectedBlogName() -> String? {
+		if let dictionary = Settings.blogDictionary() {
+			return dictionary["name"] as? String
+		}
+		
+		return nil
+	}
+	
+	static func saveBlogDictionary(_ dictionary : [String : Any]) {
+		UserDefaults.standard.setValue(dictionary, forKey: "SunlitBlogDictionary")
+	}
+	
+	static func blogDictionary() -> [String : Any]? {
+		return UserDefaults.standard.object(forKey: "SunlitBlogDictionary") as? [String : Any]
+	}
+	
 	static func saveMediaEndpoint(_ mediaEndpoint : String) {
 		UserDefaults.standard.setValue(mediaEndpoint, forKey: "SunlitMediaEndpoint")
 	}

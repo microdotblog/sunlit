@@ -27,7 +27,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			let email = input.uuTrimWhitespace()
 			
 			if !email.uuIsValidEmail() {
-				Dialog.information("Please enter a valid email address.", self)
+				Dialog(self).information("Please enter a valid email address.")
 				return
 			}
 			
@@ -39,10 +39,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 				self.unlockUserInterface()
 
 				if let err = error {
-					Dialog.information(err.localizedDescription, self)
+					Dialog(self).information(err.localizedDescription)
 				}
 				else {
-					Dialog.information("Check your email on this device and tap the \"Open with Sunlit\" button.", self, completion: {
+					Dialog(self).information("Check your email on this device and tap the \"Open with Sunlit\" button.", completion: {
 						self.dismiss(animated: true, completion: nil)
 					})
 				}

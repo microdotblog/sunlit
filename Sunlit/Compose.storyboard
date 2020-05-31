@@ -63,9 +63,9 @@
                                     <constraint firstAttribute="trailing" secondItem="KNt-4X-uMH" secondAttribute="trailing" id="yki-y2-MBe"/>
                                 </constraints>
                             </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" keyboardDismissMode="interactive" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehI-KN-yqo">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" alwaysBounceVertical="YES" delaysContentTouches="NO" keyboardDismissMode="onDrag" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehI-KN-yqo">
                                 <rect key="frame" x="0.0" y="104" width="414" height="792"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="iJd-OI-jXi">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -210,13 +210,43 @@
                                     <outlet property="dropDelegate" destination="Xuq-8W-x41" id="972-7v-KDm"/>
                                 </connections>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="grM-1V-fO8">
+                                <rect key="frame" x="0.0" y="818" width="414" height="44"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uVH-QH-NDT">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UN1-6s-Ep7">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                                <state key="normal" title="cheesemaker.micro.blog">
+                                                    <color key="titleColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onSelectBlogConfiguration" destination="Xuq-8W-x41" eventType="touchUpInside" id="52U-kG-Jo2"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="uVH-QH-NDT" secondAttribute="trailing" id="3Nj-Z3-vhk"/>
+                                    <constraint firstItem="uVH-QH-NDT" firstAttribute="top" secondItem="grM-1V-fO8" secondAttribute="top" id="Q2r-fk-bd8"/>
+                                    <constraint firstItem="uVH-QH-NDT" firstAttribute="leading" secondItem="grM-1V-fO8" secondAttribute="leading" id="jFg-rr-z0f"/>
+                                    <constraint firstAttribute="bottom" secondItem="uVH-QH-NDT" secondAttribute="bottom" id="see-ah-Td9"/>
+                                    <constraint firstAttribute="height" constant="44" id="vvt-Wm-tWc"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="KSH-VH-Uxb" firstAttribute="leading" secondItem="ZVb-fk-Mtm" secondAttribute="leading" id="2P8-Yw-gSt"/>
                             <constraint firstItem="ehI-KN-yqo" firstAttribute="trailing" secondItem="ZVb-fk-Mtm" secondAttribute="trailing" id="46C-vo-3Ea"/>
+                            <constraint firstItem="grM-1V-fO8" firstAttribute="trailing" secondItem="ZVb-fk-Mtm" secondAttribute="trailing" id="5Ci-R8-XVt"/>
                             <constraint firstItem="Y7O-Qg-4a1" firstAttribute="top" secondItem="yQX-NT-ibg" secondAttribute="top" id="6Z2-5h-akC"/>
                             <constraint firstAttribute="bottom" secondItem="Y7O-Qg-4a1" secondAttribute="bottom" id="BhQ-zT-9ZC"/>
+                            <constraint firstItem="ZVb-fk-Mtm" firstAttribute="bottom" secondItem="grM-1V-fO8" secondAttribute="bottom" id="KtA-WS-8AB"/>
+                            <constraint firstItem="grM-1V-fO8" firstAttribute="leading" secondItem="ZVb-fk-Mtm" secondAttribute="leading" id="NJI-Kj-bPO"/>
                             <constraint firstItem="Y7O-Qg-4a1" firstAttribute="trailing" secondItem="ZVb-fk-Mtm" secondAttribute="trailing" id="ZaY-hz-eDp"/>
                             <constraint firstAttribute="bottom" secondItem="ehI-KN-yqo" secondAttribute="bottom" id="fL5-nd-VFt"/>
                             <constraint firstItem="Y7O-Qg-4a1" firstAttribute="leading" secondItem="ZVb-fk-Mtm" secondAttribute="leading" id="hcw-HE-2j8"/>
@@ -229,8 +259,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="UOj-RJ-nJQ"/>
                     <connections>
+                        <outlet property="blogSelectorButton" destination="UN1-6s-Ep7" id="BBZ-Tk-rZB"/>
                         <outlet property="collectionView" destination="ehI-KN-yqo" id="xgo-44-go4"/>
                         <outlet property="disabledInterface" destination="Y7O-Qg-4a1" id="jvg-rx-dbH"/>
+                        <outlet property="keyboardAccessoryView" destination="grM-1V-fO8" id="nhl-Kn-qhW"/>
+                        <outlet property="keyboardAccessoryViewBottomConstraint" destination="KtA-WS-8AB" id="cYB-E3-o46"/>
                         <outlet property="titleField" destination="a9n-oW-kej" id="vec-41-DsE"/>
                         <outlet property="titleHeightConstraint" destination="TlM-Xh-g7s" id="LAv-iv-ShW"/>
                     </connections>

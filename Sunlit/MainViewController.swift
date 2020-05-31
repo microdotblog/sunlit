@@ -39,7 +39,7 @@ class MainViewController: UIViewController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 	func setupSnippets() {
-		let blogIdentifier = Settings.blogIdentifier()
+		let blogIdentifier = Settings.selectedBlogIdentifier()
 		if let token = Settings.permanentToken() {
 			Snippets.shared.configure(permanentToken: token, blogUid: blogIdentifier)
 			self.onShowTimeline()
@@ -78,7 +78,12 @@ class MainViewController: UIViewController {
 				{
 					DispatchQueue.main.async {
 						if let loginViewController = self.loginViewController {
-							loginViewController.dismiss(animated: true, completion: nil)
+							loginViewController.dismiss(animated: true) {
+								
+								Dialog(self).information("You have successfully logged in.") {
+									self.onShowTimeline()
+								}
+							}
 						}
 					}
 					
@@ -210,9 +215,8 @@ class MainViewController: UIViewController {
 		
 		self.addChild(timelineViewController)
 		self.contentView.addSubview(timelineViewController.view)
-		timelineViewController.view.frame = self.contentView.frame
-
-		self.pinToContentView(timelineViewController.view)
+		self.timelineViewController.view.frame = self.contentView.frame
+		self.timelineViewController.view.constrainAllSides(self.contentView)
 	}
 	
 	@objc func onShowProfile() {
@@ -228,9 +232,8 @@ class MainViewController: UIViewController {
 
 		self.addChild(profileViewController)
 		self.contentView.addSubview(profileViewController.view)
-		profileViewController.view.frame = self.contentView.frame
-
-		self.pinToContentView(profileViewController.view)
+		self.profileViewController.view.frame = self.contentView.frame
+		self.profileViewController.view.constrainAllSides(self.contentView)
 	}
 	
 	@objc func onShowDiscover() {
@@ -241,76 +244,14 @@ class MainViewController: UIViewController {
 
 		self.addChild(discoverViewController)
 		self.contentView.addSubview(discoverViewController.view)
-		discoverViewController.view.frame = self.contentView.frame
-
-		self.pinToContentView(discoverViewController.view)
+		self.discoverViewController.view.frame = self.contentView.frame
+		self.discoverViewController.view.constrainAllSides(self.contentView)
 	}
 	
 	@objc func onSelectBlogConfiguration() {
-		Snippets.shared.fetchCurrentUserConfiguration { (error, configuration) in
-			
-			// Check for a media endpoint definition...
-			if let mediaEndPoint = configuration["media-endpoint"] as? String {
-				Settings.saveMediaEndpoint(mediaEndPoint)
-				Snippets.shared.setMediaEndPoint(mediaEndPoint)
-			}
-			
-			DispatchQueue.main.async {
-
-				if let destinations = configuration["destination"] as? [[String : Any]] {
-					
-					if destinations.count > 1 {
-						self.selectBlogConfiguration(destinations)
-						return
-					}
-				
-					if let destination = destinations.first {
-						if let blogIdentifier = destination["uid"] as? String {
-							Settings.saveBlogIdentifier(blogIdentifier)
-						}
-					}
-				}
-			
-				Dialog.information("You have successfully logged in.", self) {
-					self.onShowTimeline()
-				}
-			}
-		}
+		Dialog(self).selectBlog()
 	}
-	
-	@objc func selectBlogConfiguration(_ destinations : [[String : Any]]) {
-
-		let actionSheet = UIAlertController(title: nil, message: "Please select which Micro.blog to use when publishing.", preferredStyle: .actionSheet)
-
-		for destination in destinations {
-			if let title = destination["name"] as? String,
-				let blogId = destination["uid"] as? String {
-				let action = UIAlertAction(title: title, style: .default) { (action) in
-					Settings.saveBlogIdentifier(blogId)
-					Snippets.shared.setBlogIdentifier(blogId)
-					
-					Dialog.information("You have successfully logged in.", self) {
-						self.onShowTimeline()
-					}
-				}
-				
-				actionSheet.addAction(action)
-			}
-		}
-		
-		self.present(actionSheet, animated: true) {
-		}
-
-	}
-	
-	func pinToContentView(_ view : UIView) {
-		let topConstraint = NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: self.contentView!, attribute: .top, multiplier: 1.0, constant: 0.0)
-		let bottomConstraint = NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: self.contentView!, attribute: .bottom, multiplier: 1.0, constant: 0.0)
-		let leftConstraint = NSLayoutConstraint(item: view, attribute: .left, relatedBy: .equal, toItem: self.contentView!, attribute: .left, multiplier: 1.0, constant: 0.0)
-		let rightConstraint = NSLayoutConstraint(item: view, attribute: .right, relatedBy: .equal, toItem: self.contentView!, attribute: .right, multiplier: 1.0, constant: 0.0)
-		self.contentView.addConstraints([topConstraint, bottomConstraint, leftConstraint, rightConstraint])
-	}
-	
+			
 	func loadPrimaryViewsFromStoryboards() {
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
 		self.timelineViewController = storyboard.instantiateViewController(identifier: "TimelineViewController")

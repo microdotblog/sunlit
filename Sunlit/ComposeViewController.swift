@@ -14,6 +14,10 @@ class ComposeViewController: UIViewController {
 	@IBOutlet var titleHeightConstraint : NSLayoutConstraint!
 	@IBOutlet var disabledInterface : UIView!
 	@IBOutlet var collectionView : UICollectionView!
+	@IBOutlet var keyboardAccessoryView : UIView!
+	@IBOutlet var keyboardAccessoryViewBottomConstraint : NSLayoutConstraint!
+	@IBOutlet var blogSelectorButton : UIButton!
+	
 	var sections : [SunlitComposition] = []
 	var textViewDictionary : [UITextView : SunlitComposition] = [ : ]
 	var needsInitialFirstResponder = true
@@ -27,6 +31,7 @@ class ComposeViewController: UIViewController {
 		
 		self.configureCollectionView()
 		self.configureNavigationController()
+		self.configureKeyboardAccessoryView()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -49,6 +54,14 @@ class ComposeViewController: UIViewController {
 		let rightItems : [UIBarButtonItem] = [UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(onPost)) ]
 		self.navigationItem.rightBarButtonItems = rightItems
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(onCancel))
+	}
+	
+	func configureKeyboardAccessoryView() {
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+		self.keyboardAccessoryView.isHidden = true
+		
+		self.blogSelectorButton.setTitle(Settings.selectedBlogName(), for: .normal)
 	}
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -119,7 +132,7 @@ class ComposeViewController: UIViewController {
 		let pickerController = UIImagePickerController()
 		pickerController.delegate = self
 		pickerController.mediaTypes = ["public.image", "public.movie"]
-		pickerController.sourceType = .savedPhotosAlbum
+		pickerController.sourceType = .photoLibrary
 		pickerController.allowsEditing = false
 		self.present(pickerController, animated: true, completion: nil)
 	}
@@ -133,6 +146,12 @@ class ComposeViewController: UIViewController {
 			self.disabledInterface.alpha = 1.0
 		}
 		self.uploadComposition()
+	}
+	
+	@IBAction func onSelectBlogConfiguration() {
+		Dialog(self).selectBlog {
+			self.blogSelectorButton.setTitle(Settings.selectedBlogName(), for: .normal)
+		}
 	}
 	
 	@objc func onCancel() {
@@ -183,6 +202,35 @@ class ComposeViewController: UIViewController {
 		self.present(alertController, animated: true, completion: nil)
 	}
 	
+	@IBAction func onDismissKeyboard() {
+		self.view.endEditing(true)
+	}
+	
+	@objc func keyboardOnScreenNotification(_ notification : Notification) {
+		
+		if let info : [AnyHashable : Any] = notification.userInfo {
+			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+				let frame = value.cgRectValue
+				self.keyboardAccessoryView.isHidden = false
+				self.keyboardAccessoryView.alpha = 0.0
+				
+				UIView.animate(withDuration: 0.25) {
+					self.keyboardAccessoryView.alpha = 1.0
+					self.keyboardAccessoryViewBottomConstraint.constant = frame.size.height - self.view.safeAreaInsets.bottom
+					self.view.layoutIfNeeded()
+				}
+			}
+		}
+	}
+
+	@objc func keyboardOffScreenNotification(_ notification : Notification) {
+		self.keyboardAccessoryView.isHidden = true
+		self.keyboardAccessoryViewBottomConstraint.constant = 0
+		self.view.layoutIfNeeded()
+	}
+	
+	
+	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -211,7 +259,7 @@ class ComposeViewController: UIViewController {
 		mediaUpLoader.uploadMedia(uploadQueue) { (error, dictionary) in
 
 			if let err = error {
-				Dialog.information(err.localizedDescription, self)
+				Dialog(self).information(err.localizedDescription)
 			}
 			else {
 				completion(dictionary)
@@ -222,7 +270,7 @@ class ComposeViewController: UIViewController {
 	func handleUploadCompletion(_ error : Error?, _ remotePath : String?) {
 		
 		if let err = error {
-			Dialog.information(err.localizedDescription, self, completion: {
+			Dialog(self).information(err.localizedDescription, completion: {
 				UIView.animate(withDuration: 0.15) {
 					self.disabledInterface.alpha = 0.0
 				}
