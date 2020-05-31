@@ -76,6 +76,12 @@ class MainViewController: UIViewController {
 			Snippets.shared.requestPermanentTokenFromTemporaryToken(token: temporaryToken) { (error, token) in
 				if let permanentToken = token
 				{
+					DispatchQueue.main.async {
+						if let loginViewController = self.loginViewController {
+							loginViewController.dismiss(animated: true, completion: nil)
+						}
+					}
+					
 					Settings.savePermanentToken(permanentToken)
 					Snippets.shared.configure(permanentToken: permanentToken, blogUid: nil)
 					
@@ -188,7 +194,7 @@ class MainViewController: UIViewController {
 	@objc func onShowLogin() {
 		let storyboard = UIStoryboard(name: "Login", bundle: nil)
 		self.loginViewController = storyboard.instantiateViewController(identifier: "LoginViewController")
-		show(self.loginViewController!, sender: self)
+		self.present(self.loginViewController!, animated: true, completion: nil)
 	}
 	
 	@objc func onShowTimeline() {
