@@ -254,7 +254,7 @@ class MainViewController: UIViewController {
 				if let destinations = configuration["destination"] as? [[String : Any]] {
 					
 					if destinations.count > 1 {
-						self.onSelectBlogConfiguration(destinations)
+						self.selectBlogConfiguration(destinations)
 						return
 					}
 				
@@ -272,7 +272,7 @@ class MainViewController: UIViewController {
 		}
 	}
 	
-	@objc func onSelectBlogConfiguration(_ destinations : [[String : Any]]) {
+	@objc func selectBlogConfiguration(_ destinations : [[String : Any]]) {
 
 		let actionSheet = UIAlertController(title: nil, message: "Please select which Micro.blog to use when publishing.", preferredStyle: .actionSheet)
 
@@ -371,6 +371,9 @@ class MainViewController: UIViewController {
 
 		self.tabBar.setItems([timelineButton, discoverButton, profileButton], animated: true)
 		self.tabBar.selectedItem = timelineButton
+		
+		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
+		self.tabBar.addGestureRecognizer(longpressGesture)
 
 	}
 	

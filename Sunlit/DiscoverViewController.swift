@@ -11,6 +11,7 @@ import SafariServices
 
 class DiscoverViewController: UIViewController {
 	
+	@IBOutlet var busyIndicator : UIActivityIndicatorView!
 	@IBOutlet var collectionView : UICollectionView!
 	@IBOutlet var tableView : UITableView!
 	@IBOutlet var scrollView : UIScrollView!
@@ -95,6 +96,7 @@ class DiscoverViewController: UIViewController {
 		self.posts = posts
 		self.tableViewRefreshControl.endRefreshing()
 		self.collectionViewRefreshControl.endRefreshing()
+		self.busyIndicator.isHidden = true
 		
 		if self.tableView.isHidden == false {
 			self.tableView.reloadData()
@@ -106,6 +108,7 @@ class DiscoverViewController: UIViewController {
 
 	
 	func loadTimeline() {
+		
 		Snippets.shared.fetchDiscoverTimeline(collection: self.collection) { (error, postObjects, tagmoji) in
 			DispatchQueue.main.async {
 				
@@ -250,6 +253,8 @@ class DiscoverViewController: UIViewController {
 				
 				self.navigationController?.navigationBar.topItem?.title = "Discover " + title
 				self.refresh([])
+				
+				self.busyIndicator.isHidden = false
 			}
 			
 			Snippets.shared.fetchDiscoverTimeline(collection: collection) { (error, postObjects, tagmoji) in
