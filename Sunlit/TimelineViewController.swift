@@ -15,6 +15,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	var refreshControl = UIRefreshControl()
 	var keyboardAccessoryView : UIView!
 	var tableViewData : [SunlitPost] = []
+	var loadingData = false
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,6 +93,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		self.prefetchImages(indexPath)
+		
+		if indexPath.row > (self.tableViewData.count - 3) {
+			self.loadMoreTimeline()
+		}
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -253,11 +258,54 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	
 	@objc func loadTimeline() {
 		
+		// Safety check for double loads...
+		if self.loadingData == true {
+			return
+		}
+		
+		self.loadingData = true
 		Snippets.shared.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
 			DispatchQueue.main.async {
 				self.refreshTableView(postObjects)
+				self.loadingData = false
 			}
 		}
+	}
+	
+	@objc func loadMoreTimeline() {
+		// Safety check for double loads...
+		if self.loadingData == true {
+			return
+		}
+
+		if let last = self.tableViewData.last {
+			self.loadingData = true
+	
+			var parameters : [String : String] = [:]
+			parameters["count"] = "10"
+			parameters["before_id"] = last.identifier
+
+			Snippets.shared.fetchCurrentUserMediaTimeline(parameters: parameters, completion:
+			{ (error, entries : [SnippetsPost]) in
+				DispatchQueue.main.async {
+					
+					var row = self.tableViewData.count
+					var indexPaths : [IndexPath] = []
+					for entry in entries {
+						let post = SunlitPost.create(entry)
+						self.tableViewData.append(post)
+						
+						let indexPath = IndexPath(row: row, section: 0)
+						indexPaths.append(indexPath)
+						row = row + 1
+					}
+					
+					self.tableView.insertRows(at: indexPaths, with: .automatic)
+					self.loadingData = false
+				}
+			})
+		}
+
 	}
 
 	

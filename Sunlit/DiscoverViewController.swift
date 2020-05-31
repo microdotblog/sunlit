@@ -28,6 +28,8 @@ class DiscoverViewController: UIViewController {
 	var tagmojiDictionary : [String : String] = [:]
 	var collection = "photos"
 	var collectionTitle = "photos"
+	var loadingData = false
+	
 	
 
     override func viewDidLoad() {
@@ -108,6 +110,11 @@ class DiscoverViewController: UIViewController {
 
 	
 	func loadTimeline() {
+		if self.loadingData == true {
+			return
+		}
+		
+		self.loadingData = true
 		
 		Snippets.shared.fetchDiscoverTimeline(collection: self.collection) { (error, postObjects, tagmoji) in
 			DispatchQueue.main.async {
@@ -118,8 +125,48 @@ class DiscoverViewController: UIViewController {
 				}
 				self.navigationController?.navigationBar.topItem?.title = "Discover " + self.collectionTitle
 				self.refresh(postObjects)
+				
+				self.loadingData = false
 			}
 		}
+	}
+	
+	@objc func loadMoreTimeline() {
+		// Safety check for double loads...
+		if self.loadingData == true {
+			return
+		}
+
+		if let last = self.posts.last {
+			self.loadingData = true
+	
+			var parameters : [String : String] = [:]
+			parameters["count"] = "10"
+			parameters["before_id"] = last.identifier
+
+			Snippets.shared.fetchDiscoverTimeline(collection: self.collection, parameters: parameters) { (error, entries, tagmoji) in
+				
+				DispatchQueue.main.async {
+					var row = self.posts.count
+					var indexPaths : [IndexPath] = []
+					for entry in entries {
+						let post = SunlitPost.create(entry)
+						
+						if post.images.count > 0 {
+							self.posts.append(post)
+
+							let indexPath = IndexPath(row: row, section: 0)
+							indexPaths.append(indexPath)
+							row = row + 1
+						}						
+					}
+					
+					self.tableView.insertRows(at: indexPaths, with: .automatic)
+					self.loadingData = false
+				}
+			}
+		}
+
 	}
 	
 	func loadFrequentlyUsedEmoji() {
@@ -431,6 +478,10 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		self.prefetchImages(indexPath)
+		
+		if indexPath.row > (self.posts.count - 3) {
+			self.loadMoreTimeline()
+		}
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

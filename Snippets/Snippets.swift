@@ -154,29 +154,29 @@ public class Snippets : NSObject {
 		self.fetchTimeline(self.pathForRoute("micropub"), arguments:arguments, completion: completion)
 	}
 	
-	@objc public func fetchCurrentUserTimeline(completion: @escaping(Error?, [SnippetsPost]) -> ())
+	@objc public func fetchCurrentUserTimeline(parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
-		self.fetchTimeline(self.pathForRoute("posts/all"), completion: completion)
+		self.fetchTimeline(self.pathForRoute("posts/all"), arguments:parameters, completion: completion)
 	}
 	
-	@objc public func fetchCurrentUserPhotoTimeline(completion: @escaping(Error?, [SnippetsPost]) -> ())
+	@objc public func fetchCurrentUserPhotoTimeline(parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
-		self.fetchTimeline(self.pathForRoute("posts/photos"), completion: completion)
+		self.fetchTimeline(self.pathForRoute("posts/photos"), arguments:parameters, completion: completion)
 	}
 
-	@objc public func fetchCurrentUserMediaTimeline(completion: @escaping(Error?, [SnippetsPost]) -> ())
+	@objc public func fetchCurrentUserMediaTimeline(parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
-		self.fetchTimeline(self.pathForRoute("posts/media"), completion: completion)
+		self.fetchTimeline(self.pathForRoute("posts/media"), arguments: parameters, completion: completion)
 	}
 
-	@objc public func fetchCurrentUserMentions(completion: @escaping(Error?, [SnippetsPost]) -> ())
+	@objc public func fetchCurrentUserMentions(parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
-		self.fetchTimeline(self.pathForRoute("posts/mentions"), completion: completion)
+		self.fetchTimeline(self.pathForRoute("posts/mentions"), arguments: parameters, completion: completion)
 	}
 
-	@objc public func fetchCurrentUserFavorites(completion: @escaping(Error?, [SnippetsPost]) -> ())
+	@objc public func fetchCurrentUserFavorites(parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
-		self.fetchTimeline(self.pathForRoute("posts/favorites"), completion: completion)
+		self.fetchTimeline(self.pathForRoute("posts/favorites"), arguments: parameters, completion: completion)
 	}
 	
 	
@@ -184,7 +184,7 @@ public class Snippets : NSObject {
 	// MARK: - Interface for querying other items outside the logged-in user
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @objc public func fetchDiscoverTimeline(collection : String? = nil, completion: @escaping(Error?, [SnippetsPost], [[String : Any]]?) -> ())
+	@objc public func fetchDiscoverTimeline(collection : String? = nil, parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost], [[String : Any]]?) -> ())
 	{
         var route = "posts/discover"
         if let validCollection = collection {
@@ -192,8 +192,7 @@ public class Snippets : NSObject {
         }
         
         let path = self.pathForRoute(route)
-        
-        let request = self.secureGet(path: path, arguments: [ : ])
+        let request = self.secureGet(path: path, arguments: parameters)
         
         _ = UUHttpSession.executeRequest(request) { (parsedServerResponse) in
             if let feedDictionary = parsedServerResponse.parsedResponse as? [String : Any]
