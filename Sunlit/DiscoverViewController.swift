@@ -25,6 +25,8 @@ class DiscoverViewController: UIViewController {
 	
 	var posts : [SunlitPost] = []
 	var tagmojiDictionary : [String : String] = [:]
+	var collection = "photos"
+	var collectionTitle = "photos"
 	
 
     override func viewDidLoad() {
@@ -32,8 +34,8 @@ class DiscoverViewController: UIViewController {
         
 		self.setupTableViewAndCollectionView()
 		self.loadFrequentlyUsedEmoji()
-		self.title = "Discover photos"
-		self.navigationItem.title = "Discover photos"
+		self.title = "Discover " + self.collectionTitle
+		self.navigationItem.title = "Discover " + self.collectionTitle
 		
 		Tagmoji.shared.refresh { (updated) in
 			self.loadTagmoji()
@@ -104,14 +106,14 @@ class DiscoverViewController: UIViewController {
 
 	
 	func loadTimeline() {
-		Snippets.shared.fetchDiscoverTimeline(collection: "photos") { (error, postObjects, tagmoji) in
+		Snippets.shared.fetchDiscoverTimeline(collection: self.collection) { (error, postObjects, tagmoji) in
 			DispatchQueue.main.async {
 				
 				// Default to using the collection view...
 				if self.tableView.isHidden == true && self.collectionView.isHidden == true {
 					self.collectionView.isHidden = false
 				}
-				self.navigationController?.navigationBar.topItem?.title = "Discover photos"
+				self.navigationController?.navigationBar.topItem?.title = "Discover " + self.collectionTitle
 				self.refresh(postObjects)
 			}
 		}
@@ -154,7 +156,8 @@ class DiscoverViewController: UIViewController {
 				
 			for tagmoji in tagmojiArray {
 				if let name = Tagmoji.shared.tileFor(tagmoji: tagmoji) {
-						
+					self.collection = name
+					
 					let button = UIButton(type: .custom)
 					button.frame = CGRect(x: buttonOffset.x, y: buttonOffset.y, width: 44, height: 44)
 					button.setTitle(tagmoji, for: .normal)
@@ -231,6 +234,8 @@ class DiscoverViewController: UIViewController {
 		if let emoji = button.title(for: .normal),
 			let title = Tagmoji.shared.tileFor(tagmoji: emoji),
 			let collection = Tagmoji.shared.routeFor(tagmoji: emoji) {
+			self.collection = collection
+			self.collectionTitle = title
 
 			DispatchQueue.main.async {
 				
@@ -294,7 +299,7 @@ class DiscoverViewController: UIViewController {
 				}
 				else if self.collectionView.isHidden == false {
 					if indexPath.item < self.posts.count {
-						self.tableView.reloadRows(at: [ indexPath ], with: .none)
+						self.collectionView.reloadItems(at: [ indexPath ])
 					}
 				}
 			}
