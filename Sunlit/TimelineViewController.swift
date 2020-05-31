@@ -230,6 +230,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 			contentView.addSubview(button)
 			buttonOffset.x += 44
 			button.addTarget(self, action: #selector(self.emojiSelected(_:)), for: .touchUpInside)
+			
+			if let backgroundImage = UIImage.uuSolidColorImage(color: UIColor(named: "color_emoji_selection")!) {
+				button.setBackgroundImage(backgroundImage, for: .highlighted)
+			}
+
 		}
 		
 		contentView.frame = CGRect(x: 0, y: 0, width: buttonOffset.x, height: 44)
