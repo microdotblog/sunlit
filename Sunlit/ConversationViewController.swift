@@ -21,9 +21,15 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 
 	var posts : [SunlitPost] = []
 	var sourcePost : SunlitPost? = nil
-	
+
+	var tableViewRefreshControl = UIRefreshControl()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+		self.tableViewRefreshControl.addTarget(self, action: #selector(loadConversation), for: .valueChanged)
+		self.tableView.addSubview(self.tableViewRefreshControl)
+
 		self.loadConversation()
 		self.navigationItem.title = "Conversation"
     }
@@ -47,7 +53,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 	
-	func loadConversation() {
+	@objc func loadConversation() {
 		if let post = sourcePost {
 			Snippets.shared.fetchConversation(post: post) { (error, posts : [SnippetsPost]) in
 				self.posts = [ ]
@@ -60,6 +66,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 				DispatchQueue.main.async {
 					self.tableView.reloadData()
 					self.spinner.isHidden = true
+					self.tableViewRefreshControl.endRefreshing()
 				}
 			}
 		}
@@ -71,12 +78,15 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 	
 	@IBAction func onPostReply() {
 		Snippets.shared.reply(originalPost: self.sourcePost!, content: self.replyField.text) { (error) in
-			if let err = error {
-				Dialog.information(err.localizedDescription, self)
-			}
-			else {
-				self.replyField.text = ""
-				self.loadConversation()
+			
+			DispatchQueue.main.async {
+				if let err = error {
+					Dialog.information(err.localizedDescription, self)
+				}
+				else {
+					self.replyField.text = ""
+					self.loadConversation()
+				}
 			}
 		}
 		
