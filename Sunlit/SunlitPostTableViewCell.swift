@@ -196,10 +196,10 @@ class SunlitPostTableViewCell : UITableViewCell {
 				
 				var safeArea : CGFloat = 0.0
 				safeArea = safeArea + UIApplication.shared.windows[0].safeAreaInsets.bottom
-				let textBoxOffset = self.replyContainer.frame.origin.y + self.replyContainer.frame.size.height - 10.5
+				let textBoxOffset = self.replyContainer.frame.origin.y + self.replyContainer.frame.size.height
 				let cellOffset : CGFloat = self.frame.origin.y
 				let keyboardSize : CGFloat = rawFrame.size.height
-				let offset = cellOffset + textBoxOffset - keyboardSize - safeArea
+				let offset = cellOffset + textBoxOffset - keyboardSize - safeArea + 16.0 // The 16.0 here just gives a visual "break" which looks nicer
 				
 				NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Keyboard Appear"), object: offset)
 			}

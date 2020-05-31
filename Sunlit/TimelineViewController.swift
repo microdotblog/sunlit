@@ -18,13 +18,15 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+		self.navigationItem.title = "Timeline"
 		self.setupTableView()
 		self.loadTimeline()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		
+		self.navigationController?.navigationBar.topItem?.title = "Timeline"
 		self.setupNotifications()
 	}
 	
@@ -43,7 +45,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: NSNotification.Name("Feed Image Loaded"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleUserProfileSelectedNotification), name: NSNotification.Name("Display User Profile"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: NSNotification.Name("Keyboard Appear"), object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: NSNotification.Name("View Conversation"), object: nil)
@@ -123,9 +125,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		if let info : [AnyHashable : Any] = notification.userInfo {
 			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
 				let frame = value.cgRectValue
-
+				let height = self.keyboardAccessoryView.frame.size.height
+				let safeArea : CGFloat = self.view.safeAreaInsets.bottom
+				let offset = frame.origin.y - height + safeArea
 				self.view.addSubview(self.keyboardAccessoryView)
-				self.keyboardAccessoryView.frame = CGRect(x: 0, y: frame.origin.y - 44, width: frame.size.width, height: 44)
+				self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: height)
 				self.keyboardAccessoryView.alpha = 0.0
 				self.keyboardAccessoryView.isHidden = false
 				
@@ -141,8 +145,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
-		if let offset = notification.object as? CGFloat {
-			self.tableView.setContentOffset(CGPoint(x: 0, y: offset - 40.0), animated: true)
+		if let yOffset = notification.object as? CGFloat {
+			let safeArea : CGFloat = self.view.safeAreaInsets.top
+			let offset = yOffset - safeArea - self.keyboardAccessoryView.frame.size.height
+			self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
 		}
 	}
 	

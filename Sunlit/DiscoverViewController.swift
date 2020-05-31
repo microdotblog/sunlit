@@ -35,7 +35,6 @@ class DiscoverViewController: UIViewController {
         
 		self.setupTableViewAndCollectionView()
 		self.loadFrequentlyUsedEmoji()
-		self.title = "Discover " + self.collectionTitle
 		self.navigationItem.title = "Discover " + self.collectionTitle
 		
 		Tagmoji.shared.refresh { (updated) in
@@ -47,6 +46,7 @@ class DiscoverViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		self.navigationController?.navigationBar.topItem?.title = "Discover " + self.collectionTitle
 		self.setupNotifications()
 	}
 	
@@ -72,7 +72,7 @@ class DiscoverViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: NSNotification.Name("Keyboard Appear"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: NSNotification.Name("View Conversation"), object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewImageNotification(_:)), name: NSNotification.Name("View Image"), object: nil)
 	}
@@ -289,8 +289,12 @@ class DiscoverViewController: UIViewController {
 
 	
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
-		if let offset = notification.object as? CGFloat {
-			self.tableView.setContentOffset(CGPoint(x: 0, y: offset + 40.0), animated: true)
+		if let cellOffset = notification.object as? CGFloat {
+			let safeArea : CGFloat = self.view.safeAreaInsets.top
+			let accessoryViewHeight = self.keyboardAccessoryView.frame.size.height
+			let parentOffset = self.tableView.frame.origin.y
+			let offset = cellOffset - accessoryViewHeight + parentOffset - safeArea
+			self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
 		}
 	}
 	
