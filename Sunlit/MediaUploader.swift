@@ -22,11 +22,13 @@ class MediaUploader {
 		self.mediaQueue = media
 		self.results = [ : ]
 		
-		if self.mediaQueue.count > 0 {
-			self.processUploadQueue(completion)
-		}
-		else {
-			completion(nil, self.results)
+		DispatchQueue.global(qos: .background).async {
+			if self.mediaQueue.count > 0 {
+				self.processUploadQueue(completion)
+			}
+			else {
+				completion(nil, self.results)
+			}
 		}
 	}
 	
@@ -50,12 +52,14 @@ class MediaUploader {
 					}
 				}
 			
-				completion(error, self.results)
+				DispatchQueue.main.async {
+					completion(error, self.results)
+				}
 			}
 		}
 		else if media.type == .video {
 			
-			VideoTranscoder.exportVideo(sourceUrl: media.videoURL) { (videoURL) in
+			VideoTranscoder.exportVideo(sourceUrl: media.videoURL) { (error, videoURL) in
 				if let data = try? Data(contentsOf: videoURL) {
 					Snippets.shared.uploadVideo(data: data) { (error, publishedPath, posterPath) in
 						if let path = publishedPath,
@@ -70,7 +74,10 @@ class MediaUploader {
 								return
 							}
 						}
-						completion(error, self.results)
+						
+						DispatchQueue.main.async {
+							completion(error, self.results)
+						}
 					}
 				}
 			}
