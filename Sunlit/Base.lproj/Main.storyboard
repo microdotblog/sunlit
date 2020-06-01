@@ -321,21 +321,59 @@
                                     <outlet property="prefetchDataSource" destination="9pv-A4-QxB" id="nDh-9m-wb4"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uch-gN-0yd">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome_waves" translatesAutoresizingMaskIntoConstraints="NO" id="q8v-cs-T1n">
+                                        <rect key="frame" x="0.0" y="618" width="414" height="200"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sunlit photos come from the Micro.blog community. Sign in to your Micro.blog account to see photos from your timeline." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tDn-E1-D7h">
+                                        <rect key="frame" x="32" y="318.66666666666669" width="350" height="61"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y7u-Pt-KSt">
+                                        <rect key="frame" x="183.66666666666666" y="411.66666666666669" width="47" height="30"/>
+                                        <state key="normal" title="Sign In"/>
+                                        <connections>
+                                            <action selector="onShowLogin" destination="9pv-A4-QxB" eventType="touchUpInside" id="mrz-3A-8Ic"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="tDn-E1-D7h" firstAttribute="leading" secondItem="Uch-gN-0yd" secondAttribute="leading" constant="32" id="9eH-zc-BHP"/>
+                                    <constraint firstItem="y7u-Pt-KSt" firstAttribute="top" secondItem="tDn-E1-D7h" secondAttribute="bottom" constant="32" id="NgB-H0-bct"/>
+                                    <constraint firstAttribute="trailing" secondItem="q8v-cs-T1n" secondAttribute="trailing" id="QNt-u3-GHn"/>
+                                    <constraint firstItem="tDn-E1-D7h" firstAttribute="centerY" secondItem="Uch-gN-0yd" secondAttribute="centerY" constant="-60" id="Re6-fv-PKw"/>
+                                    <constraint firstItem="q8v-cs-T1n" firstAttribute="leading" secondItem="Uch-gN-0yd" secondAttribute="leading" id="dSN-l1-Ft6"/>
+                                    <constraint firstAttribute="trailing" secondItem="tDn-E1-D7h" secondAttribute="trailing" constant="32" id="fbU-Eu-Jyh"/>
+                                    <constraint firstItem="y7u-Pt-KSt" firstAttribute="centerX" secondItem="Uch-gN-0yd" secondAttribute="centerX" id="hQx-2s-dtQ"/>
+                                    <constraint firstItem="tDn-E1-D7h" firstAttribute="centerX" secondItem="Uch-gN-0yd" secondAttribute="centerX" id="jo9-b8-3r4"/>
+                                    <constraint firstAttribute="bottom" secondItem="q8v-cs-T1n" secondAttribute="bottom" id="uv5-3q-vRa"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="Uch-gN-0yd" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" id="176-hz-QKT"/>
                             <constraint firstItem="qN6-tU-u9w" firstAttribute="top" secondItem="tsR-hK-woN" secondAttribute="top" id="4UG-jG-Foz"/>
                             <constraint firstItem="Gt9-JL-4Vx" firstAttribute="centerY" secondItem="qN6-tU-u9w" secondAttribute="centerY" id="Aja-AG-Sdw"/>
                             <constraint firstItem="qN6-tU-u9w" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="CMO-Z6-DBU"/>
+                            <constraint firstItem="Uch-gN-0yd" firstAttribute="trailing" secondItem="PQr-Ze-W5v" secondAttribute="trailing" id="HRF-sp-NO4"/>
                             <constraint firstItem="Gt9-JL-4Vx" firstAttribute="centerX" secondItem="qN6-tU-u9w" secondAttribute="centerX" id="Q3B-5r-MGe"/>
+                            <constraint firstItem="Uch-gN-0yd" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="Tyg-Q3-wTF"/>
                             <constraint firstItem="qN6-tU-u9w" firstAttribute="trailing" secondItem="PQr-Ze-W5v" secondAttribute="trailing" id="WH9-nY-ZVv"/>
                             <constraint firstItem="qN6-tU-u9w" firstAttribute="bottom" secondItem="PQr-Ze-W5v" secondAttribute="bottom" id="WSn-UI-6kL"/>
+                            <constraint firstItem="Uch-gN-0yd" firstAttribute="bottom" secondItem="PQr-Ze-W5v" secondAttribute="bottom" id="l6V-LN-XpD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Timeline" image="feed" selectedImage="feed" id="acW-dT-cKf"/>
                     <navigationItem key="navigationItem" id="MZv-iV-UaD"/>
                     <connections>
+                        <outlet property="loggedOutView" destination="Uch-gN-0yd" id="o2U-Gm-80P"/>
                         <outlet property="tableView" destination="qN6-tU-u9w" id="VZ9-ZX-Ar4"/>
                     </connections>
                 </viewController>
@@ -885,6 +923,9 @@
                             <state key="normal" title="Logout">
                                 <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                             </state>
+                            <connections>
+                                <action selector="onLogout" destination="BfC-Gp-tfl" eventType="touchUpInside" id="1Zk-Fi-3aV"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

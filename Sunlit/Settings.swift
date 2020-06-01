@@ -20,6 +20,9 @@ class Settings {
 		return UserDefaults.standard.string(forKey: "SunlitToken")
 	}
 	
+	static func deletePermanentToken() {
+		UserDefaults.standard.removeObject(forKey: "SunlitToken")
+	}
 	
 	static func selectedBlogIdentifier() -> String? {
 		if let dictionary = Settings.blogDictionary() {

@@ -42,11 +42,9 @@ class MainViewController: UIViewController {
 		let blogIdentifier = Settings.selectedBlogIdentifier()
 		if let token = Settings.permanentToken() {
 			Snippets.shared.configure(permanentToken: token, blogUid: blogIdentifier)
-			self.onShowTimeline()
 		}
-		else {
-			self.onShowLogin()
-		}
+
+		self.onShowTimeline()
 	}
 
 
@@ -58,6 +56,7 @@ class MainViewController: UIViewController {
 	func setupNotifications() {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: NSNotification.Name("TemporaryTokenReceivedNotification"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleOpenURLNotification(_:)), name: NSNotification.Name("OpenURLNotification"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(onShowLogin), name: NSNotification.Name("Show Login"), object: nil)
 	}
 
 	@objc func handleOpenURLNotification(_ notification : Notification) {
@@ -77,13 +76,8 @@ class MainViewController: UIViewController {
 				if let permanentToken = token
 				{
 					DispatchQueue.main.async {
-						if let loginViewController = self.loginViewController {
-							loginViewController.dismiss(animated: true) {
-								
-								Dialog(self).information("You have successfully logged in.") {
-									self.onShowTimeline()
-								}
-							}
+						Dialog(self).information("You have successfully logged in.") {
+							self.onShowTimeline()
 						}
 					}
 					
@@ -217,6 +211,7 @@ class MainViewController: UIViewController {
 		self.contentView.addSubview(timelineViewController.view)
 		self.timelineViewController.view.frame = self.contentView.frame
 		self.timelineViewController.view.constrainAllSides(self.contentView)
+		self.timelineViewController.loadTimeline()
 	}
 	
 	@objc func onShowProfile() {
@@ -250,6 +245,23 @@ class MainViewController: UIViewController {
 	
 	@objc func onSelectBlogConfiguration() {
 		Dialog(self).selectBlog()
+	}
+	
+	@IBAction func onLogout() {
+		
+		self.onToggleHamburgerMenu()
+		
+		let alertController = UIAlertController(title: "Logout", message: "Are you sure you want to logout?", preferredStyle: .alert)
+		alertController.addAction(UIAlertAction(title: "Logout", style: .default, handler: { (action) in
+			Settings.deletePermanentToken()
+			Snippets.shared.configure(permanentToken: "", blogUid: nil, mediaEndPoint: nil)
+			self.timelineViewController.loggedOutView.isHidden = (Settings.permanentToken() != nil)
+		}))
+		
+		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+		
+		self.present(alertController, animated: true) {
+		}
 	}
 			
 	func loadPrimaryViewsFromStoryboards() {
@@ -333,7 +345,7 @@ class MainViewController: UIViewController {
 		self.view.bringSubviewToFront(self.tabBar)
 		
 		// Update the version label...
-		self.menuVersionLabel.text = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+		self.menuVersionLabel.text = "Version " + (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String)
 	}
 }
 

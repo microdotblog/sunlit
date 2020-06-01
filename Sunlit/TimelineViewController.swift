@@ -11,7 +11,8 @@ import SafariServices
 
 class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching, UITextViewDelegate {
 
-	@IBOutlet var tableView : UITableView!	
+	@IBOutlet var tableView : UITableView!
+	@IBOutlet var loggedOutView : UIView!
 	var refreshControl = UIRefreshControl()
 	var keyboardAccessoryView : UIView!
 	var tableViewData : [SunlitPost] = []
@@ -53,6 +54,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewImageNotification(_:)), name: NSNotification.Name("View Image"), object: nil)
 	}
 	
+	@IBAction func onShowLogin() {
+		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Show Login"), object: nil)
+	}
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -258,6 +262,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	
 	@objc func loadTimeline() {
 		
+		let token = Settings.permanentToken()
+		self.loggedOutView.isHidden = (token != nil)
+
 		// Safety check for double loads...
 		if self.loadingData == true {
 			return
