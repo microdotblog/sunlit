@@ -209,11 +209,13 @@ class DiscoverViewController: UIViewController {
 					self.collection = name
 					
 					let button = UIButton(type: .custom)
-					button.frame = CGRect(x: buttonOffset.x, y: buttonOffset.y, width: 44, height: 44)
+					button.frame = CGRect(x: buttonOffset.x, y: buttonOffset.y, width: 36, height: 36)
 					button.setTitle(tagmoji, for: .normal)
 					if let color_img = UIImage.uuSolidColorImage(color: UIColor(named: "color_emoji_selection")!) {
 						button.setBackgroundImage(color_img, for: .selected)
 					}
+					button.layer.cornerRadius = 6
+					button.clipsToBounds = true
 						
 					if name == "photos" {
 						self.stackView.insertArrangedSubview(button, at: 0)
@@ -227,6 +229,7 @@ class DiscoverViewController: UIViewController {
 					button.addTarget(self, action: #selector(self.tagmojiSelected(_:)), for: .touchUpInside)
 				}
 			}
+			
 			self.stackViewWidthConstraint.constant = buttonOffset.x
 			self.scrollView.contentSize = CGSize(width: buttonOffset.x, height: buttonOffset.y)
 		}
