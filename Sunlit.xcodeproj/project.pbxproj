@@ -23,6 +23,7 @@
 		C51CBB87246B1429005981B5 /* SnippetsUser+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */; };
 		C5226A87248420FA00EAADE3 /* UIView+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5226A86248420FA00EAADE3 /* UIView+Sunlit.swift */; };
 		C5226A892484451D00EAADE3 /* ChooseBlog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5226A882484451D00EAADE3 /* ChooseBlog.storyboard */; };
+		C52E4B67248474D6003CDAD2 /* NextLevelSessionExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52E4B66248474D6003CDAD2 /* NextLevelSessionExporter.swift */; };
 		C53C08EB2471FFF000C919E0 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */; };
 		C53C08ED2472133F00C919E0 /* Tagmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C08EC2472133F00C919E0 /* Tagmoji.swift */; };
 		C5A507A82470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */; };
@@ -165,6 +166,7 @@
 		C51CBB86246B1429005981B5 /* SnippetsUser+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetsUser+Sunlit.swift"; sourceTree = "<group>"; };
 		C5226A86248420FA00EAADE3 /* UIView+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Sunlit.swift"; sourceTree = "<group>"; };
 		C5226A882484451D00EAADE3 /* ChooseBlog.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChooseBlog.storyboard; sourceTree = "<group>"; };
+		C52E4B66248474D6003CDAD2 /* NextLevelSessionExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NextLevelSessionExporter.swift; path = NextLevelSessionExporter/NextLevelSessionExporter.swift; sourceTree = SOURCE_ROOT; };
 		C53C08EA2471FFF000C919E0 /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
 		C53C08EC2472133F00C919E0 /* Tagmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tagmoji.swift; sourceTree = "<group>"; };
 		C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetsPost+Sunlit.swift"; sourceTree = "<group>"; };
@@ -315,6 +317,14 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
+		C52E4B65248474C7003CDAD2 /* NextLevelSessionExporter */ = {
+			isa = PBXGroup;
+			children = (
+				C52E4B66248474D6003CDAD2 /* NextLevelSessionExporter.swift */,
+			);
+			name = NextLevelSessionExporter;
+			sourceTree = "<group>";
+		};
 		C5AC0413245F63D300D7725D /* Snippets */ = {
 			isa = PBXGroup;
 			children = (
@@ -418,6 +428,7 @@
 		C5B9A731245640AD003EF82B /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				C52E4B65248474C7003CDAD2 /* NextLevelSessionExporter */,
 				C5D53CC7246214BA00FFAC71 /* SwiftSoup */,
 				C5AC041E245F63ED00D7725D /* UUSwift */,
 				C5AC0413245F63D300D7725D /* Snippets */,
@@ -668,6 +679,7 @@
 				C5D53D10246214CE00FFAC71 /* Connection.swift in Sources */,
 				C5D53D0E246214CE00FFAC71 /* ParseSettings.swift in Sources */,
 				C53C08EB2471FFF000C919E0 /* DiscoverViewController.swift in Sources */,
+				C52E4B67248474D6003CDAD2 /* NextLevelSessionExporter.swift in Sources */,
 				C5F606CA2474A05700AB070C /* SunlitPostTableViewCell.swift in Sources */,
 				C5AC044B245F640800D7725D /* UUDictionary.swift in Sources */,
 				C5D53D3D246214CE00FFAC71 /* Cleaner.swift in Sources */,
