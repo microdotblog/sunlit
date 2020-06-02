@@ -35,11 +35,28 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		
 		self.scrollView.contentSize = self.image.frame.size
 		self.image.frame = self.scrollView.bounds
+		
+		let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(onDoubleTap))
+		doubleTapGesture.numberOfTapsRequired = 2
+		self.scrollView.addGestureRecognizer(doubleTapGesture)
 	}
 
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		self.image.frame = self.scrollView.bounds
+	}
+	
+	@objc func onDoubleTap() {
+		if self.scrollView.zoomScale > 1.0 {
+			UIView.animate(withDuration: 0.15) {
+				self.scrollView.zoomScale = 1.0
+			}
+		}
+		else {
+			UIView.animate(withDuration: 0.15) {
+				self.scrollView.zoomScale = self.scrollView.maximumZoomScale
+			}
+		}
 	}
 	
 	@objc func onShare() {
@@ -60,3 +77,4 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		return self.image
 	}
 }
+
