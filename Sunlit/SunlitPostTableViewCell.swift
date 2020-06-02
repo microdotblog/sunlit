@@ -377,7 +377,11 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 		}
 		else {
 			let imagePath = self.post.images[indexPath.item]
-			NotificationCenter.default.post(name: NSNotification.Name(rawValue: "View Image"), object: imagePath)
+			var dictionary : [String : Any] = [:]
+			dictionary["imagePath"] = imagePath
+			dictionary["post"] = self.post
+			
+			NotificationCenter.default.post(name: NSNotification.Name(rawValue: "View Image"), object: dictionary)
 		}
 	}
 }

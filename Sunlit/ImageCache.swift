@@ -30,6 +30,12 @@ class ImageCache {
 	
 	
 	static func fetch(_ path: String, completion: @escaping ((UIImage?) -> Void)) {
+		
+		if let image = ImageCache.prefetch(path) {
+			completion(image)
+			return
+		}
+		
 		_ = UURemoteData.shared.data(for: path) { (data, error) in
 			if let imageData = data {
 				if let image = UIImage(data: imageData) {

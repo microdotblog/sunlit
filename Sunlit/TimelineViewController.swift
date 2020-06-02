@@ -111,6 +111,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 		let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
 		imageViewController.pathToImage = post.images[0]
+		imageViewController.post = post
 		self.navigationController?.pushViewController(imageViewController, animated: true)
 	}
 	
@@ -188,10 +189,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 	
 	@objc func handleViewImageNotification(_ notification : Notification) {
-		if let imagePath = notification.object as? String {
+		if let dictionary = notification.object as? [String : Any] {
+			let imagePath = dictionary["imagePath"] as! String
+			let post = dictionary["post"] as! SunlitPost
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 			let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
 			imageViewController.pathToImage = imagePath
+			imageViewController.post = post
 			self.navigationController?.pushViewController(imageViewController, animated: true)
 		}
 	}
