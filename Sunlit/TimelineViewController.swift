@@ -30,6 +30,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		
 		self.navigationController?.navigationBar.topItem?.title = "Timeline"
 		self.setupNotifications()
+		self.updateLoggedInStatus()
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -52,6 +53,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: NSNotification.Name("View Conversation"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewImageNotification(_:)), name: NSNotification.Name("View Image"), object: nil)
+	}
+	
+	func updateLoggedInStatus() {
+		let token = Settings.permanentToken()
+		self.loggedOutView.isHidden = (token != nil)
 	}
 	
 	@IBAction func onShowLogin() {

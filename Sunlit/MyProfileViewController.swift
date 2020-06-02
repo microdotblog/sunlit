@@ -16,6 +16,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	var userPosts : [SunlitPost] = []
 	var followingUsers : [SnippetsUser] = []
 	
+	@IBOutlet var loggedOutView : UIView!
 	@IBOutlet var collectionView : UICollectionView!
 	
     override func viewDidLoad() {
@@ -30,8 +31,9 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
+
 		self.navigationController?.navigationBar.topItem?.title = "My Profile"
+		self.updateLoggedInStatus()
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -39,6 +41,10 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		NotificationCenter.default.removeObserver(self)
 	}
 
+	func updateLoggedInStatus() {
+		let token = Settings.permanentToken()
+		self.loggedOutView.isHidden = (token != nil)
+	}
 	
 	func fetchUserInfo() {
 		
@@ -73,6 +79,10 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 				}
 			}
 		}
+	}
+	
+	@IBAction func onShowLogin() {
+		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Show Login"), object: nil)
 	}
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

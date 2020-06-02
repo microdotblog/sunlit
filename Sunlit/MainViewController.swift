@@ -255,7 +255,8 @@ class MainViewController: UIViewController {
 		alertController.addAction(UIAlertAction(title: "Logout", style: .default, handler: { (action) in
 			Settings.deletePermanentToken()
 			Snippets.shared.configure(permanentToken: "", blogUid: nil, mediaEndPoint: nil)
-			self.timelineViewController.loggedOutView.isHidden = (Settings.permanentToken() != nil)
+			self.profileViewController.updateLoggedInStatus()
+			self.timelineViewController.updateLoggedInStatus()
 		}))
 		
 		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
