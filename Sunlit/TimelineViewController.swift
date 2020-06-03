@@ -161,9 +161,12 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
-		if let yOffset = notification.object as? CGFloat {
-			let safeArea : CGFloat = self.view.safeAreaInsets.top
-			let offset = yOffset - safeArea - self.keyboardAccessoryView.frame.size.height
+		
+		if let cellOffset = notification.object as? CGFloat {
+			let safeArea : CGFloat = self.view.safeAreaInsets.bottom
+			let accessoryViewHeight = self.keyboardAccessoryView.frame.size.height
+			let parentOffset = self.tableView.frame.origin.y
+			let offset = cellOffset - accessoryViewHeight - parentOffset + safeArea
 			self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
 		}
 	}

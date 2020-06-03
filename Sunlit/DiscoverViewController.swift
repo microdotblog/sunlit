@@ -341,9 +341,9 @@ class DiscoverViewController: UIViewController {
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
 		if let cellOffset = notification.object as? CGFloat {
 			let safeArea : CGFloat = self.view.safeAreaInsets.top
-			let accessoryViewHeight = self.keyboardAccessoryView.frame.size.height
-			let parentOffset = self.tableView.frame.origin.y
-			let offset = cellOffset - accessoryViewHeight + parentOffset - safeArea
+			let accessoryViewHeight : CGFloat = self.keyboardAccessoryView.frame.size.height
+			let parentOffset : CGFloat = self.tableView.frame.origin.y
+			let offset = cellOffset + accessoryViewHeight + parentOffset - safeArea
 			self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
 		}
 	}
@@ -567,22 +567,24 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
-		let post = self.posts[indexPath.item]
-		cell.date.text = ""
-		if let date = post.publishedDate {
-			cell.date.text = date.friendlyFormat()
-		}
+		if indexPath.item < self.posts.count {
+			let post = self.posts[indexPath.item]
+			cell.date.text = ""
+			if let date = post.publishedDate {
+				cell.date.text = date.friendlyFormat()
+			}
 
-		cell.photo.image = nil
-		if let image = ImageCache.prefetch(post.images.first ?? "") {
-			cell.photo.image = image
+			cell.photo.image = nil
+			if let image = ImageCache.prefetch(post.images.first ?? "") {
+				cell.photo.image = image
+			}
+			
+			cell.contentView.layer.cornerRadius = 8.0
+			cell.contentView.clipsToBounds = true
+			cell.contentView.layer.borderWidth = 0.5
+			cell.contentView.layer.borderColor = UIColor.darkGray.cgColor
+			cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 		}
-		
-		cell.contentView.layer.cornerRadius = 8.0
-		cell.contentView.clipsToBounds = true
-		cell.contentView.layer.borderWidth = 0.5
-		cell.contentView.layer.borderColor = UIColor.darkGray.cgColor
-		cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 	}
 	
 }
