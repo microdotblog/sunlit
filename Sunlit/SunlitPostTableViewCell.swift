@@ -177,7 +177,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 			self.replyButton.alpha = 0.0
 			self.replyIconButton.alpha = 0.0
 			self.postButton.alpha = 1.0
-			self.replyContainer.backgroundColor = UIColor.white
+			self.replyContainer.backgroundColor = UIColor(named: "color_reply_background")
 		}
 		
 		self.replyField.becomeFirstResponder()
@@ -220,7 +220,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 			self.replyButton.alpha = 1.0;
 			self.replyIconButton.alpha = 1.0;
 			self.postButton.alpha = 0.0;
-			self.replyContainer.backgroundColor = UIColor.clear
+			self.replyContainer.backgroundColor = UIColor(named: "color_reply_background")
 		}
 		
 		NotificationCenter.default.removeObserver(self)

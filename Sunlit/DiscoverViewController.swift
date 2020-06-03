@@ -569,10 +569,7 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
 		if indexPath.item < self.posts.count {
 			let post = self.posts[indexPath.item]
-			cell.date.text = ""
-			if let date = post.publishedDate {
-				cell.date.text = date.friendlyFormat()
-			}
+			cell.date.text = "@\(post.owner.userHandle)"
 
 			cell.photo.image = nil
 			if let image = ImageCache.prefetch(post.images.first ?? "") {
