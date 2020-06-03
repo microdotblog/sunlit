@@ -266,7 +266,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 			if let backgroundImage = UIImage.uuSolidColorImage(color: UIColor(named: "color_emoji_selection")!) {
 				button.setBackgroundImage(backgroundImage, for: .highlighted)
 			}
-
 		}
 		
 		contentView.frame = CGRect(x: 0, y: 0, width: buttonOffset.x, height: 44)
@@ -275,7 +274,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44)
 		self.keyboardAccessoryView = scrollView
 		self.keyboardAccessoryView.alpha = 0.0
-	}	
+	}
 	
 	@objc func loadTimeline() {
 		
