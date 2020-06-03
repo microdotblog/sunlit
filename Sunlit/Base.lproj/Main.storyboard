@@ -325,9 +325,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uch-gN-0yd">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome_waves" translatesAutoresizingMaskIntoConstraints="NO" id="q8v-cs-T1n">
-                                        <rect key="frame" x="0.0" y="618" width="414" height="200"/>
-                                    </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sunlit photos come from the Micro.blog community. Sign in to your Micro.blog account to see photos from your timeline." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tDn-E1-D7h">
                                         <rect key="frame" x="32" y="318.66666666666669" width="350" height="61"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -346,13 +343,10 @@
                                 <constraints>
                                     <constraint firstItem="tDn-E1-D7h" firstAttribute="leading" secondItem="Uch-gN-0yd" secondAttribute="leading" constant="32" id="9eH-zc-BHP"/>
                                     <constraint firstItem="y7u-Pt-KSt" firstAttribute="top" secondItem="tDn-E1-D7h" secondAttribute="bottom" constant="32" id="NgB-H0-bct"/>
-                                    <constraint firstAttribute="trailing" secondItem="q8v-cs-T1n" secondAttribute="trailing" id="QNt-u3-GHn"/>
                                     <constraint firstItem="tDn-E1-D7h" firstAttribute="centerY" secondItem="Uch-gN-0yd" secondAttribute="centerY" constant="-60" id="Re6-fv-PKw"/>
-                                    <constraint firstItem="q8v-cs-T1n" firstAttribute="leading" secondItem="Uch-gN-0yd" secondAttribute="leading" id="dSN-l1-Ft6"/>
                                     <constraint firstAttribute="trailing" secondItem="tDn-E1-D7h" secondAttribute="trailing" constant="32" id="fbU-Eu-Jyh"/>
                                     <constraint firstItem="y7u-Pt-KSt" firstAttribute="centerX" secondItem="Uch-gN-0yd" secondAttribute="centerX" id="hQx-2s-dtQ"/>
                                     <constraint firstItem="tDn-E1-D7h" firstAttribute="centerX" secondItem="Uch-gN-0yd" secondAttribute="centerX" id="jo9-b8-3r4"/>
-                                    <constraint firstAttribute="bottom" secondItem="q8v-cs-T1n" secondAttribute="bottom" id="uv5-3q-vRa"/>
                                 </constraints>
                             </view>
                         </subviews>
