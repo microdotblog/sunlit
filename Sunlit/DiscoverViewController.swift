@@ -76,6 +76,7 @@ class DiscoverViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: NSNotification.Name("View Conversation"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewImageNotification(_:)), name: NSNotification.Name("View Image"), object: nil)
 	}
 	
@@ -194,6 +195,7 @@ class DiscoverViewController: UIViewController {
 		scrollView.contentSize = CGSize(width: buttonOffset.x, height: buttonOffset.y)
 		scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44)
 		self.keyboardAccessoryView = scrollView
+		self.keyboardAccessoryView.alpha = 0.0
 	}
 
 
@@ -319,24 +321,25 @@ class DiscoverViewController: UIViewController {
 		
 		if let info : [AnyHashable : Any] = notification.userInfo {
 			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-				let frame = value.cgRectValue
-
-				self.view.addSubview(self.keyboardAccessoryView)
-				self.keyboardAccessoryView.frame = CGRect(x: 0, y: frame.origin.y - 44, width: frame.size.width, height: 44)
-				self.keyboardAccessoryView.alpha = 0.0
 				self.keyboardAccessoryView.isHidden = false
-				
-				UIView.animate(withDuration: 0.25) {
-					self.keyboardAccessoryView.alpha = 1.0
-				}
+				self.view.addSubview(self.keyboardAccessoryView)
+
+				let frame = value.cgRectValue
+				self.keyboardAccessoryView.frame = CGRect(x: 0, y: frame.origin.y - 44, width: frame.size.width, height: 44)
 			}
 		}
 	}
 
 	@objc func keyboardOffScreenNotification(_ notification : Notification) {
 		self.keyboardAccessoryView.removeFromSuperview()
+		self.keyboardAccessoryView.alpha = 0.0
 	}
 
+	@objc func keyboardDidShowNotification(_ notification : Notification) {
+		UIView.animate(withDuration: 0.3) {
+			self.keyboardAccessoryView.alpha = 1.0
+		}
+	}
 	
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
 		if let cellOffset = notification.object as? CGFloat {

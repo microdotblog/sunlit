@@ -50,6 +50,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: NSNotification.Name("Keyboard Appear"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: NSNotification.Name("View Conversation"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewImageNotification(_:)), name: NSNotification.Name("View Image"), object: nil)
@@ -140,24 +141,27 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		
 		if let info : [AnyHashable : Any] = notification.userInfo {
 			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+				self.keyboardAccessoryView.isHidden = false
+				self.view.addSubview(self.keyboardAccessoryView)
+
 				let frame = value.cgRectValue
 				let height = self.keyboardAccessoryView.frame.size.height
 				let safeArea : CGFloat = self.view.safeAreaInsets.bottom
 				let offset = frame.origin.y - height + safeArea
-				self.view.addSubview(self.keyboardAccessoryView)
 				self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: height)
-				self.keyboardAccessoryView.alpha = 0.0
-				self.keyboardAccessoryView.isHidden = false
-				
-				UIView.animate(withDuration: 0.05) {
-					self.keyboardAccessoryView.alpha = 1.0
-				}
 			}
 		}
 	}
 
 	@objc func keyboardOffScreenNotification(_ notification : Notification) {
 		self.keyboardAccessoryView.removeFromSuperview()
+		self.keyboardAccessoryView.alpha = 0.0
+	}
+
+	@objc func keyboardDidShowNotification(_ notification : Notification) {
+		UIView.animate(withDuration: 0.3) {
+			self.keyboardAccessoryView.alpha = 1.0
+		}
 	}
 
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
@@ -270,8 +274,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		scrollView.contentSize = CGSize(width: buttonOffset.x, height: buttonOffset.y)
 		scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44)
 		self.keyboardAccessoryView = scrollView
-	}
-	
+		self.keyboardAccessoryView.alpha = 0.0
+	}	
 	
 	@objc func loadTimeline() {
 		

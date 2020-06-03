@@ -220,7 +220,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 			self.replyButton.alpha = 1.0;
 			self.replyIconButton.alpha = 1.0;
 			self.postButton.alpha = 0.0;
-			self.replyContainer.backgroundColor = UIColor(named: "color_reply_background")
+			self.replyContainer.backgroundColor = UIColor.clear
 		}
 		
 		NotificationCenter.default.removeObserver(self)
