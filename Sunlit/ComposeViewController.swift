@@ -62,7 +62,6 @@ class ComposeViewController: UIViewController {
 	func configureKeyboardAccessoryView() {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-		self.keyboardAccessoryView.isHidden = true
 		
 		self.blogSelectorButton.setTitle(Settings.selectedBlogName(), for: .normal)
 	}
@@ -231,8 +230,6 @@ class ComposeViewController: UIViewController {
 		if let info : [AnyHashable : Any] = notification.userInfo {
 			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
 				let frame = value.cgRectValue
-				self.keyboardAccessoryView.isHidden = false
-				self.keyboardAccessoryView.alpha = 0.0
 				
 				UIView.animate(withDuration: 0.25) {
 					self.keyboardAccessoryView.alpha = 1.0
@@ -244,9 +241,11 @@ class ComposeViewController: UIViewController {
 	}
 
 	@objc func keyboardOffScreenNotification(_ notification : Notification) {
-		self.keyboardAccessoryView.isHidden = true
-		self.keyboardAccessoryViewBottomConstraint.constant = 0
-		self.view.layoutIfNeeded()
+		
+		UIView.animate(withDuration: 0.25) {
+			self.keyboardAccessoryViewBottomConstraint.constant = 0
+			self.view.layoutIfNeeded()
+		}
 	}
 	
 	
