@@ -257,7 +257,6 @@ class MainViewController: UIViewController {
 			SnippetsUser.deleteCurrentUser()
 			
 			Snippets.shared.configure(permanentToken: "", blogUid: nil, mediaEndPoint: nil)
-			self.profileViewController.updateLoggedInStatus()
 			self.timelineViewController.updateLoggedInStatus()
 		}))
 		
@@ -280,11 +279,11 @@ class MainViewController: UIViewController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 	func setupPhoneNavigationBar() {
-		let hamburgerMenuButton = UIBarButtonItem(image: UIImage(named: "hamburger"), style: .plain, target: self, action: #selector(onToggleHamburgerMenu))
+		//let hamburgerMenuButton = UIBarButtonItem(image: UIImage(named: "hamburger"), style: .plain, target: self, action: #selector(onToggleHamburgerMenu))
 		let postButton = UIBarButtonItem(image: UIImage(named: "post"), style: .plain, target: self, action: #selector(onNewPost))
 
 		self.navigationItem.title = "Timeline"
-		self.navigationItem.leftBarButtonItem = hamburgerMenuButton
+		//self.navigationItem.leftBarButtonItem = hamburgerMenuButton
 		self.navigationItem.rightBarButtonItem = postButton
 	}
 

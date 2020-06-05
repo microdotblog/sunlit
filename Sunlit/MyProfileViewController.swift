@@ -17,7 +17,6 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	var userPosts : [SunlitPost] = []
 	var followingUsers : [SnippetsUser] = []
 	
-	@IBOutlet var loggedOutView : UIView!
 	@IBOutlet var collectionView : UICollectionView!
 	
     override func viewDidLoad() {
@@ -29,12 +28,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 			self.navigationItem.title = user.fullName
 		}
     }
-	
-	func updateLoggedInStatus() {
-		let token = Settings.permanentToken()
-		self.loggedOutView.isHidden = (token != nil)
-	}
-	
+		
 	func fetchUserInfo() {
 		
 		Snippets.shared.fetchCurrentUserInfo { (error, snippetsUser) in
@@ -269,7 +263,6 @@ MARK: -
 extension MyProfileViewController : SnippetsScrollContentProtocol {
 	func prepareToDisplay() {
 		self.navigationController?.navigationBar.topItem?.title = "My Profile"
-		self.updateLoggedInStatus()
 	}
 	
 	func prepareToHide() {
