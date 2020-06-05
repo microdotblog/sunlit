@@ -23,6 +23,9 @@ class MainViewController: UIViewController {
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
 	var loginViewController : LoginViewController?
+	var currentViewController : SnippetsScrollContentProtocol? = nil
+	
+	var scrollView : UIScrollView!
 	
 	var timelineButton : UIButton!
 	var discoverButton : UIButton!
@@ -38,6 +41,20 @@ class MainViewController: UIViewController {
 		self.setupSnippets()
 	}
 
+	override func viewWillLayoutSubviews() {
+		
+		super.viewWillLayoutSubviews()
+		
+		var frame = self.scrollView.bounds
+
+		self.timelineViewController.view.frame = frame
+		
+		frame.origin.x += frame.size.width
+		self.discoverViewController.view.frame = frame
+		
+		frame.origin.x += frame.size.width
+		self.profileViewController.view.frame = frame
+	}
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -51,7 +68,6 @@ class MainViewController: UIViewController {
 
 		self.onShowTimeline()
 	}
-
 
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -202,15 +218,9 @@ class MainViewController: UIViewController {
 			self.loginViewController = nil
 		}
 
-		self.discoverViewController.removeFromParent()
-		self.discoverViewController.view.removeFromSuperview()
-		self.profileViewController.removeFromParent()
-		self.profileViewController.view.removeFromSuperview()
-		
-		self.addChild(timelineViewController)
-		self.contentView.addSubview(timelineViewController.view)
-		self.timelineViewController.view.frame = self.contentView.frame
-		self.timelineViewController.view.constrainAllSides(self.contentView)
+		var offset =  self.scrollView.contentOffset
+		offset.x = 0.0
+		self.scrollView.setContentOffset(offset, animated: true)
 		self.timelineViewController.loadTimeline()
 	}
 	
@@ -220,27 +230,17 @@ class MainViewController: UIViewController {
 			self.loginViewController = nil
 		}
 		
- 		self.discoverViewController.removeFromParent()
-		self.discoverViewController.view.removeFromSuperview()
-		self.timelineViewController.removeFromParent()
-		self.timelineViewController.view.removeFromSuperview()
-
-		self.addChild(profileViewController)
-		self.contentView.addSubview(profileViewController.view)
-		self.profileViewController.view.frame = self.contentView.frame
-		self.profileViewController.view.constrainAllSides(self.contentView)
+		var offset =  self.scrollView.contentOffset
+		offset.x = self.scrollView.bounds.size.width * 2.0
+		
+		self.scrollView.setContentOffset(offset, animated: true)
 	}
 	
 	@objc func onShowDiscover() {
-		self.profileViewController.removeFromParent()
-		self.profileViewController.view.removeFromSuperview()
-		self.timelineViewController.removeFromParent()
-		self.timelineViewController.view.removeFromSuperview()
-
-		self.addChild(discoverViewController)
-		self.contentView.addSubview(discoverViewController.view)
-		self.discoverViewController.view.frame = self.contentView.frame
-		self.discoverViewController.view.constrainAllSides(self.contentView)
+		var offset =  self.scrollView.contentOffset
+		offset.x = self.scrollView.bounds.size.width * 1.0
+		
+		self.scrollView.setContentOffset(offset, animated: true)
 	}
 	
 	@objc func onSelectBlogConfiguration() {
@@ -289,15 +289,53 @@ class MainViewController: UIViewController {
 	}
 
 	func setupPhoneContentView() {
+		
+		self.addChild(self.timelineViewController)
+		self.addChild(self.discoverViewController)
+		self.addChild(self.profileViewController)
+		
 		self.contentView = UIView()
+		self.contentView.clipsToBounds = false
+		
 		self.view.addSubview(self.contentView)
+		
 		self.contentView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.self.width, height: self.view.bounds.size.height)
 		self.contentView.translatesAutoresizingMaskIntoConstraints = false
-		let topConstraint = NSLayoutConstraint(item: self.contentView!, attribute: .top, relatedBy: .equal, toItem: self.view!, attribute: .top, multiplier: 1.0, constant: 0.0)
-		let bottomConstraint = NSLayoutConstraint(item: self.contentView!, attribute: .bottomMargin, relatedBy: .equal, toItem: self.tabBar!, attribute: .top, multiplier: 1.0, constant: -10.0)
-		let leftConstraint = NSLayoutConstraint(item: self.contentView!, attribute: .left, relatedBy: .equal, toItem: self.view!, attribute: .left, multiplier: 1.0, constant: 0.0)
-		let rightConstraint = NSLayoutConstraint(item: self.contentView!, attribute: .right, relatedBy: .equal, toItem: self.view!, attribute: .right, multiplier: 1.0, constant: 0.0)
-		self.view.addConstraints([topConstraint, bottomConstraint, leftConstraint, rightConstraint])
+		
+		self.contentView.constrainTop(view: self.view)
+		self.contentView.constrainLeft(view: self.view)
+		self.contentView.constrainRight(view: self.view)
+		self.tabBar.constrainTop(bottomOfView: self.contentView)
+		
+		self.scrollView = UIScrollView()
+		self.scrollView.translatesAutoresizingMaskIntoConstraints = false
+		self.contentView.addSubview(self.scrollView)
+		
+		self.scrollView.constrainLeft(view: self.contentView)
+		self.scrollView.constrainRight(view: self.contentView)
+		self.scrollView.constrainBottom(view: self.contentView)
+		self.scrollView.constrainTop(view: self.contentView, offset : 88.0)
+		
+		// Force a layout here...
+		self.view.layoutIfNeeded()
+		
+		var frame = self.scrollView.bounds
+		self.scrollView.addSubview(self.timelineViewController.view)
+		self.timelineViewController.view.frame = frame
+		frame.origin.x += frame.size.width
+
+		self.scrollView.addSubview(self.discoverViewController.view)
+		self.discoverViewController.view.frame = frame
+		frame.origin.x += frame.size.width
+
+		self.scrollView.addSubview(self.profileViewController.view)
+		self.profileViewController.view.frame = frame
+		frame.origin.x += frame.size.width
+
+		self.scrollView.isUserInteractionEnabled = true
+		self.scrollView.contentSize = CGSize(width: frame.origin.x, height: 0)
+		self.scrollView.isPagingEnabled = true
+		self.scrollView.delegate = self
 	}
 	
 	func setupPhoneTabBar() {
@@ -371,6 +409,7 @@ class MainViewController: UIViewController {
 		self.profileButton.addGestureRecognizer(longpressGesture)
 		
 		self.timelineButton.isSelected = true
+		self.currentViewController = self.timelineViewController
 	}
 	
 	func constructPhoneInterface() {
@@ -414,7 +453,7 @@ class MainViewController: UIViewController {
 		self.profileButton.isSelected = false
 		self.timelineButton.isSelected = false
 		self.discoverButton.isSelected = false
-		
+				
 		button.isSelected = true
 		
 		if button == self.profileButton {
@@ -438,6 +477,42 @@ class MainViewController: UIViewController {
 	}
 }
 
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: -
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension MainViewController : UIScrollViewDelegate {
+	
+	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		let offset = scrollView.contentOffset.x
+		let frameSize = scrollView.bounds.size.width
+
+		self.timelineButton.isSelected = false
+		self.profileButton.isSelected = false
+		self.discoverButton.isSelected = false
+		
+		let previousViewController = self.currentViewController
+		if offset < (frameSize / 2.0) {
+			self.timelineButton.isSelected = true
+			self.currentViewController = self.timelineViewController
+		}
+		else if offset < (frameSize + (frameSize / 2.0)) {
+			self.discoverButton.isSelected = true
+			self.currentViewController = self.discoverViewController
+		}
+		else {
+			self.profileButton.isSelected = true
+			self.currentViewController = self.profileViewController
+		}
+		
+		if !(previousViewController === self.currentViewController) {
+			previousViewController?.prepareToHide()
+			self.currentViewController?.prepareToDisplay()
+		}
+		
+	}
+}
 
 /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 MARK: -

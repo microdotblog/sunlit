@@ -161,6 +161,7 @@
 		C55DC4A2248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3992489D5CB00C1F8A5 /* NextLevelSessionExporter.framework */; };
 		C55DC4A3248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3992489D5CB00C1F8A5 /* NextLevelSessionExporter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C55DC4A7248AC0EF00C1F8A5 /* UIButton+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55DC4A6248AC0EF00C1F8A5 /* UIButton+Sunlit.swift */; };
+		C55DC4A9248AE8B400C1F8A5 /* SnippetsScrollContentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55DC4A8248AE8B400C1F8A5 /* SnippetsScrollContentProtocol.swift */; };
 		C5A507A82470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */; };
 		C5A507AA2470C05E00D60CB4 /* Date+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A507A92470C05E00D60CB4 /* Date+Sunlit.swift */; };
 		C5AC0407245F52C800D7725D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AC0406245F52C800D7725D /* LoginViewController.swift */; };
@@ -414,6 +415,7 @@
 		C55DC455248A0E0E00C1F8A5 /* Entities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Entities.swift; path = SwiftSoup/Entities.swift; sourceTree = SOURCE_ROOT; };
 		C55DC456248A0E0E00C1F8A5 /* Validate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Validate.swift; path = SwiftSoup/Validate.swift; sourceTree = SOURCE_ROOT; };
 		C55DC4A6248AC0EF00C1F8A5 /* UIButton+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Sunlit.swift"; sourceTree = "<group>"; };
+		C55DC4A8248AE8B400C1F8A5 /* SnippetsScrollContentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsScrollContentProtocol.swift; sourceTree = "<group>"; };
 		C5A507A72470BBFF00D60CB4 /* SnippetsPost+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnippetsPost+Sunlit.swift"; sourceTree = "<group>"; };
 		C5A507A92470C05E00D60CB4 /* Date+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Sunlit.swift"; sourceTree = "<group>"; };
 		C5AC0406245F52C800D7725D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -872,6 +874,7 @@
 				C5FFB1CE2466986E0015368A /* ImageViewerViewController.swift */,
 				C5FFB1D42469C9130015368A /* ConversationViewController.swift */,
 				C50E654F2478D63900C46B61 /* AboutViewController.swift */,
+				C55DC4A8248AE8B400C1F8A5 /* SnippetsScrollContentProtocol.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1292,6 +1295,7 @@
 				C55DC48F248A0E0E00C1F8A5 /* Validate.swift in Sources */,
 				C55DC467248A0E0E00C1F8A5 /* Whitelist.swift in Sources */,
 				C5C3AC4B247ED92100D31A0A /* SunlitMedia.swift in Sources */,
+				C55DC4A9248AE8B400C1F8A5 /* SnippetsScrollContentProtocol.swift in Sources */,
 				C55DC487248A0E0E00C1F8A5 /* ParseSettings.swift in Sources */,
 				4BFCFC31247C3F7800E86E2C /* PostAddSectionCollectionViewCell.swift in Sources */,
 				C55DC46C248A0E0E00C1F8A5 /* UnicodeScalar.swift in Sources */,

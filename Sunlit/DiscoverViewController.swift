@@ -38,7 +38,6 @@ class DiscoverViewController: UIViewController {
         
 		self.setupTableViewAndCollectionView()
 		self.loadFrequentlyUsedEmoji()
-		self.navigationItem.title = "Discover " + self.collectionTitle
 		
 		Tagmoji.shared.refresh { (updated) in
 			self.loadTagmoji()
@@ -46,19 +45,7 @@ class DiscoverViewController: UIViewController {
 		
 		self.setupSnippets()
 	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		self.navigationController?.navigationBar.topItem?.title = "Discover " + self.collectionTitle
-		self.setupNotifications()
-	}
-	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		NotificationCenter.default.removeObserver(self)
-	}
-
-	
+		
 	func setupTableViewAndCollectionView() {
 		self.tableViewRefreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
 		self.tableView.addSubview(self.tableViewRefreshControl)
@@ -586,6 +573,23 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 			cell.contentView.layer.borderColor = UIColor.darkGray.cgColor
 			cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 		}
+	}
+	
+}
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: -
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension DiscoverViewController : SnippetsScrollContentProtocol {
+	func prepareToDisplay() {
+		self.navigationController?.navigationBar.topItem?.title = "Discover " + self.collectionTitle
+		self.setupNotifications()
+	}
+	
+	func prepareToHide() {
+		NotificationCenter.default.removeObserver(self)
 	}
 	
 }

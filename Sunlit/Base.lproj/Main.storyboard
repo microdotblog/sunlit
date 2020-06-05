@@ -1761,8 +1761,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="discover" width="20" height="20"/>
-        <image name="feed" width="20" height="20"/>
+        <image name="discover" width="32" height="32"/>
+        <image name="feed" width="32" height="32"/>
         <image name="reply" width="48" height="48"/>
         <image name="videoButtonOverlay" width="30" height="30"/>
         <image name="welcome_waves" width="320" height="200"/>

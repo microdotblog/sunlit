@@ -25,20 +25,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		self.setupTableView()
 		self.loadTimeline()
 	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
 		
-		self.navigationController?.navigationBar.topItem?.title = "Timeline"
-		self.setupNotifications()
-		self.updateLoggedInStatus()
-	}
-	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		NotificationCenter.default.removeObserver(self)
-	}
-
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(loadTimeline), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
@@ -362,3 +349,20 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	
 }
 
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: -
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension TimelineViewController : SnippetsScrollContentProtocol {
+	func prepareToDisplay() {
+		self.navigationController?.navigationBar.topItem?.title = "Timeline"
+		self.setupNotifications()
+		self.updateLoggedInStatus()
+	}
+	
+	func prepareToHide() {
+		NotificationCenter.default.removeObserver(self)
+	}
+	
+}

@@ -17,40 +17,40 @@ extension UIView {
 		self.constrainBottom(view: view)
 	}
 	
-	func constrainLeft(view: UIView, completion: ((NSLayoutConstraint) -> Void)? = nil) {
-		let left_constraint = NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0)
+	func constrainLeft(view: UIView, offset : CGFloat = 0.0, completion: ((NSLayoutConstraint) -> Void)? = nil) {
+		let left_constraint = NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: offset)
 		left_constraint.isActive = true
 		if let completion = completion {
 			completion(left_constraint)
 		}
 	}
 	
-	func constrainRight(view: UIView, completion: ((NSLayoutConstraint) -> Void)? = nil) {
-		let right_constraint = NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0)
+	func constrainRight(view: UIView, offset : CGFloat = 0.0, completion: ((NSLayoutConstraint) -> Void)? = nil) {
+		let right_constraint = NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: offset)
 		right_constraint.isActive = true
 		if let completion = completion {
 			completion(right_constraint)
 		}
 	}
 	
-	func constrainTop(view: UIView, completion: ((NSLayoutConstraint) -> Void)? = nil) {
-		let top_constraint = NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0)
+	func constrainTop(view: UIView, offset : CGFloat = 0.0, completion: ((NSLayoutConstraint) -> Void)? = nil) {
+		let top_constraint = NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: offset)
 		top_constraint.isActive = true
 		if let completion = completion {
 			completion(top_constraint)
 		}
 	}
 	
-	func constrainTop(bottomOfView view: UIView, completion: ((NSLayoutConstraint) -> Void)? = nil) {
-		let top_constraint = NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
+	func constrainTop(bottomOfView view: UIView, offset : CGFloat = 0.0, completion: ((NSLayoutConstraint) -> Void)? = nil) {
+		let top_constraint = NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: offset)
 		top_constraint.isActive = true
 		if let completion = completion {
 			completion(top_constraint)
 		}
 	}
 	
-	func constrainBottom(view: UIView, completion: ((NSLayoutConstraint) -> Void)? = nil) {
-		let bottom_constraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
+	func constrainBottom(view: UIView, offset : CGFloat = 0.0, completion: ((NSLayoutConstraint) -> Void)? = nil) {
+		let bottom_constraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: offset)
 		bottom_constraint.isActive = true
 		if let completion = completion {
 			completion(bottom_constraint)

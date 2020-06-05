@@ -30,18 +30,6 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		}
     }
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-
-		self.navigationController?.navigationBar.topItem?.title = "My Profile"
-		self.updateLoggedInStatus()
-	}
-	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		NotificationCenter.default.removeObserver(self)
-	}
-
 	func updateLoggedInStatus() {
 		let token = Settings.permanentToken()
 		self.loggedOutView.isHidden = (token != nil)
@@ -272,3 +260,20 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	}
 	
 }
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: -
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension MyProfileViewController : SnippetsScrollContentProtocol {
+	func prepareToDisplay() {
+		self.navigationController?.navigationBar.topItem?.title = "My Profile"
+		self.updateLoggedInStatus()
+	}
+	
+	func prepareToHide() {
+	}
+	
+}
+
