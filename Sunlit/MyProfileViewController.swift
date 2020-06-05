@@ -269,6 +269,10 @@ MARK: -
 extension MyProfileViewController : SnippetsScrollContentProtocol {
 	func prepareToDisplay() {
 		self.navigationController?.navigationBar.topItem?.title = "My Profile"
+		self.user = SnippetsUser.current()
+		self.collectionView.reloadData()
+
+		self.fetchUserInfo()
 	}
 	
 	func prepareToHide() {

@@ -39,6 +39,11 @@ class MainViewController: UIViewController {
 		
 		self.constructPhoneInterface()
 		self.setupSnippets()
+		
+		// Default to the timeline view...
+		self.timelineButton.isSelected = true
+		self.currentViewController = self.timelineViewController
+		self.timelineViewController.prepareToDisplay()
 	}
 
 	override func viewWillLayoutSubviews() {
@@ -96,14 +101,16 @@ class MainViewController: UIViewController {
 			Snippets.shared.requestPermanentTokenFromTemporaryToken(token: temporaryToken) { (error, token) in
 				if let permanentToken = token
 				{
-					DispatchQueue.main.async {
-						Dialog(self).information("You have successfully logged in.") {
-							self.onShowTimeline()
-						}
-					}
 					
+					// Save our info and setup Snippets
 					Settings.savePermanentToken(permanentToken)
 					Snippets.shared.configure(permanentToken: permanentToken, blogUid: nil)
+
+					// We can hide the login view now...
+					DispatchQueue.main.async {
+						self.loginViewController?.dismiss(animated: true, completion: nil)
+						self.timelineViewController.prepareToDisplay()
+					}
 					
 					Snippets.shared.fetchCurrentUserInfo { (error, updatedUser) in
 						
@@ -406,9 +413,6 @@ class MainViewController: UIViewController {
 		
 		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
 		self.profileButton.addGestureRecognizer(longpressGesture)
-		
-		self.timelineButton.isSelected = true
-		self.currentViewController = self.timelineViewController
 	}
 	
 	func constructPhoneInterface() {
