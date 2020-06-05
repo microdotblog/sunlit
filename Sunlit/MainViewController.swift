@@ -17,12 +17,16 @@ class MainViewController: UIViewController {
 	@IBOutlet var menuView : UIView!
 	var menuDimView : UIButton!
 
-	var tabBar : UITabBar!
+	var tabBar : UIView!
 	var contentView : UIView!
 	var discoverViewController : DiscoverViewController!
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
 	var loginViewController : LoginViewController?
+	
+	var timelineButton : UIButton!
+	var discoverButton : UIButton!
+	var profileButton : UIButton!
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,12 +94,7 @@ class MainViewController: UIViewController {
 						if let user = updatedUser {
 							_ = SnippetsUser.saveAsCurrent(user)
 							
-							// Go ahead and go get the avatar for the logged in user
-							if ImageCache.prefetch(user.pathToUserImage) == nil {
-								ImageCache.fetch(user.pathToUserImage) { (image) in
-								}
-							}
-							
+							self.updateInterfaceForLogin()
 							self.onSelectBlogConfiguration()
 						}
 					}
@@ -255,6 +254,8 @@ class MainViewController: UIViewController {
 		let alertController = UIAlertController(title: "Logout", message: "Are you sure you want to logout?", preferredStyle: .alert)
 		alertController.addAction(UIAlertAction(title: "Logout", style: .default, handler: { (action) in
 			Settings.deletePermanentToken()
+			SnippetsUser.deleteCurrentUser()
+			
 			Snippets.shared.configure(permanentToken: "", blogUid: nil, mediaEndPoint: nil)
 			self.profileViewController.updateLoggedInStatus()
 			self.timelineViewController.updateLoggedInStatus()
@@ -300,21 +301,40 @@ class MainViewController: UIViewController {
 	}
 	
 	func setupPhoneTabBar() {
-		let tabBarHeight : CGFloat = 90.0
-
-		self.tabBar = UITabBar()
-		self.view.addSubview(self.tabBar)
-		self.tabBar.frame = CGRect(x: 0, y: self.view.bounds.size.height - tabBarHeight, width: self.view.bounds.size.width, height: tabBarHeight)
-		self.tabBar.translatesAutoresizingMaskIntoConstraints = false
 		
-		let heightConstraint = NSLayoutConstraint(item: self.tabBar!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: tabBarHeight)
-		let bottomConstraint = NSLayoutConstraint(item: self.tabBar!, attribute: .bottomMargin, relatedBy: .equal, toItem: self.view!, attribute: .bottomMargin, multiplier: 1.0, constant: 0.0)
-		let leftConstraint = NSLayoutConstraint(item: self.tabBar!, attribute: .left, relatedBy: .equal, toItem: self.view!, attribute: .left, multiplier: 1.0, constant: 0.0)
-		let rightConstraint = NSLayoutConstraint(item: self.tabBar!, attribute: .right, relatedBy: .equal, toItem: self.view!, attribute: .right, multiplier: 1.0, constant: 0.0)
-		self.view.addConstraints([heightConstraint, bottomConstraint, leftConstraint, rightConstraint])
+		let tabBarHeight : CGFloat = 120.0
+		let tabBarFrame = CGRect(x: 0, y: self.view.bounds.size.height - tabBarHeight, width: self.view.bounds.size.width, height: tabBarHeight)
+		self.tabBar = UIView(frame: tabBarFrame)
+		self.view.addSubview(self.tabBar)
+		self.tabBar.constrainHeight(tabBarHeight)
+		self.tabBar.constrainLeft(view: self.view)
+		self.tabBar.constrainRight(view: self.view)
+		self.tabBar.constrainBottom(view: self.view)
 
-		var profileImage : UIImage? = nil
-		var profileUsername = "Profile"
+		let stackView = UIStackView(frame: self.tabBar.bounds.inset(by: UIEdgeInsets(top: 16, left: 8, bottom: 16, right: 8)))
+		stackView.backgroundColor = .clear
+		
+		self.timelineButton = UIButton(type: .system)
+		self.discoverButton = UIButton(type: .system)
+		self.profileButton = UIButton(type: .system)
+		self.timelineButton.addTarget(self, action: #selector(onTabBarButtonPressed(_:)), for: .touchUpInside)
+		self.discoverButton.addTarget(self, action: #selector(onTabBarButtonPressed(_:)), for: .touchUpInside)
+		self.profileButton.addTarget(self, action: #selector(onTabBarButtonPressed(_:)), for: .touchUpInside)
+		
+		self.timelineButton.constrainHeight(60.0)
+		self.discoverButton.constrainHeight(60.0)
+		self.profileButton.constrainHeight(60.0)
+
+		self.timelineButton.setTitle("Timeline", for: .normal)
+		self.timelineButton.setImage(UIImage(named: "feed")!, for: .normal)
+		self.discoverButton.setTitle("Discover", for: .normal)
+		self.discoverButton.setImage(UIImage(named: "discover")!, for: .normal)
+		self.timelineButton.setTitleColor(.label, for: .normal)
+		self.discoverButton.setTitleColor(.label, for: .normal)
+		self.profileButton.setTitleColor(.label, for: .normal)
+		
+		var profileImage : UIImage? = UIImage(named: "login")
+		var profileUsername = "Login"
 		if let current = SnippetsUser.current() {
 			profileUsername = "@" + current.userHandle
 			profileImage = ImageCache.prefetch(current.pathToUserImage)
@@ -323,19 +343,34 @@ class MainViewController: UIViewController {
 				profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 32.0, height: 32.0)).withRenderingMode(.alwaysOriginal)
 			}
 		}
+		self.profileButton.setTitle(profileUsername, for: .normal)
+		self.profileButton.setImage(profileImage, for: .normal)
+		self.profileButton.imageView?.clipsToBounds = true
+		self.profileButton.imageView?.layer.cornerRadius = 8.0
 		
-		let timelineButton = UITabBarItem(title: "Timeline", image: UIImage(named: "feed"), tag: 1)
-		let discoverButton = UITabBarItem(title: "Discover", image: UIImage(named: "discover"), tag: 2)
-		let profileButton = UITabBarItem(title: profileUsername, image: profileImage, tag: 3)
-		
-		self.tabBar.delegate = self
+		self.profileButton.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
+		self.discoverButton.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
+		self.timelineButton.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
 
-		self.tabBar.setItems([timelineButton, discoverButton, profileButton], animated: true)
-		self.tabBar.selectedItem = timelineButton
+		stackView.addArrangedSubview(self.timelineButton)
+		stackView.addArrangedSubview(self.discoverButton)
+		stackView.addArrangedSubview(self.profileButton)
+		stackView.distribution = .fillEqually
+		stackView.axis = .horizontal
+		//stackView.alignment = .bottom
+		
+		self.tabBar.addSubview(stackView)
+		stackView.constrainAllSides(self.tabBar)
+		stackView.layoutIfNeeded()
+		
+		self.timelineButton.centerVertically()
+		self.discoverButton.centerVertically()
+		self.profileButton.centerVertically()
 		
 		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
-		self.tabBar.addGestureRecognizer(longpressGesture)
-
+		self.profileButton.addGestureRecognizer(longpressGesture)
+		
+		self.timelineButton.isSelected = true
 	}
 	
 	func constructPhoneInterface() {
@@ -349,28 +384,59 @@ class MainViewController: UIViewController {
 		// Update the version label...
 		self.menuVersionLabel.text = "Version " + (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String)
 	}
-}
-
-
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-extension MainViewController : UITabBarDelegate {
 	
-	func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-		if item.tag == 1 {
-			self.onShowTimeline()
-		}
-		else if item.tag == 2 {
-			self.onShowDiscover()
-		}
-		else if item.tag == 3 {
-			self.onShowProfile()
+	func updateInterfaceForLogin() {
+		
+		if let user = SnippetsUser.current() {
+			
+			// Update the user name...
+			DispatchQueue.main.async {
+				self.profileButton.setTitle("@" + user.userHandle, for: .normal)
+				self.profileButton.centerVertically()
+			}
+			
+			// Go ahead and go get the avatar for the logged in user
+			ImageCache.fetch(user.pathToUserImage) { (image) in
+				
+				if let image = image {
+					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 32.0, height: 32.0)).withRenderingMode(.alwaysOriginal)
+					DispatchQueue.main.async {
+						self.profileButton.setImage(profileImage, for: .normal)
+						self.profileButton.centerVertically()
+					}
+				}
+			}
 		}
 	}
-}
 
+
+	@objc func onTabBarButtonPressed(_ button : UIButton) {
+		self.profileButton.isSelected = false
+		self.timelineButton.isSelected = false
+		self.discoverButton.isSelected = false
+		
+		button.isSelected = true
+		
+		if button == self.profileButton {
+			if let _ = SnippetsUser.current() {
+				self.onShowProfile()
+			}
+			else {
+				self.timelineButton.isSelected = true
+				self.profileButton.isSelected = false
+				self.onShowLogin()
+			}
+		}
+		if button == self.timelineButton {
+			self.onShowTimeline()
+		}
+
+		if button == self.discoverButton {
+			self.onShowDiscover()
+		}
+
+	}
+}
 
 
 /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -404,3 +470,4 @@ extension MainViewController : UIImagePickerControllerDelegate, UINavigationCont
 		}
 	}
 }
+

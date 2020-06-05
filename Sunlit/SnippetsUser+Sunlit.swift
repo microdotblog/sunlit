@@ -115,6 +115,10 @@ extension SnippetsUser {
 		}
 	}
 	
+	static func deleteCurrentUser() {
+		UserDefaults.standard.removeObject(forKey: "Current User")
+		UserDefaults.standard.synchronize()
+	}
 	
 	static func save(_ user : SnippetsUser, key : String? = nil) -> SnippetsUser {
 		
