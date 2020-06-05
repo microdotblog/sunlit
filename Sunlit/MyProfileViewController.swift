@@ -16,6 +16,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	var updatedUserInfo : SnippetsUser? = nil
 	var userPosts : [SunlitPost] = []
 	var followingUsers : [SnippetsUser] = []
+	var loadInProgress = false
 	
 	@IBOutlet var collectionView : UICollectionView!
 	
@@ -31,6 +32,12 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		
 	func fetchUserInfo() {
 		
+		if self.loadInProgress == true {
+			return
+		}
+		
+		self.loadInProgress = true
+		
 		Snippets.shared.fetchCurrentUserInfo { (error, snippetsUser) in
 			if let updatedUser = snippetsUser {
 				self.user = SnippetsUser.save(updatedUser)
@@ -40,13 +47,16 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 				}
 
 				Snippets.shared.fetchUserMediaPosts(user: updatedUser) { (error, snippets : [SnippetsPost]) in
-					self.userPosts = []
+	
+					var posts : [SunlitPost] = []
 					for snippet in snippets {
 						let sunlitPost = SunlitPost.create(snippet)
-						self.userPosts.append(sunlitPost)
+						posts.append(sunlitPost)
 					}
 					
 					DispatchQueue.main.async {
+						self.loadInProgress = false
+						self.userPosts = posts
 						self.collectionView.reloadData()
 					}
 				}
@@ -151,13 +161,15 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
 		if indexPath.section == 2 {
-			let post = self.userPosts[indexPath.item]
+			if indexPath.item < self.userPosts.count {
+				let post = self.userPosts[indexPath.item]
 			
-			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-			let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
-			imageViewController.pathToImage = post.images[0]
-			imageViewController.post = post
-			self.navigationController?.pushViewController(imageViewController, animated: true)
+				let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+				let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
+				imageViewController.pathToImage = post.images[0]
+				imageViewController.post = post
+				self.navigationController?.pushViewController(imageViewController, animated: true)
+			}
 		}
 	}
 	
@@ -187,8 +199,10 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 		if indexPath.section == 2 {
-			let post = self.userPosts[indexPath.item]
-			self.loadPhoto(post.images.first ?? "", indexPath)
+			if indexPath.item < self.userPosts.count {
+				let post = self.userPosts[indexPath.item]
+				self.loadPhoto(post.images.first ?? "", indexPath)
+			}
 		}
 	}
 	
@@ -241,17 +255,19 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
-		let post = self.userPosts[indexPath.item]
-		cell.date.text = ""
-		if let date = post.publishedDate {
-			cell.date.text = date.friendlyFormat()
+		if indexPath.item < self.userPosts.count {
+			let post = self.userPosts[indexPath.item]
+			cell.date.text = ""
+			if let date = post.publishedDate {
+				cell.date.text = date.friendlyFormat()
+			}
+
+			cell.photo.image = nil
+			if let image = ImageCache.prefetch(post.images.first ?? "") {
+				cell.photo.image = image
+			}
 		}
 
-		cell.photo.image = nil
-		if let image = ImageCache.prefetch(post.images.first ?? "") {
-			cell.photo.image = image
-		}
-		
 		cell.contentView.layer.cornerRadius = 8.0
 		cell.contentView.clipsToBounds = true
 		cell.contentView.layer.borderWidth = 0.5
