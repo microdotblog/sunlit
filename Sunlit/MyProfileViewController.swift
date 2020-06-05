@@ -104,6 +104,12 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
+		
+		// Check for the logged out state...
+		if Settings.permanentToken() == nil {
+			return 0
+		}
+		
 		if self.userPosts.count == 0 {
 			return 2
 		}
