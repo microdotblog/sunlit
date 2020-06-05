@@ -682,6 +682,18 @@
 			path = Sunlit;
 			sourceTree = "<group>";
 		};
+		C55DC490248A102C00C1F8A5 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				C55DC41C248A0DF700C1F8A5 /* SwiftSoup */,
+				C55DC2512489D23F00C1F8A5 /* Mantis */,
+				C55DC2BB2489D2F700C1F8A5 /* UUSwift */,
+				C55DC3022489D33300C1F8A5 /* Snippets */,
+				C55DC39A2489D5CB00C1F8A5 /* NextLevelSessionExporter */,
+			);
+			path = Dependencies;
+			sourceTree = "<group>";
+		};
 		C5AC0453245FC9B900D7725D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -706,11 +718,7 @@
 			isa = PBXGroup;
 			children = (
 				C5B9A71924563E66003EF82B /* Sunlit */,
-				C55DC41C248A0DF700C1F8A5 /* SwiftSoup */,
-				C55DC2512489D23F00C1F8A5 /* Mantis */,
-				C55DC2BB2489D2F700C1F8A5 /* UUSwift */,
-				C55DC3022489D33300C1F8A5 /* Snippets */,
-				C55DC39A2489D5CB00C1F8A5 /* NextLevelSessionExporter */,
+				C55DC490248A102C00C1F8A5 /* Dependencies */,
 				C5B9A71824563E66003EF82B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -739,16 +747,8 @@
 				C5B9A71C24563E66003EF82B /* SceneDelegate.swift */,
 				4B4659E7246B272C00C4E84A /* AppDelegate+Menus.swift */,
 				C5AC0453245FC9B900D7725D /* Resources */,
-				C5B9A731245640AD003EF82B /* Dependencies */,
 			);
 			path = Sunlit;
-			sourceTree = "<group>";
-		};
-		C5B9A731245640AD003EF82B /* Dependencies */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Dependencies;
 			sourceTree = "<group>";
 		};
 		C5FC6ADE2476083D00ACB77E /* TableViewCells */ = {
@@ -1307,6 +1307,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
 				INFOPLIST_FILE = Mantis/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
@@ -1319,6 +1321,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SUPPRESS_WARNINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1337,6 +1340,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
 				INFOPLIST_FILE = Mantis/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
@@ -1348,6 +1353,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.Mantis;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_SUPPRESS_WARNINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
