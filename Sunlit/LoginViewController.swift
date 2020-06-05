@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Snippets
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
 

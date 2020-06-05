@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UUSwift
 
 class ImageCache {
 	

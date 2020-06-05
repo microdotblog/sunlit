@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Mantis
+import Snippets
 
 class ComposeViewController: UIViewController {
 
@@ -22,6 +24,7 @@ class ComposeViewController: UIViewController {
 	var textViewDictionary : [UITextView : SunlitComposition] = [ : ]
 	var needsInitialFirstResponder = true
 	var sectionToAddMedia = 0
+	var croppingMedia : SunlitMedia? = nil
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,6 +113,10 @@ class ComposeViewController: UIViewController {
 		let altTextAction = UIAlertAction(title: editTextTitle, style: .default) { (action) in
 			self.onEditAltText(sectionData, item)
 		}
+		
+		let cropAction = UIAlertAction(title: "Crop", style: .default) { (action) in
+			self.onCropImage(sectionData, item: item, section: section)
+		}
 
 		let deleteAction = UIAlertAction(title: "Remove", style: .default) { (action) in
 			self.onRemoveImage(sectionData, item: item, section: section)
@@ -119,6 +126,7 @@ class ComposeViewController: UIViewController {
 		}
 		
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		alertController.addAction(cropAction)
 		alertController.addAction(deleteAction)
 		alertController.addAction(altTextAction)
 		alertController.addAction(cancelAction)
@@ -169,7 +177,19 @@ class ComposeViewController: UIViewController {
 		
 		self.collectionView.reloadData()
 	}
-	
+
+	func onCropImage(_ sectionData : SunlitComposition, item : Int, section : Int) {
+		
+		let media = sectionData.media[item]
+		let image = media.getImage()
+		let cropViewController = Mantis.cropViewController(image: image)
+		cropViewController.delegate = self
+		self.croppingMedia = media
+		cropViewController.modalPresentationStyle = .fullScreen
+		self.present(cropViewController, animated: true)
+	}
+
+
 	func onEditAltText(_ section : SunlitComposition, _ item : Int) {
 		
 		let currentAltText = section.media[item].altText
@@ -639,3 +659,24 @@ extension ComposeViewController : UIImagePickerControllerDelegate, UINavigationC
 	
 }
 
+extension ComposeViewController : CropViewControllerDelegate {
+    
+	func cropViewControllerDidCrop(_ cropViewController: CropViewController, cropped: UIImage, transformation: Transformation) {
+		if let media = self.croppingMedia {
+			media.image = cropped
+		}
+		
+		cropViewController.dismiss(animated: true) {
+			self.collectionView.reloadData()
+		}
+	}
+	
+	func cropViewControllerDidFailToCrop(_ cropViewController: CropViewController, original: UIImage) {
+		cropViewController.dismiss(animated: true, completion: nil)
+	}
+	
+	func cropViewControllerDidCancel(_ cropViewController: CropViewController, original: UIImage) {
+		cropViewController.dismiss(animated: true, completion: nil)
+	}
+
+}

@@ -8,16 +8,16 @@
 
 #if os(macOS)
 import AppKit
-//import UUSwift
+import UUSwift
 public typealias SnippetsImage = NSImage
 #else
 import UIKit
-//import UUSwift
+import UUSwift
 public typealias SnippetsImage = UIImage
 #endif
 
 
-public class SnippetsUser : NSObject
+open class SnippetsUser : NSObject
 {
 	public convenience init(_ dictionary : [String : Any])
 	{

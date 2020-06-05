@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import Snippets
 
 class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching, UITextViewDelegate {
 		

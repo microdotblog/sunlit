@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import Snippets
 
 class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching, UITextViewDelegate {
 

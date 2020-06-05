@@ -57,9 +57,9 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
         public static let Error = "UURemoteDataErrorKey"
     }
     
-    private var activeDownloads : UUThreadSafeDictionary<String, UUHttpRequest> = UUThreadSafeDictionary()
-    private var pendingDownloads : UUThreadSafeArray<String> = UUThreadSafeArray()
-    private var httpRequestLookups : UUThreadSafeDictionary<String, [UUDataLoadedCompletionBlock]> = UUThreadSafeDictionary()
+	private var activeDownloads : [String : Any] = [:] //UUThreadSafeDictionary<String, UUHttpRequest> = UUThreadSafeDictionary()
+    private var pendingDownloads : [String] = [] //UUThreadSafeArray<String> = UUThreadSafeArray()
+	private var httpRequestLookups : [String : [UUDataLoadedCompletionBlock]] = [:] //UUThreadSafeDictionary<String, [UUDataLoadedCompletionBlock]> = UUThreadSafeDictionary()
     
     // Default to 4 active requests at a time...
     public var maxActiveRequests: Int = 4

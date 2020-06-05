@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Snippets
 
 class ProfileBioCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var bio : UILabel!

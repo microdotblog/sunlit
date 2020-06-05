@@ -2,15 +2,11 @@
 //  UUSwift.h
 //  UUSwift
 //
-//  Created by Jonathan Hays on 12/3/18.
-//  Copyright © 2018 Jonathan Hays. All rights reserved.
+//  Created by Jonathan Hays on 6/4/20.
+//  Copyright © 2020 Micro.blog, LLC. All rights reserved.
 //
 
-#if TARGET_OS_IPHONE
-	#import <UIKit/UIKit.h>
-#else
-	#import <Cocoa/Cocoa.h>
-#endif
+#import <Foundation/Foundation.h>
 
 //! Project version number for UUSwift.
 FOUNDATION_EXPORT double UUSwiftVersionNumber;

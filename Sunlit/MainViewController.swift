@@ -9,6 +9,7 @@
 import UIKit
 import SafariServices
 import AVFoundation
+import Snippets
 
 class MainViewController: UIViewController {
 

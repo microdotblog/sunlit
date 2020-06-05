@@ -8,14 +8,14 @@
 
 #if os(macOS)
 import AppKit
-//import UUSwift
+import UUSwift
 #else
 import UIKit
-//import UUSwift
+import UUSwift
 #endif
 
 
-public class SnippetsPost : NSObject
+open class SnippetsPost : NSObject
 {
 	public convenience init(_ dictionary : [String : Any])
 	{

@@ -2,17 +2,11 @@
 //  Snippets.h
 //  Snippets
 //
-//  Created by Jonathan Hays on 1/17/19.
-//  Copyright © 2019 Micro.blog, LLC. All rights reserved.
+//  Created by Jonathan Hays on 6/4/20.
+//  Copyright © 2020 Micro.blog, LLC. All rights reserved.
 //
+
 #import <Foundation/Foundation.h>
-
-#if TARGET_OS_IPHONE
-#import <UIKit/UIKit.h>
-#else
-#import <Cocoa/Cocoa.h>
-#endif
-
 
 //! Project version number for Snippets.
 FOUNDATION_EXPORT double SnippetsVersionNumber;

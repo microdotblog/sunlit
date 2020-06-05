@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Snippets
 
 class MediaLocation : NSObject {
 	var path : String = ""

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Snippets
 
 class ConversationTableViewCell : UITableViewCell {
 	@IBOutlet var avatar : UIImageView!
