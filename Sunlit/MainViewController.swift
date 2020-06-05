@@ -110,6 +110,7 @@ class MainViewController: UIViewController {
 					DispatchQueue.main.async {
 						self.loginViewController?.dismiss(animated: true, completion: nil)
 						self.timelineViewController.prepareToDisplay()
+						self.timelineViewController.loadTimeline()
 					}
 					
 					Snippets.shared.fetchCurrentUserInfo { (error, updatedUser) in
