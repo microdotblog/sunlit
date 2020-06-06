@@ -327,6 +327,8 @@ class MainViewController: UIViewController {
 		self.scrollView.constrainRight(view: self.contentView)
 		self.scrollView.constrainBottom(view: self.contentView)
 		self.scrollView.constrainTop(view: self.contentView, offset : 88.0)
+		self.scrollView.showsHorizontalScrollIndicator = false
+		self.scrollView.showsVerticalScrollIndicator = false
 		
 		// Force a layout here...
 		self.view.layoutIfNeeded()
@@ -352,7 +354,7 @@ class MainViewController: UIViewController {
 	
 	func setupPhoneTabBar() {
 		
-		let tabBarHeight : CGFloat = 120.0
+		let tabBarHeight : CGFloat = 96.0
 		let tabBarFrame = CGRect(x: 0, y: self.view.bounds.size.height - tabBarHeight, width: self.view.bounds.size.width, height: tabBarHeight)
 		self.tabBar = UIView(frame: tabBarFrame)
 		self.view.addSubview(self.tabBar)
@@ -371,9 +373,9 @@ class MainViewController: UIViewController {
 		self.discoverButton.addTarget(self, action: #selector(onTabBarButtonPressed(_:)), for: .touchUpInside)
 		self.profileButton.addTarget(self, action: #selector(onTabBarButtonPressed(_:)), for: .touchUpInside)
 		
-		self.timelineButton.constrainHeight(60.0)
-		self.discoverButton.constrainHeight(60.0)
-		self.profileButton.constrainHeight(60.0)
+		self.timelineButton.constrainHeight(40.0)
+		self.discoverButton.constrainHeight(40.0)
+		self.profileButton.constrainHeight(40.0)
 
 		self.timelineButton.setTitle("Timeline", for: .normal)
 		self.timelineButton.setImage(UIImage(named: "feed")!, for: .normal)
@@ -390,17 +392,17 @@ class MainViewController: UIViewController {
 			profileImage = ImageCache.prefetch(current.pathToUserImage)
 		
 			if let image = profileImage {
-				profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 32.0, height: 32.0)).withRenderingMode(.alwaysOriginal)
+				profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
 			}
 		}
 		self.profileButton.setTitle(profileUsername, for: .normal)
 		self.profileButton.setImage(profileImage, for: .normal)
 		self.profileButton.imageView?.clipsToBounds = true
-		self.profileButton.imageView?.layer.cornerRadius = 8.0
+		self.profileButton.imageView?.layer.cornerRadius = 6.0
 		
-		self.profileButton.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
-		self.discoverButton.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
-		self.timelineButton.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
+		self.profileButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
+		self.discoverButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
+		self.timelineButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
 
 		stackView.addArrangedSubview(self.timelineButton)
 		stackView.addArrangedSubview(self.discoverButton)
@@ -416,7 +418,16 @@ class MainViewController: UIViewController {
 		self.timelineButton.centerVertically()
 		self.discoverButton.centerVertically()
 		self.profileButton.centerVertically()
-		
+
+		let lineView = UIView()
+		lineView.backgroundColor = .black
+		lineView.translatesAutoresizingMaskIntoConstraints = false
+		self.tabBar.addSubview(lineView)
+		lineView.constrainHeight(0.5)
+		lineView.constrainTop(view: self.tabBar)
+		lineView.constrainLeft(view: self.tabBar)
+		lineView.constrainRight(view: self.tabBar)
+
 		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
 		self.profileButton.addGestureRecognizer(longpressGesture)
 	}
@@ -459,11 +470,6 @@ class MainViewController: UIViewController {
 
 
 	@objc func onTabBarButtonPressed(_ button : UIButton) {
-		self.profileButton.isSelected = false
-		self.timelineButton.isSelected = false
-		self.discoverButton.isSelected = false
-				
-		button.isSelected = true
 		
 		if button == self.profileButton {
 			if let _ = SnippetsUser.current() {
