@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 
@@ -29,6 +30,8 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		self.setupScrollView()
 		self.setupGestures()
 		self.setupPostInfo()
+		
+		self.navigationController?.setNavigationBarHidden(true, animated: true)
 	}
 
 	override func viewDidLayoutSubviews() {
@@ -37,8 +40,8 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 	}
 	
 	func setupNavigationBar() {
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonWithImage(named: "back_button", target: self, action: #selector(dismissViewController))
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(onShare))
+		//self.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonWithImage(named: "back_button", target: self, action: #selector(dismissViewController))
+		//self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(onShare))
 		self.navigationItem.rightBarButtonItem?.tintColor = .black
 	}
 	
@@ -99,8 +102,6 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 			alpha = 1.0
 		}
 
-		self.navigationController?.setNavigationBarHidden(alpha == 0.0, animated: true)
-
 		UIView.animate(withDuration: 0.15, delay: 0.35, options: .curveLinear, animations: {
 			self.topInfoView.alpha = alpha
 			self.bottomInfoView.alpha = alpha
@@ -111,7 +112,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		
 	}
 	
-	@objc func onShare() {
+	@IBAction @objc func onShare() {
 		
 		if let image = ImageCache.prefetch(self.pathToImage) {
 			let items : [Any] = [image]
@@ -121,8 +122,14 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		}
 	}
 	
-	@objc func dismissViewController() {
+	@IBAction @objc func dismissViewController() {
 		self.navigationController?.popViewController(animated: true)
+	}
+	
+	@IBAction @objc func onViewInSafari() {
+		let url = URL(string: self.post.path)!
+		let safariViewController = SFSafariViewController(url: url)
+		self.navigationController?.pushViewController(safariViewController, animated: true)
 	}
 	
 	func viewForZooming(in scrollView: UIScrollView) -> UIView? {

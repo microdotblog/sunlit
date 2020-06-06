@@ -57,6 +57,14 @@
                                             <constraint firstAttribute="width" constant="44" id="gHG-Gu-meo"/>
                                         </constraints>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UUj-d0-Xt5">
+                                        <rect key="frame" x="385" y="23" width="25" height="24"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="xmark.circle" catalog="system"/>
+                                        <connections>
+                                            <action selector="dismissViewController" destination="PHD-An-Ibq" eventType="touchUpInside" id="7k6-Wo-TGu"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.25217319539999999" alpha="0.79891065139999995" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -65,7 +73,9 @@
                                     <constraint firstItem="AWe-2L-xq8" firstAttribute="centerY" secondItem="qYa-yJ-szY" secondAttribute="centerY" id="VI0-pF-vRm"/>
                                     <constraint firstAttribute="bottom" secondItem="AWe-2L-xq8" secondAttribute="bottom" constant="16" id="XdR-eu-Wqz"/>
                                     <constraint firstAttribute="trailing" secondItem="AWe-2L-xq8" secondAttribute="trailing" constant="8" id="Zua-H7-O1n"/>
+                                    <constraint firstAttribute="trailing" secondItem="UUj-d0-Xt5" secondAttribute="trailing" constant="4" id="ff2-BX-a3T"/>
                                     <constraint firstItem="qYa-yJ-szY" firstAttribute="leading" secondItem="FVq-VH-8Ql" secondAttribute="leading" constant="8" id="gvB-i7-unk"/>
+                                    <constraint firstItem="UUj-d0-Xt5" firstAttribute="centerY" secondItem="FVq-VH-8Ql" secondAttribute="centerY" id="vrV-qU-54r"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h4w-xl-KHa">
@@ -80,12 +90,40 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" calendarEvent="YES"/>
                                     </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GA5-FZ-zm6">
+                                        <rect key="frame" x="366" y="189.5" width="32" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="ib8-l8-GmB"/>
+                                            <constraint firstAttribute="width" constant="32" id="oN7-uz-pYA"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="share"/>
+                                        <connections>
+                                            <action selector="onShare" destination="PHD-An-Ibq" eventType="touchUpInside" id="15Z-FQ-TEs"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ygh-do-vOV">
+                                        <rect key="frame" x="16" y="189.5" width="32" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="32" id="1jj-UI-WW1"/>
+                                            <constraint firstAttribute="height" constant="32" id="TaU-dX-7He"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="browser"/>
+                                        <connections>
+                                            <action selector="onViewInSafari" destination="PHD-An-Ibq" eventType="touchUpInside" id="TPx-hg-r7d"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.25217319539999999" alpha="0.79891065139999995" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="Ygh-do-vOV" firstAttribute="leading" secondItem="h4w-xl-KHa" secondAttribute="leading" constant="16" id="288-IW-sBd"/>
                                     <constraint firstAttribute="trailing" secondItem="IkF-my-QPK" secondAttribute="trailing" constant="8" id="4Qh-ki-2yv"/>
+                                    <constraint firstAttribute="trailing" secondItem="GA5-FZ-zm6" secondAttribute="trailing" constant="16" id="TKc-8S-sGa"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ygh-do-vOV" secondAttribute="bottom" constant="14" id="Zpo-Vw-Dwr"/>
                                     <constraint firstAttribute="bottom" secondItem="IkF-my-QPK" secondAttribute="bottom" constant="44" id="cgF-UG-gqG"/>
                                     <constraint firstItem="IkF-my-QPK" firstAttribute="leading" secondItem="h4w-xl-KHa" secondAttribute="leading" constant="8" id="ety-WH-o7B"/>
+                                    <constraint firstAttribute="bottom" secondItem="GA5-FZ-zm6" secondAttribute="bottom" constant="14" id="pay-Bv-Yb4"/>
                                     <constraint firstItem="IkF-my-QPK" firstAttribute="top" secondItem="h4w-xl-KHa" secondAttribute="top" constant="8" id="rO3-6V-0l0"/>
                                 </constraints>
                             </view>
@@ -121,4 +159,9 @@
             <point key="canvasLocation" x="1885.5072463768117" y="789.50892857142856"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="browser" width="60" height="60"/>
+        <image name="share" width="48" height="48"/>
+        <image name="xmark.circle" catalog="system" width="128" height="121"/>
+    </resources>
 </document>

@@ -46,6 +46,11 @@ class MainViewController: UIViewController {
 		self.timelineViewController.prepareToDisplay()
 	}
 
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.navigationController?.setNavigationBarHidden(false, animated: true)
+	}
+	
 	override func viewWillLayoutSubviews() {
 		
 		super.viewWillLayoutSubviews()
