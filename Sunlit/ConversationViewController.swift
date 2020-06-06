@@ -133,7 +133,7 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 
 	@objc func handleUserProfileSelectedNotification(_ notification : Notification) {
 		if let post = notification.object as? SunlitPost {
-			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+			let storyBoard: UIStoryboard = UIStoryboard(name: "Profile", bundle: nil)
 			let profileViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
 			profileViewController.user = post.owner
 			self.navigationController?.pushViewController(profileViewController, animated: true)

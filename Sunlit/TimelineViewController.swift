@@ -103,7 +103,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		
 		let post = self.tableViewData[indexPath.row]
 
-		let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+		let storyBoard: UIStoryboard = UIStoryboard(name: "ImageViewer", bundle: nil)
 		let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
 		imageViewController.pathToImage = post.images[0]
 		imageViewController.post = post
@@ -173,7 +173,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	
 	@objc func handleUserProfileSelectedNotification(_ notification : Notification) {
 		if let user = notification.object as? SnippetsUser {
-			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+			let storyBoard: UIStoryboard = UIStoryboard(name: "Profile", bundle: nil)
 			let profileViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
 			profileViewController.user = user
 			self.navigationController?.pushViewController(profileViewController, animated: true)
@@ -182,7 +182,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	
 	@objc func handleViewConversationNotification(_ notification : Notification) {
 		if let post = notification.object as? SunlitPost {
-			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+			let storyBoard: UIStoryboard = UIStoryboard(name: "Conversation", bundle: nil)
 			let conversationViewController = storyBoard.instantiateViewController(withIdentifier: "ConversationViewController") as! ConversationViewController
 			conversationViewController.sourcePost = post
 			self.navigationController?.pushViewController(conversationViewController, animated: true)
@@ -193,7 +193,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		if let dictionary = notification.object as? [String : Any] {
 			let imagePath = dictionary["imagePath"] as! String
 			let post = dictionary["post"] as! SunlitPost
-			let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+			let storyBoard: UIStoryboard = UIStoryboard(name: "ImageViewer", bundle: nil)
 			let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
 			imageViewController.pathToImage = imagePath
 			imageViewController.post = post

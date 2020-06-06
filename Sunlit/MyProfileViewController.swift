@@ -164,7 +164,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 			if indexPath.item < self.userPosts.count {
 				let post = self.userPosts[indexPath.item]
 			
-				let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+				let storyBoard: UIStoryboard = UIStoryboard(name: "ImageViewer", bundle: nil)
 				let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
 				imageViewController.pathToImage = post.images[0]
 				imageViewController.post = post
