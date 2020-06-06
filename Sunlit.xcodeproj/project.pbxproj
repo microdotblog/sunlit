@@ -70,7 +70,6 @@
 		C55DC2E82489D30600C1F8A5 /* UUHttpSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55DC2CB2489D30500C1F8A5 /* UUHttpSession.swift */; };
 		C55DC2E92489D30600C1F8A5 /* UUThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55DC2CC2489D30500C1F8A5 /* UUThread.swift */; };
 		C55DC2EA2489D30600C1F8A5 /* UUEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55DC2CD2489D30500C1F8A5 /* UUEditViewController.swift */; };
-		C55DC2EB2489D30600C1F8A5 /* UUSwift-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C55DC2CE2489D30500C1F8A5 /* UUSwift-Info.plist */; };
 		C55DC2EC2489D30600C1F8A5 /* UUDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55DC2CF2489D30500C1F8A5 /* UUDate.swift */; };
 		C55DC2ED2489D30600C1F8A5 /* UUMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55DC2D02489D30500C1F8A5 /* UUMapView.swift */; };
 		C55DC2EE2489D30600C1F8A5 /* UUImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55DC2D12489D30600C1F8A5 /* UUImage.swift */; };
@@ -319,7 +318,6 @@
 		C55DC28F2489D26000C1F8A5 /* CoreGraphicsExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreGraphicsExtensions.swift; sourceTree = "<group>"; };
 		C55DC2BA2489D2F700C1F8A5 /* UUSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UUSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55DC2BC2489D2F700C1F8A5 /* UUSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UUSwift.h; sourceTree = "<group>"; };
-		C55DC2BD2489D2F700C1F8A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C55DC2C22489D30500C1F8A5 /* UUCircularImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UUCircularImageView.swift; sourceTree = "<group>"; };
 		C55DC2C32489D30500C1F8A5 /* UURemoteData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UURemoteData.swift; sourceTree = "<group>"; };
 		C55DC2C42489D30500C1F8A5 /* UUCircularView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UUCircularView.swift; sourceTree = "<group>"; };
@@ -654,7 +652,6 @@
 				C55DC2C72489D30500C1F8A5 /* UUView.swift */,
 				C55DC2C92489D30500C1F8A5 /* UUViewController.swift */,
 				C55DC2BC2489D2F700C1F8A5 /* UUSwift.h */,
-				C55DC2BD2489D2F700C1F8A5 /* Info.plist */,
 			);
 			path = UUSwift;
 			sourceTree = "<group>";
@@ -1098,7 +1095,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C55DC2EB2489D30600C1F8A5 /* UUSwift-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1419,7 +1415,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
-				INFOPLIST_FILE = Mantis/Info.plist;
+				INFOPLIST_FILE = Dependencies/Mantis/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1452,7 +1448,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
-				INFOPLIST_FILE = Mantis/Info.plist;
+				INFOPLIST_FILE = Dependencies/Mantis/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1482,7 +1478,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = UUSwift/Info.plist;
+				INFOPLIST_FILE = Dependencies/UUSwift/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1512,7 +1508,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = UUSwift/Info.plist;
+				INFOPLIST_FILE = Dependencies/UUSwift/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1541,7 +1537,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Snippets/Info.plist;
+				INFOPLIST_FILE = Dependencies/Snippets/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1571,7 +1567,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Snippets/Info.plist;
+				INFOPLIST_FILE = Dependencies/Snippets/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1600,7 +1596,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = NextLevelSessionExporter/Info.plist;
+				INFOPLIST_FILE = Dependencies/NextLevelSessionExporter/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1630,7 +1626,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = NextLevelSessionExporter/Info.plist;
+				INFOPLIST_FILE = Dependencies/NextLevelSessionExporter/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
