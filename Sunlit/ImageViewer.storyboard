@@ -115,7 +115,7 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5I1-9N-8r7">
-                                        <rect key="frame" x="0.0" y="187.5" width="414" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="191.5" width="414" height="0.5"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="0.5" id="1Cx-2W-z6C"/>
@@ -126,7 +126,7 @@
                                 <constraints>
                                     <constraint firstItem="Ygh-do-vOV" firstAttribute="leading" secondItem="h4w-xl-KHa" secondAttribute="leading" constant="16" id="288-IW-sBd"/>
                                     <constraint firstAttribute="trailing" secondItem="IkF-my-QPK" secondAttribute="trailing" constant="8" id="4Qh-ki-2yv"/>
-                                    <constraint firstItem="5I1-9N-8r7" firstAttribute="top" secondItem="IkF-my-QPK" secondAttribute="bottom" id="7Mv-db-ChQ"/>
+                                    <constraint firstItem="5I1-9N-8r7" firstAttribute="top" secondItem="IkF-my-QPK" secondAttribute="bottom" constant="4" id="7Mv-db-ChQ"/>
                                     <constraint firstAttribute="trailing" secondItem="GA5-FZ-zm6" secondAttribute="trailing" constant="16" id="TKc-8S-sGa"/>
                                     <constraint firstAttribute="bottom" secondItem="Ygh-do-vOV" secondAttribute="bottom" constant="16" id="Zpo-Vw-Dwr"/>
                                     <constraint firstAttribute="trailing" secondItem="5I1-9N-8r7" secondAttribute="trailing" id="cPY-vd-J4z"/>
