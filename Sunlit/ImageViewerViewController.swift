@@ -129,7 +129,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 	@IBAction @objc func onViewInSafari() {
 		let url = URL(string: self.post.path)!
 		let safariViewController = SFSafariViewController(url: url)
-		self.navigationController?.pushViewController(safariViewController, animated: true)
+		self.present(safariViewController, animated: true, completion: nil)
 	}
 	
 	func viewForZooming(in scrollView: UIScrollView) -> UIView? {
