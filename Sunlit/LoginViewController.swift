@@ -64,7 +64,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 				// TODO: Need to add support for Wordpress and other Micropub sites here...
 			}
 			else {
-				let path = "sunlit://micropub/" + text
+				let path = "sunlit://micropub/" + text.uuTrimWhitespace()
 				UIApplication.shared.open(URL(string: path)!, options: [:]) { (complete) in
 					self.dismiss(animated: true, completion: nil)
 				}
