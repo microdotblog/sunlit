@@ -165,10 +165,10 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="PhotoEntryCollectionViewCell" id="f1k-Zl-2RT" customClass="PhotoEntryCollectionViewCell" customModule="Sunlit" customModuleProvider="target">
-                                        <rect key="frame" x="4" y="225.5" width="200" height="248"/>
+                                        <rect key="frame" x="4" y="225.5" width="200" height="240"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Jxc-BX-Rd7">
-                                            <rect key="frame" x="0.0" y="0.0" width="200" height="248"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="200" height="240"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="05-07-2020" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CAI-qb-EB7">
@@ -180,9 +180,9 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="TQE-Ty-cpV">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="TQE-Ty-cpV">
                                                     <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="TQE-Ty-cpV" secondAttribute="height" multiplier="1:1" id="a4k-7s-Noe"/>
                                                         <constraint firstAttribute="width" constant="200" id="gD6-Ge-ddk"/>
@@ -192,7 +192,7 @@
                                             <color key="backgroundColor" red="0.54106694460000004" green="0.72945708040000001" blue="0.87048029900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="TQE-Ty-cpV" secondAttribute="trailing" id="3e9-ya-unq"/>
-                                                <constraint firstAttribute="bottom" secondItem="CAI-qb-EB7" secondAttribute="bottom" constant="8" id="AAK-dv-P3O"/>
+                                                <constraint firstAttribute="bottom" secondItem="CAI-qb-EB7" secondAttribute="bottom" id="AAK-dv-P3O"/>
                                                 <constraint firstItem="CAI-qb-EB7" firstAttribute="top" secondItem="TQE-Ty-cpV" secondAttribute="bottom" id="ELf-No-go0"/>
                                                 <constraint firstItem="TQE-Ty-cpV" firstAttribute="top" secondItem="Jxc-BX-Rd7" secondAttribute="top" id="XOe-M5-FwS"/>
                                                 <constraint firstItem="CAI-qb-EB7" firstAttribute="trailing" secondItem="TQE-Ty-cpV" secondAttribute="trailing" id="gjD-Mu-YZy"/>
