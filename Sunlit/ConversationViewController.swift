@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import Snippets
 
-class ConversationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
+class ConversationViewController: UIViewController {
 
 	@IBOutlet var spinner : UIActivityIndicatorView!
 	@IBOutlet var tableView : UITableView!
@@ -139,6 +139,10 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 			self.navigationController?.pushViewController(profileViewController, animated: true)
 		}
 	}
+		
+}
+
+extension ConversationViewController : UITextViewDelegate {
 	
 	func textViewDidBeginEditing(_ textView: UITextView) {
 		if self.replyField.text.count <= 0 {
@@ -168,17 +172,21 @@ class ConversationViewController: UIViewController, UITableViewDelegate, UITable
 		self.present(safariViewController, animated: true, completion: nil)
 		return false
 	}
-	
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return self.posts.count
-	}
-	
+
+}
+
+
+extension ConversationViewController : UITableViewDelegate, UITableViewDataSource {
+
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationTableViewCell", for: indexPath) as! ConversationTableViewCell
 		let post = self.posts[indexPath.row]
 		cell.setup(post, indexPath)
 		return cell
 	}
+	
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return self.posts.count
+	}
 
 }
-
