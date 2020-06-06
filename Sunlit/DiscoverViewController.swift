@@ -112,9 +112,8 @@ class DiscoverViewController: UIViewController {
 				if self.tableView.isHidden == true && self.collectionView.isHidden == true {
 					self.collectionView.isHidden = false
 				}
-				self.navigationController?.navigationBar.topItem?.title = "Discover " + self.collectionTitle
+
 				self.refresh(postObjects)
-				
 				self.loadingData = false
 			}
 		}
