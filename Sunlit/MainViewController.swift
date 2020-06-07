@@ -400,13 +400,6 @@ class MainViewController: UIViewController {
 		self.discoverButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
 		self.timelineButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
 		
-		self.profileButton.constrainHeight(self.tabBar.bounds.height)
-		self.discoverButton.constrainHeight(self.tabBar.bounds.height)
-		self.timelineButton.constrainHeight(self.tabBar.bounds.height)
-		self.profileButton.constrainWidth(self.tabBar.bounds.height)
-		self.discoverButton.constrainWidth(self.tabBar.bounds.height)
-		self.timelineButton.constrainWidth(self.tabBar.bounds.height)
-
 		stackView.addArrangedSubview(self.timelineButton)
 		stackView.addArrangedSubview(self.discoverButton)
 		stackView.addArrangedSubview(self.profileButton)

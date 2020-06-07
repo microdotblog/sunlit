@@ -727,53 +727,39 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="15Q-m6-Yb3">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="4" y="88" width="406" height="774"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="J3H-mX-yeG">
-                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="itemSize" width="128" height="176"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoEntryCollectionViewCell" id="wCb-SS-Pgp" customClass="PhotoEntryCollectionViewCell" customModule="Sunlit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="248"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="168"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Ikl-60-eYw">
-                                            <rect key="frame" x="0.0" y="0.0" width="200" height="248"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="168"/>
+                                            <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="05-07-2020" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JRB-ng-g5N">
-                                                    <rect key="frame" x="0.0" y="200" width="200" height="40"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="40" id="PXo-4V-Kza"/>
-                                                    </constraints>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" id="Eql-Cg-ENS">
+                                                    <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="05-07-2020" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JRB-ng-g5N">
+                                                    <rect key="frame" x="0.0" y="128" width="128" height="40"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Eql-Cg-ENS">
-                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="200" id="cmT-bD-ELt"/>
-                                                        <constraint firstAttribute="width" secondItem="Eql-Cg-ENS" secondAttribute="height" multiplier="1:1" id="evz-4J-0pC"/>
-                                                    </constraints>
-                                                </imageView>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="Eql-Cg-ENS" secondAttribute="trailing" id="0dB-kS-XFk"/>
-                                                <constraint firstItem="JRB-ng-g5N" firstAttribute="top" secondItem="Eql-Cg-ENS" secondAttribute="bottom" id="8zE-2D-atS"/>
-                                                <constraint firstItem="JRB-ng-g5N" firstAttribute="leading" secondItem="Eql-Cg-ENS" secondAttribute="leading" id="LYp-40-VYl"/>
-                                                <constraint firstItem="Eql-Cg-ENS" firstAttribute="leading" secondItem="Ikl-60-eYw" secondAttribute="leading" id="his-mB-kf0"/>
-                                                <constraint firstItem="JRB-ng-g5N" firstAttribute="trailing" secondItem="Eql-Cg-ENS" secondAttribute="trailing" id="jki-bR-njt"/>
-                                                <constraint firstItem="Eql-Cg-ENS" firstAttribute="top" secondItem="Ikl-60-eYw" secondAttribute="top" id="qk0-VN-f22"/>
-                                                <constraint firstAttribute="bottom" secondItem="JRB-ng-g5N" secondAttribute="bottom" constant="8" id="rPA-4P-Xee"/>
-                                            </constraints>
                                         </collectionViewCellContentView>
+                                        <size key="customSize" width="128" height="168"/>
                                         <connections>
                                             <outlet property="date" destination="JRB-ng-g5N" id="Qv8-ub-DbJ"/>
                                             <outlet property="photo" destination="Eql-Cg-ENS" id="zr7-QD-uWg"/>
-                                            <outlet property="widthConstraint" destination="cmT-bD-ELt" id="OB7-Gh-jPA"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -1120,8 +1106,8 @@
                         <constraints>
                             <constraint firstItem="VsO-36-aZm" firstAttribute="leading" secondItem="sH2-gQ-nXw" secondAttribute="leading" id="2R2-Od-LeT"/>
                             <constraint firstItem="V4W-dv-gYU" firstAttribute="centerY" secondItem="VsO-36-aZm" secondAttribute="centerY" id="4TT-kH-hdG"/>
-                            <constraint firstItem="15Q-m6-Yb3" firstAttribute="trailing" secondItem="sH2-gQ-nXw" secondAttribute="trailing" id="56M-aL-XC0"/>
-                            <constraint firstItem="15Q-m6-Yb3" firstAttribute="leading" secondItem="sH2-gQ-nXw" secondAttribute="leading" id="Cwx-y2-HQe"/>
+                            <constraint firstItem="15Q-m6-Yb3" firstAttribute="trailing" secondItem="sH2-gQ-nXw" secondAttribute="trailing" constant="-4" id="56M-aL-XC0"/>
+                            <constraint firstItem="15Q-m6-Yb3" firstAttribute="leading" secondItem="sH2-gQ-nXw" secondAttribute="leading" constant="4" id="Cwx-y2-HQe"/>
                             <constraint firstItem="15Q-m6-Yb3" firstAttribute="bottom" secondItem="sH2-gQ-nXw" secondAttribute="bottom" id="DOk-90-vQU"/>
                             <constraint firstItem="VsO-36-aZm" firstAttribute="top" secondItem="qZo-n7-ubL" secondAttribute="bottom" id="Isl-IP-jTh"/>
                             <constraint firstItem="qZo-n7-ubL" firstAttribute="trailing" secondItem="sH2-gQ-nXw" secondAttribute="trailing" id="bBF-IF-Jaz"/>
@@ -1146,7 +1132,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hnc-cO-k6y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-880" y="729"/>
+            <point key="canvasLocation" x="-881.15942028985512" y="728.57142857142856"/>
         </scene>
     </scenes>
     <resources>

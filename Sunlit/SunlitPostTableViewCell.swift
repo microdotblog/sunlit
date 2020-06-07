@@ -266,7 +266,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 	}
 }
 
-extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionViewDelegate {
+extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 	
 	func configureCollectionView(_ size: CGSize) {
 		
@@ -384,5 +384,9 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 			
 			NotificationCenter.default.post(name: NSNotification.Name(rawValue: "View Image"), object: dictionary)
 		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+		return collectionView.bounds.size
 	}
 }

@@ -53,6 +53,10 @@ class DiscoverViewController: UIViewController {
 		self.collectionViewRefreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
 		self.collectionView.addSubview(self.collectionViewRefreshControl)
 		
+		if let layout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+			layout.estimatedItemSize = CGSize(width: self.collectionView.bounds.size.width / 2.0, height: self.collectionView.bounds.size.width + 48.0)
+		}
+		
 		self.loadFrequentlyUsedEmoji()
 	}
 
@@ -511,7 +515,7 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 MARK: -
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching {
+extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSourcePrefetching, UICollectionViewDelegateFlowLayout {
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.posts.count
@@ -583,7 +587,7 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 			cell.contentView.clipsToBounds = true
 			cell.contentView.layer.borderWidth = 0.5
 			cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
-			cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
+			//cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 		}
 	}
 	
