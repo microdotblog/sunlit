@@ -20,6 +20,8 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var widthConstraint : NSLayoutConstraint!
 	
 	static func sizeOf(_ owner : SnippetsUser, collectionViewWidth : CGFloat) -> CGSize {
+		return CGSize(width: collectionViewWidth, height: 120.0)
+/*
 		var size = CGSize(width: collectionViewWidth, height: 0)
 		
 		size.height = size.height + 24
@@ -32,5 +34,6 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 		}
 		
 		return size
+*/
 	}
 }

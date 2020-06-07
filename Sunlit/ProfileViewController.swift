@@ -271,12 +271,10 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			self.loadPhoto(user.pathToUserImage, indexPath)
 		}
 		
-		cell.widthConstraint.constant = self.collectionView.bounds.size.width
 	}
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
 		cell.bio.attributedText = user.attributedTextBio()
-		cell.widthConstraint.constant = self.collectionView.bounds.size.width 
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
@@ -298,7 +296,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 		cell.contentView.clipsToBounds = true
 		cell.contentView.layer.borderWidth = 0.5
 		cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
-		cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 	}
 	
 }
