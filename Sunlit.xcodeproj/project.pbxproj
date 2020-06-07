@@ -187,7 +187,8 @@
 		C5EC12F8248C34020032B84D /* RotationDial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC12D2248C34010032B84D /* RotationDial.swift */; };
 		C5EC12F9248C34020032B84D /* CGAngle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC12D3248C34010032B84D /* CGAngle.swift */; };
 		C5EC12FA248C34020032B84D /* DialConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC12D4248C34010032B84D /* DialConfig.swift */; };
-		C5EC12FB248C34DA0032B84D /* Mantis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC1292248C33E40032B84D /* Mantis.framework */; };
+		C5EC12FC248D64A50032B84D /* Mantis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC1292248C33E40032B84D /* Mantis.framework */; };
+		C5EC12FD248D64A60032B84D /* Mantis.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC1292248C33E40032B84D /* Mantis.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C5F606CA2474A05700AB070C /* SunlitPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F606C92474A05700AB070C /* SunlitPostTableViewCell.swift */; };
 		C5FC6AD72476076C00ACB77E /* PhotoEntryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FC6AD62476076C00ACB77E /* PhotoEntryCollectionViewCell.swift */; };
 		C5FC6AD92476079600ACB77E /* ProfileBioCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FC6AD82476079600ACB77E /* ProfileBioCollectionViewCell.swift */; };
@@ -225,6 +226,13 @@
 			remoteGlobalIDString = C55DC3982489D5CB00C1F8A5;
 			remoteInfo = NextLevelSessionExporter;
 		};
+		C5EC12FE248D64A60032B84D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5B9A70F24563E66003EF82B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C5EC1291248C33E40032B84D;
+			remoteInfo = Mantis;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -234,6 +242,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				C5EC12FD248D64A60032B84D /* Mantis.framework in Embed Frameworks */,
 				C55DC49B248A153000C1F8A5 /* UUSwift.framework in Embed Frameworks */,
 				C55DC4A3248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Embed Frameworks */,
 				C55DC496248A152A00C1F8A5 /* Snippets.framework in Embed Frameworks */,
@@ -486,7 +495,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5EC12FB248C34DA0032B84D /* Mantis.framework in Frameworks */,
+				C5EC12FC248D64A50032B84D /* Mantis.framework in Frameworks */,
 				C55DC49A248A153000C1F8A5 /* UUSwift.framework in Frameworks */,
 				C55DC4A2248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Frameworks */,
 				C55DC495248A152A00C1F8A5 /* Snippets.framework in Frameworks */,
@@ -995,6 +1004,7 @@
 				C55DC498248A152A00C1F8A5 /* PBXTargetDependency */,
 				C55DC49D248A153000C1F8A5 /* PBXTargetDependency */,
 				C55DC4A5248A158F00C1F8A5 /* PBXTargetDependency */,
+				C5EC12FF248D64A60032B84D /* PBXTargetDependency */,
 			);
 			name = Sunlit;
 			productName = Sunlit;
@@ -1355,6 +1365,11 @@
 			isa = PBXTargetDependency;
 			target = C55DC3982489D5CB00C1F8A5 /* NextLevelSessionExporter */;
 			targetProxy = C55DC4A4248A158F00C1F8A5 /* PBXContainerItemProxy */;
+		};
+		C5EC12FF248D64A60032B84D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C5EC1291248C33E40032B84D /* Mantis */;
+			targetProxy = C5EC12FE248D64A60032B84D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
