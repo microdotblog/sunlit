@@ -64,6 +64,14 @@ extension UIView {
 			completion(height_constraint)
 		}
 	}
+
+	func constrainWidth(_ width: CGFloat, completion: ((NSLayoutConstraint) -> Void)? = nil) {
+		let height_constraint = NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: width)
+		height_constraint.isActive = true
+		if let completion = completion {
+			completion(height_constraint)
+		}
+	}
 	
 	func clearConstraints() {
 		let old_constraints = self.constraints

@@ -82,10 +82,12 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
             return nil
         }
         
-        let data = UUDataCache.shared.data(for: key)
-        if (data != nil)
-        {
-            return data
+		if UUDataCache.shared.doesDataExist(for: key) {
+			let data = UUDataCache.shared.data(for: key)
+			if (data != nil)
+			{
+				return data
+			}
         }
 		
 		if remoteLoadCompletion == nil {

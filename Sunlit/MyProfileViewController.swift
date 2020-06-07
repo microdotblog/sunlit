@@ -92,7 +92,9 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		ImageCache.fetch(path) { (image) in
 			if let _ = image {
 				DispatchQueue.main.async {
-					self.collectionView.reloadItems(at: [ index ])
+					self.collectionView.performBatchUpdates({
+						self.collectionView.reloadItems(at: [ index ])
+					}, completion: nil)
 				}
 			}
 		}
@@ -251,7 +253,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
 		cell.bio.attributedText = user.attributedTextBio()
-		cell.widthConstraint.constant = self.view.bounds.size.width //- 16.0
+		cell.widthConstraint.constant = self.view.bounds.size.width
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {

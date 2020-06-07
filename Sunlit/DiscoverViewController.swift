@@ -339,16 +339,23 @@ class DiscoverViewController: UIViewController {
 	}
 	
 	@objc func handleImageLoadedNotification(_ notification : Notification) {
-		if let indexPath = notification.object as? IndexPath {
-			if indexPath.row < self.posts.count {
-				if self.tableView.isHidden == false {
-					if indexPath.row < self.posts.count {
-						self.tableView.reloadRows(at: [ indexPath ], with: .none)
+		DispatchQueue.main.async {
+			if let indexPath = notification.object as? IndexPath {
+				if indexPath.row < self.posts.count {
+					if self.tableView.isHidden == false {
+						if indexPath.row < self.posts.count {
+							self.tableView.performBatchUpdates({
+								self.tableView.reloadRows(at: [ indexPath ], with: .none)
+							}, completion: nil)
+						}
 					}
-				}
-				else if self.collectionView.isHidden == false {
-					if indexPath.item < self.posts.count {
-						self.collectionView.reloadItems(at: [ indexPath ])
+					else if self.collectionView.isHidden == false {
+						if indexPath.item < self.posts.count {
+							self.collectionView.performBatchUpdates({
+								self.collectionView.reloadItems(at: [ indexPath ])
+							}) { (complete) in
+							}
+						}
 					}
 				}
 			}
@@ -406,9 +413,11 @@ class DiscoverViewController: UIViewController {
 			if let _ = image {
 				DispatchQueue.main.async {
 					if self.collectionView.isHidden == false {
-						if index.item < self.posts.count {
-							self.collectionView.reloadItems(at: [ index ])
-						}
+						self.collectionView.performBatchUpdates({
+							if index.item < self.posts.count {
+								self.collectionView.reloadItems(at: [ index ])
+							}
+						}, completion: nil)
 					}
 				}
 			}
@@ -449,7 +458,7 @@ extension DiscoverViewController : UITextFieldDelegate, UITextViewDelegate {
 MARK: -
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource {
+extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return self.posts.count
@@ -541,7 +550,8 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 			collectionViewWidth = collectionViewWidth - collectionView.contentInset.right
 		}
 		
-		return PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: collectionViewWidth)
+		let size = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: collectionViewWidth)
+		return size
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -566,10 +576,13 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 				cell.photo.image = image
 			}
 			
+			cell.photo.layer.borderColor = UIColor.lightGray.cgColor
+			cell.photo.layer.borderWidth = 0.5
+
 			cell.contentView.layer.cornerRadius = 8.0
 			cell.contentView.clipsToBounds = true
 			cell.contentView.layer.borderWidth = 0.5
-			cell.contentView.layer.borderColor = UIColor.darkGray.cgColor
+			cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
 			cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 		}
 	}

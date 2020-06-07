@@ -19,10 +19,12 @@ class ImageCache {
 			return image
 		}
 		
-		if let imageData = UURemoteData.shared.data(for: path) {
-			if let image = UIImage(data: imageData) {
-				ImageCache.systemCache.setObject(image, forKey: path as NSString)
-				return image
+		if UUDataCache.shared.doesDataExist(for: path) {
+			if let imageData = UUDataCache.shared.data(for: path) {
+				if let image = UIImage(data: imageData) {
+					ImageCache.systemCache.setObject(image, forKey: path as NSString)
+					return image
+				}
 			}
 		}
 		

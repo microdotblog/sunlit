@@ -276,7 +276,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
 		cell.bio.attributedText = user.attributedTextBio()
-		cell.widthConstraint.constant = self.collectionView.bounds.size.width //- 16.0
+		cell.widthConstraint.constant = self.collectionView.bounds.size.width 
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
@@ -291,10 +291,13 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
 			cell.photo.image = image
 		}
 		
+		cell.photo.layer.borderColor = UIColor.lightGray.cgColor
+		cell.photo.layer.borderWidth = 0.5
+		
 		cell.contentView.layer.cornerRadius = 8.0
 		cell.contentView.clipsToBounds = true
 		cell.contentView.layer.borderWidth = 0.5
-		cell.contentView.layer.borderColor = UIColor.darkGray.cgColor
+		cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
 		cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 	}
 	

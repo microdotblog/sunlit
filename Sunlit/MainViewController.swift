@@ -363,7 +363,7 @@ class MainViewController: UIViewController {
 		self.tabBar.constrainRight(view: self.view)
 		self.tabBar.constrainBottom(view: self.view)
 
-		let stackView = UIStackView(frame: self.tabBar.bounds.inset(by: UIEdgeInsets(top: 16, left: 8, bottom: 16, right: 8)))
+		let stackView = UIStackView(frame: self.tabBar.bounds)
 		stackView.backgroundColor = .clear
 		
 		self.timelineButton = UIButton(type: .system)
@@ -373,10 +373,6 @@ class MainViewController: UIViewController {
 		self.discoverButton.addTarget(self, action: #selector(onTabBarButtonPressed(_:)), for: .touchUpInside)
 		self.profileButton.addTarget(self, action: #selector(onTabBarButtonPressed(_:)), for: .touchUpInside)
 		
-		self.timelineButton.constrainHeight(40.0)
-		self.discoverButton.constrainHeight(40.0)
-		self.profileButton.constrainHeight(40.0)
-
 		self.timelineButton.setTitle("Timeline", for: .normal)
 		self.timelineButton.setImage(UIImage(named: "feed")!, for: .normal)
 		self.discoverButton.setTitle("Discover", for: .normal)
@@ -403,6 +399,13 @@ class MainViewController: UIViewController {
 		self.profileButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
 		self.discoverButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
 		self.timelineButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
+		
+		self.profileButton.constrainHeight(self.tabBar.bounds.height)
+		self.discoverButton.constrainHeight(self.tabBar.bounds.height)
+		self.timelineButton.constrainHeight(self.tabBar.bounds.height)
+		self.profileButton.constrainWidth(self.tabBar.bounds.height)
+		self.discoverButton.constrainWidth(self.tabBar.bounds.height)
+		self.timelineButton.constrainWidth(self.tabBar.bounds.height)
 
 		stackView.addArrangedSubview(self.timelineButton)
 		stackView.addArrangedSubview(self.discoverButton)

@@ -58,6 +58,12 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(onSingleTap))
 		singleTapGesture.require(toFail: doubleTapGesture)
 		self.scrollView.addGestureRecognizer(singleTapGesture)
+		
+		let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(dismissViewController))
+		swipeGesture.require(toFail: singleTapGesture)
+		swipeGesture.require(toFail: doubleTapGesture)
+		self.scrollView.addGestureRecognizer(swipeGesture)
+		
 	}
 	
 	func setupPostInfo() {
