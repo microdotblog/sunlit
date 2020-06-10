@@ -8,6 +8,7 @@
 
 import UIKit
 import Snippets
+import SwiftSoup
 //import UUSwift
 
 class SunlitPost : SnippetsPost {
@@ -173,8 +174,7 @@ class SunlitPost : SnippetsPost {
 	}
 	
 	static func imageTag(tag : String, _ element : Element) -> String {
-		
-		if let attributes = element.attributes {
+		if let attributes = element.getAttributes() {
 			let value = attributes.get(key: tag)
 			return value
 		}
