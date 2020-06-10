@@ -7,8 +7,15 @@
 //
 
 import Foundation
+import Snippets
 
 class Settings {
+	
+	static func logout() {
+		Settings.deletePermanentToken()
+		SnippetsUser.deleteCurrentUser()
+		Snippets.shared.configure(permanentToken: "", blogUid: nil, mediaEndPoint: nil)
+	}
 	
 	static func savePermanentToken(_ token : String) {
 		//UUKeychain.saveString(key: "SunlitToken", acceessLevel: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, string: token)

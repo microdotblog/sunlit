@@ -205,8 +205,6 @@ class MainViewController: UIViewController {
 		let storyBoard: UIStoryboard = UIStoryboard(name: "Settings", bundle: nil)
 		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "SettingsViewController")
 		self.present(newPostViewController, animated: true, completion: nil)
-
-		self.onToggleHamburgerMenu()
 	}
 	
 	@objc func onNewPost() {
@@ -294,9 +292,9 @@ class MainViewController: UIViewController {
 	func setupPhoneNavigationBar() {
 		//let hamburgerMenuButton = UIBarButtonItem(image: UIImage(named: "hamburger"), style: .plain, target: self, action: #selector(onToggleHamburgerMenu))
 		let postButton = UIBarButtonItem(image: UIImage(named: "post"), style: .plain, target: self, action: #selector(onNewPost))
-
+		let settingsButton = UIBarButtonItem(image: UIImage(named: "settings_icon"), style: .plain, target: self, action: #selector(onSettings))
 		self.navigationItem.title = "Timeline"
-		//self.navigationItem.leftBarButtonItem = hamburgerMenuButton
+		self.navigationItem.leftBarButtonItem = settingsButton
 		self.navigationItem.rightBarButtonItem = postButton
 	}
 

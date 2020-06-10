@@ -32,6 +32,23 @@ class Dialog {
 		}
 	}
 	
+	func question(title : String?, question : String, accept : String, cancel : String, _ onAccept: @escaping (()->Void)) {
+		let alertViewController = UIAlertController(title: title, message: question, preferredStyle: .alert)
+		let acceptAction = UIAlertAction(title: accept, style: .default) { (action) in
+			DispatchQueue.main.async {
+				onAccept()
+			}
+		}
+
+		let cancelAction = UIAlertAction(title: cancel, style: .cancel) { (action) in
+		}
+		
+		alertViewController.addAction(cancelAction)
+		alertViewController.addAction(acceptAction)
+
+		self.viewController.present(alertViewController, animated: true, completion: completion)
+	}
+	
 	func selectBlog(completion: (()->Void)? = nil) {
 		
 		self.completion = completion

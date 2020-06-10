@@ -126,6 +126,9 @@
 		C5A1DF2F2490675500B50B54 /* QueryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DEF52490675500B50B54 /* QueryParser.swift */; };
 		C5A1DF3224906B9D00B50B54 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF3024906B9D00B50B54 /* Main.storyboard */; };
 		C5A1DF3324906B9D00B50B54 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF3124906B9D00B50B54 /* LaunchScreen.storyboard */; };
+		C5A1DF3524913BDC00B50B54 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */; };
+		C5A1DF39249144E800B50B54 /* credits.html in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF37249144E800B50B54 /* credits.html */; };
+		C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF38249144E800B50B54 /* olive.jpg */; };
 		C5EC11DB248C30B70032B84D /* UUStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC11BC248C30B50032B84D /* UUStyling.swift */; };
 		C5EC11DC248C30B70032B84D /* UUSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EC11BD248C30B50032B84D /* UUSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5EC11DD248C30B70032B84D /* UUData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC11BE248C30B50032B84D /* UUData.swift */; };
@@ -379,6 +382,9 @@
 		C5A1DEF52490675500B50B54 /* QueryParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QueryParser.swift; path = Libraries/SwiftSoup/QueryParser.swift; sourceTree = SOURCE_ROOT; };
 		C5A1DF3024906B9D00B50B54 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Storyboards/Main.storyboard; sourceTree = "<group>"; };
 		C5A1DF3124906B9D00B50B54 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Storyboards/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Source/ViewControllers/SettingsViewController.swift; sourceTree = "<group>"; };
+		C5A1DF37249144E800B50B54 /* credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = credits.html; path = Resources/credits.html; sourceTree = "<group>"; };
+		C5A1DF38249144E800B50B54 /* olive.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = olive.jpg; path = Resources/olive.jpg; sourceTree = "<group>"; };
 		C5B9A71724563E66003EF82B /* Sunlit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sunlit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5EC11BC248C30B50032B84D /* UUStyling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUStyling.swift; path = Libraries/UUSwift/UUStyling.swift; sourceTree = SOURCE_ROOT; };
 		C5EC11BD248C30B50032B84D /* UUSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UUSwift.h; path = Libraries/UUSwift/UUSwift.h; sourceTree = SOURCE_ROOT; };
@@ -727,9 +733,19 @@
 			path = SwiftSoup;
 			sourceTree = "<group>";
 		};
+		C5A1DF36249144D300B50B54 /* Credits */ = {
+			isa = PBXGroup;
+			children = (
+				C5A1DF37249144E800B50B54 /* credits.html */,
+				C5A1DF38249144E800B50B54 /* olive.jpg */,
+			);
+			name = Credits;
+			sourceTree = "<group>";
+		};
 		C5AC0453245FC9B900D7725D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C5A1DF36249144D300B50B54 /* Credits */,
 				C5A1DE9C24901E0B00B50B54 /* Assets.xcassets */,
 				C5A1DE3724901D7D00B50B54 /* Storyboards */,
 				C5A1DE2C24901D6A00B50B54 /* Info.plist */,
@@ -937,6 +953,7 @@
 				C5A1DE7024901DCC00B50B54 /* MainViewController.swift */,
 				C5A1DE7324901DCC00B50B54 /* MyProfileViewController.swift */,
 				C5A1DE7124901DCC00B50B54 /* ProfileViewController.swift */,
+				C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */,
 				C5A1DE7224901DCC00B50B54 /* SnippetsScrollContentProtocol.swift */,
 				C5A1DE6C24901DCC00B50B54 /* TimelineViewController.swift */,
 			);
@@ -1212,7 +1229,9 @@
 				C5A1DE4124901D8C00B50B54 /* Conversation.storyboard in Resources */,
 				C5A1DF3224906B9D00B50B54 /* Main.storyboard in Resources */,
 				C5A1DE9D24901E0B00B50B54 /* Assets.xcassets in Resources */,
+				C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */,
 				C5A1DE4924901D8C00B50B54 /* ImageViewer.storyboard in Resources */,
+				C5A1DF39249144E800B50B54 /* credits.html in Resources */,
 				C5A1DE4224901D8C00B50B54 /* Profile.storyboard in Resources */,
 				C5A1DF3324906B9D00B50B54 /* LaunchScreen.storyboard in Resources */,
 				C5A1DE4724901D8C00B50B54 /* Drafts.storyboard in Resources */,
@@ -1376,6 +1395,7 @@
 				C5A1DE7724901DCC00B50B54 /* TimelineViewController.swift in Sources */,
 				C5A1DE7A24901DCC00B50B54 /* ConversationViewController.swift in Sources */,
 				C5A1DE5D24901DAD00B50B54 /* Dialog.swift in Sources */,
+				C5A1DF3524913BDC00B50B54 /* SettingsViewController.swift in Sources */,
 				C5A1DE5B24901DAD00B50B54 /* MediaUploader.swift in Sources */,
 				C5A1DE6824901DBC00B50B54 /* SunlitMedia.swift in Sources */,
 				C5A1DE9A24901DF500B50B54 /* AppDelegate+Menus.swift in Sources */,
