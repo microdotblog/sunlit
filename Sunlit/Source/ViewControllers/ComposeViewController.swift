@@ -258,9 +258,34 @@ class ComposeViewController: UIViewController {
 		let title : String = self.titleField.text ?? ""
 		self.uploadMedia { (mediaDictionary : [SunlitMedia : MediaLocation]) in
 			let string = HTMLBuilder.createHTML(sections: self.sections, mediaPathDictionary: mediaDictionary)
-			Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
-				DispatchQueue.main.async {
-					self.handleUploadCompletion(error, remotePath)
+			
+			if Settings.usesExternalBlog() && PublishingConfiguration.current.hasConfigurationForExternal(),
+				let identity = PublishingConfiguration.current.xmlRPCIdentity() {
+				
+				let request = SnippetsXMLRPCRequest.publishPostRequest(identity: identity, existingPost: false)
+				
+				Snippets.shared.post(title: title, content: string, postFormat: "", postCategory: "", request: request) { (error, identifier) in
+					
+					if let postIdentifier = identifier {
+						let request = SnippetsXMLRPCRequest.fetchPostInfoRequest(identity: identity)
+						Snippets.shared.fetchPostURL(postIdentifier: postIdentifier, request: request) { (error, remotePath) in
+							DispatchQueue.main.async {
+								self.handleUploadCompletion(error, remotePath)
+							}
+						}
+					}
+					else {
+						DispatchQueue.main.async {
+							self.handleUploadCompletion(error, nil)
+						}
+					}
+				}
+			}
+			else {
+				Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
+					DispatchQueue.main.async {
+						self.handleUploadCompletion(error, remotePath)
+					}
 				}
 			}
 		}
@@ -298,12 +323,14 @@ class ComposeViewController: UIViewController {
 		else {
 			let alert = UIAlertController(title: nil, message: "Successfully posted!", preferredStyle: .alert)
 			
-			alert.addAction(UIAlertAction(title: "View Post", style: .default, handler: { (action) in
-				self.dismiss(animated: true) {
-					NotificationCenter.default.post(name: NSNotification.Name("OpenURLNotification"), object: remotePath)
-				}
-			}))
-				
+			if remotePath != nil {
+				alert.addAction(UIAlertAction(title: "View Post", style: .default, handler: { (action) in
+					self.dismiss(animated: true) {
+						NotificationCenter.default.post(name: NSNotification.Name("OpenURLNotification"), object: remotePath)
+					}
+				}))
+			}
+			
 			alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
 				self.dismiss(animated: true, completion: nil)
 			}))
