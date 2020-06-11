@@ -7,24 +7,173 @@
 //
 
 import UIKit
+import Snippets
+import UUSwift
+import SafariServices
 
 class ExternalBlogConfigurationViewController: UIViewController {
 
+	@IBOutlet var blogAddress : UITextField!
+	@IBOutlet var blogAddressContainer : UIView!
+	
+	@IBOutlet var username : UITextField!
+	@IBOutlet var password : UITextField!
+	@IBOutlet var instructions : UILabel!
+	@IBOutlet var accountEntryView : UIView!
+	@IBOutlet var busyIndicator : UIActivityIndicatorView!
+	
+	var micropubTokenEndpoint = ""
+	var wordpressRsdPath = ""
+	var usernameText = ""
+	var passwordText = ""
+	
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
-    
+	
+	func interrogateWordPressURL() {
+		let request = SnippetsRPCDiscovery(url: self.wordpressRsdPath)
+		request.discoverEndpointWithCompletion { (xmlrpcEndpoint, blogId) in
+			let username = self.usernameText
+			let password = self.passwordText
+			let methodName = "blogger.getUsersBlogs"
+			let appKey = ""
+			let params : [String] = [appKey, username, password]
+			
+			let identity = SnippetsXMLRPCIdentity.create(username: username, password: password, endpoint: xmlrpcEndpoint!, blogId: blogId!, wordPress: true)
+			let request = SnippetsXMLRPCRequest(identity: identity, method: methodName)
+			
+			Snippets.shared.executeRPC(request: request, params: params) { (error, responseData) in
+				
+				if let data = responseData {
+					SnippetsXMLRPCParser.parsedResponseFromData(data) { (responseFault, responseParams) in
+						DispatchQueue.main.async {
+							if let fault = responseFault {
+								let errorString = fault["faultString"] as! String
+								let errorCode = fault["faultCode"] as! NSNumber
+								let formattedErrorString = errorString + " (error: " + errorCode.stringValue + ")"
+								Dialog(self).information(formattedErrorString)
+							}
+							else {
+								PublishingConfiguration.configureXMLRPCBlog(username: username, password: password, url: self.blogAddress.text!, endpoint: xmlrpcEndpoint!, blogId: blogId!, app: "WordPress")
+								
+								DispatchQueue.main.async {
+									self.dismiss(animated: true, completion: nil)
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	func interrogateMicropubURL(path : String, _ data : Data) {
+		let links = SnippetsXMLLinkParser.parse(data, relValue: "micropub")
+		if links.count > 0 {
+			let authStrings = SnippetsXMLLinkParser.parse(data, relValue: "authorization_endpoint")
+			let tokenStrings = SnippetsXMLLinkParser.parse(data, relValue: "token_endpoint")
+			
+			if var authEndpoint = authStrings.first,
+				let tokenEndpoint = tokenStrings.first,
+				let micropubEndpoint = links.first {
+				
+				let micropubState = UUID().uuidString
+				
+				if !authEndpoint.contains("?") {
+					authEndpoint = authEndpoint + "?"
+				}
+				
+				authEndpoint = authEndpoint + "me=" + path.uuUrlEncoded()
+				authEndpoint = authEndpoint + "&redirect_uri=" + String("https://sunlit.io/micropub/redirect").uuUrlEncoded()
+				authEndpoint = authEndpoint + "&client_id=" + (String("https://sunlit.io/").uuUrlEncoded())
+				authEndpoint = authEndpoint + "&state=" + micropubState
+				authEndpoint = authEndpoint + "&scope=create"
+				authEndpoint = authEndpoint + "&response_type=code"
+				
+				PublishingConfiguration.configureMicropubBlog(username: path, endpoint: micropubEndpoint, stateKey: micropubState)
+				self.micropubTokenEndpoint = tokenEndpoint
+				
+				DispatchQueue.main.async {
+					let safariViewController = SFSafariViewController(url: URL(string: authEndpoint)!)
+					safariViewController.delegate = self
+					
+					self.present(safariViewController, animated: true, completion: nil)
+				}
+				
+			}
+		}
+	}
+	
+	func interrogateURL() {
+		
+		// Sanity checking...
+		var path = self.blogAddress.text
+		if !(path?.contains(".") ?? false) {
+			Dialog(self).information("Please enter a valid URL")
+			return
+		}
 
-    /*
-    // MARK: - Navigation
+		// Make sure we have a valid, qualified domain
+		path = path!.uuTrimWhitespace()
+		if !path!.contains("http:") && !path!.contains("https:") {
+			path = "http://" + path!
+		}
+		
+		let fullURL = path!
+		
+		let request = UUHttpRequest(url: path!)
+		request.processMimeTypes = false
+		
+		_ = UUHttpSession.executeRequest(request) { (response) in
+			if let rawResponse = response.rawResponse {
+				let links = SnippetsXMLLinkParser.parse(rawResponse, relValue: "EditURI")
+				if let link = links.first {
+					
+					self.wordpressRsdPath = link
+					DispatchQueue.main.async {
+						self.busyIndicator.isHidden = true
+						self.accountEntryView.isHidden = false
+						self.blogAddressContainer.isHidden = true
+					}
+					return
+				}
+				else {
+					self.interrogateMicropubURL(path: fullURL, rawResponse)
+				}
+			}
+			
+			Dialog(self).information("Error discovering settings. Unable to find EditURI or micropub link data.")
+		}
+	}
+}
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+extension ExternalBlogConfigurationViewController : UITextFieldDelegate {
+	
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		textField.resignFirstResponder()
+		
+		if textField == self.blogAddress {
+			self.interrogateURL()
+		}
+		else if textField == self.username || textField == self.password {
+			if let username = self.username.text,
+				let password = self.password.text {
+				if username.count > 0 && password.count > 0 {
+					self.usernameText = username
+					self.passwordText = password
+					
+					self.interrogateWordPressURL()
+				}
+			}
+		}
+		return false
+	}
+}
 
+extension ExternalBlogConfigurationViewController : SFSafariViewControllerDelegate {
+	
+	func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo URL: URL) {
+		print("WORK TO DO STILL!!!")
+	}
 }

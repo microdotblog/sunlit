@@ -42,9 +42,11 @@ class PublishingConfiguration {
 		Settings.setSecureString(password, forKey: PublishingConfiguration.xmlRPCBlogUsernameKey)
 	}
 	
-	static func configureMicropubBlog(username : String, endpoint : String, mediaEndpoint : String? = nil) {
+	static func configureMicropubBlog(username : String, endpoint : String, stateKey : String, mediaEndpoint : String? = nil) {
 		Settings.setInsecureString(username, forKey: PublishingConfiguration.micropubUserKey)
 		Settings.setInsecureString(endpoint, forKey: PublishingConfiguration.micropubPostingEndpointKey)
+		Settings.setInsecureString(stateKey, forKey: PublishingConfiguration.micropubStateKey)
+		
 		if let mediaPath = mediaEndpoint {
 			Settings.setInsecureString(mediaPath, forKey: PublishingConfiguration.micropubMediaEndpointKey)
 		}
@@ -64,6 +66,10 @@ class PublishingConfiguration {
 		Settings.deleteInsecureString(forKey: PublishingConfiguration.xmlRPCBlogIDKey)
 		Settings.deleteInsecureString(forKey: PublishingConfiguration.xmlRPCBlogAppKey)
 		Settings.deleteSecureString(forKey: PublishingConfiguration.xmlRPCBlogUsernameKey)
+	}
+	
+	static func fetchMicropubStateKey() -> String {
+		return Settings.getInsecureString(forKey: PublishingConfiguration.micropubStateKey)
 	}
 	
 	/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -185,6 +191,7 @@ class PublishingConfiguration {
 	private static let micropubPostingEndpointKey = "ExternalMicropubPostingEndpoint"
 	private static let micropubMediaEndpointKey = "ExternalMicropubMediaEndpoint"
 	private static let micropubUserKey = "ExternalMicropubMe"
+	private static let micropubStateKey = "ExternalMicropubState"
 	
 	private static let snippetsConfigurationKey = "SunlitBlogDictionary"
 }
