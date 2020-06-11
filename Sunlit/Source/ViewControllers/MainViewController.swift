@@ -203,8 +203,10 @@ class MainViewController: UIViewController {
 	
 	@IBAction func onSettings() {
 		let storyBoard: UIStoryboard = UIStoryboard(name: "Settings", bundle: nil)
-		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "SettingsViewController")
-		self.present(newPostViewController, animated: true, completion: nil)
+		let settingsViewController = storyBoard.instantiateViewController(withIdentifier: "SettingsViewController")
+		self.navigationController?.pushViewController(settingsViewController, animated: true)
+		//let navigationController = UINavigationController(rootViewController: newPostViewController)
+		//self.present(navigationController, animated: true, completion: nil)
 	}
 	
 	@objc func onNewPost() {

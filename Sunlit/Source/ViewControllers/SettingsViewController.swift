@@ -26,6 +26,8 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
 		
 		self.versionNumber.text = "Version " + (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String)
+		self.navigationItem.title = "Settings"
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Credits", style: .plain, target: self, action: #selector(onViewCredits))
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -64,8 +66,8 @@ class SettingsViewController: UIViewController {
 	
 	func wordPressLogin() {
 		let storyBoard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
-		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "ExternalBlogConfigurationViewController")
-		self.present(newPostViewController, animated: true, completion: nil)
+		let blogConfigurationViewController = storyBoard.instantiateViewController(withIdentifier: "ExternalBlogConfigurationViewController")
+		self.navigationController?.pushViewController(blogConfigurationViewController, animated: true)
 	}
 
 	@IBAction func onDismiss() {
@@ -85,7 +87,7 @@ class SettingsViewController: UIViewController {
 			Dialog(self).question(title: nil, question: "Are you sure you want to log out of your WordPress account?", accept: "Log Out", cancel: "Cancel") {
 			
 				PublishingConfiguration.deleteXMLRPCBlogSettings()
-				self.onSelectPostType(self.wordPressButton)
+				self.onSelectPostType(self.microBlogButton)
 			}
 		}
 		else {

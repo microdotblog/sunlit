@@ -32,6 +32,9 @@ class ExternalBlogConfigurationViewController: UIViewController {
     }
 	
 	func interrogateWordPressURL() {
+		
+		self.busyIndicator.isHidden = false
+
 		let request = SnippetsRPCDiscovery(url: self.wordpressRsdPath)
 		request.discoverEndpointWithCompletion { (xmlrpcEndpoint, blogId) in
 			let username = self.usernameText
@@ -48,6 +51,8 @@ class ExternalBlogConfigurationViewController: UIViewController {
 				if let data = responseData {
 					SnippetsXMLRPCParser.parsedResponseFromData(data) { (responseFault, responseParams) in
 						DispatchQueue.main.async {
+							self.busyIndicator.isHidden = true
+
 							if let fault = responseFault {
 								let errorString = fault["faultString"] as! String
 								let errorCode = fault["faultCode"] as! NSNumber
@@ -55,10 +60,13 @@ class ExternalBlogConfigurationViewController: UIViewController {
 								Dialog(self).information(formattedErrorString)
 							}
 							else {
-								PublishingConfiguration.configureXMLRPCBlog(username: username, password: password, url: self.blogAddress.text!, endpoint: xmlrpcEndpoint!, blogId: blogId!, app: "WordPress")
 								
-								DispatchQueue.main.async {
-									self.dismiss(animated: true, completion: nil)
+								// If we have successfully configured the blog, we can tell settings to use it...
+								PublishingConfiguration.configureXMLRPCBlog(username: username, password: password, url: self.blogAddress.text!, endpoint: xmlrpcEndpoint!, blogId: blogId!, app: "WordPress")
+								Settings.useExternalBlog(true)
+								
+								Dialog(self).information("Successfully configured for publishing!") {
+									self.navigationController?.popViewController(animated: true)
 								}
 							}
 						}
@@ -124,7 +132,8 @@ class ExternalBlogConfigurationViewController: UIViewController {
 		
 		let request = UUHttpRequest(url: path!)
 		request.processMimeTypes = false
-		
+		self.busyIndicator.isHidden = false
+
 		_ = UUHttpSession.executeRequest(request) { (response) in
 			if let rawResponse = response.rawResponse {
 				let links = SnippetsXMLLinkParser.parse(rawResponse, relValue: "EditURI")
@@ -134,7 +143,12 @@ class ExternalBlogConfigurationViewController: UIViewController {
 					DispatchQueue.main.async {
 						self.busyIndicator.isHidden = true
 						self.accountEntryView.isHidden = false
-						self.blogAddressContainer.isHidden = true
+						self.accountEntryView.alpha = 0.0
+
+						UIView.animate(withDuration: 0.15) {
+							self.accountEntryView.alpha = 1.0
+							self.blogAddressContainer.alpha = 0.0
+						}
 					}
 					return
 				}
