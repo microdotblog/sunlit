@@ -57,7 +57,7 @@ class Dialog {
 			
 			// Check for a media endpoint definition...
 			if let mediaEndPoint = configuration["media-endpoint"] as? String {
-				Settings.saveMediaEndpoint(mediaEndPoint)
+				PublishingConfiguration.configureMicropubMediaEndpoint(mediaEndPoint)
 				Snippets.shared.setMediaEndPoint(mediaEndPoint)
 			}
 			
@@ -71,7 +71,7 @@ class Dialog {
 					}
 				
 					if let destination = destinations.first {
-						Settings.saveBlogDictionary(destination)
+						PublishingConfiguration.configureSnippetsBlog(destination)
 					}
 				}
 			}
@@ -87,7 +87,7 @@ class Dialog {
 			if let title = destination["name"] as? String,
 				let blogId = destination["uid"] as? String {
 				let action = UIAlertAction(title: title, style: .default) { (action) in
-					Settings.saveBlogDictionary(destination)
+					PublishingConfiguration.configureSnippetsBlog(destination)
 					Snippets.shared.setBlogIdentifier(blogId)
 					
 					if let completion = self.completion {

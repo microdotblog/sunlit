@@ -118,7 +118,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
 		
 		// Check for the logged out state...
-		if Settings.permanentToken() == nil {
+		if Settings.snippetsToken() == nil {
 			return 0
 		}
 		

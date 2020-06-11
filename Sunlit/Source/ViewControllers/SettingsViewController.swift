@@ -25,9 +25,40 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
 		
 		self.versionNumber.text = "Version " + (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String)
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 
+		self.wordPressButton.isSelected = Settings.usesExternalBlog()
+		self.microBlogButton.isSelected = !Settings.usesExternalBlog()
+		
+		self.updateWordpressSettings()
 		let settingsHeight : CGFloat = self.wordPressButton.isSelected ? 128.0 : 0.0
 		self.wordPressSettingsViewHeightConstraint.constant = settingsHeight
+
+		self.updateWordpressSettings()
+	}
+	
+	func updateWordpressSettings() {
+		
+		self.wordPressUserName.text = PublishingConfiguration.current.getBlogName()
+		self.wordPressSite.text = PublishingConfiguration.current.getBlogAddress()
+			
+		if PublishingConfiguration.current.hasConfigurationForExternal() {
+			self.wordPressSignoutButton.setTitle("Log Out", for: .normal)
+		}
+		else {
+			self.wordPressUserName.text = "Not signed in"
+			self.wordPressSite.text = ""
+			self.wordPressSignoutButton.setTitle("Log In", for: .normal)
+		}
+	}
+	
+	func wordPressLogin() {
+		let storyBoard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
+		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "WordpressViewController")
+		self.present(newPostViewController, animated: true, completion: nil)
 	}
 
 	@IBAction func onDismiss() {
@@ -43,7 +74,16 @@ class SettingsViewController: UIViewController {
 	}
 	
 	@IBAction func onSignoutWordPress() {
-		
+		if PublishingConfiguration.current.hasConfigurationForExternal() {
+			Dialog(self).question(title: nil, question: "Are you sure you want to log out of your WordPress account?", accept: "Log Out", cancel: "Cancel") {
+			
+				PublishingConfiguration.deleteXMLRPCBlogSettings()
+				self.onSelectPostType(self.wordPressButton)
+			}
+		}
+		else {
+			self.wordPressLogin()
+		}
 	}
 	
 	@IBAction @objc func onViewCredits() {
@@ -59,10 +99,25 @@ class SettingsViewController: UIViewController {
 		button.isSelected = true
 		
 		let settingsHeight : CGFloat = self.wordPressButton.isSelected ? 128.0 : 0.0
+
+		// Three configurations here to manage...
+		if self.wordPressButton.isSelected && !PublishingConfiguration.current.hasConfigurationForExternal() {
+			self.wordPressLogin()
+		}
+		else if self.wordPressButton.isSelected {
+			Settings.useExternalBlog(true)
+		}
+		else {
+			Settings.useExternalBlog(false)
+		}
+		
+		self.updateWordpressSettings()
 		
 		UIView.animate(withDuration: 0.25) {
 			self.wordPressSettingsViewHeightConstraint.constant = settingsHeight
 			self.view.layoutIfNeeded()
 		}
+		
+		
 	}
 }

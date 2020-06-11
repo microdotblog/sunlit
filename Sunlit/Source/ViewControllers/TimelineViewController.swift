@@ -45,7 +45,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 	
 	func updateLoggedInStatus() {
-		let token = Settings.permanentToken()
+		let token = Settings.snippetsToken()
 		self.loggedOutView.isHidden = (token != nil)
 	}
 	
@@ -266,7 +266,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	
 	@objc func loadTimeline() {
 		
-		let token = Settings.permanentToken()
+		let token = Settings.snippetsToken()
 		self.loggedOutView.isHidden = (token != nil)
 
 		// Safety check for double loads...

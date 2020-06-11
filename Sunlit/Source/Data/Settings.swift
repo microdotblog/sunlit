@@ -8,59 +8,92 @@
 
 import Foundation
 import Snippets
+import UUSwift
 
 class Settings {
 	
+	static func getInsecureString(forKey : String) -> String {
+		let value = UserDefaults.standard.string(forKey: forKey) ?? ""
+		return value
+	}
+	
+	static func setInsecureString(_ value : String, forKey : String) {
+		UserDefaults.standard.set(value, forKey: forKey)
+		UserDefaults.standard.synchronize()
+	}
+	
+	static func deleteInsecureString(forKey : String) {
+		UserDefaults.standard.removeObject(forKey: forKey)
+		UserDefaults.standard.synchronize()
+	}
+	
+	static func getInsecureDictionary(forKey : String) -> [String : Any]? {
+		let dictionary = UserDefaults.standard.object(forKey: forKey) as? [String : Any]
+		return dictionary
+	}
+	
+	static func setInsecureDictionary(_ dictionary : [String : Any], forKey : String) {
+		UserDefaults.standard.set(dictionary, forKey: forKey)
+		UserDefaults.standard.synchronize()
+	}
+	
+	static func setSecureString(_ value : String, forKey : String) {
+		UUKeychain.saveString(key: forKey, acceessLevel: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, string: value)
+	}
+	
+	static func getSecureString(forKey : String) -> String? {
+		return UUKeychain.getString(key: forKey)
+	}
+	
+	static func deleteSecureString(forKey : String) {
+		UUKeychain.remove(key: forKey)
+	}
+	
+	/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+	
 	static func logout() {
-		Settings.deletePermanentToken()
+		Settings.deleteSnippetsToken()
 		SnippetsUser.deleteCurrentUser()
 		Snippets.shared.configure(permanentToken: "", blogUid: nil, mediaEndPoint: nil)
 	}
 	
-	static func savePermanentToken(_ token : String) {
+	static func saveSnippetsToken(_ token : String) {
 		//UUKeychain.saveString(key: "SunlitToken", acceessLevel: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, string: token)
 		UserDefaults.standard.setValue(token, forKey: "SunlitToken")
 	}
 
-	static func permanentToken() -> String? {
+	static func snippetsToken() -> String? {
 		//return UUKeychain.getString(key: "SunlitToken")
 		return UserDefaults.standard.string(forKey: "SunlitToken")
 	}
-	
-	static func deletePermanentToken() {
+
+	static func deleteSnippetsToken() {
 		UserDefaults.standard.removeObject(forKey: "SunlitToken")
 	}
+
+	/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
 	
-	static func selectedBlogIdentifier() -> String? {
-		if let dictionary = Settings.blogDictionary() {
-			return dictionary["uid"] as? String
-		}
-		
-		return nil
+	static func usesExternalBlog() -> Bool {
+		let value = UserDefaults.standard.bool(forKey: Settings.externalBlogPreferenceKey)
+		return value
+	}
+	
+	static func useExternalBlog(_ useExternalBlog : Bool) {
+		UserDefaults.standard.set(useExternalBlog, forKey: Settings.externalBlogPreferenceKey)
 	}
 
-	static func selectedBlogName() -> String? {
-		if let dictionary = Settings.blogDictionary() {
-			return dictionary["name"] as? String
-		}
-		
-		return nil
-	}
 	
-	static func saveBlogDictionary(_ dictionary : [String : Any]) {
-		UserDefaults.standard.setValue(dictionary, forKey: "SunlitBlogDictionary")
-	}
+	/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
-	static func blogDictionary() -> [String : Any]? {
-		return UserDefaults.standard.object(forKey: "SunlitBlogDictionary") as? [String : Any]
-	}
-	
-	static func saveMediaEndpoint(_ mediaEndpoint : String) {
-		UserDefaults.standard.setValue(mediaEndpoint, forKey: "SunlitMediaEndpoint")
-	}
-	
-	static func mediaEndpoint() -> String? {
-		return UserDefaults.standard.string(forKey: "SunlitMediaEndpoint")
-	}
+	private static let externalBlogPreferenceKey = "ExternalBlogIsPreferred"
 
 }
+

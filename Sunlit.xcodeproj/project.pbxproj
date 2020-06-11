@@ -129,6 +129,7 @@
 		C5A1DF3524913BDC00B50B54 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */; };
 		C5A1DF39249144E800B50B54 /* credits.html in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF37249144E800B50B54 /* credits.html */; };
 		C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF38249144E800B50B54 /* olive.jpg */; };
+		C5A1DF3C2491948B00B50B54 /* PublishingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3B2491948B00B50B54 /* PublishingConfiguration.swift */; };
 		C5EC11DB248C30B70032B84D /* UUStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC11BC248C30B50032B84D /* UUStyling.swift */; };
 		C5EC11DC248C30B70032B84D /* UUSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EC11BD248C30B50032B84D /* UUSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5EC11DD248C30B70032B84D /* UUData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC11BE248C30B50032B84D /* UUData.swift */; };
@@ -385,6 +386,7 @@
 		C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Source/ViewControllers/SettingsViewController.swift; sourceTree = "<group>"; };
 		C5A1DF37249144E800B50B54 /* credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = credits.html; path = Resources/credits.html; sourceTree = "<group>"; };
 		C5A1DF38249144E800B50B54 /* olive.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = olive.jpg; path = Resources/olive.jpg; sourceTree = "<group>"; };
+		C5A1DF3B2491948B00B50B54 /* PublishingConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PublishingConfiguration.swift; path = Source/Data/PublishingConfiguration.swift; sourceTree = "<group>"; };
 		C5B9A71724563E66003EF82B /* Sunlit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sunlit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5EC11BC248C30B50032B84D /* UUStyling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUStyling.swift; path = Libraries/UUSwift/UUStyling.swift; sourceTree = SOURCE_ROOT; };
 		C5EC11BD248C30B50032B84D /* UUSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UUSwift.h; path = Libraries/UUSwift/UUSwift.h; sourceTree = SOURCE_ROOT; };
@@ -612,7 +614,7 @@
 			isa = PBXGroup;
 			children = (
 				C5EC129A248C34010032B84D /* Mantis */,
-				C5EC10BC248BF8F60032B84D /* SwiftSoup */,
+				C5A1DEB1249066E900B50B54 /* SwiftSoup */,
 				C55DC2BB2489D2F700C1F8A5 /* UUSwift */,
 				C55DC3022489D33300C1F8A5 /* Snippets */,
 				C55DC39A2489D5CB00C1F8A5 /* NextLevelSessionExporter */,
@@ -730,7 +732,8 @@
 				C5A1DEDF2490675400B50B54 /* XmlDeclaration.swift */,
 				C5A1DEC12490675300B50B54 /* XmlTreeBuilder.swift */,
 			);
-			path = SwiftSoup;
+			name = SwiftSoup;
+			path = ../SwiftSoup;
 			sourceTree = "<group>";
 		};
 		C5A1DF36249144D300B50B54 /* Credits */ = {
@@ -759,7 +762,6 @@
 			children = (
 				C5B9A71924563E66003EF82B /* Sunlit */,
 				C55DC490248A102C00C1F8A5 /* Libraries */,
-				C5A1DEB1249066E900B50B54 /* SwiftSoup */,
 				C5B9A71824563E66003EF82B /* Products */,
 				C55DC494248A151000C1F8A5 /* Frameworks */,
 			);
@@ -791,13 +793,6 @@
 				C5AC0453245FC9B900D7725D /* Resources */,
 			);
 			path = Sunlit;
-			sourceTree = "<group>";
-		};
-		C5EC10BC248BF8F60032B84D /* SwiftSoup */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = SwiftSoup;
 			sourceTree = "<group>";
 		};
 		C5EC129A248C34010032B84D /* Mantis */ = {
@@ -932,6 +927,7 @@
 			isa = PBXGroup;
 			children = (
 				C5A1DE6124901DBC00B50B54 /* Settings.swift */,
+				C5A1DF3B2491948B00B50B54 /* PublishingConfiguration.swift */,
 				C5A1DE6024901DBC00B50B54 /* SnippetsPost+Sunlit.swift */,
 				C5A1DE6524901DBC00B50B54 /* SnippetsUser+Sunlit.swift */,
 				C5A1DE6424901DBC00B50B54 /* SunlitComposition.swift */,
@@ -1374,6 +1370,7 @@
 			files = (
 				C5A1DE7D24901DCC00B50B54 /* SnippetsScrollContentProtocol.swift in Sources */,
 				C5A1DE5E24901DAD00B50B54 /* ImageCache.swift in Sources */,
+				C5A1DF3C2491948B00B50B54 /* PublishingConfiguration.swift in Sources */,
 				C5A1DE8F24901DE600B50B54 /* ProfileBioCollectionViewCell.swift in Sources */,
 				C5A1DE5F24901DAD00B50B54 /* VideoTranscoder.swift in Sources */,
 				C5A1DE6A24901DBC00B50B54 /* SunlitComposition.swift in Sources */,

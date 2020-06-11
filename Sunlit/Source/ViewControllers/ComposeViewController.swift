@@ -63,7 +63,7 @@ class ComposeViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		
-		self.blogSelectorButton.setTitle(Settings.selectedBlogName(), for: .normal)
+		self.blogSelectorButton.setTitle(PublishingConfiguration.current.getBlogAddress(), for: .normal)
 	}
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -157,7 +157,7 @@ class ComposeViewController: UIViewController {
 	
 	@IBAction func onSelectBlogConfiguration() {
 		Dialog(self).selectBlog {
-			self.blogSelectorButton.setTitle(Settings.selectedBlogName(), for: .normal)
+			self.blogSelectorButton.setTitle(PublishingConfiguration.current.getBlogAddress(), for: .normal)
 		}
 	}
 	

@@ -71,8 +71,8 @@ class MainViewController: UIViewController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 	func setupSnippets() {
-		let blogIdentifier = Settings.selectedBlogIdentifier()
-		if let token = Settings.permanentToken() {
+		let blogIdentifier = PublishingConfiguration.current.getBlogIdentifier()
+		if let token = Settings.snippetsToken() {
 			Snippets.shared.configure(permanentToken: token, blogUid: blogIdentifier)
 		}
 
@@ -108,7 +108,7 @@ class MainViewController: UIViewController {
 				{
 					
 					// Save our info and setup Snippets
-					Settings.savePermanentToken(permanentToken)
+					Settings.saveSnippetsToken(permanentToken)
 					Snippets.shared.configure(permanentToken: permanentToken, blogUid: nil)
 
 					// We can hide the login view now...
@@ -264,7 +264,7 @@ class MainViewController: UIViewController {
 		
 		let alertController = UIAlertController(title: "Logout", message: "Are you sure you want to logout?", preferredStyle: .alert)
 		alertController.addAction(UIAlertAction(title: "Logout", style: .default, handler: { (action) in
-			Settings.deletePermanentToken()
+			Settings.deleteSnippetsToken()
 			SnippetsUser.deleteCurrentUser()
 			
 			Snippets.shared.configure(permanentToken: "", blogUid: nil, mediaEndPoint: nil)

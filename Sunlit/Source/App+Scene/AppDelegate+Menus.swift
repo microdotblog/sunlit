@@ -15,7 +15,7 @@ extension AppDelegate {
 		// only look at main menu, not contextual menus
 		guard builder.system == .main else { return }
 		
-		if let token = Settings.permanentToken() {
+		if let token = Settings.snippetsToken() {
 			Snippets.shared.configure(permanentToken: token, blogUid: nil)
 		}
 		
