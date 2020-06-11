@@ -130,6 +130,7 @@
 		C5A1DF39249144E800B50B54 /* credits.html in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF37249144E800B50B54 /* credits.html */; };
 		C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF38249144E800B50B54 /* olive.jpg */; };
 		C5A1DF3C2491948B00B50B54 /* PublishingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3B2491948B00B50B54 /* PublishingConfiguration.swift */; };
+		C5A1DF3E2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */; };
 		C5EC11DB248C30B70032B84D /* UUStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC11BC248C30B50032B84D /* UUStyling.swift */; };
 		C5EC11DC248C30B70032B84D /* UUSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EC11BD248C30B50032B84D /* UUSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5EC11DD248C30B70032B84D /* UUData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC11BE248C30B50032B84D /* UUData.swift */; };
@@ -387,6 +388,7 @@
 		C5A1DF37249144E800B50B54 /* credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = credits.html; path = Resources/credits.html; sourceTree = "<group>"; };
 		C5A1DF38249144E800B50B54 /* olive.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = olive.jpg; path = Resources/olive.jpg; sourceTree = "<group>"; };
 		C5A1DF3B2491948B00B50B54 /* PublishingConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PublishingConfiguration.swift; path = Source/Data/PublishingConfiguration.swift; sourceTree = "<group>"; };
+		C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExternalBlogConfigurationViewController.swift; path = Source/ViewControllers/ExternalBlogConfigurationViewController.swift; sourceTree = "<group>"; };
 		C5B9A71724563E66003EF82B /* Sunlit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sunlit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5EC11BC248C30B50032B84D /* UUStyling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUStyling.swift; path = Libraries/UUSwift/UUStyling.swift; sourceTree = SOURCE_ROOT; };
 		C5EC11BD248C30B50032B84D /* UUSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UUSwift.h; path = Libraries/UUSwift/UUSwift.h; sourceTree = SOURCE_ROOT; };
@@ -944,6 +946,7 @@
 				C5A1DE7524901DCC00B50B54 /* ComposeViewController.swift */,
 				C5A1DE6F24901DCC00B50B54 /* ConversationViewController.swift */,
 				C5A1DE6E24901DCC00B50B54 /* DiscoverViewController.swift */,
+				C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */,
 				C5A1DE7424901DCC00B50B54 /* ImageViewerViewController.swift */,
 				C5A1DE6D24901DCC00B50B54 /* LoginViewController.swift */,
 				C5A1DE7024901DCC00B50B54 /* MainViewController.swift */,
@@ -1410,6 +1413,7 @@
 				C5A1DE5A24901DAD00B50B54 /* HTMLBuilder.swift in Sources */,
 				C5A1DE6924901DBC00B50B54 /* SunlitPost.swift in Sources */,
 				C5A1DE9524901DE600B50B54 /* ProfileHeaderCollectionViewCell.swift in Sources */,
+				C5A1DF3E2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift in Sources */,
 				C5A1DE5324901D9D00B50B54 /* URL+Sunlit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

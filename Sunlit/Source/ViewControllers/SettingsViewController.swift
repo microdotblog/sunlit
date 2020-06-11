@@ -20,6 +20,7 @@ class SettingsViewController: UIViewController {
 	@IBOutlet var wordPressUserName : UILabel!
 	@IBOutlet var wordPressSite : UILabel!
 	@IBOutlet var wordPressSignoutButton : UIButton!
+	@IBOutlet var wordPressAppTitle : UILabel!
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,11 +54,17 @@ class SettingsViewController: UIViewController {
 			self.wordPressSite.text = ""
 			self.wordPressSignoutButton.setTitle("Log In", for: .normal)
 		}
+		
+		var appName = PublishingConfiguration.current.getExternalBlogAppName()
+		if appName.count <= 0 {
+			appName = "External Weblog"
+		}
+		self.wordPressAppTitle.text = appName
 	}
 	
 	func wordPressLogin() {
 		let storyBoard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
-		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "WordpressViewController")
+		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "ExternalBlogConfigurationViewController")
 		self.present(newPostViewController, animated: true, completion: nil)
 	}
 

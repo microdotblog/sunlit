@@ -77,10 +77,10 @@
             </objects>
             <point key="canvasLocation" x="-839" y="200"/>
         </scene>
-        <!--View Controller-->
+        <!--External Blog Configuration View Controller-->
         <scene sceneID="vjt-hc-4Sj">
             <objects>
-                <viewController storyboardIdentifier="WordpressViewController" id="AHk-0v-KIm" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ExternalBlogConfigurationViewController" id="AHk-0v-KIm" customClass="ExternalBlogConfigurationViewController" customModule="Sunlit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fwE-sI-55F">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

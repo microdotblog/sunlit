@@ -107,8 +107,8 @@
                                             <action selector="onSignoutWordPress" destination="kWB-by-1xh" eventType="touchUpInside" id="FA2-Zv-fBJ"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WordPress" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VBp-6a-vPW">
-                                        <rect key="frame" x="8" y="8" width="90.5" height="21.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="External Weblog" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VBp-6a-vPW">
+                                        <rect key="frame" x="8" y="8" width="135" height="21.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -172,6 +172,7 @@
                         <outlet property="microBlogButton" destination="anV-E6-LW0" id="P0C-qY-pHs"/>
                         <outlet property="signOutButton" destination="rQs-dT-iWL" id="YPR-xd-hAy"/>
                         <outlet property="versionNumber" destination="oSu-fC-8in" id="W3E-NV-FZW"/>
+                        <outlet property="wordPressAppTitle" destination="VBp-6a-vPW" id="MBA-Tv-6fK"/>
                         <outlet property="wordPressButton" destination="4ru-Iw-kwn" id="ud8-8S-Yfv"/>
                         <outlet property="wordPressSettingsView" destination="4B6-eC-GMc" id="KRX-xH-yv9"/>
                         <outlet property="wordPressSettingsViewHeightConstraint" destination="Yvg-m7-SvW" id="Toq-61-LtQ"/>

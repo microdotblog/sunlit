@@ -100,6 +100,11 @@ class PublishingConfiguration {
 		return self.blogId
 	}
 	
+	func getExternalBlogAppName() -> String {
+		let app = Settings.getInsecureString(forKey: PublishingConfiguration.xmlRPCBlogAppKey)
+		return app
+	}
+	
 	func xmlRPCIdentity() -> SnippetsXMLRPCIdentity? {
 		let wordPress = Settings.getInsecureString(forKey: PublishingConfiguration.xmlRPCBlogAppKey) == "WordPress"
 
