@@ -17,6 +17,23 @@ extension UIView {
 		self.constrainBottom(view: view)
 	}
 	
+	func constrainCenter(view : UIView) {
+		let center_x_constraint = NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0)
+		let center_y_constraint = NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1, constant: 0)
+		center_x_constraint.isActive = true
+		center_y_constraint.isActive = true
+	}
+	
+	func constrainWidth(view: UIView) {
+		let width_constraint = NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 1, constant: 0.0)
+		width_constraint.isActive = true
+	}
+
+	func constrainHeight(view: UIView) {
+		let width_constraint = NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 1, constant: 0.0)
+		width_constraint.isActive = true
+	}
+
 	func constrainLeft(view: UIView, offset : CGFloat = 0.0, completion: ((NSLayoutConstraint) -> Void)? = nil) {
 		let left_constraint = NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: offset)
 		left_constraint.isActive = true

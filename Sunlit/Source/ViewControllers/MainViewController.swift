@@ -19,6 +19,7 @@ class MainViewController: UIViewController {
 
 	var tabBar : UIView!
 	var contentView : UIView!
+	var stackView : UIStackView!
 	var discoverViewController : DiscoverViewController!
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
@@ -51,11 +52,14 @@ class MainViewController: UIViewController {
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
 	}
 	
-	override func viewWillLayoutSubviews() {
+	override func viewDidLayoutSubviews() {
 		
-		super.viewWillLayoutSubviews()
+		super.viewDidLayoutSubviews()
 		
-		var frame = self.scrollView.bounds
+		self.stackView.frame = self.tabBar.bounds
+		self.scrollView.frame = self.contentView.bounds
+		
+		var frame = self.scrollView.frame
 
 		self.timelineViewController.view.frame = frame
 		
@@ -64,6 +68,14 @@ class MainViewController: UIViewController {
 		
 		frame.origin.x += frame.size.width
 		self.profileViewController.view.frame = frame
+		
+		let contentSize = CGSize(width: frame.size.width * 3.0, height: 0.0)
+		self.scrollView.contentSize = contentSize
+		
+		self.timelineViewController.tableView.reloadData()
+		self.discoverViewController.tableView.reloadData()
+		self.discoverViewController.collectionView.reloadData()
+		self.profileViewController.collectionView.reloadData()
 	}
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -326,7 +338,7 @@ class MainViewController: UIViewController {
 		self.scrollView.constrainLeft(view: self.contentView)
 		self.scrollView.constrainRight(view: self.contentView)
 		self.scrollView.constrainBottom(view: self.contentView)
-		self.scrollView.constrainTop(view: self.contentView, offset : 88.0)
+		self.scrollView.constrainTop(view: self.contentView)
 		self.scrollView.showsHorizontalScrollIndicator = false
 		self.scrollView.showsVerticalScrollIndicator = false
 		
@@ -358,13 +370,14 @@ class MainViewController: UIViewController {
 		let tabBarFrame = CGRect(x: 0, y: self.view.bounds.size.height - tabBarHeight, width: self.view.bounds.size.width, height: tabBarHeight)
 		self.tabBar = UIView(frame: tabBarFrame)
 		self.view.addSubview(self.tabBar)
+		self.tabBar.translatesAutoresizingMaskIntoConstraints = false
 		self.tabBar.constrainHeight(tabBarHeight)
 		self.tabBar.constrainLeft(view: self.view)
 		self.tabBar.constrainRight(view: self.view)
 		self.tabBar.constrainBottom(view: self.view)
 
-		let stackView = UIStackView(frame: self.tabBar.bounds)
-		stackView.backgroundColor = .clear
+		self.stackView = UIStackView(frame: self.tabBar.bounds)
+		self.stackView.backgroundColor = .clear
 		
 		self.timelineButton = UIButton(type: .system)
 		self.discoverButton = UIButton(type: .system)
@@ -400,16 +413,15 @@ class MainViewController: UIViewController {
 		self.discoverButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
 		self.timelineButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
 		
-		stackView.addArrangedSubview(self.timelineButton)
-		stackView.addArrangedSubview(self.discoverButton)
-		stackView.addArrangedSubview(self.profileButton)
-		stackView.distribution = .fillEqually
-		stackView.axis = .horizontal
-		//stackView.alignment = .bottom
+		self.stackView.addArrangedSubview(self.timelineButton)
+		self.stackView.addArrangedSubview(self.discoverButton)
+		self.stackView.addArrangedSubview(self.profileButton)
+		self.stackView.distribution = .fillEqually
+		self.stackView.axis = .horizontal
 		
 		self.tabBar.addSubview(stackView)
-		stackView.constrainAllSides(self.tabBar)
-		stackView.layoutIfNeeded()
+		self.stackView.constrainAllSides(self.tabBar)
+		self.stackView.layoutIfNeeded()
 		
 		self.timelineButton.centerVertically()
 		self.discoverButton.centerVertically()

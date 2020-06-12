@@ -130,12 +130,13 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		if let info : [AnyHashable : Any] = notification.userInfo {
 			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
 				self.keyboardAccessoryView.isHidden = false
+				self.keyboardAccessoryView.alpha = 1.0
 				self.view.addSubview(self.keyboardAccessoryView)
 
 				let frame = value.cgRectValue
 				let height = self.keyboardAccessoryView.frame.size.height
 				let safeArea : CGFloat = self.view.safeAreaInsets.bottom
-				let offset = frame.origin.y - height + safeArea
+				let offset = frame.origin.y - height + safeArea - 88.0
 				self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: height)
 			}
 		}
@@ -155,10 +156,18 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
 		
 		if let cellOffset = notification.object as? CGFloat {
-			let safeArea : CGFloat = self.view.safeAreaInsets.bottom
+			var superview = self.view.superview
+			var safeArea : CGFloat = self.view.safeAreaInsets.bottom
+			while superview != nil && safeArea == 0.0 {
+				safeArea = safeArea + superview!.safeAreaInsets.bottom
+				superview = superview?.superview
+			}
+			
 			let accessoryViewHeight = self.keyboardAccessoryView.frame.size.height
 			let parentOffset = self.tableView.frame.origin.y
-			let offset = cellOffset - accessoryViewHeight - parentOffset + safeArea
+			let buffer : CGFloat = 16.0
+			let editViewHeight : CGFloat = 22.0
+			let offset = cellOffset - accessoryViewHeight - parentOffset + safeArea + buffer + editViewHeight
 			self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
 		}
 	}
