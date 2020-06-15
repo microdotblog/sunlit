@@ -580,13 +580,13 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 				cell.photo.image = image
 			}
 			
-			cell.photo.layer.borderColor = UIColor.lightGray.cgColor
-			cell.photo.layer.borderWidth = 0.5
+//			cell.photo.layer.borderColor = UIColor.lightGray.cgColor
+//			cell.photo.layer.borderWidth = 0.5
 
-			cell.contentView.layer.cornerRadius = 8.0
+//			cell.contentView.layer.cornerRadius = 8.0
 			cell.contentView.clipsToBounds = true
-			cell.contentView.layer.borderWidth = 0.5
-			cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
+//			cell.contentView.layer.borderWidth = 0.5
+//			cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
 			//cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 		}
 	}

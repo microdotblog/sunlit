@@ -13,7 +13,7 @@ class PhotoEntryCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var date : UILabel!
 
 	static func sizeOf(collectionViewWidth : CGFloat) -> CGSize {
-		var sections = Int(collectionViewWidth / 200.0)
+		var sections = Int(collectionViewWidth / 130.0)
 		if sections < 2 {
 			sections = 2
 		}
