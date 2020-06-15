@@ -139,7 +139,7 @@ class ComposeViewController: UIViewController {
 		let pickerController = UIImagePickerController()
 		pickerController.delegate = self
 		pickerController.mediaTypes = ["public.image", "public.movie"]
-		pickerController.sourceType = .photoLibrary
+		pickerController.sourceType = .savedPhotosAlbum
 		pickerController.allowsEditing = false
 		self.present(pickerController, animated: true, completion: nil)
 	}
