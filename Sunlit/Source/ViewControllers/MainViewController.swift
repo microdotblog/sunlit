@@ -407,7 +407,7 @@ class MainViewController: UIViewController {
 		self.profileButton.setTitle(profileUsername, for: .normal)
 		self.profileButton.setImage(profileImage, for: .normal)
 		self.profileButton.imageView?.clipsToBounds = true
-		self.profileButton.imageView?.layer.cornerRadius = 6.0
+		self.profileButton.imageView?.layer.cornerRadius = 18.0
 		
 		self.profileButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
 		self.discoverButton.titleLabel?.font = UIFont.systemFont(ofSize: 12.0)
