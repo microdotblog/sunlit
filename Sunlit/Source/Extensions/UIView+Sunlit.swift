@@ -9,6 +9,37 @@
 import UIKit
 
 extension UIView {
+
+	func safeAreaTop() -> CGFloat {
+		var superview = self.superview
+
+		var safeAreaTop : CGFloat = self.safeAreaInsets.top
+		
+		while superview != nil {
+			if superview!.safeAreaInsets.top > safeAreaTop {
+				safeAreaTop = superview!.safeAreaInsets.top
+			}
+			superview = superview?.superview
+		}
+		
+		return safeAreaTop
+	}
+
+	func safeAreaBottom() -> CGFloat {
+
+		var superview = self.superview
+		var safeAreaBottom : CGFloat = self.safeAreaInsets.bottom
+		
+		while superview != nil {
+			if superview!.safeAreaInsets.bottom > safeAreaBottom {
+				safeAreaBottom = superview!.safeAreaInsets.bottom
+			}
+			superview = superview?.superview
+		}
+		
+		return safeAreaBottom
+	}
+
 	
 	func constrainAllSides(_ view: UIView) {
 		self.constrainLeft(view: view)
