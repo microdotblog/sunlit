@@ -136,7 +136,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 				let frame = value.cgRectValue
 				let height = self.keyboardAccessoryView.frame.size.height
 				let safeArea : CGFloat = self.view.safeAreaInsets.bottom
-				let offset = frame.origin.y - height + safeArea - 88.0
+				let offset = frame.origin.y - height + safeArea - self.view.safeAreaTop()
 				self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: height)
 			}
 		}
@@ -155,20 +155,15 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
 		
-		if let cellOffset = notification.object as? CGFloat {
-			var superview = self.view.superview
-			var safeArea : CGFloat = self.view.safeAreaInsets.bottom
-			while superview != nil && safeArea == 0.0 {
-				safeArea = safeArea + superview!.safeAreaInsets.bottom
-				superview = superview?.superview
-			}
+		if let dictionary = notification.object as? [String : Any] {
+			let keyboardRect = dictionary["keyboardOffset"] as! CGRect
+			let keyboardTop = keyboardRect.origin.y - self.keyboardAccessoryView.frame.size.height
+			var tableViewLocation = dictionary["tableViewLocation"] as! CGFloat
+			tableViewLocation = tableViewLocation - self.keyboardAccessoryView.frame.size.height
+			let screenOffset = self.tableView.safeAreaTop() + self.tableView.frame.origin.y + (tableViewLocation - self.tableView.contentOffset.y)
+			let visibleOffset = self.tableView.contentOffset.y + (screenOffset - keyboardTop) + 60.0
 			
-			let accessoryViewHeight = self.keyboardAccessoryView.frame.size.height
-			let parentOffset = self.tableView.frame.origin.y
-			let buffer : CGFloat = 16.0
-			let editViewHeight : CGFloat = 22.0
-			let offset = cellOffset - accessoryViewHeight - parentOffset + safeArea + buffer + editViewHeight
-			self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+			self.tableView.setContentOffset(CGPoint(x: 0, y: visibleOffset), animated: true)
 		}
 	}
 	

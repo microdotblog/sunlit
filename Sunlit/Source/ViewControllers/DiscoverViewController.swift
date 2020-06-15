@@ -56,8 +56,6 @@ class DiscoverViewController: UIViewController {
 		if let layout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
 			layout.estimatedItemSize = CGSize(width: self.collectionView.bounds.size.width / 2.0, height: self.collectionView.bounds.size.width + 48.0)
 		}
-		
-		self.loadFrequentlyUsedEmoji()
 	}
 
 	func setupNotifications() {
@@ -68,8 +66,9 @@ class DiscoverViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: NSNotification.Name("View Conversation"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewImageNotification(_:)), name: NSNotification.Name("View Image"), object: nil)
+
+		//NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
 	}
 	
 
@@ -187,6 +186,8 @@ class DiscoverViewController: UIViewController {
 		scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44)
 		self.keyboardAccessoryView = scrollView
 		self.keyboardAccessoryView.alpha = 0.0
+		self.keyboardAccessoryView.isHidden = false
+		self.view.addSubview(self.keyboardAccessoryView)
 	}
 
 
@@ -309,36 +310,37 @@ class DiscoverViewController: UIViewController {
 	}
 	
 	@objc func keyboardOnScreenNotification(_ notification : Notification) {
-		
+		print("keyboardOnScreenNotification")
 		if let info : [AnyHashable : Any] = notification.userInfo {
 			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-				self.keyboardAccessoryView.isHidden = false
-				self.view.addSubview(self.keyboardAccessoryView)
 
 				let frame = value.cgRectValue
-				self.keyboardAccessoryView.frame = CGRect(x: 0, y: frame.origin.y - 44, width: frame.size.width, height: 44)
+				var offset = frame.origin.y - self.keyboardAccessoryView.frame.size.height
+				offset = offset - 88.0
+				self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: 44)
+				UIView.animate(withDuration: 0.25) {
+					self.keyboardAccessoryView.alpha = 1.0
+				}
 			}
 		}
 	}
 
 	@objc func keyboardOffScreenNotification(_ notification : Notification) {
-		self.keyboardAccessoryView.removeFromSuperview()
-		self.keyboardAccessoryView.alpha = 0.0
+		//self.keyboardAccessoryView.alpha = 0.0
+		//self.keyboardAccessoryView.removeFromSuperview()
 	}
 
-	@objc func keyboardDidShowNotification(_ notification : Notification) {
-		UIView.animate(withDuration: 0.3) {
-			self.keyboardAccessoryView.alpha = 1.0
-		}
-	}
 	
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
-		if let cellOffset = notification.object as? CGFloat {
-			let safeArea : CGFloat = self.view.safeAreaInsets.top
-			let accessoryViewHeight : CGFloat = self.keyboardAccessoryView.frame.size.height
-			let parentOffset : CGFloat = self.tableView.frame.origin.y
-			let offset = cellOffset + accessoryViewHeight + parentOffset - safeArea
-			self.tableView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+		if let dictionary = notification.object as? [String : Any] {
+			let keyboardRect = dictionary["keyboardOffset"] as! CGRect
+			let keyboardTop = keyboardRect.origin.y - self.keyboardAccessoryView.frame.size.height
+			var tableViewLocation = dictionary["tableViewLocation"] as! CGFloat
+			tableViewLocation = tableViewLocation - self.keyboardAccessoryView.frame.size.height
+			let screenOffset = self.tableView.safeAreaTop() + self.tableView.frame.origin.y + (tableViewLocation - self.tableView.contentOffset.y)
+			let visibleOffset = self.tableView.contentOffset.y + (screenOffset - keyboardTop) + 60.0
+			
+			self.tableView.setContentOffset(CGPoint(x: 0, y: visibleOffset), animated: true)
 		}
 	}
 	
