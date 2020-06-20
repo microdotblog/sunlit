@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zzu-uT-cxA">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Main Phone View Controller-->
+        <scene sceneID="QDl-fl-kqw">
+            <objects>
+                <viewController storyboardIdentifier="MainPhoneViewController" id="zzu-uT-cxA" customClass="MainPhoneViewController" customModule="Sunlit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dco-jt-Fsi">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ois-MX-ace">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" directionalLockEnabled="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D4j-cD-DQP">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
+                                        <viewLayoutGuide key="contentLayoutGuide" id="vJ0-JB-7S0"/>
+                                        <viewLayoutGuide key="frameLayoutGuide" id="mje-vK-qeq"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="zzu-uT-cxA" id="Wi3-o1-QcU"/>
+                                        </connections>
+                                    </scrollView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="D4j-cD-DQP" secondAttribute="bottom" id="S8o-VP-Kv7"/>
+                                    <constraint firstItem="D4j-cD-DQP" firstAttribute="leading" secondItem="Ois-MX-ace" secondAttribute="leading" id="hMK-gy-awP"/>
+                                    <constraint firstAttribute="trailing" secondItem="D4j-cD-DQP" secondAttribute="trailing" id="mOq-yQ-4BQ"/>
+                                    <constraint firstItem="D4j-cD-DQP" firstAttribute="top" secondItem="Ois-MX-ace" secondAttribute="top" id="yT9-1z-f8p"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D6H-Gs-Up4">
+                                <rect key="frame" x="16" y="800" width="382" height="96"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="kuJ-kE-FD1">
+                                        <rect key="frame" x="45" y="8" width="292" height="88"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rpx-zo-iR9">
+                                                <rect key="frame" x="0.0" y="4" width="92" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="80" id="JAX-G2-Kk0"/>
+                                                </constraints>
+                                                <color key="tintColor" red="0.54106694460000004" green="0.72945708040000001" blue="0.87048029900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Timeline" image="feed"/>
+                                                <connections>
+                                                    <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="XVD-o9-rUI"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1L-Lm-SBr">
+                                                <rect key="frame" x="100" y="4" width="92" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="80" id="bbd-1R-Ebo"/>
+                                                </constraints>
+                                                <color key="tintColor" red="0.54106694460000004" green="0.72945708040000001" blue="0.87048029900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Discover" image="discover"/>
+                                                <connections>
+                                                    <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="aCT-Oc-ubS"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Wz-cV-0mQ">
+                                                <rect key="frame" x="200" y="4" width="92" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="80" id="CqY-n9-MKo"/>
+                                                </constraints>
+                                                <color key="tintColor" red="0.54106694460000004" green="0.72945708040000001" blue="0.87048029900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Profile" image="login"/>
+                                                <connections>
+                                                    <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="kYR-LU-xnW"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="kuJ-kE-FD1" firstAttribute="centerX" secondItem="D6H-Gs-Up4" secondAttribute="centerX" id="Let-HH-ckv"/>
+                                    <constraint firstAttribute="height" constant="96" id="Lpg-u2-R5b"/>
+                                    <constraint firstAttribute="bottom" secondItem="kuJ-kE-FD1" secondAttribute="bottom" id="hjN-Vc-7Qm"/>
+                                    <constraint firstItem="kuJ-kE-FD1" firstAttribute="top" secondItem="D6H-Gs-Up4" secondAttribute="top" constant="8" id="zGk-si-zF7"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="D6H-Gs-Up4" secondAttribute="bottom" id="Az3-A8-dAD"/>
+                            <constraint firstItem="Ois-MX-ace" firstAttribute="trailing" secondItem="prA-88-IgI" secondAttribute="trailing" id="b6Q-2b-U0T"/>
+                            <constraint firstItem="Ois-MX-ace" firstAttribute="leading" secondItem="prA-88-IgI" secondAttribute="leading" id="cAQ-ZY-QTt"/>
+                            <constraint firstItem="D6H-Gs-Up4" firstAttribute="trailing" secondItem="prA-88-IgI" secondAttribute="trailing" constant="-16" id="dg4-P9-2Sv"/>
+                            <constraint firstItem="D6H-Gs-Up4" firstAttribute="top" secondItem="Ois-MX-ace" secondAttribute="bottom" id="gIJ-oL-fsQ"/>
+                            <constraint firstItem="Ois-MX-ace" firstAttribute="top" secondItem="dco-jt-Fsi" secondAttribute="top" id="kKi-iX-UGX"/>
+                            <constraint firstItem="D6H-Gs-Up4" firstAttribute="leading" secondItem="prA-88-IgI" secondAttribute="leading" constant="16" id="xdp-nu-M4E"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="prA-88-IgI"/>
+                    </view>
+                    <connections>
+                        <outlet property="contentView" destination="Ois-MX-ace" id="CVS-Up-K5l"/>
+                        <outlet property="discoverButton" destination="e1L-Lm-SBr" id="iOf-Q5-VBa"/>
+                        <outlet property="profileButton" destination="0Wz-cV-0mQ" id="nYp-yI-ztu"/>
+                        <outlet property="scrollView" destination="D4j-cD-DQP" id="pY9-XT-j4v"/>
+                        <outlet property="tabBar" destination="D6H-Gs-Up4" id="VJC-pk-lPT"/>
+                        <outlet property="timelineButton" destination="Rpx-zo-iR9" id="jy2-sO-NTq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Ds-hW-Eeo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-107.24637681159422" y="-166.07142857142856"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="discover" width="32" height="32"/>
+        <image name="feed" width="32" height="32"/>
+        <image name="login" width="32" height="32"/>
+    </resources>
+</document>

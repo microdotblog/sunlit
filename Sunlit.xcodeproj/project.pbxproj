@@ -124,13 +124,18 @@
 		C5A1DF2D2490675500B50B54 /* Evaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DEF32490675500B50B54 /* Evaluator.swift */; };
 		C5A1DF2E2490675500B50B54 /* ParseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DEF42490675500B50B54 /* ParseError.swift */; };
 		C5A1DF2F2490675500B50B54 /* QueryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DEF52490675500B50B54 /* QueryParser.swift */; };
-		C5A1DF3224906B9D00B50B54 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF3024906B9D00B50B54 /* Main.storyboard */; };
+		C5A1DF3224906B9D00B50B54 /* Content.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF3024906B9D00B50B54 /* Content.storyboard */; };
 		C5A1DF3324906B9D00B50B54 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF3124906B9D00B50B54 /* LaunchScreen.storyboard */; };
 		C5A1DF3524913BDC00B50B54 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */; };
 		C5A1DF39249144E800B50B54 /* credits.html in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF37249144E800B50B54 /* credits.html */; };
 		C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF38249144E800B50B54 /* olive.jpg */; };
 		C5A1DF3C2491948B00B50B54 /* PublishingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3B2491948B00B50B54 /* PublishingConfiguration.swift */; };
 		C5A1DF3E2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */; };
+		C5E26A34249EAA0900F9E158 /* Main-Phone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5E26A33249EAA0900F9E158 /* Main-Phone.storyboard */; };
+		C5E26A36249EADE400F9E158 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5E26A35249EADE400F9E158 /* Main.storyboard */; };
+		C5E26A38249EAE6900F9E158 /* MainPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E26A37249EAE6900F9E158 /* MainPhoneViewController.swift */; };
+		C5E26A3A249EB85100F9E158 /* MainTabletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E26A39249EB85100F9E158 /* MainTabletViewController.swift */; };
+		C5E26A3C249EB87500F9E158 /* Main-Tablet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5E26A3B249EB87500F9E158 /* Main-Tablet.storyboard */; };
 		C5EC11DB248C30B70032B84D /* UUStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC11BC248C30B50032B84D /* UUStyling.swift */; };
 		C5EC11DC248C30B70032B84D /* UUSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EC11BD248C30B50032B84D /* UUSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5EC11DD248C30B70032B84D /* UUData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC11BE248C30B50032B84D /* UUData.swift */; };
@@ -382,7 +387,7 @@
 		C5A1DEF32490675500B50B54 /* Evaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Evaluator.swift; path = Libraries/SwiftSoup/Evaluator.swift; sourceTree = SOURCE_ROOT; };
 		C5A1DEF42490675500B50B54 /* ParseError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseError.swift; path = Libraries/SwiftSoup/ParseError.swift; sourceTree = SOURCE_ROOT; };
 		C5A1DEF52490675500B50B54 /* QueryParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QueryParser.swift; path = Libraries/SwiftSoup/QueryParser.swift; sourceTree = SOURCE_ROOT; };
-		C5A1DF3024906B9D00B50B54 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Storyboards/Main.storyboard; sourceTree = "<group>"; };
+		C5A1DF3024906B9D00B50B54 /* Content.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Content.storyboard; path = Storyboards/Content.storyboard; sourceTree = "<group>"; };
 		C5A1DF3124906B9D00B50B54 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Storyboards/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Source/ViewControllers/SettingsViewController.swift; sourceTree = "<group>"; };
 		C5A1DF37249144E800B50B54 /* credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = credits.html; path = Resources/credits.html; sourceTree = "<group>"; };
@@ -390,6 +395,11 @@
 		C5A1DF3B2491948B00B50B54 /* PublishingConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PublishingConfiguration.swift; path = Source/Data/PublishingConfiguration.swift; sourceTree = "<group>"; };
 		C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExternalBlogConfigurationViewController.swift; path = Source/ViewControllers/ExternalBlogConfigurationViewController.swift; sourceTree = "<group>"; };
 		C5B9A71724563E66003EF82B /* Sunlit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sunlit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5E26A33249EAA0900F9E158 /* Main-Phone.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Main-Phone.storyboard"; path = "Storyboards/Main-Phone.storyboard"; sourceTree = "<group>"; };
+		C5E26A35249EADE400F9E158 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Storyboards/Main.storyboard; sourceTree = "<group>"; };
+		C5E26A37249EAE6900F9E158 /* MainPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainPhoneViewController.swift; path = Source/ViewControllers/MainPhoneViewController.swift; sourceTree = "<group>"; };
+		C5E26A39249EB85100F9E158 /* MainTabletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabletViewController.swift; path = Source/ViewControllers/MainTabletViewController.swift; sourceTree = "<group>"; };
+		C5E26A3B249EB87500F9E158 /* Main-Tablet.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Main-Tablet.storyboard"; path = "Storyboards/Main-Tablet.storyboard"; sourceTree = "<group>"; };
 		C5EC11BC248C30B50032B84D /* UUStyling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUStyling.swift; path = Libraries/UUSwift/UUStyling.swift; sourceTree = SOURCE_ROOT; };
 		C5EC11BD248C30B50032B84D /* UUSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UUSwift.h; path = Libraries/UUSwift/UUSwift.h; sourceTree = SOURCE_ROOT; };
 		C5EC11BE248C30B50032B84D /* UUData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUData.swift; path = Libraries/UUSwift/UUData.swift; sourceTree = SOURCE_ROOT; };
@@ -658,7 +668,7 @@
 			isa = PBXGroup;
 			children = (
 				C5A1DF3124906B9D00B50B54 /* LaunchScreen.storyboard */,
-				C5A1DF3024906B9D00B50B54 /* Main.storyboard */,
+				C5A1DF3024906B9D00B50B54 /* Content.storyboard */,
 				C5A1DE3B24901D8C00B50B54 /* About.storyboard */,
 				C5A1DE3A24901D8C00B50B54 /* ChooseBlog.storyboard */,
 				C5A1DE3F24901D8C00B50B54 /* Compose.storyboard */,
@@ -668,6 +678,9 @@
 				C5A1DE3C24901D8C00B50B54 /* Login.storyboard */,
 				C5A1DE3924901D8C00B50B54 /* Profile.storyboard */,
 				C5A1DE3D24901D8C00B50B54 /* Settings.storyboard */,
+				C5E26A35249EADE400F9E158 /* Main.storyboard */,
+				C5E26A33249EAA0900F9E158 /* Main-Phone.storyboard */,
+				C5E26A3B249EB87500F9E158 /* Main-Tablet.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -950,6 +963,8 @@
 				C5A1DE7424901DCC00B50B54 /* ImageViewerViewController.swift */,
 				C5A1DE6D24901DCC00B50B54 /* LoginViewController.swift */,
 				C5A1DE7024901DCC00B50B54 /* MainViewController.swift */,
+				C5E26A37249EAE6900F9E158 /* MainPhoneViewController.swift */,
+				C5E26A39249EB85100F9E158 /* MainTabletViewController.swift */,
 				C5A1DE7324901DCC00B50B54 /* MyProfileViewController.swift */,
 				C5A1DE7124901DCC00B50B54 /* ProfileViewController.swift */,
 				C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */,
@@ -1222,18 +1237,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5A1DE4524901D8C00B50B54 /* Login.storyboard in Resources */,
+				C5E26A3C249EB87500F9E158 /* Main-Tablet.storyboard in Resources */,
 				C5A1DE4824901D8C00B50B54 /* Compose.storyboard in Resources */,
 				C5A1DE4424901D8C00B50B54 /* About.storyboard in Resources */,
 				C5A1DE4324901D8C00B50B54 /* ChooseBlog.storyboard in Resources */,
 				C5A1DE4124901D8C00B50B54 /* Conversation.storyboard in Resources */,
-				C5A1DF3224906B9D00B50B54 /* Main.storyboard in Resources */,
+				C5A1DF3224906B9D00B50B54 /* Content.storyboard in Resources */,
 				C5A1DE9D24901E0B00B50B54 /* Assets.xcassets in Resources */,
 				C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */,
 				C5A1DE4924901D8C00B50B54 /* ImageViewer.storyboard in Resources */,
 				C5A1DF39249144E800B50B54 /* credits.html in Resources */,
 				C5A1DE4224901D8C00B50B54 /* Profile.storyboard in Resources */,
+				C5E26A36249EADE400F9E158 /* Main.storyboard in Resources */,
 				C5A1DF3324906B9D00B50B54 /* LaunchScreen.storyboard in Resources */,
 				C5A1DE4724901D8C00B50B54 /* Drafts.storyboard in Resources */,
+				C5E26A34249EAA0900F9E158 /* Main-Phone.storyboard in Resources */,
 				C5A1DE4624901D8C00B50B54 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1386,6 +1404,7 @@
 				C5A1DE9024901DE600B50B54 /* PostAddPhotoCollectionViewCell.swift in Sources */,
 				C5A1DE8424901DD800B50B54 /* ConversationTableViewCell.swift in Sources */,
 				C5A1DE7B24901DCC00B50B54 /* MainViewController.swift in Sources */,
+				C5E26A3A249EB85100F9E158 /* MainTabletViewController.swift in Sources */,
 				C5A1DE7F24901DCC00B50B54 /* ImageViewerViewController.swift in Sources */,
 				C5A1DE5224901D9D00B50B54 /* Date+Sunlit.swift in Sources */,
 				C5A1DE8E24901DE600B50B54 /* PostTextCollectionViewCell.swift in Sources */,
@@ -1411,6 +1430,7 @@
 				C5A1DE9124901DE600B50B54 /* SunlitPostCollectionViewCell.swift in Sources */,
 				C5A1DE9B24901DF500B50B54 /* SceneDelegate.swift in Sources */,
 				C5A1DE5A24901DAD00B50B54 /* HTMLBuilder.swift in Sources */,
+				C5E26A38249EAE6900F9E158 /* MainPhoneViewController.swift in Sources */,
 				C5A1DE6924901DBC00B50B54 /* SunlitPost.swift in Sources */,
 				C5A1DE9524901DE600B50B54 /* ProfileHeaderCollectionViewCell.swift in Sources */,
 				C5A1DF3E2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift in Sources */,
