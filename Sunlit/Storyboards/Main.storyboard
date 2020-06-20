@@ -29,7 +29,7 @@
         <!--Main View Controller-->
         <scene sceneID="krH-AB-pBO">
             <objects>
-                <viewController storyboardIdentifier="MainViewController" id="0Vr-hk-Egj" customClass="MainViewController" customModule="Sunlit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="MainViewController" storyboardIdentifier="MainViewController" id="0Vr-hk-Egj" customClass="MainViewController" customModule="Sunlit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eZu-aR-6cd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -143,7 +143,7 @@
                     <viewLayoutGuide key="safeArea" id="Zdm-x6-cnh"/>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-383" y="17"/>
+            <point key="canvasLocation" x="-346" y="17"/>
         </scene>
     </scenes>
     <resources>
