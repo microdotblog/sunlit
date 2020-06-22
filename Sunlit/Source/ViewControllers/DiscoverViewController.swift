@@ -561,14 +561,19 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		let post = self.posts[indexPath.item]
-		self.loadPhoto(post.images.first ?? "", indexPath)
+		
+		if indexPath.item < self.posts.count {
+			let post = self.posts[indexPath.item]
+			self.loadPhoto(post.images.first ?? "", indexPath)
+		}
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
 		for indexPath in indexPaths {
-			let post = self.posts[indexPath.item]
-			self.loadPhoto(post.images.first ?? "", indexPath)
+			if indexPath.item < self.posts.count {
+				let post = self.posts[indexPath.item]
+				self.loadPhoto(post.images.first ?? "", indexPath)
+			}
 		}
 	}
 	
@@ -581,15 +586,7 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 			if let image = ImageCache.prefetch(post.images.first ?? "") {
 				cell.photo.image = image
 			}
-			
-//			cell.photo.layer.borderColor = UIColor.lightGray.cgColor
-//			cell.photo.layer.borderWidth = 0.5
-
-//			cell.contentView.layer.cornerRadius = 8.0
 			cell.contentView.clipsToBounds = true
-//			cell.contentView.layer.borderWidth = 0.5
-//			cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
-			//cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 		}
 	}
 	

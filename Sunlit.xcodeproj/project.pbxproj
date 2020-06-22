@@ -135,7 +135,7 @@
 		C5E26A36249EADE400F9E158 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5E26A35249EADE400F9E158 /* Main.storyboard */; };
 		C5E26A38249EAE6900F9E158 /* MainPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E26A37249EAE6900F9E158 /* MainPhoneViewController.swift */; };
 		C5E26A3A249EB85100F9E158 /* MainTabletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E26A39249EB85100F9E158 /* MainTabletViewController.swift */; };
-		C5E26A3C249EB87500F9E158 /* Main-Tablet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5E26A3B249EB87500F9E158 /* Main-Tablet.storyboard */; };
+		C5E26A4024A061AB00F9E158 /* NSNotification+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E26A3F24A061AB00F9E158 /* NSNotification+Sunlit.swift */; };
 		C5EC11DB248C30B70032B84D /* UUStyling.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC11BC248C30B50032B84D /* UUStyling.swift */; };
 		C5EC11DC248C30B70032B84D /* UUSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EC11BD248C30B50032B84D /* UUSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5EC11DD248C30B70032B84D /* UUData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC11BE248C30B50032B84D /* UUData.swift */; };
@@ -399,7 +399,7 @@
 		C5E26A35249EADE400F9E158 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Storyboards/Main.storyboard; sourceTree = "<group>"; };
 		C5E26A37249EAE6900F9E158 /* MainPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainPhoneViewController.swift; path = Source/ViewControllers/MainPhoneViewController.swift; sourceTree = "<group>"; };
 		C5E26A39249EB85100F9E158 /* MainTabletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabletViewController.swift; path = Source/ViewControllers/MainTabletViewController.swift; sourceTree = "<group>"; };
-		C5E26A3B249EB87500F9E158 /* Main-Tablet.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Main-Tablet.storyboard"; path = "Storyboards/Main-Tablet.storyboard"; sourceTree = "<group>"; };
+		C5E26A3F24A061AB00F9E158 /* NSNotification+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSNotification+Sunlit.swift"; path = "Source/Extensions/NSNotification+Sunlit.swift"; sourceTree = "<group>"; };
 		C5EC11BC248C30B50032B84D /* UUStyling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUStyling.swift; path = Libraries/UUSwift/UUStyling.swift; sourceTree = SOURCE_ROOT; };
 		C5EC11BD248C30B50032B84D /* UUSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UUSwift.h; path = Libraries/UUSwift/UUSwift.h; sourceTree = SOURCE_ROOT; };
 		C5EC11BE248C30B50032B84D /* UUData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UUData.swift; path = Libraries/UUSwift/UUData.swift; sourceTree = SOURCE_ROOT; };
@@ -556,6 +556,7 @@
 				C5A1DE4A24901D9D00B50B54 /* UIButton+Sunlit.swift */,
 				C5A1DE4B24901D9D00B50B54 /* UIView+Sunlit.swift */,
 				C5A1DE4E24901D9D00B50B54 /* URL+Sunlit.swift */,
+				C5E26A3F24A061AB00F9E158 /* NSNotification+Sunlit.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -680,7 +681,6 @@
 				C5A1DE3D24901D8C00B50B54 /* Settings.storyboard */,
 				C5E26A35249EADE400F9E158 /* Main.storyboard */,
 				C5E26A33249EAA0900F9E158 /* Main-Phone.storyboard */,
-				C5E26A3B249EB87500F9E158 /* Main-Tablet.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -1237,7 +1237,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5A1DE4524901D8C00B50B54 /* Login.storyboard in Resources */,
-				C5E26A3C249EB87500F9E158 /* Main-Tablet.storyboard in Resources */,
 				C5A1DE4824901D8C00B50B54 /* Compose.storyboard in Resources */,
 				C5A1DE4424901D8C00B50B54 /* About.storyboard in Resources */,
 				C5A1DE4324901D8C00B50B54 /* ChooseBlog.storyboard in Resources */,
@@ -1433,6 +1432,7 @@
 				C5E26A38249EAE6900F9E158 /* MainPhoneViewController.swift in Sources */,
 				C5A1DE6924901DBC00B50B54 /* SunlitPost.swift in Sources */,
 				C5A1DE9524901DE600B50B54 /* ProfileHeaderCollectionViewCell.swift in Sources */,
+				C5E26A4024A061AB00F9E158 /* NSNotification+Sunlit.swift in Sources */,
 				C5A1DF3E2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift in Sources */,
 				C5A1DE5324901D9D00B50B54 /* URL+Sunlit.swift in Sources */,
 			);

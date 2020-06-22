@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="c66-7O-kWC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="l4u-MQ-Cpd">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -7,10 +7,24 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Split View Controller-->
+        <scene sceneID="IFZ-86-IYe">
+            <objects>
+                <splitViewController maximumPrimaryColumnWidth="200" minimumPrimaryColumnWidth="160" preferredPrimaryColumnWidthFraction="0.20000000000000001" id="l4u-MQ-Cpd" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="c66-7O-kWC" kind="relationship" relationship="detailViewController" id="J26-UI-gga"/>
+                        <segue destination="Maa-K5-Q6T" kind="relationship" relationship="masterViewController" id="roF-8p-E7i"/>
+                    </connections>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZHG-3l-tYL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2116" y="17"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="s0n-4Z-jW5">
             <objects>
                 <navigationController id="c66-7O-kWC" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Yei-ya-g2s"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="97D-SW-VYM">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -24,7 +38,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OuZ-4W-70N" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1222" y="17"/>
+            <point key="canvasLocation" x="-1209" y="-264"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="krH-AB-pBO">
@@ -143,10 +157,107 @@
                     <viewLayoutGuide key="safeArea" id="Zdm-x6-cnh"/>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-346" y="17"/>
+            <point key="canvasLocation" x="-383" y="-265"/>
+        </scene>
+        <!--Main Tablet View Controller-->
+        <scene sceneID="Wuv-Dn-S5S">
+            <objects>
+                <viewController storyboardIdentifier="SplitViewNavigationViewController" id="Maa-K5-Q6T" customClass="MainTabletViewController" customModule="Sunlit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zDx-U3-Dfg">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="LeN-xg-aHV">
+                                <rect key="frame" x="161" y="124" width="92" height="160"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oUB-KM-K4B">
+                                        <rect key="frame" x="0.0" y="0.0" width="92" height="32"/>
+                                        <state key="normal" title="Timeline" image="feed"/>
+                                        <connections>
+                                            <action selector="onTimeLine" destination="Maa-K5-Q6T" eventType="touchUpInside" id="qYy-Rn-X2z"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RCF-fg-lGf">
+                                        <rect key="frame" x="0.0" y="64" width="92" height="32"/>
+                                        <state key="normal" title="Discover" image="discover"/>
+                                        <connections>
+                                            <action selector="onDiscover" destination="Maa-K5-Q6T" eventType="touchUpInside" id="itl-NH-Dir"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8h-Pp-xpL">
+                                        <rect key="frame" x="0.0" y="128" width="92" height="32"/>
+                                        <state key="normal" title="Profile" image="login"/>
+                                        <connections>
+                                            <action selector="onProfile" destination="Maa-K5-Q6T" eventType="touchUpInside" id="7sM-r6-9uY"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="1IH-m8-7BA">
+                                <rect key="frame" x="87" y="649.5" width="240" height="212.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uk9-mv-Ved">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="32"/>
+                                        <state key="normal" title="Settings" image="settings_icon"/>
+                                        <connections>
+                                            <action selector="onSettings" destination="Maa-K5-Q6T" eventType="touchUpInside" id="S73-cf-3tL"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9J4-PY-jEV">
+                                        <rect key="frame" x="0.0" y="64" width="240" height="24"/>
+                                        <inset key="titleEdgeInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Post" image="post"/>
+                                        <connections>
+                                            <action selector="onCompose" destination="Maa-K5-Q6T" eventType="touchUpInside" id="IXZ-wu-TS0"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lxf-c6-O0H">
+                                        <rect key="frame" x="0.0" y="120" width="240" height="40"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="hUB-LX-nQ6"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version 3.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fX3-GC-4lM">
+                                        <rect key="frame" x="0.0" y="192" width="240" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="1IH-m8-7BA" firstAttribute="centerX" secondItem="zDx-U3-Dfg" secondAttribute="centerX" id="3Ei-UU-515"/>
+                            <constraint firstItem="1IH-m8-7BA" firstAttribute="bottom" secondItem="llH-5D-grk" secondAttribute="bottom" id="3JO-TQ-cbd"/>
+                            <constraint firstItem="LeN-xg-aHV" firstAttribute="top" secondItem="llH-5D-grk" secondAttribute="top" constant="80" id="4kQ-CR-2Pw"/>
+                            <constraint firstItem="LeN-xg-aHV" firstAttribute="centerX" secondItem="zDx-U3-Dfg" secondAttribute="centerX" id="Wm8-aL-Cw7"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="llH-5D-grk"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="KkB-vz-Gj1"/>
+                    <connections>
+                        <outlet property="composeButton" destination="9J4-PY-jEV" id="zxh-ij-JHx"/>
+                        <outlet property="discoverButton" destination="RCF-fg-lGf" id="tfS-YL-fzI"/>
+                        <outlet property="profileButton" destination="f8h-Pp-xpL" id="5D6-id-Ghr"/>
+                        <outlet property="settingsButton" destination="uk9-mv-Ved" id="jxJ-PE-RbG"/>
+                        <outlet property="timelineButton" destination="oUB-KM-K4B" id="WwT-Ft-gvl"/>
+                        <outlet property="versionLabel" destination="fX3-GC-4lM" id="lbK-RE-JuY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vI0-mF-Uir" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1210" y="475"/>
         </scene>
     </scenes>
     <resources>
+        <image name="discover" width="32" height="32"/>
+        <image name="feed" width="32" height="32"/>
+        <image name="login" width="32" height="32"/>
+        <image name="post" width="24" height="24"/>
+        <image name="settings_icon" width="32" height="32"/>
         <image name="welcome_waves" width="320" height="200"/>
     </resources>
 </document>

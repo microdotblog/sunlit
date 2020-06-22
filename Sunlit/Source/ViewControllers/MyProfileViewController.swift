@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import Snippets
 
-class MyProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching, UITextViewDelegate {
+class MyProfileViewController: UIViewController {
 		
 	var user : SnippetsUser!
 	var updatedUserInfo : SnippetsUser? = nil
@@ -28,8 +28,18 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 			self.fetchUserInfo()
 			self.navigationItem.title = user.fullName
 		}
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
     }
 		
+	@objc func handleCurrentUserUpdatedNotification() {
+		if let user = SnippetsUser.current() {
+			self.user = user
+			self.fetchUserInfo()
+			self.navigationItem.title = user.fullName
+		}
+	}
+	
 	func fetchUserInfo() {
 		
 		if self.loadInProgress == true {
@@ -73,15 +83,7 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 			}
 		}
 	}
-	
-	@IBAction func onShowLogin() {
-		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Show Login"), object: nil)
-	}
-	
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-	
+		
 	func loadPhoto(_ path : String,  _ index : IndexPath) {
 		
 		// If the photo exists, bail!
@@ -99,11 +101,21 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 			}
 		}
 	}
+	
 
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+	@IBAction func onShowLogin() {
+		NotificationCenter.default.post(name: .showLoginNotification, object: nil)
+	}
 
+}
+
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: -
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension MyProfileViewController : UITextViewDelegate {
 	
 	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
 		let safariViewController = SFSafariViewController(url: URL)
@@ -111,9 +123,15 @@ class MyProfileViewController: UIViewController, UICollectionViewDataSource, UIC
 		return false
 	}
 	
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+}
+
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: -
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension MyProfileViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
 	
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
 		

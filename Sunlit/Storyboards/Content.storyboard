@@ -335,7 +335,7 @@
                                         <rect key="frame" x="183.66666666666666" y="411.66666666666669" width="47" height="30"/>
                                         <state key="normal" title="Sign In"/>
                                         <connections>
-                                            <action selector="onShowLogin" destination="9pv-A4-QxB" eventType="touchUpInside" id="mrz-3A-8Ic"/>
+                                            <action selector="onShowLogin" destination="9pv-A4-QxB" eventType="touchUpInside" id="Tls-pg-F5z"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -429,26 +429,26 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Following" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XN8-5K-pZl">
-                                                            <rect key="frame" x="4" y="22" width="75" height="19"/>
+                                                            <rect key="frame" x="4" y="21" width="75" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" id="yBC-ME-w5z">
-                                                            <rect key="frame" x="42" y="46" width="0.0" height="0.0"/>
+                                                            <rect key="frame" x="42" y="45" width="0.0" height="0.0"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1032" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YY7-MB-GSw">
-                                                            <rect key="frame" x="25" y="50" width="34" height="18"/>
+                                                            <rect key="frame" x="25" y="49" width="34" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Posts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qro-Ck-bfM">
-                                                            <rect key="frame" x="20" y="72" width="43" height="19"/>
+                                                            <rect key="frame" x="20" y="71" width="43" height="20"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                             <nil key="textColor"/>

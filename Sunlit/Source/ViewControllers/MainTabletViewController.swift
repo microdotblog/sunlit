@@ -7,24 +7,118 @@
 //
 
 import UIKit
+import Snippets
 
 class MainTabletViewController: UIViewController {
 
+	@IBOutlet var timelineButton : UIButton!
+	@IBOutlet var discoverButton : UIButton!
+	@IBOutlet var profileButton : UIButton!
+	@IBOutlet var settingsButton : UIButton!
+	@IBOutlet var composeButton : UIButton!
+	@IBOutlet var versionLabel : UILabel!
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-    }
+		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
+		self.setupProfileButton()
+	}
     
+	func updateInterfaceForLogin() {
+		
+		if let user = SnippetsUser.current() {
+			
+			// Update the user name...
+			DispatchQueue.main.async {
+				self.profileButton.setTitle("@" + user.userHandle, for: .normal)
+				self.profileButton.centerVertically()
+			}
+			
+			// Go ahead and go get the avatar for the logged in user
+			ImageCache.fetch(user.pathToUserImage) { (image) in
+				
+				if let image = image {
+					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 32.0, height: 32.0)).withRenderingMode(.alwaysOriginal)
+					DispatchQueue.main.async {
+						self.profileButton.setImage(profileImage, for: .normal)
+						self.profileButton.centerVertically()
+					}
+				}
+			}
+		}
+		else {
+			self.profileButton.setImage(UIImage(named: "login"), for: .normal)
+			self.profileButton.setTitle("Login", for: .normal)
+		}
+	}
+	
+	func setupProfileButton() {
+		var profileImage : UIImage? = UIImage(named: "login")
+		var profileUsername = "Login"
+		if let current = SnippetsUser.current() {
+			profileUsername = "@" + current.userHandle
+			profileImage = ImageCache.prefetch(current.pathToUserImage)
+		
+			if let image = profileImage {
+				profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
+			}
+		}
+		self.profileButton.setTitle(profileUsername, for: .normal)
+		self.profileButton.setImage(profileImage, for: .normal)
 
-    /*
-    // MARK: - Navigation
+		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
+		self.profileButton.addGestureRecognizer(longpressGesture)
+	}
+	
+	@objc func handleCurrentUserUpdatedNotification() {
+		self.updateInterfaceForLogin()
+	}
+	
+	@objc func onSelectBlogConfiguration() {
+		Dialog(self).selectBlog()
+	}
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+	func clearButtonStates() {
+		self.timelineButton.isSelected = false
+		self.discoverButton.isSelected = false
+		self.profileButton.isSelected = false
+		self.settingsButton.isSelected = false
+		self.composeButton.isSelected = false
+	}
+	
+
+	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	MARK: -
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+	
+	@IBAction func onTimeLine() {
+		self.clearButtonStates()
+		self.timelineButton.isSelected = true
+		
+		NotificationCenter.default.post(name: .showTimelineNotification, object: nil)
+	}
+	
+	@IBAction func onDiscover() {
+		self.clearButtonStates()
+		self.discoverButton.isSelected = true
+
+		NotificationCenter.default.post(name: .showDiscoverNotification, object: nil)
+	}
+	
+	@IBAction func onProfile() {
+		self.clearButtonStates()
+		self.profileButton.isSelected = true
+
+		NotificationCenter.default.post(name: .showCurrentUserProfileNotification, object: nil)
+	}
+
+	@IBAction func onSettings() {
+		NotificationCenter.default.post(name: .showSettingsNotification, object: nil)
+	}
+
+	@IBAction func onCompose() {
+		NotificationCenter.default.post(name: .showComposeNotification, object: nil)
+	}
 
 }

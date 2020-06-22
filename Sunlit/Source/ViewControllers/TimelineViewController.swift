@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import Snippets
 
-class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching, UITextViewDelegate {
+class TimelineViewController: UIViewController {
 
 	@IBOutlet var tableView : UITableView!
 	@IBOutlet var loggedOutView : UIView!
@@ -42,6 +42,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: NSNotification.Name("View Conversation"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewImageNotification(_:)), name: NSNotification.Name("View Image"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
 	}
 	
 	func updateLoggedInStatus() {
@@ -50,71 +51,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 	}
 	
 	@IBAction func onShowLogin() {
-		NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Show Login"), object: nil)
+		NotificationCenter.default.post(name: .showLoginNotification, object: nil)
 	}
 	
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-	
-	func refreshTableView(_ entries : [SnippetsPost]) {
-		
-		var posts : [SunlitPost] = []
-		
-		for entry in entries {
-			let post = SunlitPost.create(entry)
-			posts.append(post)
-		}
-		
-		self.tableViewData = posts
-		self.refreshControl.endRefreshing()
-		self.tableView.reloadData()
-	}
-	
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return self.tableViewData.count
-	}
-	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
-		let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
-		let post = self.tableViewData[indexPath.row]
-		cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
-		return cell
-	}
-	
-	func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-	
-		for indexPath in indexPaths {
-			self.prefetchImages(indexPath)
-		}
-	}
-	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		self.prefetchImages(indexPath)
-		
-		if indexPath.row > (self.tableViewData.count - 3) {
-			self.loadMoreTimeline()
-		}
-	}
-	
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		tableView.deselectRow(at: indexPath, animated: true)
-		
-		let post = self.tableViewData[indexPath.row]
-
-		let storyBoard: UIStoryboard = UIStoryboard(name: "ImageViewer", bundle: nil)
-		let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
-		imageViewController.pathToImage = post.images[0]
-		imageViewController.post = post
-		self.navigationController?.pushViewController(imageViewController, animated: true)
-	}
-	
-	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		let post = self.tableViewData[indexPath.row]
-		return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
-	}
-
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -215,26 +154,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 		Dialog(self).information(message)
 	}
 	
-
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-		UIView.setAnimationsEnabled(false)
-		self.tableView.beginUpdates()
-		self.tableView.endUpdates()
-		UIView.setAnimationsEnabled(true)
-			
-		return true
+	@objc func handleCurrentUserUpdatedNotification() {
+		self.loadTimeline()
 	}
-	
-	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-		let safariViewController = SFSafariViewController(url: URL)
-		self.present(safariViewController, animated: true, completion: nil)
-		return false
-	}
-	
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -358,6 +280,99 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
 MARK: -
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
+extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
+	
+	func refreshTableView(_ entries : [SnippetsPost]) {
+		
+		var posts : [SunlitPost] = []
+		
+		for entry in entries {
+			let post = SunlitPost.create(entry)
+			posts.append(post)
+		}
+		
+		self.tableViewData = posts
+		self.refreshControl.endRefreshing()
+		self.tableView.reloadData()
+	}
+
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return self.tableViewData.count
+	}
+
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		
+		let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
+		let post = self.tableViewData[indexPath.row]
+		cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
+		return cell
+	}
+
+	func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+
+		for indexPath in indexPaths {
+			self.prefetchImages(indexPath)
+		}
+	}
+
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		self.prefetchImages(indexPath)
+		
+		if indexPath.row > (self.tableViewData.count - 3) {
+			self.loadMoreTimeline()
+		}
+	}
+
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
+		
+		let post = self.tableViewData[indexPath.row]
+
+		let storyBoard: UIStoryboard = UIStoryboard(name: "ImageViewer", bundle: nil)
+		let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
+		imageViewController.pathToImage = post.images[0]
+		imageViewController.post = post
+		self.navigationController?.pushViewController(imageViewController, animated: true)
+	}
+
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		let post = self.tableViewData[indexPath.row]
+		return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+	}
+
+}
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: -
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension TimelineViewController : UITextViewDelegate {
+
+	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+		UIView.setAnimationsEnabled(false)
+		self.tableView.beginUpdates()
+		self.tableView.endUpdates()
+		UIView.setAnimationsEnabled(true)
+			
+		return true
+	}
+	
+	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+		let safariViewController = SFSafariViewController(url: URL)
+		self.present(safariViewController, animated: true, completion: nil)
+		return false
+	}
+
+}
+
+
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: -
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
 extension TimelineViewController : SnippetsScrollContentProtocol {
 	func prepareToDisplay() {
 		self.navigationController?.navigationBar.topItem?.title = "Timeline"
@@ -370,3 +385,5 @@ extension TimelineViewController : SnippetsScrollContentProtocol {
 	}
 	
 }
+
+

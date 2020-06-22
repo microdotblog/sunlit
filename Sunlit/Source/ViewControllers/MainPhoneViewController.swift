@@ -22,16 +22,17 @@ class MainPhoneViewController: UIViewController {
 	var discoverViewController : DiscoverViewController!
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
-	var loginViewController : LoginViewController?
 	var currentViewController : SnippetsScrollContentProtocol? = nil
 
 	
     override func viewDidLoad() {
         super.viewDidLoad()
 
-		self.setupNotifications()
 		self.setupProfileButton()
 		self.loadContentViews()
+		self.updateInterfaceForLogin()
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
 	}
     
 	override func viewDidLayoutSubviews() {
@@ -69,18 +70,9 @@ class MainPhoneViewController: UIViewController {
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
 	}
 	
-	func setupNotifications() {
-		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: NSNotification.Name("TemporaryTokenReceivedNotification"), object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(onShowLogin), name: NSNotification.Name("Show Login"), object: nil)
-	}
 	
 	func loadContentViews() {
-
-		let storyboard = UIStoryboard(name: "Content", bundle: nil)
-		self.timelineViewController = storyboard.instantiateViewController(identifier: "TimelineViewController")
-		self.profileViewController = storyboard.instantiateViewController(identifier: "MyProfileViewController")
-		self.discoverViewController = storyboard.instantiateViewController(identifier: "DiscoverViewController")
-
+		
 		self.addChild(self.timelineViewController)
 		self.addChild(self.discoverViewController)
 		self.addChild(self.profileViewController)
@@ -146,8 +138,16 @@ class MainPhoneViewController: UIViewController {
 				}
 			}
 		}
+		else {
+			self.profileButton.setImage(UIImage(named: "login"), for: .normal)
+			self.profileButton.setTitle("Login", for: .normal)
+			self.onTabBarButtonPressed(self.timelineButton)
+		}
 	}
 
+	@objc func handleCurrentUserUpdatedNotification() {
+		self.updateInterfaceForLogin()
+	}
 
 	@IBAction func onTabBarButtonPressed(_ button : UIButton) {
 		if button == self.profileButton {
@@ -157,7 +157,8 @@ class MainPhoneViewController: UIViewController {
 			else {
 				self.timelineButton.isSelected = true
 				self.profileButton.isSelected = false
-				self.onShowLogin()
+				
+				NotificationCenter.default.post(name: .showLoginNotification, object: nil)
 			}
 		}
 		if button == self.timelineButton {
@@ -173,31 +174,7 @@ class MainPhoneViewController: UIViewController {
 	@objc func onSelectBlogConfiguration() {
 		Dialog(self).selectBlog()
 	}
-		
-	@objc func onShowLogin() {
-		let storyboard = UIStoryboard(name: "Login", bundle: nil)
-		self.loginViewController = storyboard.instantiateViewController(identifier: "LoginViewController")
-		self.present(self.loginViewController!, animated: true, completion: nil)
-	}
-	
-	@IBAction func onLogout() {
-		
-		let alertController = UIAlertController(title: "Logout", message: "Are you sure you want to logout?", preferredStyle: .alert)
-		alertController.addAction(UIAlertAction(title: "Logout", style: .default, handler: { (action) in
-			Settings.deleteSnippetsToken()
-			SnippetsUser.deleteCurrentUser()
-			
-			Snippets.shared.configure(permanentToken: "", blogUid: nil, mediaEndPoint: nil)
-			self.timelineViewController.updateLoggedInStatus()
-		}))
-		
-		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-		
-		self.present(alertController, animated: true) {
-		}
-	}
-
-	
+				
 	func onShowProfile() {
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 2.0
@@ -219,43 +196,6 @@ class MainPhoneViewController: UIViewController {
 		self.scrollView.setContentOffset(offset, animated: true)
 	}
 	
-	
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-	
-	@objc func handleTemporaryTokenReceivedNotification(_ notification : Notification) {
-		if let temporaryToken = notification.object as? String
-		{
-			Snippets.shared.requestPermanentTokenFromTemporaryToken(token: temporaryToken) { (error, token) in
-				if let permanentToken = token
-				{
-					
-					// Save our info and setup Snippets
-					Settings.saveSnippetsToken(permanentToken)
-					Snippets.shared.configure(permanentToken: permanentToken, blogUid: nil)
-
-					// We can hide the login view now...
-					DispatchQueue.main.async {
-						self.loginViewController?.dismiss(animated: true, completion: nil)
-						self.timelineViewController.prepareToDisplay()
-						self.timelineViewController.loadTimeline()
-					}
-					
-					Snippets.shared.fetchCurrentUserInfo { (error, updatedUser) in
-						
-						if let user = updatedUser {
-							_ = SnippetsUser.saveAsCurrent(user)
-							
-							self.updateInterfaceForLogin()
-							self.onSelectBlogConfiguration()
-						}
-					}
-				}
-			}
-		}
-	}
-
 }
 
 

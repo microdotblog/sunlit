@@ -12,12 +12,31 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	var window: UIWindow?
 
-
+	func configureSplitViewController() {
+		guard let splitViewController = UIApplication.shared.windows[0].rootViewController
+		  as? UISplitViewController else {
+		  fatalError("Missing SplitViewController")
+		}
+		
+		guard let navigationController = splitViewController.viewControllers.last as? UINavigationController
+			//let mainViewController = navigationController.topViewController as? MainViewController
+			else {
+				fatalError("Missing Main View Controller")
+			}
+		
+		splitViewController.preferredDisplayMode = .allVisible
+		
+		if UIDevice.current.userInterfaceIdiom == .phone {
+			splitViewController.viewControllers = [navigationController]
+		}
+	}
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 		// Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
 		// If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		guard let _ = (scene as? UIWindowScene) else { return }
+		
+		self.configureSplitViewController()
 	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {
@@ -53,7 +72,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			let url = urlContext.url
 			let token = url.lastPathComponent
 
-			NotificationCenter.default.post(name: NSNotification.Name("TemporaryTokenReceivedNotification"), object: token)
+			DispatchQueue.main.async {
+				NotificationCenter.default.post(name: .temporaryTokenReceivedNotification, object: token)
+			}
 		}
 	}
 
