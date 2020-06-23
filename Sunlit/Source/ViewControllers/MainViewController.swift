@@ -22,6 +22,7 @@ class MainViewController: UIViewController {
 	var discoverViewController : DiscoverViewController!
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
+	var currentContentViewController : SnippetsScrollContentProtocol? = nil
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,7 +82,7 @@ class MainViewController: UIViewController {
 	func setupNotifications() {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: .temporaryTokenReceivedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowLoginNotification), name: .showLoginNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleOpenURLNotification(_:)), name: NSNotification.Name("OpenURLNotification"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleOpenURLNotification(_:)), name: .openURLNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowCurrentUserProfileNotification), name: .showCurrentUserProfileNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowTimelineNotification), name: .showTimelineNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowDiscoverNotification), name: .showDiscoverNotification, object: nil)
@@ -184,38 +185,42 @@ class MainViewController: UIViewController {
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-	func clearPreviousContentViews() {
-		self.timelineViewController.removeFromParent()
-		self.discoverViewController.removeFromParent()
-		self.profileViewController.removeFromParent()
+	func activateContentViewController(_ viewController : SnippetsScrollContentProtocol) {
+
+		self.deactivateContentViewController(self.currentContentViewController)
+
+		if let currentViewController = viewController as? UIViewController {
+			self.addChild(currentViewController)
+			self.view.addSubview(currentViewController.view)
+			currentViewController.view.translatesAutoresizingMaskIntoConstraints = false
+			currentViewController.view.constrainAllSides(self.view)
+			currentViewController.view.setNeedsLayout()
+			currentViewController.view.layoutIfNeeded()
+		}
 		
-		self.timelineViewController.view.removeFromSuperview()
-		self.discoverViewController.view.removeFromSuperview()
-		self.profileViewController.view.removeFromSuperview()
+		self.currentContentViewController = viewController
+		self.currentContentViewController?.prepareToDisplay()
+	}
+	
+	func deactivateContentViewController(_ viewController : SnippetsScrollContentProtocol?) {
+		
+		if let previousViewController = viewController as? UIViewController {
+			previousViewController.removeFromParent()
+			previousViewController.view.removeFromSuperview()
+			viewController!.prepareToHide()
+		}
 	}
 	
 	func onTabletShowTimeline() {
-		self.clearPreviousContentViews()
-		
-		self.addChild(self.timelineViewController)
-		self.view.addSubview(self.timelineViewController.view)
-		self.view.constrainAllSides(self.timelineViewController.view)
+		self.activateContentViewController(self.timelineViewController)
 	}
 	
 	func onTabletShowDiscover() {
-		self.clearPreviousContentViews()
-		
-		self.addChild(self.discoverViewController)
-		self.view.addSubview(self.discoverViewController.view)
-		self.view.constrainAllSides(self.discoverViewController.view)
+		self.activateContentViewController(self.discoverViewController)
 	}
 
 	func onTabletShowProfile() {
-		self.clearPreviousContentViews()
-		
-		self.addChild(self.profileViewController)
-		self.view.addSubview(self.profileViewController.view)
-		self.view.constrainAllSides(self.profileViewController.view)
+		self.activateContentViewController(self.profileViewController)
 	}
 
 	
@@ -287,5 +292,10 @@ extension MainViewController : UISplitViewControllerDelegate {
 	func primaryViewController(forExpanding splitViewController: UISplitViewController) -> UIViewController? {
 		return nil
 	}
+	
+	func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+		return true
+	}
+	
 }
 

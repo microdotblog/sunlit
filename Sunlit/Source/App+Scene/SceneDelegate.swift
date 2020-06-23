@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		splitViewController.preferredDisplayMode = .allVisible
 		
 		if UIDevice.current.userInterfaceIdiom == .phone {
-			splitViewController.viewControllers = [navigationController]
+			splitViewController.viewControllers = [navigationController, navigationController]
 		}
 	}
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {

@@ -154,7 +154,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 	}
 	
 	@IBAction func onViewConversation() {
-		NotificationCenter.default.post(name: NSNotification.Name("View Conversation"), object: self.post)
+		NotificationCenter.default.post(name: .viewConversationNotification, object: self.post)
 	}
 	
 	@IBAction func onActivateReply() {

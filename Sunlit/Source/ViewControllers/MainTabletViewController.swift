@@ -23,6 +23,9 @@ class MainTabletViewController: UIViewController {
 
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
 		self.setupProfileButton()
+		self.onTimeLine()
+		
+		self.versionLabel.text = "Version " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
 	}
     
 	func updateInterfaceForLogin() {
@@ -66,6 +69,8 @@ class MainTabletViewController: UIViewController {
 		}
 		self.profileButton.setTitle(profileUsername, for: .normal)
 		self.profileButton.setImage(profileImage, for: .normal)
+		self.profileButton.titleLabel?.lineBreakMode = .byCharWrapping
+		self.profileButton.titleLabel?.numberOfLines = 4
 
 		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
 		self.profileButton.addGestureRecognizer(longpressGesture)

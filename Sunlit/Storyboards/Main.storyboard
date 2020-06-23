@@ -167,25 +167,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="LeN-xg-aHV">
-                                <rect key="frame" x="161" y="124" width="92" height="160"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" axis="vertical" distribution="fillProportionally" alignment="top" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="LeN-xg-aHV">
+                                <rect key="frame" x="32" y="124" width="350" height="160"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oUB-KM-K4B">
-                                        <rect key="frame" x="0.0" y="0.0" width="92" height="32"/>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oUB-KM-K4B">
+                                        <rect key="frame" x="0.0" y="0.0" width="90" height="32"/>
+                                        <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Timeline" image="feed"/>
                                         <connections>
                                             <action selector="onTimeLine" destination="Maa-K5-Q6T" eventType="touchUpInside" id="qYy-Rn-X2z"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RCF-fg-lGf">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RCF-fg-lGf">
                                         <rect key="frame" x="0.0" y="64" width="92" height="32"/>
+                                        <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Discover" image="discover"/>
                                         <connections>
                                             <action selector="onDiscover" destination="Maa-K5-Q6T" eventType="touchUpInside" id="itl-NH-Dir"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8h-Pp-xpL">
-                                        <rect key="frame" x="0.0" y="128" width="92" height="32"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8h-Pp-xpL">
+                                        <rect key="frame" x="0.0" y="128" width="76" height="32"/>
+                                        <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Profile" image="login"/>
                                         <connections>
                                             <action selector="onProfile" destination="Maa-K5-Q6T" eventType="touchUpInside" id="7sM-r6-9uY"/>
@@ -230,8 +233,10 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="llH-5D-grk" firstAttribute="trailing" secondItem="LeN-xg-aHV" secondAttribute="trailing" constant="32" id="0kr-dR-Rhp"/>
                             <constraint firstItem="1IH-m8-7BA" firstAttribute="centerX" secondItem="zDx-U3-Dfg" secondAttribute="centerX" id="3Ei-UU-515"/>
                             <constraint firstItem="1IH-m8-7BA" firstAttribute="bottom" secondItem="llH-5D-grk" secondAttribute="bottom" id="3JO-TQ-cbd"/>
+                            <constraint firstItem="LeN-xg-aHV" firstAttribute="leading" secondItem="llH-5D-grk" secondAttribute="leading" constant="32" id="49N-Z3-AdV"/>
                             <constraint firstItem="LeN-xg-aHV" firstAttribute="top" secondItem="llH-5D-grk" secondAttribute="top" constant="80" id="4kQ-CR-2Pw"/>
                             <constraint firstItem="LeN-xg-aHV" firstAttribute="centerX" secondItem="zDx-U3-Dfg" secondAttribute="centerX" id="Wm8-aL-Cw7"/>
                         </constraints>

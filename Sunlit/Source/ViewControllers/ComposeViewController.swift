@@ -326,7 +326,7 @@ class ComposeViewController: UIViewController {
 			if remotePath != nil {
 				alert.addAction(UIAlertAction(title: "View Post", style: .default, handler: { (action) in
 					self.dismiss(animated: true) {
-						NotificationCenter.default.post(name: NSNotification.Name("OpenURLNotification"), object: remotePath)
+						NotificationCenter.default.post(name: .openURLNotification, object: remotePath)
 					}
 				}))
 			}
