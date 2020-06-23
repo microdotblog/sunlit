@@ -128,9 +128,10 @@ class MainViewController: UIViewController {
 						if let user = updatedUser {
 							_ = SnippetsUser.saveAsCurrent(user)
 							
-							Dialog(self).selectBlog()
-
-							NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
+							DispatchQueue.main.async {
+								Dialog(self).selectBlog()
+								NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
+							}
 						}
 					}
 				}
