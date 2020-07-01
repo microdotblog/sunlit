@@ -20,11 +20,6 @@
       "scale" : "2x"
     },
     {
-      "filename" : "newtabs_effects@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
       "appearances" : [
         {
           "appearance" : "luminosity",

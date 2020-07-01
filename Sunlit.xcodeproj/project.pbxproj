@@ -173,11 +173,10 @@
 		C5EC1207248C30CE0032B84D /* Snippets.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EC1200248C30CD0032B84D /* Snippets.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5EC120B248C30E40032B84D /* NextLevelSessionExporter.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EC1208248C30E30032B84D /* NextLevelSessionExporter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5EC120C248C30E40032B84D /* NextLevelSessionExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC1209248C30E30032B84D /* NextLevelSessionExporter.swift */; };
-		C5EC1296248C33E40032B84D /* Mantis.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EC1294248C33E40032B84D /* Mantis.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5EC12D5248C34020032B84D /* MantisLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C5EC129C248C34010032B84D /* MantisLocalizable.strings */; };
 		C5EC12D6248C34020032B84D /* RatioOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC12AA248C34010032B84D /* RatioOptions.swift */; };
 		C5EC12D7248C34020032B84D /* Mantis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC12AB248C34010032B84D /* Mantis.swift */; };
-		C5EC12D8248C34020032B84D /* Mantis.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EC12AC248C34010032B84D /* Mantis.h */; };
+		C5EC12D8248C34020032B84D /* Mantis.h in Headers */ = {isa = PBXBuildFile; fileRef = C5EC12AC248C34010032B84D /* Mantis.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C5EC12D9248C34020032B84D /* CropToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC12AE248C34010032B84D /* CropToolbar.swift */; };
 		C5EC12DA248C34020032B84D /* RatioPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC12AF248C34010032B84D /* RatioPresenter.swift */; };
 		C5EC12DB248C34020032B84D /* FixedRatioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC12B0248C34010032B84D /* FixedRatioManager.swift */; };
@@ -442,8 +441,6 @@
 		C5EC1209248C30E30032B84D /* NextLevelSessionExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NextLevelSessionExporter.swift; path = Libraries/NextLevelSessionExporter/NextLevelSessionExporter.swift; sourceTree = SOURCE_ROOT; };
 		C5EC120A248C30E30032B84D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Libraries/NextLevelSessionExporter/Info.plist; sourceTree = SOURCE_ROOT; };
 		C5EC1292248C33E40032B84D /* Mantis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mantis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C5EC1294248C33E40032B84D /* Mantis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Mantis.h; path = ../../Mantis/Mantis.h; sourceTree = "<group>"; };
-		C5EC1295248C33E40032B84D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../../Mantis/Info.plist; sourceTree = "<group>"; };
 		C5EC129D248C34010032B84D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MantisLocalizable.strings; sourceTree = "<group>"; };
 		C5EC129E248C34010032B84D /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/MantisLocalizable.strings; sourceTree = "<group>"; };
 		C5EC129F248C34010032B84D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/MantisLocalizable.strings"; sourceTree = "<group>"; };
@@ -813,8 +810,6 @@
 		C5EC129A248C34010032B84D /* Mantis */ = {
 			isa = PBXGroup;
 			children = (
-				C5EC1294248C33E40032B84D /* Mantis.h */,
-				C5EC1295248C33E40032B84D /* Info.plist */,
 				C5EC129B248C34010032B84D /* Resources */,
 				C5EC12AA248C34010032B84D /* RatioOptions.swift */,
 				C5EC12AB248C34010032B84D /* Mantis.swift */,
@@ -1014,7 +1009,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5EC12D8248C34020032B84D /* Mantis.h in Headers */,
-				C5EC1296248C33E40032B84D /* Mantis.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1954,7 +1948,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
-				INFOPLIST_FILE = Mantis/Info.plist;
+				INFOPLIST_FILE = Libraries/Mantis/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1962,6 +1956,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MODULEMAP_FILE = "";
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.Mantis;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1985,7 +1980,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
-				INFOPLIST_FILE = Mantis/Info.plist;
+				INFOPLIST_FILE = Libraries/Mantis/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1993,6 +1988,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MODULEMAP_FILE = "";
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.Mantis;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
