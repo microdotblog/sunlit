@@ -34,7 +34,8 @@ class MainTabletViewController: UIViewController {
 			
 			// Update the user name...
 			DispatchQueue.main.async {
-				self.profileButton.setTitle("@" + user.userName, for: .normal)
+				//self.profileButton.setTitle("@" + user.userName, for: .normal)
+				self.profileButton.setTitle("Profile", for: .normal)
 				self.profileButton.centerVertically()
 			}
 			
@@ -60,7 +61,8 @@ class MainTabletViewController: UIViewController {
 		var profileImage : UIImage? = UIImage(named: "login")
 		var profileUsername = "Login"
 		if let current = SnippetsUser.current() {
-			profileUsername = "@" + current.userName
+			//profileUsername = "@" + current.userName
+			profileUsername = "Profile"
 			profileImage = ImageCache.prefetch(current.avatarURL)
 		
 			if let image = profileImage {
