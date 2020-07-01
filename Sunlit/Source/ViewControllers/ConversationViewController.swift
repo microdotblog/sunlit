@@ -48,8 +48,7 @@ class ConversationViewController: UIViewController {
 
 
 	func setupNotifications() {
-		NotificationCenter.default.addObserver(self, selector: #selector(handleAvatarLoadedNotification(_:)), name: Notification.Name("Avatar Loaded"), object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleUserProfileSelectedNotification), name: NSNotification.Name("Display User Profile"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleAvatarLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
@@ -130,16 +129,6 @@ class ConversationViewController: UIViewController {
 			self.tableView.reloadRows(at: [indexPath], with: .fade)
 		}
 	}
-
-	@objc func handleUserProfileSelectedNotification(_ notification : Notification) {
-		if let post = notification.object as? SunlitPost {
-			let storyBoard: UIStoryboard = UIStoryboard(name: "Profile", bundle: nil)
-			let profileViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
-			profileViewController.user = post.owner
-			self.navigationController?.pushViewController(profileViewController, animated: true)
-		}
-	}
-		
 }
 
 extension ConversationViewController : UITextViewDelegate {

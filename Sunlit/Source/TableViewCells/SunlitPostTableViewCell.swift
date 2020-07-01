@@ -147,7 +147,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 
 	@IBAction func onReply() {
 		Snippets.shared.reply(originalPost: self.post, content: self.replyField.text) { (error) in
-			NotificationCenter.default.post(name: NSNotification.Name("Reply Response"), object: error)
+			NotificationCenter.default.post(name: .notifyReplyPostedNotification, object: error)
 		}
 		
 		self.textView.resignFirstResponder()
@@ -160,7 +160,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 	@IBAction func onActivateReply() {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreen(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreen(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleEmojiSelectedNotification(_:)), name: NSNotification.Name("Emoji Selected"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleEmojiSelectedNotification(_:)), name: .emojiSelectedNotification, object: nil)
 		self.replyContainer.layer.borderWidth = 0.5;
 
 		self.replyField.isHidden = false
@@ -200,7 +200,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 				let tableViewLocation = cellOffset + textBoxOffset
 				let dictionary : [String : Any] = [ "keyboardOffset" : rawFrame, "tableViewLocation" : tableViewLocation]
 				
-				NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Keyboard Appear"), object: dictionary)
+				NotificationCenter.default.post(name: .scrollTableViewNotification, object: dictionary)
 			}
 		}
 	}
@@ -241,7 +241,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 	}
 	
 	@objc func handleUserTappedGesture() {
-		NotificationCenter.default.post(name: NSNotification.Name("Display User Profile"), object: self.post.owner)
+		NotificationCenter.default.post(name: .viewUserProfileNotification, object: self.post.owner)
 	}
 	
 	@objc func handleEmojiSelectedNotification(_ notification : Notification) {

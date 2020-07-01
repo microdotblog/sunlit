@@ -47,7 +47,7 @@ class ConversationTableViewCell : UITableViewCell {
 	}
 	
 	@objc func handleUserTappedGesture() {
-		NotificationCenter.default.post(name: NSNotification.Name("Display User Profile"), object: self.post)
+		NotificationCenter.default.post(name: .viewUserProfileNotification, object: self.post?.owner)
 	}
 	
 	func loadPhotos(_ owner : SnippetsUser, _ indexPath : IndexPath) {
@@ -59,7 +59,7 @@ class ConversationTableViewCell : UITableViewCell {
 			ImageCache.fetch(avatarSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: NSNotification.Name("Avatar Loaded"), object: indexPath)
+						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
 					}
 				}
 			}

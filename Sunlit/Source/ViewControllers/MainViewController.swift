@@ -89,6 +89,8 @@ class MainViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowComposeNotification), name: .showComposeNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowSettingsNotification), name: .showSettingsNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewPostNotification(_:)), name: .viewPostNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleViewUserProfileNotification(_:)), name: .viewUserProfileNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: .notifyReplyPostedNotification, object: nil)
 	}
 
 	@objc func handleViewPostNotification(_ notification : Notification) {
@@ -103,6 +105,26 @@ class MainViewController: UIViewController {
 			self.present(imageViewController, animated: true, completion: nil)
 		}
 	}
+	
+	@objc func handleViewUserProfileNotification(_ notification : Notification) {
+		if let owner = notification.object as? SnippetsUser {
+			let storyBoard: UIStoryboard = UIStoryboard(name: "Profile", bundle: nil)
+			let profileViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
+			profileViewController.user = owner
+			self.navigationController?.pushViewController(profileViewController, animated: true)
+		}
+	}
+
+	@objc func handleReplyResponseNotification(_ notification : Notification) {
+		var message = "Reply posted!"
+		
+		if let error = notification.object as? Error {
+			message = error.localizedDescription
+		}
+		
+		Dialog(self).information(message)
+	}
+
 	
 	@objc func handleOpenURLNotification(_ notification : Notification) {
 		if let path = notification.object as? String,

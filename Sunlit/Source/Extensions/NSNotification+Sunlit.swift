@@ -21,4 +21,9 @@ extension NSNotification.Name {
 	static let openURLNotification = NSNotification.Name("OpenURLNotification")
 	static let viewConversationNotification = NSNotification.Name("View Conversation")
 	static let viewPostNotification = NSNotification.Name("View Image")
+	static let viewUserProfileNotification = NSNotification.Name("Display User Profile")
+	static let notifyReplyPostedNotification = NSNotification.Name("Reply Response")
+	static let refreshCellNotification = NSNotification.Name("Feed Image Loaded")
+	static let scrollTableViewNotification = NSNotification.Name("Scroll Table View")
+	static let emojiSelectedNotification = NSNotification.Name("Emoji Selected")
 }

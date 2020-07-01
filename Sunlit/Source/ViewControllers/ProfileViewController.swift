@@ -189,12 +189,12 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		
 		if indexPath.section == 2 {
 			let post = self.userPosts[indexPath.item]
+			let imagePath = post.images[0]
+			var dictionary : [String : Any] = [:]
+			dictionary["imagePath"] = imagePath
+			dictionary["post"] = post
 			
-			let storyBoard: UIStoryboard = UIStoryboard(name: "ImageViewer", bundle: nil)
-			let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
-			imageViewController.pathToImage = post.images[0]
-			imageViewController.post = post
-			self.navigationController?.pushViewController(imageViewController, animated: true)
+			NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
 		}
 	}
 	

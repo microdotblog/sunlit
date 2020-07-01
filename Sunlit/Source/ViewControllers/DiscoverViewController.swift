@@ -59,10 +59,8 @@ class DiscoverViewController: UIViewController {
 	}
 
 	func setupNotifications() {
-		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: NSNotification.Name("Feed Image Loaded"), object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleUserProfileSelectedNotification), name: NSNotification.Name("Display User Profile"), object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: NSNotification.Name("Keyboard Appear"), object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: .scrollTableViewNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -239,7 +237,7 @@ class DiscoverViewController: UIViewController {
 			ImageCache.fetch(imageSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Feed Image Loaded"), object: indexPath)
+						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
 					}
 				}
 			}
@@ -250,7 +248,7 @@ class DiscoverViewController: UIViewController {
 			ImageCache.fetch(avatarSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Feed Image Loaded"), object: indexPath)
+						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
 					}
 				}
 			}
@@ -263,7 +261,7 @@ class DiscoverViewController: UIViewController {
 
 	@objc func emojiSelected(_ button : UIButton) {
 		if let emoji = button.title(for: .normal) {
-			NotificationCenter.default.post(name: NSNotification.Name("Emoji Selected"), object: emoji)
+			NotificationCenter.default.post(name: .emojiSelectedNotification, object: emoji)
 		}
 	}
 	
@@ -364,16 +362,7 @@ class DiscoverViewController: UIViewController {
 			}
 		}
 	}
-		
-	@objc func handleUserProfileSelectedNotification(_ notification : Notification) {
-		if let user = notification.object as? SnippetsUser {
-			let storyBoard: UIStoryboard = UIStoryboard(name: "Profile", bundle: nil)
-			let profileViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
-			profileViewController.user = user
-			self.navigationController?.pushViewController(profileViewController, animated: true)
-		}
-	}
-	
+			
 	@objc func handleViewConversationNotification(_ notification : Notification) {
 		if let post = notification.object as? SunlitPost {
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Conversation", bundle: nil)
@@ -382,17 +371,6 @@ class DiscoverViewController: UIViewController {
 			self.navigationController?.pushViewController(conversationViewController, animated: true)
 		}
 	}
-	
-	@objc func handleReplyResponseNotification(_ notification : Notification) {
-		var message = "Reply posted!"
-		
-		if let error = notification.object as? Error {
-			message = error.localizedDescription
-		}
-		
-		Dialog(self).information(message)
-	}
-	
 
 	func loadPhoto(_ path : String,  _ index : IndexPath) {
 		
@@ -485,12 +463,13 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		let post = self.posts[indexPath.row]
-
-		let storyBoard: UIStoryboard = UIStoryboard(name: "ImageViewer", bundle: nil)
-		let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
-		imageViewController.pathToImage = post.images[0]
-		imageViewController.post = post
-		self.navigationController?.pushViewController(imageViewController, animated: true)
+		
+		let imagePath = post.images[indexPath.item]
+		var dictionary : [String : Any] = [:]
+		dictionary["imagePath"] = imagePath
+		dictionary["post"] = post
+		
+		NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
 	}
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -522,11 +501,12 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
 		let post = self.posts[indexPath.item]
-		let storyBoard: UIStoryboard = UIStoryboard(name: "ImageViewer", bundle: nil)
-		let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
-		imageViewController.pathToImage = post.images[0]
-		imageViewController.post = post
-		self.navigationController?.pushViewController(imageViewController, animated: true)
+		let imagePath = post.images[indexPath.item]
+		var dictionary : [String : Any] = [:]
+		dictionary["imagePath"] = imagePath
+		dictionary["post"] = post
+		
+		NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
 	}
 	
 	
