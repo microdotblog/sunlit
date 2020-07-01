@@ -20,4 +20,5 @@ extension NSNotification.Name {
 	static let temporaryTokenReceivedNotification = NSNotification.Name(rawValue: "Temporary Token Received Notification")
 	static let openURLNotification = NSNotification.Name("OpenURLNotification")
 	static let viewConversationNotification = NSNotification.Name("View Conversation")
+	static let viewPostNotification = NSNotification.Name("View Image")
 }

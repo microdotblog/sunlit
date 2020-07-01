@@ -71,10 +71,10 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		self.post = SunlitPost.create(self.post, textColor: .white)
 		
 		self.postText.attributedText = self.post.text
-		self.userHandle.text = "@" + self.post.owner.userHandle
+		self.userHandle.text = "@" + self.post.owner.userName
 		self.fullUserName.text = self.post.owner.fullName
 		
-		ImageCache.fetch(self.post.owner.pathToUserImage) { (image) in
+		ImageCache.fetch(self.post.owner.avatarURL) { (image) in
 			DispatchQueue.main.async {
 				self.userAvatar.image = image
 			}
@@ -129,7 +129,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 	}
 	
 	@IBAction @objc func dismissViewController() {
-		self.navigationController?.popViewController(animated: true)
+		self.dismiss(animated: true, completion: nil)
 	}
 	
 	@IBAction @objc func onViewInSafari() {

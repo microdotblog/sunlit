@@ -102,8 +102,8 @@ class MainPhoneViewController: UIViewController {
 		var profileImage : UIImage? = UIImage(named: "login")
 		var profileUsername = "Login"
 		if let current = SnippetsUser.current() {
-			profileUsername = "@" + current.userHandle
-			profileImage = ImageCache.prefetch(current.pathToUserImage)
+			profileUsername = "@" + current.userName
+			profileImage = ImageCache.prefetch(current.avatarURL)
 		
 			if let image = profileImage {
 				profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
@@ -122,12 +122,12 @@ class MainPhoneViewController: UIViewController {
 			
 			// Update the user name...
 			DispatchQueue.main.async {
-				self.profileButton.setTitle("@" + user.userHandle, for: .normal)
+				self.profileButton.setTitle("@" + user.userName, for: .normal)
 				self.profileButton.centerVertically()
 			}
 			
 			// Go ahead and go get the avatar for the logged in user
-			ImageCache.fetch(user.pathToUserImage) { (image) in
+			ImageCache.fetch(user.avatarURL) { (image) in
 				
 				if let image = image {
 					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 32.0, height: 32.0)).withRenderingMode(.alwaysOriginal)

@@ -31,7 +31,7 @@ class ConversationTableViewCell : UITableViewCell {
 		
 		self.replyText.attributedText = post.text
 		self.userName.text = post.owner.fullName
-		self.userHandle.text = "@" + post.owner.userHandle
+		self.userHandle.text = "@" + post.owner.userName
 		self.loadPhotos(post.owner, indexPath)
 	}
 	
@@ -51,7 +51,7 @@ class ConversationTableViewCell : UITableViewCell {
 	}
 	
 	func loadPhotos(_ owner : SnippetsUser, _ indexPath : IndexPath) {
-		let avatarSource = owner.pathToUserImage
+		let avatarSource = owner.avatarURL
 		if let avatar = ImageCache.prefetch(avatarSource) {
 			self.avatar.image = avatar
 		}

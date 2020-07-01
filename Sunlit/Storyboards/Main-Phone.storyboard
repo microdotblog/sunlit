@@ -39,11 +39,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D6H-Gs-Up4">
                                 <rect key="frame" x="16" y="800" width="382" height="96"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="kuJ-kE-FD1">
-                                        <rect key="frame" x="45" y="8" width="292" height="88"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="kuJ-kE-FD1">
+                                        <rect key="frame" x="-24" y="8" width="430" height="88"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rpx-zo-iR9">
-                                                <rect key="frame" x="0.0" y="4" width="92" height="80"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="138" height="88"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="80" id="JAX-G2-Kk0"/>
                                                 </constraints>
@@ -56,7 +56,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1L-Lm-SBr">
-                                                <rect key="frame" x="100" y="4" width="92" height="80"/>
+                                                <rect key="frame" x="146" y="0.0" width="138" height="88"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="80" id="bbd-1R-Ebo"/>
                                                 </constraints>
@@ -69,14 +69,14 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Wz-cV-0mQ">
-                                                <rect key="frame" x="200" y="4" width="92" height="80"/>
+                                                <rect key="frame" x="292" y="0.0" width="138" height="88"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="80" id="CqY-n9-MKo"/>
                                                 </constraints>
                                                 <color key="tintColor" red="0.54106694460000004" green="0.72945708040000001" blue="0.87048029900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="Profile" image="login"/>
+                                                <state key="normal" title="@cheesemaker" image="login"/>
                                                 <connections>
                                                     <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="kYR-LU-xnW"/>
                                                 </connections>

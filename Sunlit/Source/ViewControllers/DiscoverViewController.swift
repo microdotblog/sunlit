@@ -66,9 +66,6 @@ class DiscoverViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleViewImageNotification(_:)), name: NSNotification.Name("View Image"), object: nil)
-
-		//NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
 	}
 	
 
@@ -248,7 +245,7 @@ class DiscoverViewController: UIViewController {
 			}
 		}
 		
-		let avatarSource = post.owner.pathToUserImage
+		let avatarSource = post.owner.avatarURL
 		if ImageCache.prefetch(avatarSource) == nil {
 			ImageCache.fetch(avatarSource) { (image) in
 				if let _ = image {
@@ -396,17 +393,6 @@ class DiscoverViewController: UIViewController {
 		Dialog(self).information(message)
 	}
 	
-	@objc func handleViewImageNotification(_ notification : Notification) {
-		if let dictionary = notification.object as? [String : Any] {
-			let imagePath = dictionary["imagePath"] as! String
-			let post = dictionary["post"] as! SunlitPost
-			let storyBoard: UIStoryboard = UIStoryboard(name: "ImageViewer", bundle: nil)
-			let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
-			imageViewController.pathToImage = imagePath
-			imageViewController.post = post
-			self.navigationController?.pushViewController(imageViewController, animated: true)
-		}
-	}
 
 	func loadPhoto(_ path : String,  _ index : IndexPath) {
 		
@@ -580,7 +566,7 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
 		if indexPath.item < self.posts.count {
 			let post = self.posts[indexPath.item]
-			cell.date.text = "@\(post.owner.userHandle)"
+			cell.date.text = "@\(post.owner.userName)"
 
 			cell.photo.image = nil
 			if let image = ImageCache.prefetch(post.images.first ?? "") {

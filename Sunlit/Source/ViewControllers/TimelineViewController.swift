@@ -41,7 +41,6 @@ class TimelineViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: NSNotification.Name("Reply Response"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleViewImageNotification(_:)), name: NSNotification.Name("View Image"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
 	}
 	
@@ -131,19 +130,7 @@ class TimelineViewController: UIViewController {
 			self.navigationController?.pushViewController(conversationViewController, animated: true)
 		}
 	}
-	
-	@objc func handleViewImageNotification(_ notification : Notification) {
-		if let dictionary = notification.object as? [String : Any] {
-			let imagePath = dictionary["imagePath"] as! String
-			let post = dictionary["post"] as! SunlitPost
-			let storyBoard: UIStoryboard = UIStoryboard(name: "ImageViewer", bundle: nil)
-			let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
-			imageViewController.pathToImage = imagePath
-			imageViewController.post = post
-			self.navigationController?.pushViewController(imageViewController, animated: true)
-		}
-	}
-	
+		
 	@objc func handleReplyResponseNotification(_ notification : Notification) {
 		var message = "Reply posted!"
 		
@@ -261,7 +248,7 @@ class TimelineViewController: UIViewController {
 			}
 		}
 		
-		let avatarSource = post.owner.pathToUserImage
+		let avatarSource = post.owner.avatarURL
 		if ImageCache.prefetch(avatarSource) == nil {
 			ImageCache.fetch(avatarSource) { (image) in
 				if let _ = image {

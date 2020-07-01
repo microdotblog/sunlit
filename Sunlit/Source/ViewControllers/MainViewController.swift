@@ -88,9 +88,22 @@ class MainViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowDiscoverNotification), name: .showDiscoverNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowComposeNotification), name: .showComposeNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowSettingsNotification), name: .showSettingsNotification, object: nil)
-
+		NotificationCenter.default.addObserver(self, selector: #selector(handleViewPostNotification(_:)), name: .viewPostNotification, object: nil)
 	}
 
+	@objc func handleViewPostNotification(_ notification : Notification) {
+		if let dictionary = notification.object as? [String : Any] {
+			let imagePath = dictionary["imagePath"] as! String
+			let post = dictionary["post"] as! SunlitPost
+			let storyBoard: UIStoryboard = UIStoryboard(name: "ImageViewer", bundle: nil)
+			let imageViewController = storyBoard.instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
+			imageViewController.pathToImage = imagePath
+			imageViewController.post = post
+			
+			self.present(imageViewController, animated: true, completion: nil)
+		}
+	}
+	
 	@objc func handleOpenURLNotification(_ notification : Notification) {
 		if let path = notification.object as? String,
 			let url = URL(string: path){

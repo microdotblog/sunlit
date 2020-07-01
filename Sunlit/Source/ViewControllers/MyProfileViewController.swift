@@ -241,19 +241,19 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 		cell.avatar.layer.cornerRadius = (cell.avatar.bounds.size.height - 1) / 2.0
 			
 		cell.fullName.text = user.fullName
-		cell.userHandle.text = "@" + user.userHandle
+		cell.userHandle.text = "@" + user.userName
 		
-		var address = user.pathToWebSite
+		var address = user.siteURL
 		if address.count > 0 && !address.contains("http") {
 			address = "https://" + address
 		}
 		cell.blogAddress.text = address
-		if let image = ImageCache.prefetch(user.pathToUserImage) {
+		if let image = ImageCache.prefetch(user.avatarURL) {
 			cell.avatar.image = image
 		}
 		else {
 			cell.avatar.image = UIImage(named: "welcome_waves")
-			self.loadPhoto(user.pathToUserImage, indexPath)
+			self.loadPhoto(user.avatarURL, indexPath)
 		}
 		
 		cell.followingCount.text = "---"

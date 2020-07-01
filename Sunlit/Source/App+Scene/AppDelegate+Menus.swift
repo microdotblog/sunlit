@@ -39,8 +39,8 @@ extension AppDelegate {
 			//if let current = user {
 				
 				DispatchQueue.main.async {
-					let profile_username = current.userHandle
-					var profile_image: UIImage? = ImageCache.prefetch(current.pathToUserImage)
+					let profile_username = current.userName
+					var profile_image: UIImage? = ImageCache.prefetch(current.avatarURL)
 					
 					if let image = profile_image {
 						profile_image = image.withRenderingMode(.alwaysOriginal)
@@ -55,7 +55,7 @@ extension AppDelegate {
 					builder.insertChild(view_menu, atStartOfMenu: .view)
 					
 					if profile_image == nil {
-						ImageCache.fetch(current.pathToUserImage) { (image) in
+						ImageCache.fetch(current.avatarURL) { (image) in
 							if let profile_image = image {
 								DispatchQueue.main.async {
 									profile_item.image = profile_image.withRenderingMode(.alwaysOriginal)

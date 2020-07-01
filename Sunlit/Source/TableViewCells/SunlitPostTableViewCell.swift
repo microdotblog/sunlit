@@ -113,7 +113,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 		
 		// Update the text objects
 		self.textView.attributedText = post.text
-		self.userHandle.text = "@" + post.owner.userHandle
+		self.userHandle.text = "@" + post.owner.userName
 		self.userName.text = post.owner.fullName
 		
 		if let date = post.publishedDate {
@@ -257,7 +257,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 	func setupAvatar() {
 		
 		self.userAvatar.image = nil
-		let avatarSource = self.post.owner.pathToUserImage
+		let avatarSource = self.post.owner.avatarURL
 		if let avatar = ImageCache.prefetch(avatarSource) {
 			self.userAvatar.image = avatar
 		}
@@ -380,7 +380,7 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 			dictionary["imagePath"] = imagePath
 			dictionary["post"] = self.post
 			
-			NotificationCenter.default.post(name: NSNotification.Name(rawValue: "View Image"), object: dictionary)
+			NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
 		}
 	}
 	

@@ -26,7 +26,7 @@ extension SnippetsUser {
 	var posts : [SnippetsPost] {
 		get {
 			var postArray : [SnippetsPost] = []
-			if let array = UserDefaults.standard.object(forKey: self.userHandle + "-Posts") as? [[String : Any]] {
+			if let array = UserDefaults.standard.object(forKey: self.userName + "-Posts") as? [[String : Any]] {
 				for dictionary in array {
 					let post = SnippetsPost(dictionary)
 					postArray.append(post)
@@ -41,7 +41,7 @@ extension SnippetsUser {
 				dictionaryArray.append(dictionary)
 			}
 			
-			UserDefaults.standard.set(dictionaryArray, forKey: self.userHandle + "-Posts")
+			UserDefaults.standard.set(dictionaryArray, forKey: self.userName + "-Posts")
 		}
 	}
 	
@@ -56,16 +56,16 @@ extension SnippetsUser {
 			dictionary["full_name"] = self.fullName
 		}
 		
-		if self.userHandle.count > 0 {
-			dictionary["user_handle"] = self.userHandle
+		if self.userName.count > 0 {
+			dictionary["user_handle"] = self.userName
 		}
 			
-		if self.pathToUserImage.count > 0 {
-			dictionary["path_to_user_image"] = self.pathToUserImage
+		if self.avatarURL.count > 0 {
+			dictionary["path_to_user_image"] = self.avatarURL
 		}
 			
-		if self.pathToWebSite.count > 0 {
-			dictionary["path_to_web_site"] = self.pathToWebSite
+		if self.siteURL.count > 0 {
+			dictionary["path_to_web_site"] = self.siteURL
 		}
 			
 		if self.bio.count > 0 {
@@ -122,7 +122,7 @@ extension SnippetsUser {
 	
 	static func save(_ user : SnippetsUser, key : String? = nil) -> SnippetsUser {
 		
-		var saveKey = user.userHandle
+		var saveKey = user.userName
 		if let k = key {
 			saveKey = k
 		}
@@ -141,9 +141,9 @@ extension SnippetsUser {
 		if let dictionary = UserDefaults.standard.object(forKey: userHandle) as? [String : Any] {
 			let user = SnippetsUser()
 			user.fullName = dictionary["full_name"] as? String ?? ""
-			user.userHandle = dictionary["user_handle"] as? String ?? ""
-			user.pathToUserImage = dictionary["path_to_user_image"] as? String ?? ""
-			user.pathToWebSite = dictionary["path_to_web_site"] as? String ?? ""
+			user.userName = dictionary["user_handle"] as? String ?? ""
+			user.avatarURL = dictionary["path_to_user_image"] as? String ?? ""
+			user.siteURL = dictionary["path_to_web_site"] as? String ?? ""
 			user.bio = dictionary["bio"] as? String ?? ""
 			user.followingCount = dictionary["following_count"] as? Int ?? 0
 			user.discoverCount = dictionary["discover_count"] as? Int ?? 0

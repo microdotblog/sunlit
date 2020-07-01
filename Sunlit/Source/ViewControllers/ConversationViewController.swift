@@ -148,7 +148,7 @@ extension ConversationViewController : UITextViewDelegate {
 		if self.replyField.text.count <= 0 {
 			var users = Set<String>()
 			for reply in self.posts {
-				users.insert(reply.owner.userHandle)
+				users.insert(reply.owner.userName)
 			}
 	
 			for user in users {
