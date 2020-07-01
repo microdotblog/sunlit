@@ -236,13 +236,13 @@ public class Snippets : NSObject {
 
 	@objc public func fetchUserPosts(user : SnippetsUser, completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
-		let route = "posts/\(user.userHandle)"
+		let route = "posts/\(user.userName)"
 		self.fetchTimeline(self.pathForRoute(route), completion: completion)
 	}
 	
 	@objc public func fetchUserMediaPosts(user : SnippetsUser, completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
-		let route = "/posts/\(user.userHandle)/photos"
+		let route = "/posts/\(user.userName)/photos"
 		self.fetchTimeline(self.pathForRoute(route), completion: completion)
 	}
 	
@@ -279,7 +279,7 @@ public class Snippets : NSObject {
 
 	@objc public func fetchUserDetails(user : SnippetsUser, completion: @escaping(Error?, SnippetsUser?, [SnippetsPost]) -> ())
 	{
-		let route = "posts/\(user.userHandle)"
+		let route = "posts/\(user.userName)"
 
 		let request = self.secureGet(path: self.pathForRoute(route), arguments: [:])
 	
@@ -322,7 +322,7 @@ public class Snippets : NSObject {
 			return
 		}
 
-		let arguments : [ String : String ] = [ "username" : user.userHandle ]
+		let arguments : [ String : String ] = [ "username" : user.userName ]
 		
 		let request = self.securePost(path: self.pathForRoute("users/follow"), arguments: arguments)
 		
@@ -339,7 +339,7 @@ public class Snippets : NSObject {
 			return
 		}
 
-		let arguments : [ String : String ] = [ "username" : user.userHandle ]
+		let arguments : [ String : String ] = [ "username" : user.userName ]
 		
 		let request = self.securePost(path: self.pathForRoute("users/unfollow"), arguments: arguments)
 		
@@ -356,7 +356,7 @@ public class Snippets : NSObject {
 			return
 		}
 		
-		let route = "users/is_following?username=\(user.userHandle)"
+		let route = "users/is_following?username=\(user.userName)"
 		let request = self.secureGet(path: self.pathForRoute(route), arguments: [:])
 		
 		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
@@ -382,10 +382,10 @@ public class Snippets : NSObject {
 			return
 		}
 		
-		var route = "users/following/\(user.userHandle)"
+		var route = "users/following/\(user.userName)"
 		if (!completeList)
 		{
-			route = "users/discover/\(user.userHandle)"
+			route = "users/discover/\(user.userName)"
 		}
 		
 		let request = self.secureGet(path: self.pathForRoute(route), arguments: [:])

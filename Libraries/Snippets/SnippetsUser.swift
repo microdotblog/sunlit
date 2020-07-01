@@ -26,14 +26,14 @@ open class SnippetsUser : NSObject
 	}
 	
 	@objc public var fullName = ""
-	@objc public var userHandle = ""
-	@objc public var pathToUserImage = ""
-	@objc public var pathToWebSite = ""
+	@objc public var userName = ""
+	@objc public var avatarURL = ""
+	@objc public var siteURL = ""
 	@objc public var bio = ""
 	@objc public var followingCount : Int = 0
 	@objc public var discoverCount : Int = 0
 	@objc public var isFollowing = false
-	@objc public var userImage : SnippetsImage? = nil
+	@objc public var avatarImage : SnippetsImage? = nil
 
 	private var avatarDownloadHttpSession : UUHttpRequest?
 }
@@ -44,11 +44,11 @@ extension SnippetsUser {
 
 	@objc public func loadUserImage(completion: @escaping()-> ())
 	{
-		if let imageData = UUDataCache.shared.data(for: self.pathToUserImage)
+		if let imageData = UUDataCache.shared.data(for: self.avatarURL)
 		{
 			if let image = SnippetsImage(data: imageData)
 			{
-				self.userImage = image
+				self.avatarImage = image
 				completion()
 				return
 			}
@@ -56,14 +56,14 @@ extension SnippetsUser {
 
 		if self.avatarDownloadHttpSession == nil {
 			// If we have gotten here, then there is no image available to display so we need to fetch it...
-			let request = UUHttpRequest(url: self.pathToUserImage)
+			let request = UUHttpRequest(url: self.avatarURL)
 			self.avatarDownloadHttpSession = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 				if let image = parsedServerResponse.parsedResponse as? SnippetsImage
 				{
 					if let imageData = image.uuPngData()
 					{
-						UUDataCache.shared.set(data: imageData, for: self.pathToUserImage)
-						self.userImage = image
+						UUDataCache.shared.set(data: imageData, for: self.avatarURL)
+						self.avatarImage = image
 						completion()
 					}
 				}
@@ -75,7 +75,7 @@ extension SnippetsUser {
 	{
 		if let userName = snippetsDictionary["username"] as? String
 		{
-			self.userHandle = userName
+			self.userName = userName
 		}
 		if let bio = snippetsDictionary["bio"] as? String
 		{
@@ -99,7 +99,7 @@ extension SnippetsUser {
 	{
 		if let userName = authorDictionary["username"] as? String
 		{
-			self.userHandle = userName
+			self.userName = userName
 		}
 		
 		if let bio = authorDictionary["bio"] as? String
@@ -123,18 +123,18 @@ extension SnippetsUser {
 		}
 		
 		if let userImagePath = authorDictionary["avatar"] as? String {
-			self.pathToUserImage = userImagePath
+			self.avatarURL = userImagePath
 		}
 		else if let userImagePath = authorDictionary["gravatar_url"] as? String {
-			self.pathToUserImage = userImagePath
+			self.avatarURL = userImagePath
 		}
 		if let site = authorDictionary["url"] as? String {
-			self.pathToWebSite = site
+			self.siteURL = site
 		}
 		
-		if self.pathToWebSite.count <=  0 {
+		if self.siteURL.count <=  0 {
 			if let site = authorDictionary["default_site"] as? String{
-				self.pathToWebSite = site
+				self.siteURL = site
 			}
 		}
 	}
