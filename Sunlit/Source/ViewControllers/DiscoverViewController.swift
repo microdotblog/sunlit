@@ -501,7 +501,7 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
 		let post = self.posts[indexPath.item]
-		let imagePath = post.images[indexPath.item]
+		let imagePath = post.images[0]
 		var dictionary : [String : Any] = [:]
 		dictionary["imagePath"] = imagePath
 		dictionary["post"] = post
