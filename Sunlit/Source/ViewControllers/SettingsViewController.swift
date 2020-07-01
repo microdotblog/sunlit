@@ -80,7 +80,7 @@ class SettingsViewController: UIViewController {
 			Settings.logout()
 
 			NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
-			self.navigationController?.popViewController(animated: true)
+			self.dismiss(animated: true, completion: nil)
 		}
 	}
 	

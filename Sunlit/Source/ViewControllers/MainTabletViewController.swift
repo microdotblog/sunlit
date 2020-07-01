@@ -115,7 +115,16 @@ class MainTabletViewController: UIViewController {
 		self.clearButtonStates()
 		self.profileButton.isSelected = true
 
-		NotificationCenter.default.post(name: .showCurrentUserProfileNotification, object: nil)
+		if let _ = SnippetsUser.current() {
+			NotificationCenter.default.post(name: .showCurrentUserProfileNotification, object: nil)
+		}
+		else {
+			self.timelineButton.isSelected = true
+			self.profileButton.isSelected = false
+			
+			NotificationCenter.default.post(name: .showLoginNotification, object: nil)
+		}
+
 	}
 
 	@IBAction func onSettings() {

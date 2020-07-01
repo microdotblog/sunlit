@@ -99,6 +99,12 @@ class Dialog {
 			}
 		}
 		
+		if let popoverController = actionSheet.popoverPresentationController {
+			popoverController.sourceView = self.viewController.view
+			popoverController.sourceRect = CGRect(x: self.viewController.view.center.x, y: self.viewController.view.center.y, width: 0, height: 0)
+			popoverController.permittedArrowDirections = [] 
+		}
+		
 		self.viewController.present(actionSheet, animated: true) {
 		}
 
