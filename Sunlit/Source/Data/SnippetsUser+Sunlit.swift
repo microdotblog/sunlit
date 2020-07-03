@@ -12,15 +12,8 @@ import Snippets
 extension SnippetsUser {
 	
 	func attributedTextBio(font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> NSAttributedString {
-		
-		var attributedBio : NSAttributedString = NSAttributedString(string: self.bio)
 		let formattedBio = SunlitPost.addTextStyle(string: self.bio, font: font, textColor: textColor)
-		let htmlData = formattedBio.data(using: .utf16)!
-		if let attributedString = try? NSAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
-			attributedBio = attributedString
-		}
-
-		return attributedBio
+		return NSAttributedString(string: formattedBio).html()
 	}
 	
 	var posts : [SnippetsPost] {
@@ -155,5 +148,4 @@ extension SnippetsUser {
 		return nil
 	}
 }
-
 

@@ -197,7 +197,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="1IH-m8-7BA">
-                                <rect key="frame" x="87" y="649.5" width="240" height="212.5"/>
+                                <rect key="frame" x="87" y="617.5" width="240" height="212.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uk9-mv-Ved">
                                         <rect key="frame" x="0.0" y="0.0" width="240" height="32"/>
@@ -235,7 +235,7 @@
                         <constraints>
                             <constraint firstItem="llH-5D-grk" firstAttribute="trailing" secondItem="LeN-xg-aHV" secondAttribute="trailing" constant="32" id="0kr-dR-Rhp"/>
                             <constraint firstItem="1IH-m8-7BA" firstAttribute="centerX" secondItem="zDx-U3-Dfg" secondAttribute="centerX" id="3Ei-UU-515"/>
-                            <constraint firstItem="1IH-m8-7BA" firstAttribute="bottom" secondItem="llH-5D-grk" secondAttribute="bottom" id="3JO-TQ-cbd"/>
+                            <constraint firstItem="1IH-m8-7BA" firstAttribute="bottom" secondItem="llH-5D-grk" secondAttribute="bottom" constant="-32" id="3JO-TQ-cbd"/>
                             <constraint firstItem="LeN-xg-aHV" firstAttribute="leading" secondItem="llH-5D-grk" secondAttribute="leading" constant="32" id="49N-Z3-AdV"/>
                             <constraint firstItem="LeN-xg-aHV" firstAttribute="top" secondItem="llH-5D-grk" secondAttribute="top" constant="80" id="4kQ-CR-2Pw"/>
                             <constraint firstItem="LeN-xg-aHV" firstAttribute="centerX" secondItem="zDx-U3-Dfg" secondAttribute="centerX" id="Wm8-aL-Cw7"/>

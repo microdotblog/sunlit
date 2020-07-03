@@ -40,13 +40,10 @@
                                 <rect key="frame" x="16" y="800" width="382" height="96"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="kuJ-kE-FD1">
-                                        <rect key="frame" x="-24" y="8" width="430" height="88"/>
+                                        <rect key="frame" x="0.0" y="8" width="382" height="88"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rpx-zo-iR9">
-                                                <rect key="frame" x="0.0" y="0.0" width="138" height="88"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="80" id="JAX-G2-Kk0"/>
-                                                </constraints>
+                                                <rect key="frame" x="0.0" y="0.0" width="122" height="88"/>
                                                 <color key="tintColor" red="0.54106694460000004" green="0.72945708040000001" blue="0.87048029900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
@@ -56,10 +53,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1L-Lm-SBr">
-                                                <rect key="frame" x="146" y="0.0" width="138" height="88"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="80" id="bbd-1R-Ebo"/>
-                                                </constraints>
+                                                <rect key="frame" x="130" y="0.0" width="122" height="88"/>
                                                 <color key="tintColor" red="0.54106694460000004" green="0.72945708040000001" blue="0.87048029900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
@@ -69,10 +63,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Wz-cV-0mQ">
-                                                <rect key="frame" x="292" y="0.0" width="138" height="88"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="80" id="CqY-n9-MKo"/>
-                                                </constraints>
+                                                <rect key="frame" x="260" y="0.0" width="122" height="88"/>
                                                 <color key="tintColor" red="0.54106694460000004" green="0.72945708040000001" blue="0.87048029900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
@@ -82,13 +73,19 @@
                                                 </connections>
                                             </button>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="e1L-Lm-SBr" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="EBf-DT-i0Q"/>
+                                            <constraint firstItem="0Wz-cV-0mQ" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="gBG-dq-S0g"/>
+                                        </constraints>
                                     </stackView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="kuJ-kE-FD1" secondAttribute="trailing" id="8TY-id-BtS"/>
                                     <constraint firstItem="kuJ-kE-FD1" firstAttribute="centerX" secondItem="D6H-Gs-Up4" secondAttribute="centerX" id="Let-HH-ckv"/>
-                                    <constraint firstAttribute="height" constant="96" id="Lpg-u2-R5b"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="96" id="Lpg-u2-R5b"/>
                                     <constraint firstAttribute="bottom" secondItem="kuJ-kE-FD1" secondAttribute="bottom" id="hjN-Vc-7Qm"/>
+                                    <constraint firstItem="kuJ-kE-FD1" firstAttribute="leading" secondItem="D6H-Gs-Up4" secondAttribute="leading" id="wmv-A7-jTa"/>
                                     <constraint firstItem="kuJ-kE-FD1" firstAttribute="top" secondItem="D6H-Gs-Up4" secondAttribute="top" constant="8" id="zGk-si-zF7"/>
                                 </constraints>
                             </view>

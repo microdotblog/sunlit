@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C5309CB724AEABE700551AC7 /* NSAttributedString+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */; };
 		C55DC3132489D37600C1F8A5 /* UUSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC2BA2489D2F700C1F8A5 /* UUSwift.framework */; };
 		C55DC495248A152A00C1F8A5 /* Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3012489D33300C1F8A5 /* Snippets.framework */; };
 		C55DC496248A152A00C1F8A5 /* Snippets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3012489D33300C1F8A5 /* Snippets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -271,6 +272,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+Sunlit.swift"; path = "Source/Extensions/NSAttributedString+Sunlit.swift"; sourceTree = "<group>"; };
 		C55DC2BA2489D2F700C1F8A5 /* UUSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UUSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55DC3012489D33300C1F8A5 /* Snippets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Snippets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55DC3992489D5CB00C1F8A5 /* NextLevelSessionExporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NextLevelSessionExporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -554,6 +556,7 @@
 				C5A1DE4B24901D9D00B50B54 /* UIView+Sunlit.swift */,
 				C5A1DE4E24901D9D00B50B54 /* URL+Sunlit.swift */,
 				C5E26A3F24A061AB00F9E158 /* NSNotification+Sunlit.swift */,
+				C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -1418,6 +1421,7 @@
 				C5A1DE8124901DCC00B50B54 /* AboutViewController.swift in Sources */,
 				C5A1DE5C24901DAD00B50B54 /* Tagmoji.swift in Sources */,
 				C5A1DE9924901DF500B50B54 /* AppDelegate.swift in Sources */,
+				C5309CB724AEABE700551AC7 /* NSAttributedString+Sunlit.swift in Sources */,
 				C5A1DE7824901DCC00B50B54 /* LoginViewController.swift in Sources */,
 				C5A1DE7924901DCC00B50B54 /* DiscoverViewController.swift in Sources */,
 				C5A1DE9124901DE600B50B54 /* SunlitPostCollectionViewCell.swift in Sources */,

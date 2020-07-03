@@ -33,7 +33,6 @@ class MyProfileViewController: UIViewController {
 			self.navigationItem.title = user.fullName
 		}
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
     }
 		
 	@objc func handleCurrentUserUpdatedNotification() {
@@ -315,10 +314,13 @@ extension MyProfileViewController : SnippetsScrollContentProtocol {
 		self.user = SnippetsUser.current()
 		self.collectionView.reloadData()
 
+		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
+
 		self.fetchUserInfo()
 	}
 	
 	func prepareToHide() {
+		NotificationCenter.default.removeObserver(self)
 	}
 	
 }

@@ -107,14 +107,18 @@ class MainPhoneViewController: UIViewController {
 		var profileUsername = "Login"
 		if let current = SnippetsUser.current() {
 			profileUsername = "@" + current.userName
-			profileImage = ImageCache.prefetch(current.avatarURL)
-		
-			if let image = profileImage {
-				profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
+			if let image = ImageCache.prefetch(current.avatarURL) {
+				profileImage = image
 			}
 		}
+
+		if let image = profileImage {
+			profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
+		}
+
 		self.profileButton.setTitle(profileUsername, for: .normal)
 		self.profileButton.setImage(profileImage, for: .normal)
+		self.profileButton.centerVertically()
 
 		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
 		self.profileButton.addGestureRecognizer(longpressGesture)
@@ -134,10 +138,11 @@ class MainPhoneViewController: UIViewController {
 			ImageCache.fetch(user.avatarURL) { (image) in
 				
 				if let image = image {
-					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 32.0, height: 32.0)).withRenderingMode(.alwaysOriginal)
+					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
 					DispatchQueue.main.async {
 						self.profileButton.setImage(profileImage, for: .normal)
 						self.profileButton.centerVertically()
+						self.view.layoutIfNeeded()
 					}
 				}
 			}

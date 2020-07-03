@@ -66,7 +66,6 @@ class DiscoverViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 	
 
@@ -308,7 +307,6 @@ class DiscoverViewController: UIViewController {
 	}
 	
 	@objc func keyboardOnScreenNotification(_ notification : Notification) {
-		print("keyboardOnScreenNotification")
 		if let info : [AnyHashable : Any] = notification.userInfo {
 			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
 
@@ -321,11 +319,6 @@ class DiscoverViewController: UIViewController {
 				}
 			}
 		}
-	}
-
-	@objc func keyboardOffScreenNotification(_ notification : Notification) {
-		//self.keyboardAccessoryView.alpha = 0.0
-		//self.keyboardAccessoryView.removeFromSuperview()
 	}
 
 	
@@ -385,6 +378,7 @@ class DiscoverViewController: UIViewController {
 		ImageCache.fetch(path) { (image) in
 			if let _ = image {
 				DispatchQueue.main.async {
+					
 					if self.collectionView.isHidden == false {
 						self.collectionView.performBatchUpdates({
 							if index.item < self.posts.count {
@@ -530,7 +524,6 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		
 		if indexPath.item < self.posts.count {
 			let post = self.posts[indexPath.item]
 			self.loadPhoto(post.images.first ?? "", indexPath)
@@ -538,6 +531,7 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+		
 		for indexPath in indexPaths {
 			if indexPath.item < self.posts.count {
 				let post = self.posts[indexPath.item]
