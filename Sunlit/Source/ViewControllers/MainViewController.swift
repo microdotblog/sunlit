@@ -231,7 +231,6 @@ class MainViewController: UIViewController {
 			currentViewController.view.translatesAutoresizingMaskIntoConstraints = false
 			currentViewController.view.constrainAllSides(self.view)
 			currentViewController.view.setNeedsLayout()
-			currentViewController.view.layoutIfNeeded()
 		}
 		
 		self.currentContentViewController = viewController
