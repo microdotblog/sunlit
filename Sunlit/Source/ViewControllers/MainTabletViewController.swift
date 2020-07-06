@@ -39,6 +39,7 @@ class MainTabletViewController: UIViewController {
 			// Update the user name...
 			DispatchQueue.main.async {
 				//self.profileButton.setTitle("@" + user.userName, for: .normal)
+				self.profileButton.setImage(UIImage(named: "login"), for: .normal)
 				self.profileButton.setTitle("Profile", for: .normal)
 				self.profileButton.centerVertically()
 			}
@@ -47,11 +48,14 @@ class MainTabletViewController: UIViewController {
 			ImageCache.fetch(user.avatarURL) { (image) in
 				
 				if let image = image {
-					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 32.0, height: 32.0)).withRenderingMode(.alwaysOriginal)
+					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
 					DispatchQueue.main.async {
 						self.profileButton.setImage(profileImage, for: .normal)
 						self.profileButton.centerVertically()
 					}
+				}
+				else {
+					
 				}
 			}
 		}
@@ -67,10 +71,19 @@ class MainTabletViewController: UIViewController {
 		if let current = SnippetsUser.current() {
 			//profileUsername = "@" + current.userName
 			profileUsername = "Profile"
-			profileImage = ImageCache.prefetch(current.avatarURL)
 		
-			if let image = profileImage {
+			if let image = ImageCache.prefetch(current.avatarURL) {
 				profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
+			}
+			else {
+				ImageCache.fetch(current.avatarURL) { (image) in
+					if let image = ImageCache.prefetch(current.avatarURL) {
+						let profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
+						DispatchQueue.main.async {
+							self.profileButton.setImage(profileImage, for: .normal)
+						}
+					}
+				}
 			}
 		}
 		self.profileButton.setTitle(profileUsername, for: .normal)
