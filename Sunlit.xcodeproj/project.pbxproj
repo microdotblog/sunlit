@@ -747,8 +747,7 @@
 				C5A1DEDF2490675400B50B54 /* XmlDeclaration.swift */,
 				C5A1DEC12490675300B50B54 /* XmlTreeBuilder.swift */,
 			);
-			name = SwiftSoup;
-			path = ../SwiftSoup;
+			path = SwiftSoup;
 			sourceTree = "<group>";
 		};
 		C5A1DF36249144D300B50B54 /* Credits */ = {
