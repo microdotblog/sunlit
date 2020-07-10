@@ -70,7 +70,7 @@
                                                             </constraints>
                                                         </view>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" name="color_timeline_header"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="72" id="EkW-p4-yMI"/>
                                                         <constraint firstItem="ua1-Hx-RI1" firstAttribute="leading" secondItem="o3t-GU-uzm" secondAttribute="leading" constant="8" id="TqP-mU-sri"/>

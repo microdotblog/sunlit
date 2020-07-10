@@ -106,7 +106,11 @@ class TimelineViewController: UIViewController {
 	@objc func handleImageLoadedNotification(_ notification : Notification) {
 		if let indexPath = notification.object as? IndexPath {
 			if indexPath.row < self.tableViewData.count {
-				self.tableView.reloadRows(at: [ indexPath ], with: .none)
+				if let visibleCells = self.tableView.indexPathsForVisibleRows {
+					if visibleCells.contains(indexPath) {
+						self.tableView.reloadRows(at: [ indexPath ], with: .none)
+					}
+				}
 			}
 		}
 	}
