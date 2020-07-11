@@ -59,8 +59,8 @@ class MainViewController: UIViewController {
 	func setupNavigationBar() {
 
 		if UIDevice.current.userInterfaceIdiom == .phone {
-			let postButton = UIBarButtonItem(image: UIImage(named: "post"), style: .plain, target: self, action: #selector(onNewPost))
-			let settingsButton = UIBarButtonItem(image: UIImage(named: "settings_icon"), style: .plain, target: self, action: #selector(onSettings))
+			let postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
+			let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(onSettings))
 			self.navigationItem.title = "Timeline"
 			self.navigationItem.leftBarButtonItem = settingsButton
 			self.navigationItem.rightBarButtonItem = postButton
