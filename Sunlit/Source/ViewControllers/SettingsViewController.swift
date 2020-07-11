@@ -10,7 +10,6 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-	@IBOutlet var versionNumber : UILabel!
 	@IBOutlet var microBlogButton : UIButton!
 	@IBOutlet var wordPressButton : UIButton!
 	@IBOutlet var signOutButton : UIButton!
@@ -25,7 +24,6 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		self.versionNumber.text = "Version " + (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String)
 		self.navigationItem.title = "Settings"
 		self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Credits", style: .plain, target: self, action: #selector(onViewCredits))
 	}

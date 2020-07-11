@@ -135,6 +135,12 @@ class ComposeViewController: UIViewController {
 		alertController.addAction(altTextAction)
 		alertController.addAction(cancelAction)
 		
+		if let popoverController = alertController.popoverPresentationController {
+			popoverController.sourceView = self.view
+			popoverController.sourceRect = CGRect(x: self.view.center.x, y: self.view.center.y, width: 0, height: 0)
+			popoverController.permittedArrowDirections = []
+		}
+		
 		self.present(alertController, animated: true, completion: nil)
 	}
 	

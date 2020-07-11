@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,10 +21,10 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="anV-E6-LW0">
                                         <rect key="frame" x="24" y="28" width="350" height="22"/>
-                                        <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Micro.blog hosted weblog" image="rectangle" catalog="system">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="titleColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <state key="disabled" image="checkmark.rectangle.fill" catalog="system"/>
                                         <state key="selected" image="checkmark.rectangle.fill" catalog="system"/>
@@ -34,10 +35,10 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ru-Iw-kwn">
                                         <rect key="frame" x="24" y="78" width="350" height="22"/>
-                                        <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="WordPress or compatible weblog" image="rectangle" catalog="system">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="titleColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <state key="disabled" image="checkmark.rectangle.fill"/>
                                         <state key="selected" image="checkmark.rectangle.fill" catalog="system"/>
@@ -47,7 +48,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.9473939994131455" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" name="color_signin_bar"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="7yP-Yn-FzB"/>
                                     <constraint firstAttribute="bottom" secondItem="4ru-Iw-kwn" secondAttribute="bottom" constant="28" id="AdU-5G-S1f"/>
@@ -64,25 +65,12 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oSu-fC-8in">
-                                <rect key="frame" x="8" y="841.5" width="398" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome_waves" translatesAutoresizingMaskIntoConstraints="NO" id="7M3-MV-ATo">
-                                <rect key="frame" x="0.0" y="585" width="414" height="248.5"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.34999999999999998" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome_waves" translatesAutoresizingMaskIntoConstraints="NO" id="7M3-MV-ATo">
+                                <rect key="frame" x="0.0" y="613.5" width="414" height="248.5"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="7M3-MV-ATo" secondAttribute="height" multiplier="400:240" id="IAl-yV-nH9"/>
+                                    <constraint firstAttribute="width" secondItem="7M3-MV-ATo" secondAttribute="height" multiplier="400:240" priority="750" id="IAl-yV-nH9"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rQs-dT-iWL">
-                                <rect key="frame" x="177" y="452.5" width="60" height="30"/>
-                                <state key="normal" title="Sign Out"/>
-                                <connections>
-                                    <action selector="onSignout" destination="kWB-by-1xh" eventType="touchUpInside" id="P2j-Sk-G83"/>
-                                </connections>
-                            </button>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4B6-eC-GMc">
                                 <rect key="frame" x="8" y="292.5" width="398" height="128"/>
                                 <subviews>
@@ -117,7 +105,7 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.94739399940000002" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" name="color_signin_bar"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="4kp-F1-h5l" secondAttribute="trailing" constant="8" id="1jj-Ek-4DT"/>
                                     <constraint firstItem="VBp-6a-vPW" firstAttribute="leading" secondItem="4B6-eC-GMc" secondAttribute="leading" constant="8" id="2aB-lo-LUN"/>
@@ -128,32 +116,35 @@
                                     <constraint firstItem="H8A-Jn-lgz" firstAttribute="leading" secondItem="4B6-eC-GMc" secondAttribute="leading" constant="16" id="ncd-AX-RAl"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rQs-dT-iWL">
+                                <rect key="frame" x="177" y="484.5" width="60" height="30"/>
+                                <state key="normal" title="Sign Out"/>
+                                <connections>
+                                    <action selector="onSignout" destination="kWB-by-1xh" eventType="touchUpInside" id="P2j-Sk-G83"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="nzu-tx-a4a" firstAttribute="top" secondItem="20l-ij-qN6" secondAttribute="bottom" constant="16" id="2WG-X3-pHJ"/>
+                            <constraint firstItem="rQs-dT-iWL" firstAttribute="top" secondItem="4B6-eC-GMc" secondAttribute="bottom" constant="64" id="CgA-X8-jWK"/>
                             <constraint firstItem="fJk-9g-EBE" firstAttribute="trailing" secondItem="nzu-tx-a4a" secondAttribute="trailing" constant="8" id="DH7-JL-f0B"/>
                             <constraint firstItem="20l-ij-qN6" firstAttribute="top" secondItem="fJk-9g-EBE" secondAttribute="top" constant="60" id="Tpl-N2-HeB"/>
-                            <constraint firstItem="oSu-fC-8in" firstAttribute="top" secondItem="7M3-MV-ATo" secondAttribute="bottom" constant="8" id="UZT-pj-TOU"/>
                             <constraint firstItem="4B6-eC-GMc" firstAttribute="top" secondItem="nzu-tx-a4a" secondAttribute="bottom" constant="24" id="aY0-cQ-C7o"/>
                             <constraint firstItem="nzu-tx-a4a" firstAttribute="leading" secondItem="fJk-9g-EBE" secondAttribute="leading" constant="8" id="afc-pF-JuT"/>
                             <constraint firstItem="7M3-MV-ATo" firstAttribute="leading" secondItem="Zju-dZ-sT1" secondAttribute="leading" id="cN3-Vy-Ymb"/>
                             <constraint firstItem="rQs-dT-iWL" firstAttribute="centerX" secondItem="Zju-dZ-sT1" secondAttribute="centerX" id="dDS-xC-4ga"/>
                             <constraint firstItem="20l-ij-qN6" firstAttribute="leading" secondItem="fJk-9g-EBE" secondAttribute="leading" constant="20" id="glV-c9-LSZ"/>
                             <constraint firstItem="7M3-MV-ATo" firstAttribute="trailing" secondItem="Zju-dZ-sT1" secondAttribute="trailing" id="gzb-r8-b5Q"/>
-                            <constraint firstItem="rQs-dT-iWL" firstAttribute="top" secondItem="4B6-eC-GMc" secondAttribute="bottom" constant="32" id="m3P-Yp-Zs7"/>
+                            <constraint firstItem="fJk-9g-EBE" firstAttribute="bottom" secondItem="7M3-MV-ATo" secondAttribute="bottom" id="k1h-fM-KIo"/>
                             <constraint firstItem="fJk-9g-EBE" firstAttribute="trailing" secondItem="4B6-eC-GMc" secondAttribute="trailing" constant="8" id="nj3-at-WpO"/>
                             <constraint firstItem="4B6-eC-GMc" firstAttribute="leading" secondItem="fJk-9g-EBE" secondAttribute="leading" constant="8" id="odR-JE-7SF"/>
-                            <constraint firstItem="oSu-fC-8in" firstAttribute="bottom" secondItem="fJk-9g-EBE" secondAttribute="bottom" id="v2F-G1-tW4"/>
-                            <constraint firstItem="oSu-fC-8in" firstAttribute="leading" secondItem="fJk-9g-EBE" secondAttribute="leading" constant="8" id="xji-Se-HvH"/>
-                            <constraint firstItem="fJk-9g-EBE" firstAttribute="trailing" secondItem="oSu-fC-8in" secondAttribute="trailing" constant="8" id="zvM-Fn-v4C"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fJk-9g-EBE"/>
                     </view>
                     <connections>
                         <outlet property="microBlogButton" destination="anV-E6-LW0" id="P0C-qY-pHs"/>
                         <outlet property="signOutButton" destination="rQs-dT-iWL" id="YPR-xd-hAy"/>
-                        <outlet property="versionNumber" destination="oSu-fC-8in" id="W3E-NV-FZW"/>
                         <outlet property="wordPressAppTitle" destination="VBp-6a-vPW" id="MBA-Tv-6fK"/>
                         <outlet property="wordPressButton" destination="4ru-Iw-kwn" id="ud8-8S-Yfv"/>
                         <outlet property="wordPressSettingsView" destination="4B6-eC-GMc" id="KRX-xH-yv9"/>
@@ -169,9 +160,12 @@
         </scene>
     </scenes>
     <resources>
-        <image name="checkmark.rectangle.fill" width="128" height="128"/>
         <image name="checkmark.rectangle.fill" catalog="system" width="128" height="93"/>
+        <image name="checkmark.rectangle.fill" width="128" height="128"/>
         <image name="rectangle" catalog="system" width="128" height="93"/>
         <image name="welcome_waves" width="320" height="200"/>
+        <namedColor name="color_signin_bar">
+            <color white="0.94999998807907104" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </namedColor>
     </resources>
 </document>
