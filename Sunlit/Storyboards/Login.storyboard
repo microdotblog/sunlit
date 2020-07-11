@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yZ0-VU-gXT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17132" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yZ0-VU-gXT">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17105"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -56,7 +58,8 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="NRI-Ql-psS"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="TYy-Ce-Fsh" firstAttribute="trailing" secondItem="NRI-Ql-psS" secondAttribute="trailing" id="0cZ-bl-KoV"/>
                             <constraint firstItem="yoc-na-EpW" firstAttribute="leading" secondItem="NRI-Ql-psS" secondAttribute="leading" constant="60" id="aWU-Vy-0Jf"/>
@@ -65,7 +68,6 @@
                             <constraint firstItem="NRI-Ql-psS" firstAttribute="trailing" secondItem="yoc-na-EpW" secondAttribute="trailing" constant="60" id="hLU-JH-gur"/>
                             <constraint firstItem="TYy-Ce-Fsh" firstAttribute="leading" secondItem="NRI-Ql-psS" secondAttribute="leading" id="ynx-XZ-9vH"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="NRI-Ql-psS"/>
                     </view>
                     <navigationItem key="navigationItem" id="xqI-mn-mJJ"/>
                     <connections>
@@ -166,7 +168,8 @@
                                 </constraints>
                             </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="nAp-Dr-naR"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="MSU-j0-C7E" firstAttribute="leading" secondItem="nAp-Dr-naR" secondAttribute="leading" constant="60" id="0do-uh-sMc"/>
                             <constraint firstItem="nAp-Dr-naR" firstAttribute="trailing" secondItem="MSU-j0-C7E" secondAttribute="trailing" constant="60" id="5KY-zl-4sH"/>
@@ -180,7 +183,6 @@
                             <constraint firstItem="e1v-dV-XQG" firstAttribute="leading" secondItem="nAp-Dr-naR" secondAttribute="leading" constant="16" id="uIf-MG-uve"/>
                             <constraint firstItem="MSU-j0-C7E" firstAttribute="top" secondItem="nAp-Dr-naR" secondAttribute="top" constant="64" id="zjI-ga-HwA"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="nAp-Dr-naR"/>
                     </view>
                     <connections>
                         <outlet property="accountEntryView" destination="rlG-Rj-BvX" id="udz-N8-6U9"/>
@@ -201,5 +203,8 @@
         <namedColor name="color_signin_bar">
             <color white="0.94999998807907104" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

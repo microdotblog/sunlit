@@ -39,7 +39,7 @@ class MainTabletViewController: UIViewController {
 			// Update the user name...
 			DispatchQueue.main.async {
 				//self.profileButton.setTitle("@" + user.userName, for: .normal)
-				self.profileButton.setImage(UIImage(named: "login"), for: .normal)
+				self.profileButton.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
 				self.profileButton.setTitle("Profile", for: .normal)
 				self.profileButton.centerVertically()
 			}
@@ -60,14 +60,14 @@ class MainTabletViewController: UIViewController {
 			}
 		}
 		else {
-			self.profileButton.setImage(UIImage(named: "login"), for: .normal)
-			self.profileButton.setTitle("Login", for: .normal)
+			self.profileButton.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
+			self.profileButton.setTitle("Profile", for: .normal)
 		}
 	}
 	
 	func setupButtons() {
-		var profileImage : UIImage? = UIImage(named: "login")
-		var profileUsername = "Login"
+		var profileImage : UIImage? = UIImage(systemName: "person.crop.circle.fill")
+		var profileUsername = "Profile"
 		if let current = SnippetsUser.current() {
 			//profileUsername = "@" + current.userName
 			profileUsername = "Profile"
