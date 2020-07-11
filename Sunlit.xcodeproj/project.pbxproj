@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B729B8224BA4F74001D145B /* TabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B729B8124BA4F74001D145B /* TabButton.swift */; };
 		C5309CB724AEABE700551AC7 /* NSAttributedString+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */; };
 		C55DC3132489D37600C1F8A5 /* UUSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC2BA2489D2F700C1F8A5 /* UUSwift.framework */; };
 		C55DC495248A152A00C1F8A5 /* Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3012489D33300C1F8A5 /* Snippets.framework */; };
@@ -272,6 +273,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4B729B8124BA4F74001D145B /* TabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabButton.swift; path = Source/Views/TabButton.swift; sourceTree = "<group>"; };
 		C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+Sunlit.swift"; path = "Source/Extensions/NSAttributedString+Sunlit.swift"; sourceTree = "<group>"; };
 		C55DC2BA2489D2F700C1F8A5 /* UUSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UUSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55DC3012489D33300C1F8A5 /* Snippets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Snippets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -547,6 +549,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B729B8024BA4E76001D145B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4B729B8124BA4F74001D145B /* TabButton.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		C5226A8A2484460100EAADE3 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -803,6 +813,7 @@
 				C5FFB1D32469C7AD0015368A /* ViewControllers */,
 				C5FFB1D22469C7A20015368A /* Data */,
 				C5A1DE2A24901D3A00B50B54 /* Utilities */,
+				4B729B8024BA4E76001D145B /* Views */,
 				C5226A8A2484460100EAADE3 /* Extensions */,
 				C5AC0453245FC9B900D7725D /* Resources */,
 			);
@@ -1418,6 +1429,7 @@
 				C5A1DE4F24901D9D00B50B54 /* UIButton+Sunlit.swift in Sources */,
 				C5A1DE6724901DBC00B50B54 /* Settings.swift in Sources */,
 				C5A1DE8124901DCC00B50B54 /* AboutViewController.swift in Sources */,
+				4B729B8224BA4F74001D145B /* TabButton.swift in Sources */,
 				C5A1DE5C24901DAD00B50B54 /* Tagmoji.swift in Sources */,
 				C5A1DE9924901DF500B50B54 /* AppDelegate.swift in Sources */,
 				C5309CB724AEABE700551AC7 /* NSAttributedString+Sunlit.swift in Sources */,

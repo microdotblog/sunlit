@@ -10,7 +10,7 @@ import UIKit
 
 extension UIButton {
 
-    func centerVertically(padding: CGFloat = 6.0) {
+    func centerVertically(padding: CGFloat = 8.0) {
 		
         guard
             let imageViewSize = self.imageView?.frame.size,
@@ -42,5 +42,5 @@ extension UIButton {
         )
 		
     }
-
+    
 }

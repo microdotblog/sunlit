@@ -103,7 +103,7 @@ class MainPhoneViewController: UIViewController {
 	}
 	
 	func setupProfileButton() {
-		var profileImage : UIImage? = UIImage(systemName: "person.crop.circle.fill")
+		var profileImage : UIImage? = UIImage(systemName: "person.crop.circle")
 		var profileUsername = "Profile"
 		if let current = SnippetsUser.current() {
 			profileUsername = "@" + current.userName
@@ -148,7 +148,7 @@ class MainPhoneViewController: UIViewController {
 			}
 		}
 		else {
-			self.profileButton.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
+			self.profileButton.setImage(UIImage(systemName: "person.crop.circle"), for: .normal)
 			self.profileButton.setTitle("Profile", for: .normal)
 			self.onTabBarButtonPressed(self.timelineButton)
 		}
