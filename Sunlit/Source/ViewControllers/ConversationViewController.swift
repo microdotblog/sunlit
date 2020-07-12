@@ -131,9 +131,9 @@ class ConversationViewController: UIViewController {
 	}
 	
 	@objc func handleAvatarLoadedNotification(_ notification: Notification) {
-		if let indexPath = notification.object as? IndexPath {
-			self.tableView.reloadRows(at: [indexPath], with: .fade)
-		}
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
 	}
 }
 
