@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="l4u-MQ-Cpd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17132" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="l4u-MQ-Cpd">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17105"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -47,8 +49,8 @@
                     <view key="view" contentMode="scaleToFill" id="eZu-aR-6cd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="p1g-93-WOx"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="GTY-0O-8hJ"/>
                     <connections>
@@ -70,29 +72,29 @@
                         <stackView opaque="NO" contentMode="left" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="8q4-T2-IF8">
                             <rect key="frame" x="80" y="100" width="80" height="120"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cuv-Pz-VIi">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cuv-Pz-VIi">
                                     <rect key="frame" x="0.0" y="0.0" width="80" height="40"/>
                                     <state key="normal" title="Settings">
-                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="titleColor" systemColor="darkTextColor"/>
                                     </state>
                                     <connections>
                                         <action selector="onSettings" destination="0Vr-hk-Egj" eventType="touchUpInside" id="qsd-iX-yR5"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xdk-tK-6aZ">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xdk-tK-6aZ">
                                     <rect key="frame" x="0.0" y="40" width="80" height="40"/>
                                     <viewLayoutGuide key="safeArea" id="ZKO-KN-pL0"/>
                                     <state key="normal" title="About">
-                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="titleColor" systemColor="darkTextColor"/>
                                     </state>
                                     <connections>
                                         <action selector="onAbout" destination="0Vr-hk-Egj" eventType="touchUpInside" id="hIr-5b-F4K"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yto-E6-XEz">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yto-E6-XEz">
                                     <rect key="frame" x="0.0" y="80" width="80" height="40"/>
                                     <state key="normal" title="Drafts">
-                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="titleColor" systemColor="darkTextColor"/>
                                     </state>
                                     <connections>
                                         <action selector="onDrafts" destination="0Vr-hk-Egj" eventType="touchUpInside" id="LSV-LW-uE4"/>
@@ -124,17 +126,18 @@
                                 <constraint firstAttribute="height" constant="1" id="sCA-Tc-KMY"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FZd-d3-9Su">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FZd-d3-9Su">
                             <rect key="frame" x="96" y="381.5" width="48" height="30"/>
                             <state key="normal" title="Logout">
-                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="titleColor" systemColor="darkTextColor"/>
                             </state>
                             <connections>
                                 <action selector="onLogout" destination="0Vr-hk-Egj" eventType="touchUpInside" id="btL-wZ-MhD"/>
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <viewLayoutGuide key="safeArea" id="Zdm-x6-cnh"/>
+                    <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
                     <constraints>
                         <constraint firstItem="Zdm-x6-cnh" firstAttribute="trailing" secondItem="LZt-KV-8sh" secondAttribute="trailing" id="0CT-ZV-OWh"/>
                         <constraint firstItem="LZt-KV-8sh" firstAttribute="bottom" secondItem="Zdm-x6-cnh" secondAttribute="bottom" constant="-8" id="0oN-oj-D3o"/>
@@ -154,7 +157,6 @@
                         <constraint firstItem="HGk-AI-d5p" firstAttribute="width" secondItem="HGk-AI-d5p" secondAttribute="height" multiplier="640:400" id="oYF-Ne-gss"/>
                         <constraint firstItem="HGk-AI-d5p" firstAttribute="trailing" secondItem="Zdm-x6-cnh" secondAttribute="trailing" id="u5l-eA-PW4"/>
                     </constraints>
-                    <viewLayoutGuide key="safeArea" id="Zdm-x6-cnh"/>
                 </view>
             </objects>
             <point key="canvasLocation" x="-383" y="-265"/>
@@ -168,28 +170,34 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" axis="vertical" distribution="fillProportionally" alignment="top" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="LeN-xg-aHV">
-                                <rect key="frame" x="32" y="124" width="350" height="160"/>
+                                <rect key="frame" x="32" y="124" width="350" height="121"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oUB-KM-K4B">
-                                        <rect key="frame" x="0.0" y="0.0" width="90" height="32"/>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oUB-KM-K4B">
+                                        <rect key="frame" x="0.0" y="0.0" width="81.5" height="19"/>
                                         <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Timeline" image="feed"/>
+                                        <state key="normal" title="Timeline" image="bubble.left.and.bubble.right" catalog="system">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="14" scale="default"/>
+                                        </state>
                                         <connections>
                                             <action selector="onTimeLine" destination="Maa-K5-Q6T" eventType="touchUpInside" id="qYy-Rn-X2z"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RCF-fg-lGf">
-                                        <rect key="frame" x="0.0" y="64" width="92" height="32"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RCF-fg-lGf">
+                                        <rect key="frame" x="0.0" y="51" width="80" height="19"/>
                                         <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Discover" image="discover"/>
+                                        <state key="normal" title="Discover" image="magnifyingglass.circle" catalog="system">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
+                                        </state>
                                         <connections>
                                             <action selector="onDiscover" destination="Maa-K5-Q6T" eventType="touchUpInside" id="itl-NH-Dir"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8h-Pp-xpL">
-                                        <rect key="frame" x="0.0" y="128" width="76" height="32"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8h-Pp-xpL">
+                                        <rect key="frame" x="0.0" y="102" width="64" height="19"/>
                                         <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Profile" image="login"/>
+                                        <state key="normal" title="Profile" image="person.circle" catalog="system">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
+                                        </state>
                                         <connections>
                                             <action selector="onProfile" destination="Maa-K5-Q6T" eventType="touchUpInside" id="7sM-r6-9uY"/>
                                         </connections>
@@ -197,33 +205,33 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="1IH-m8-7BA">
-                                <rect key="frame" x="87" y="617.5" width="240" height="212.5"/>
+                                <rect key="frame" x="87" y="625" width="240" height="205"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uk9-mv-Ved">
-                                        <rect key="frame" x="0.0" y="0.0" width="240" height="32"/>
-                                        <state key="normal" title="Settings" image="settings_icon"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uk9-mv-Ved">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="25"/>
+                                        <state key="normal" title="Settings" image="gearshape" catalog="system"/>
                                         <connections>
                                             <action selector="onSettings" destination="Maa-K5-Q6T" eventType="touchUpInside" id="S73-cf-3tL"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9J4-PY-jEV">
-                                        <rect key="frame" x="0.0" y="64" width="240" height="24"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9J4-PY-jEV">
+                                        <rect key="frame" x="0.0" y="57" width="240" height="23.5"/>
                                         <inset key="titleEdgeInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Post" image="post"/>
+                                        <state key="normal" title="Post" image="square.and.pencil" catalog="system"/>
                                         <connections>
                                             <action selector="onCompose" destination="Maa-K5-Q6T" eventType="touchUpInside" id="IXZ-wu-TS0"/>
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lxf-c6-O0H">
-                                        <rect key="frame" x="0.0" y="120" width="240" height="40"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <rect key="frame" x="0.0" y="112.5" width="240" height="40"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="hUB-LX-nQ6"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version 3.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fX3-GC-4lM">
-                                        <rect key="frame" x="0.0" y="192" width="240" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="184.5" width="240" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -231,7 +239,8 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="llH-5D-grk"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="llH-5D-grk" firstAttribute="trailing" secondItem="LeN-xg-aHV" secondAttribute="trailing" constant="32" id="0kr-dR-Rhp"/>
                             <constraint firstItem="1IH-m8-7BA" firstAttribute="centerX" secondItem="zDx-U3-Dfg" secondAttribute="centerX" id="3Ei-UU-515"/>
@@ -240,7 +249,6 @@
                             <constraint firstItem="LeN-xg-aHV" firstAttribute="top" secondItem="llH-5D-grk" secondAttribute="top" constant="80" id="4kQ-CR-2Pw"/>
                             <constraint firstItem="LeN-xg-aHV" firstAttribute="centerX" secondItem="zDx-U3-Dfg" secondAttribute="centerX" id="Wm8-aL-Cw7"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="llH-5D-grk"/>
                     </view>
                     <navigationItem key="navigationItem" id="KkB-vz-Gj1"/>
                     <connections>
@@ -258,11 +266,29 @@
         </scene>
     </scenes>
     <resources>
-        <image name="discover" width="32" height="32"/>
-        <image name="feed" width="32" height="32"/>
-        <image name="login" width="32" height="32"/>
-        <image name="post" width="24" height="24"/>
-        <image name="settings_icon" width="32" height="32"/>
+        <image name="bubble.left.and.bubble.right" catalog="system" width="128" height="96"/>
+        <image name="gearshape" catalog="system" width="128" height="121"/>
+        <image name="magnifyingglass.circle" catalog="system" width="128" height="121"/>
+        <image name="person.circle" catalog="system" width="128" height="121"/>
+        <image name="square.and.pencil" catalog="system" width="128" height="115"/>
         <image name="welcome_waves" width="320" height="200"/>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGroupedBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

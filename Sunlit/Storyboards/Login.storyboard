@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter the URL of your weblog or enter your Micro.blog email address:" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yoc-na-EpW">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your Micro.blog email address or the URL of an external blog:" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yoc-na-EpW">
                                 <rect key="frame" x="60" y="108" width="294" height="73"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="73" id="8Z8-Oo-4fr"/>
@@ -37,8 +37,8 @@
                                             <constraint firstAttribute="height" constant="20" id="ufN-xj-HBh"/>
                                         </constraints>
                                     </activityIndicatorView>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Weblog URL or Micro.blog email address" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4rT-rV-Zwk">
-                                        <rect key="frame" x="12" y="4" width="366" height="35"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Micro.blog email address or blog URL" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4rT-rV-Zwk">
+                                        <rect key="frame" x="60" y="4" width="318" height="35"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next" textContentType="email"/>
                                         <connections>
@@ -49,7 +49,7 @@
                                 <color key="backgroundColor" name="color_signin_bar"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="eP3-BZ-GjT" secondAttribute="trailing" constant="8" id="40t-MJ-Hvl"/>
-                                    <constraint firstItem="4rT-rV-Zwk" firstAttribute="leading" secondItem="TYy-Ce-Fsh" secondAttribute="leading" constant="12" id="6Jd-Nl-Xzd"/>
+                                    <constraint firstItem="4rT-rV-Zwk" firstAttribute="leading" secondItem="TYy-Ce-Fsh" secondAttribute="leading" constant="60" id="6Jd-Nl-Xzd"/>
                                     <constraint firstItem="4rT-rV-Zwk" firstAttribute="top" secondItem="TYy-Ce-Fsh" secondAttribute="top" constant="4" id="CCq-v6-ErT"/>
                                     <constraint firstAttribute="height" constant="43" id="UXN-Tr-R9P"/>
                                     <constraint firstAttribute="bottom" secondItem="4rT-rV-Zwk" secondAttribute="bottom" constant="4" id="jgz-yF-VpL"/>
