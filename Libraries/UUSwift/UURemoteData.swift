@@ -89,10 +89,6 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
 				return data
 			}
         }
-		
-		if remoteLoadCompletion == nil {
-			return nil
-		}
         
         if (self.isDownloadPending(for: key))
         {
@@ -100,12 +96,14 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
             // no need to re-fetch
             //UUDebugLog("Download pending for \(key)")
             self.appendRemoteHandler(for: key, handler: remoteLoadCompletion)
+            
+            self.pendingDownloads.remove(key)
+            self.pendingDownloads.prepend(key)
             return nil
         }
         
         if (self.activeDownloadCount() > self.maxActiveRequests)
         {
-            //UUDebugLog("Queueing download for later, key: \(key)")
             self.queuePendingRequest(for: key, remoteLoadCompletion: remoteLoadCompletion)
             return nil
         }
@@ -115,7 +113,6 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
         
         let client = UUHttpSession.executeRequest(request)
         { (response: UUHttpResponse) in
-            
             self.handleDownloadResponse(response, key)
             self.checkForPendingRequests()
         }
