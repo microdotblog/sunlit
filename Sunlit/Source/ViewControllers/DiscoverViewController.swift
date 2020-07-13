@@ -41,11 +41,6 @@ class DiscoverViewController: UIViewController {
         
 		self.setupTableViewAndCollectionView()
 		self.loadFrequentlyUsedEmoji()
-		
-		Tagmoji.shared.refresh { (updated) in
-			self.loadTagmoji()
-		}
-		
 		self.setupSnippets()
 	}
 		
@@ -115,6 +110,8 @@ class DiscoverViewController: UIViewController {
 
 				self.refresh(postObjects)
 				self.loadingData = false
+                
+                self.loadTagmoji()
 			}
 		}
 	}
@@ -236,7 +233,7 @@ class DiscoverViewController: UIViewController {
 		let imageSource = post.images[0]
 		
 		if ImageCache.prefetch(imageSource) == nil {
-			ImageCache.fetch(imageSource) { (image) in
+			ImageCache.fetch(self, imageSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
 						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
@@ -247,7 +244,7 @@ class DiscoverViewController: UIViewController {
 		
 		let avatarSource = post.owner.avatarURL
 		if ImageCache.prefetch(avatarSource) == nil {
-			ImageCache.fetch(avatarSource) { (image) in
+			ImageCache.fetch(self, avatarSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
 						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
@@ -337,25 +334,35 @@ class DiscoverViewController: UIViewController {
 	
 	@objc func handleImageLoadedNotification(_ notification : Notification) {
 		DispatchQueue.main.async {
-			if let indexPath = notification.object as? IndexPath {
-				if indexPath.row < self.posts.count {
-					if self.tableView.isHidden == false {
-						if indexPath.row < self.posts.count {
-							self.tableView.performBatchUpdates({
-								self.tableView.reloadRows(at: [ indexPath ], with: .none)
-							}, completion: nil)
-						}
-					}
-					else if self.collectionView.isHidden == false {
-						if indexPath.item < self.posts.count {
-							self.collectionView.performBatchUpdates({
-								self.collectionView.reloadItems(at: [ indexPath ])
-							}) { (complete) in
-							}
-						}
-					}
-				}
-			}
+            if !self.tableView.isHidden {
+                if let indexPath = notification.object as? IndexPath,
+                   let visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
+                    
+                    if visibleIndexPaths.contains(indexPath) {
+                        self.tableView.performBatchUpdates {
+                            self.tableView.reloadRows(at: [indexPath], with: .fade)
+                        }
+                        completion: { (complete) in
+                            
+                        }
+                    }
+                }
+            }
+            
+            if !self.collectionView.isHidden {
+                if let indexPath = notification.object as? IndexPath {
+                    
+                    let visibleIndexPaths = self.collectionView.indexPathsForVisibleItems
+                    if visibleIndexPaths.contains(indexPath) {
+                        self.collectionView.performBatchUpdates {
+                            self.collectionView.reloadItems(at: [indexPath])
+                        }
+                        completion: { (complete) in
+                
+                        }
+                    }
+                }
+            }
 		}
 	}
 			
@@ -365,29 +372,6 @@ class DiscoverViewController: UIViewController {
 			let conversationViewController = storyBoard.instantiateViewController(withIdentifier: "ConversationViewController") as! ConversationViewController
 			conversationViewController.sourcePost = post
 			self.navigationController?.pushViewController(conversationViewController, animated: true)
-		}
-	}
-
-	func loadPhoto(_ path : String,  _ index : IndexPath) {
-		
-		// If the photo exists, bail!
-		if ImageCache.prefetch(path) != nil {
-			return
-		}
-		
-		ImageCache.fetch(path) { (image) in
-			if let _ = image {
-				DispatchQueue.main.async {
-					
-					if self.collectionView.isHidden == false {
-						self.collectionView.performBatchUpdates({
-							if index.item < self.posts.count {
-								self.collectionView.reloadItems(at: [ index ])
-							}
-						}, completion: nil)
-					}
-				}
-			}
 		}
 	}
 	
@@ -444,7 +428,7 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 	func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
 	
 		for indexPath in indexPaths {
-			self.prefetchImages(indexPath)
+			//self.prefetchImages(indexPath)
 		}
 	}
 	
@@ -524,20 +508,13 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		if indexPath.item < self.posts.count {
-			let post = self.posts[indexPath.item]
-			self.loadPhoto(post.images.first ?? "", indexPath)
-		}
+        self.prefetchImages(indexPath)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-		
 		for indexPath in indexPaths {
-			if indexPath.item < self.posts.count {
-				let post = self.posts[indexPath.item]
-				self.loadPhoto(post.images.first ?? "", indexPath)
-			}
-		}
+            self.prefetchImages(indexPath)
+        }
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {

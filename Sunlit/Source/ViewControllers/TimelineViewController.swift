@@ -104,7 +104,7 @@ class TimelineViewController: UIViewController {
 	}
 	
 	@objc func handleImageLoadedNotification(_ notification : Notification) {
-		if let indexPath = notification.object as? IndexPath {
+        if let indexPath = notification.object as? IndexPath {
 			if indexPath.row < self.tableViewData.count {
 				if let visibleCells = self.tableView.indexPathsForVisibleRows {
 					if visibleCells.contains(indexPath) {
@@ -221,7 +221,7 @@ class TimelineViewController: UIViewController {
 		
 		for imageSource in post.images {
 			if ImageCache.prefetch(imageSource) == nil {
-				ImageCache.fetch(imageSource) { (image) in
+				ImageCache.fetch(self, imageSource) { (image) in
 					if let _ = image {
 						DispatchQueue.main.async {
 							NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
@@ -233,7 +233,7 @@ class TimelineViewController: UIViewController {
 		
 		let avatarSource = post.owner.avatarURL
 		if ImageCache.prefetch(avatarSource) == nil {
-			ImageCache.fetch(avatarSource) { (image) in
+			ImageCache.fetch(self, avatarSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
 						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)

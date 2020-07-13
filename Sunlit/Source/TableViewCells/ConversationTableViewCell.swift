@@ -56,7 +56,7 @@ class ConversationTableViewCell : UITableViewCell {
 			self.avatar.image = avatar
 		}
 		else {
-			ImageCache.fetch(avatarSource) { (image) in
+			ImageCache.fetch(self, avatarSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
 						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
