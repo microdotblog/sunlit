@@ -60,7 +60,8 @@ class DiscoverViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: .scrollTableViewNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 	
 
@@ -318,6 +319,12 @@ class DiscoverViewController: UIViewController {
 		}
 	}
 
+	@objc func keyboardOffScreenNotification(_ notification : Notification) {
+		UIView.animate(withDuration: 0.25) {
+			self.keyboardAccessoryView.alpha = 0.0
+		}
+	}
+	
 	
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
 		if let dictionary = notification.object as? [String : Any] {

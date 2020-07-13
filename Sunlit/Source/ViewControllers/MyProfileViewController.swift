@@ -152,6 +152,10 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		
+		if self.user == nil {
+			return 0
+		}
+		
 		if section == 0 || section == 1 {
 			return 1
 		}

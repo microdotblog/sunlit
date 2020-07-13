@@ -13,8 +13,11 @@ class ProfileBioCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var bio : UILabel!
 	@IBOutlet var widthConstraint : NSLayoutConstraint!
 
-	static func sizeOf(_ owner : SnippetsUser, collectionViewWidth : CGFloat) -> CGSize {
+	static func sizeOf(_ user : SnippetsUser?, collectionViewWidth : CGFloat) -> CGSize {
 		var size = CGSize(width: collectionViewWidth - 16.0, height: 0)
+		guard let owner = user else {
+			return CGSize(width: collectionViewWidth, height: 0.0)
+		}
 		
 		if owner.bio.count > 0 {
 			let text = owner.attributedTextBio()
