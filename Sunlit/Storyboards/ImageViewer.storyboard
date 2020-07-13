@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PHD-An-Ibq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17132" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PHD-An-Ibq">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17105.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,16 +36,16 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="69.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="AWe-2L-xq8">
-                                        <rect key="frame" x="60" y="16" width="346" height="37.5"/>
+                                        <rect key="frame" x="97" y="16" width="309" height="37.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jonathan Hays" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kyn-kF-Ioz">
-                                                <rect key="frame" x="0.0" y="0.0" width="346" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="309" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@cheesemaker" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qw6-s8-CAq">
-                                                <rect key="frame" x="0.0" y="20.5" width="346" height="17"/>
+                                                <rect key="frame" x="0.0" y="20.5" width="309" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -51,14 +53,14 @@
                                         </subviews>
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qYa-yJ-szY">
-                                        <rect key="frame" x="8" y="13" width="44" height="44"/>
+                                        <rect key="frame" x="45" y="13" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="f0u-b2-p1V"/>
                                             <constraint firstAttribute="width" constant="44" id="gHG-Gu-meo"/>
                                         </constraints>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UUj-d0-Xt5">
-                                        <rect key="frame" x="385" y="23" width="25" height="24"/>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UUj-d0-Xt5">
+                                        <rect key="frame" x="8" y="23" width="25" height="24"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="xmark.circle" catalog="system"/>
                                         <connections>
@@ -68,14 +70,14 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.25217319539999999" alpha="0.79891065139999995" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="AWe-2L-xq8" firstAttribute="leading" secondItem="FVq-VH-8Ql" secondAttribute="leading" constant="60" id="2k0-Wn-vRh"/>
+                                    <constraint firstItem="qYa-yJ-szY" firstAttribute="leading" secondItem="UUj-d0-Xt5" secondAttribute="trailing" constant="12" id="Rd4-US-8Qz"/>
                                     <constraint firstItem="AWe-2L-xq8" firstAttribute="top" secondItem="FVq-VH-8Ql" secondAttribute="top" constant="16" id="SX7-9p-2x3"/>
                                     <constraint firstItem="AWe-2L-xq8" firstAttribute="centerY" secondItem="qYa-yJ-szY" secondAttribute="centerY" id="VI0-pF-vRm"/>
                                     <constraint firstAttribute="bottom" secondItem="AWe-2L-xq8" secondAttribute="bottom" constant="16" id="XdR-eu-Wqz"/>
                                     <constraint firstAttribute="trailing" secondItem="AWe-2L-xq8" secondAttribute="trailing" constant="8" id="Zua-H7-O1n"/>
-                                    <constraint firstAttribute="trailing" secondItem="UUj-d0-Xt5" secondAttribute="trailing" constant="4" id="ff2-BX-a3T"/>
-                                    <constraint firstItem="qYa-yJ-szY" firstAttribute="leading" secondItem="FVq-VH-8Ql" secondAttribute="leading" constant="8" id="gvB-i7-unk"/>
+                                    <constraint firstItem="UUj-d0-Xt5" firstAttribute="leading" secondItem="FVq-VH-8Ql" secondAttribute="leading" constant="8" id="cmi-6J-qjp"/>
                                     <constraint firstItem="UUj-d0-Xt5" firstAttribute="centerY" secondItem="FVq-VH-8Ql" secondAttribute="centerY" id="vrV-qU-54r"/>
+                                    <constraint firstItem="AWe-2L-xq8" firstAttribute="leading" secondItem="qYa-yJ-szY" secondAttribute="trailing" constant="8" id="wLQ-Qy-XDP"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h4w-xl-KHa">
@@ -90,7 +92,7 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" calendarEvent="YES"/>
                                     </textView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GA5-FZ-zm6">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GA5-FZ-zm6">
                                         <rect key="frame" x="368" y="201.5" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="ib8-l8-GmB"/>
@@ -102,7 +104,7 @@
                                             <action selector="onShare" destination="PHD-An-Ibq" eventType="touchUpInside" id="15Z-FQ-TEs"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ygh-do-vOV">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ygh-do-vOV">
                                         <rect key="frame" x="16" y="199.5" width="32" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="32" id="1jj-UI-WW1"/>
@@ -138,7 +140,8 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="D0c-HF-hM6"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="h4w-xl-KHa" firstAttribute="leading" secondItem="D0c-HF-hM6" secondAttribute="leading" id="BH6-i1-RlT"/>
                             <constraint firstAttribute="bottom" secondItem="40L-Qi-E5N" secondAttribute="bottom" id="Jtu-Bi-Kl2"/>
@@ -151,7 +154,6 @@
                             <constraint firstItem="40L-Qi-E5N" firstAttribute="leading" secondItem="D0c-HF-hM6" secondAttribute="leading" id="nSj-iw-0Ne"/>
                             <constraint firstItem="40L-Qi-E5N" firstAttribute="top" secondItem="TnI-e9-vIF" secondAttribute="top" id="oLw-6X-0h8"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="D0c-HF-hM6"/>
                     </view>
                     <connections>
                         <outlet property="bottomInfoView" destination="h4w-xl-KHa" id="kkl-DR-GGd"/>
@@ -173,5 +175,8 @@
         <image name="browser" width="60" height="60"/>
         <image name="share" width="48" height="48"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
