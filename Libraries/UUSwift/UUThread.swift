@@ -8,7 +8,7 @@
 import Darwin
 import Foundation
 
-public class UUThreadSafeArray<T>: NSObject
+public class UUThreadSafeArray<T:Equatable>: NSObject
 {
     private var nativeObject: Array<T> = Array()
     
@@ -27,7 +27,7 @@ public class UUThreadSafeArray<T>: NSObject
     {
         set
         {
-            _ = uuSynchronized(
+            uuSynchronized(
             {
                 self.nativeObject[index] = newValue
             })
@@ -42,17 +42,34 @@ public class UUThreadSafeArray<T>: NSObject
         }
     }
     
+    public func remove(_ element: T)
+    {
+        uuSynchronized({
+            self.nativeObject.removeAll { (object) -> Bool in
+                object == element
+            }
+        })
+    }
+    
     public func removeAll()
     {
-        _ = uuSynchronized(
+        uuSynchronized(
         {
             self.nativeObject.removeAll()
         })
     }
     
+    public func prepend(_ newElement: T)
+    {
+        uuSynchronized(
+        {
+            self.nativeObject.insert(newElement, at: 0)
+        })
+    }
+    
     public func append(_ newElement: T)
     {
-        _ = uuSynchronized(
+        uuSynchronized(
         {
             self.nativeObject.append(newElement)
         })
@@ -103,7 +120,7 @@ public class UUThreadSafeDictionary<KeyType, ValueType>: NSObject
     {
         set
         {
-            _ = uuSynchronized(
+            uuSynchronized(
             {
                 self.nativeObject[key] = newValue
             })
@@ -120,7 +137,7 @@ public class UUThreadSafeDictionary<KeyType, ValueType>: NSObject
     
     public func removeAll()
     {
-        _ = uuSynchronized(
+        uuSynchronized(
         {
             self.nativeObject.removeAll()
         })
