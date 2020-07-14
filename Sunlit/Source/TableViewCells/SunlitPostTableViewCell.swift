@@ -25,7 +25,6 @@ class SunlitPostTableViewCell : UITableViewCell {
 	@IBOutlet var replyContainer : UIView!
 	@IBOutlet var replyField : UITextView!
 	@IBOutlet var replyButton : UIButton!
-	@IBOutlet var replyIconButton : UIButton!
 	@IBOutlet var postButton : UIButton!
 	@IBOutlet var conversationButton : UIButton!
 	@IBOutlet var conversationHeightConstraint : NSLayoutConstraint!
@@ -165,18 +164,15 @@ class SunlitPostTableViewCell : UITableViewCell {
 
 		self.replyField.isHidden = false
 		self.replyButton.isHidden = true
-		self.replyIconButton.isHidden = true
 		self.postButton.isHidden = false
 
 		self.replyField.alpha = 0.0
 		self.replyButton.alpha = 1.0
-		self.replyIconButton.alpha = 1.0
 		self.postButton.alpha = 0.0
 
 		UIView.animate(withDuration: 0.35) {
 			self.replyField.alpha = 1.0
 			self.replyButton.alpha = 0.0
-			self.replyIconButton.alpha = 0.0
 			self.postButton.alpha = 1.0
 			self.replyContainer.backgroundColor = UIColor(named: "color_reply_background")
 		}
@@ -211,13 +207,11 @@ class SunlitPostTableViewCell : UITableViewCell {
 
 		self.replyField.isHidden = true
 		self.replyButton.isHidden = false
-		self.replyIconButton.isHidden = false
 		self.postButton.isHidden = true
 
 		UIView.animate(withDuration: 0.35) {
 			self.replyField.alpha = 0.0;
 			self.replyButton.alpha = 1.0;
-			self.replyIconButton.alpha = 1.0;
 			self.postButton.alpha = 0.0;
 			self.replyContainer.backgroundColor = UIColor.clear
 		}

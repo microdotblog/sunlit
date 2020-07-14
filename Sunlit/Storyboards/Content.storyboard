@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17105"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -152,26 +153,16 @@
                                                                 <outlet property="delegate" destination="9pv-A4-QxB" id="HhR-CZ-m1U"/>
                                                             </connections>
                                                         </textView>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cYn-Fh-VVo">
-                                                            <rect key="frame" x="20" y="2" width="366" height="28"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cYn-Fh-VVo">
+                                                            <rect key="frame" x="0.0" y="5" width="386" height="22"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                             <state key="normal" title="Reply...">
-                                                                <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <color key="titleColor" systemColor="labelColor"/>
+                                                                <imageReference key="image" image="arrowshape.turn.up.left.fill" catalog="system" symbolScale="small" renderingMode="original"/>
                                                             </state>
                                                             <connections>
                                                                 <action selector="onActivateReply" destination="D5S-go-oyb" eventType="touchUpInside" id="hvW-GD-tFH"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N1d-Qg-RZI">
-                                                            <rect key="frame" x="0.0" y="10" width="12" height="12"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="12" id="7yG-Wy-GtH"/>
-                                                                <constraint firstAttribute="width" constant="12" id="faM-je-BWl"/>
-                                                            </constraints>
-                                                            <state key="normal" image="reply"/>
-                                                            <connections>
-                                                                <action selector="onActivateReply" destination="D5S-go-oyb" eventType="touchUpInside" id="x7C-X8-DsR"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -180,11 +171,9 @@
                                                         <constraint firstItem="K6m-yh-2bz" firstAttribute="top" secondItem="OgU-2e-wra" secondAttribute="top" id="0DU-8s-rn1"/>
                                                         <constraint firstAttribute="bottom" secondItem="K6m-yh-2bz" secondAttribute="bottom" id="8Fk-Bz-nBg"/>
                                                         <constraint firstAttribute="trailing" secondItem="cYn-Fh-VVo" secondAttribute="trailing" id="CgV-N1-6hs"/>
+                                                        <constraint firstItem="cYn-Fh-VVo" firstAttribute="leading" secondItem="OgU-2e-wra" secondAttribute="leading" id="Lcz-jw-1VI"/>
                                                         <constraint firstItem="xhD-Kp-xAl" firstAttribute="centerY" secondItem="OgU-2e-wra" secondAttribute="centerY" id="MTj-zE-bnZ"/>
-                                                        <constraint firstItem="N1d-Qg-RZI" firstAttribute="leading" secondItem="OgU-2e-wra" secondAttribute="leading" id="azV-m2-Unq"/>
                                                         <constraint firstAttribute="trailing" secondItem="xhD-Kp-xAl" secondAttribute="trailing" constant="8" id="cVm-l0-4wt"/>
-                                                        <constraint firstItem="N1d-Qg-RZI" firstAttribute="trailing" secondItem="cYn-Fh-VVo" secondAttribute="leading" constant="-8" id="gW0-SS-iOy"/>
-                                                        <constraint firstItem="N1d-Qg-RZI" firstAttribute="centerY" secondItem="OgU-2e-wra" secondAttribute="centerY" id="mOE-Ux-SLr"/>
                                                         <constraint firstItem="K6m-yh-2bz" firstAttribute="leading" secondItem="OgU-2e-wra" secondAttribute="leading" constant="10" id="rro-jP-rCs"/>
                                                         <constraint firstItem="xhD-Kp-xAl" firstAttribute="leading" secondItem="K6m-yh-2bz" secondAttribute="trailing" constant="4" id="txj-3a-Wt7"/>
                                                         <constraint firstItem="cYn-Fh-VVo" firstAttribute="centerY" secondItem="K6m-yh-2bz" secondAttribute="centerY" id="xq0-It-ali"/>
@@ -310,7 +299,6 @@
                                             <outlet property="replyButton" destination="cYn-Fh-VVo" id="sEJ-6K-sRJ"/>
                                             <outlet property="replyContainer" destination="OgU-2e-wra" id="TUw-ig-e8n"/>
                                             <outlet property="replyField" destination="K6m-yh-2bz" id="FoS-qr-wwk"/>
-                                            <outlet property="replyIconButton" destination="N1d-Qg-RZI" id="uDV-OE-tSJ"/>
                                             <outlet property="textView" destination="S1K-ln-YoC" id="xCu-T5-gsQ"/>
                                             <outlet property="userAvatar" destination="ua1-Hx-RI1" id="CFP-yE-tOY"/>
                                             <outlet property="userHandle" destination="bzf-v1-7l8" id="dt3-1N-Nqg"/>
@@ -753,41 +741,29 @@
                                                                 <outlet property="delegate" destination="9pv-A4-QxB" id="JhE-wr-rzS"/>
                                                             </connections>
                                                         </textView>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mDr-Kn-5tp">
-                                                            <rect key="frame" x="20" y="2" width="366" height="28"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mDr-Kn-5tp">
+                                                            <rect key="frame" x="0.0" y="7" width="386" height="18"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                             <state key="normal" title="Reply...">
-                                                                <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <color key="titleColor" systemColor="labelColor"/>
+                                                                <imageReference key="image" image="arrowshape.turn.up.left.fill" catalog="system" symbolScale="small" renderingMode="original"/>
                                                             </state>
                                                             <connections>
                                                                 <action selector="onActivateReply" destination="2ps-xG-txR" eventType="touchUpInside" id="wPs-oa-EkD"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Ua-IY-6mu">
-                                                            <rect key="frame" x="0.0" y="10" width="12" height="12"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="12" id="9CT-SE-4c6"/>
-                                                                <constraint firstAttribute="width" constant="12" id="V27-0J-PVm"/>
-                                                            </constraints>
-                                                            <state key="normal" image="reply"/>
-                                                            <connections>
-                                                                <action selector="onActivateReply" destination="2ps-xG-txR" eventType="touchUpInside" id="OWx-c0-t3g"/>
-                                                            </connections>
-                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
+                                                        <constraint firstItem="mDr-Kn-5tp" firstAttribute="leading" secondItem="UkO-Oo-QYX" secondAttribute="leading" id="A76-6i-cB2"/>
                                                         <constraint firstAttribute="bottom" secondItem="6gT-id-x8y" secondAttribute="bottom" id="BKZ-34-KOT"/>
-                                                        <constraint firstItem="6Ua-IY-6mu" firstAttribute="trailing" secondItem="mDr-Kn-5tp" secondAttribute="leading" constant="-8" id="ClD-EF-JR9"/>
-                                                        <constraint firstItem="6Ua-IY-6mu" firstAttribute="leading" secondItem="UkO-Oo-QYX" secondAttribute="leading" id="XPd-RD-tBD"/>
                                                         <constraint firstItem="T1a-Qg-tf7" firstAttribute="centerY" secondItem="UkO-Oo-QYX" secondAttribute="centerY" id="f7H-XK-Q45"/>
                                                         <constraint firstItem="6gT-id-x8y" firstAttribute="top" secondItem="UkO-Oo-QYX" secondAttribute="top" id="g3C-zA-p7x"/>
                                                         <constraint firstAttribute="trailing" secondItem="mDr-Kn-5tp" secondAttribute="trailing" id="ksY-FR-a8x"/>
                                                         <constraint firstAttribute="trailing" secondItem="T1a-Qg-tf7" secondAttribute="trailing" constant="8" id="ljb-xT-Rsf"/>
                                                         <constraint firstItem="mDr-Kn-5tp" firstAttribute="centerY" secondItem="6gT-id-x8y" secondAttribute="centerY" id="mM1-Bf-a6q"/>
                                                         <constraint firstItem="6gT-id-x8y" firstAttribute="leading" secondItem="UkO-Oo-QYX" secondAttribute="leading" constant="10" id="n97-y2-EF3"/>
-                                                        <constraint firstItem="6Ua-IY-6mu" firstAttribute="centerY" secondItem="UkO-Oo-QYX" secondAttribute="centerY" id="tfW-Ns-h4Z"/>
                                                         <constraint firstItem="T1a-Qg-tf7" firstAttribute="leading" secondItem="6gT-id-x8y" secondAttribute="trailing" constant="4" id="vTe-tb-Owi"/>
                                                     </constraints>
                                                 </view>
@@ -911,7 +887,6 @@
                                             <outlet property="replyButton" destination="mDr-Kn-5tp" id="ljp-18-axE"/>
                                             <outlet property="replyContainer" destination="UkO-Oo-QYX" id="eHb-dy-OBd"/>
                                             <outlet property="replyField" destination="6gT-id-x8y" id="hqF-87-sYK"/>
-                                            <outlet property="replyIconButton" destination="6Ua-IY-6mu" id="3ZD-zd-wND"/>
                                             <outlet property="textView" destination="QhU-W2-8Gc" id="IyU-We-d8r"/>
                                             <outlet property="userAvatar" destination="Mp4-Bs-468" id="Pkd-oQ-EVm"/>
                                             <outlet property="userHandle" destination="FH9-1a-W9b" id="r8Y-UJ-sPC"/>
@@ -992,9 +967,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrowshape.turn.up.left.fill" catalog="system" width="128" height="104"/>
         <image name="discover" width="32" height="32"/>
         <image name="feed" width="32" height="32"/>
-        <image name="reply" width="48" height="48"/>
         <image name="videoButtonOverlay" width="30" height="30"/>
         <namedColor name="color_timeline_header">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
