@@ -112,7 +112,11 @@ class DiscoverViewController: UIViewController {
 				self.refresh(postObjects)
 				self.loadingData = false
                 
-                self.loadTagmoji()
+				if let tagmojiData = tagmoji {
+					if Tagmoji.shared.updateFromServerResponse(tagmojiData) {
+						self.loadTagmoji()
+					}
+				}
 			}
 		}
 	}
@@ -189,6 +193,11 @@ class DiscoverViewController: UIViewController {
 	func loadTagmoji() {
 		
 		DispatchQueue.main.async {
+			
+			for subview in self.stackView.arrangedSubviews {
+				subview.removeFromSuperview()
+			}
+			
 			var buttonOffset = CGPoint(x: 0, y: 0)
 			let tagmojiArray = Tagmoji.shared.all()
 			self.selectedButton  = nil
@@ -548,6 +557,7 @@ extension DiscoverViewController : SnippetsScrollContentProtocol {
 	func prepareToDisplay() {
 		self.navigationController?.navigationBar.topItem?.title = "Discover " + self.collectionTitle
 		self.setupNotifications()
+		self.loadTagmoji()
 	}
 	
 	func prepareToHide() {

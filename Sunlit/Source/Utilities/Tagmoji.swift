@@ -15,30 +15,35 @@ class Tagmoji {
 	
 	func refresh(_ completion: @escaping ((Bool)-> Void)) {
 		Snippets.shared.fetchTagmojiCategories { (error, tagmoji) in
-			var newDictionary : [String : Any] = [:]
-			var changed = false
-			for d in tagmoji {
-				if let symbol = d["emoji"] as? String {
-					newDictionary[symbol] = d
-				}
-			}
 			
-			if newDictionary.count != self.dictionary.count {
-				changed = true
-			}
-			else {
-				let keys = newDictionary.keys
-				for key in keys {
-					if self.dictionary[key] == nil {
-						changed = true
-					}
-				}
-			}
-			
-			self.dictionary = newDictionary
-			
+			let changed = self.updateFromServerResponse(tagmoji)
 			completion(changed)
 		}
+	}
+	
+	func updateFromServerResponse(_ tagmoji : [[String : Any]]) -> Bool {
+		var newDictionary : [String : Any] = [:]
+		var changed = false
+		for d in tagmoji {
+			if let symbol = d["emoji"] as? String {
+				newDictionary[symbol] = d
+			}
+		}
+		
+		if newDictionary.count != self.dictionary.count {
+			changed = true
+		}
+		else {
+			let keys = newDictionary.keys
+			for key in keys {
+				if self.dictionary[key] == nil {
+					changed = true
+				}
+			}
+		}
+		
+		self.dictionary = newDictionary
+		return changed
 	}
 	
 	func frequentlyUsedEmoji() -> [String] {
