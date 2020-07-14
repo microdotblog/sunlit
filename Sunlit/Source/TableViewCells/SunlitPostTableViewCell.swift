@@ -62,7 +62,8 @@ class SunlitPostTableViewCell : UITableViewCell {
 		height = height + 44.0
 		
 		if post.hasConversation {
-			height = height + 44.0
+			let conversationHeight = NSString(string: "Conversation").size(withAttributes: [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .caption1)]).height
+			height = height + conversationHeight
 		}
 		
 		height = height + 32.0 // Reply container
@@ -90,6 +91,9 @@ class SunlitPostTableViewCell : UITableViewCell {
 		self.replyContainer.layer.cornerRadius = 18.0
 		self.replyContainer.layer.borderColor = UIColor.lightGray.cgColor
 		self.replyContainer.layer.borderWidth = 0.0
+		
+		self.userName.font = UIFont.preferredFont(forTextStyle: .caption1)
+		self.userHandle.font = UIFont.preferredFont(forTextStyle: .caption2)
 
 		// Configure the user avatar
 		self.userAvatar.clipsToBounds = true
@@ -108,7 +112,11 @@ class SunlitPostTableViewCell : UITableViewCell {
 		self.replyContainer.layer.borderWidth = 0.0
 
 		self.conversationButton.isHidden = !self.post.hasConversation
-		self.conversationHeightConstraint.constant = self.post.hasConversation ? 44.0 : 0.0
+		
+		let conversationFont = UIFont.preferredFont(forTextStyle: .caption1)
+		self.conversationButton.titleLabel?.font = conversationFont
+		let conversationHeight = NSString(string: "Conversation").size(withAttributes: [NSAttributedString.Key.font : conversationFont]).height
+		self.conversationHeightConstraint.constant = self.post.hasConversation ? conversationHeight : 0.0
 		
 		// Update the text objects
 		self.textView.attributedText = post.text
