@@ -60,7 +60,11 @@ class MainViewController: UIViewController {
 
 		if UIDevice.current.userInterfaceIdiom == .phone {
 			let postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
-			let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(onSettings))
+			var settingsSymbol = "gear"
+			if #available(iOS 14, *) {
+				settingsSymbol = "gearshape"
+			}
+			let settingsButton = UIBarButtonItem(image: UIImage(systemName: settingsSymbol), style: .plain, target: self, action: #selector(onSettings))
 			self.navigationItem.title = "Timeline"
 			self.navigationItem.leftBarButtonItem = settingsButton
 			self.navigationItem.rightBarButtonItem = postButton

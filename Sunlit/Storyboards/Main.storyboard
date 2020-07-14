@@ -205,17 +205,17 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="1IH-m8-7BA">
-                                <rect key="frame" x="87" y="625" width="240" height="205"/>
+                                <rect key="frame" x="87" y="624" width="240" height="206"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uk9-mv-Ved">
-                                        <rect key="frame" x="0.0" y="0.0" width="240" height="25"/>
-                                        <state key="normal" title="Settings" image="gearshape" catalog="system"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="26"/>
+                                        <state key="normal" title="Settings" image="gear" catalog="system"/>
                                         <connections>
                                             <action selector="onSettings" destination="Maa-K5-Q6T" eventType="touchUpInside" id="S73-cf-3tL"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9J4-PY-jEV">
-                                        <rect key="frame" x="0.0" y="57" width="240" height="23.5"/>
+                                        <rect key="frame" x="0.0" y="58" width="240" height="23.5"/>
                                         <inset key="titleEdgeInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Post" image="square.and.pencil" catalog="system"/>
@@ -224,14 +224,14 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lxf-c6-O0H">
-                                        <rect key="frame" x="0.0" y="112.5" width="240" height="40"/>
+                                        <rect key="frame" x="0.0" y="113.5" width="240" height="40"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="hUB-LX-nQ6"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version 3.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fX3-GC-4lM">
-                                        <rect key="frame" x="0.0" y="184.5" width="240" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="185.5" width="240" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -267,7 +267,7 @@
     </scenes>
     <resources>
         <image name="bubble.left.and.bubble.right" catalog="system" width="128" height="96"/>
-        <image name="gearshape" catalog="system" width="128" height="121"/>
+        <image name="gear" catalog="system" width="128" height="119"/>
         <image name="magnifyingglass.circle" catalog="system" width="128" height="121"/>
         <image name="person.circle" catalog="system" width="128" height="121"/>
         <image name="square.and.pencil" catalog="system" width="128" height="115"/>
