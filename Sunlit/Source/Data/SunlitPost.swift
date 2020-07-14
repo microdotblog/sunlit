@@ -25,7 +25,7 @@ class SunlitPost : SnippetsPost {
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-	static func create(_ snippet : SnippetsPost, font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> SunlitPost {
+	static func create(_ snippet : SnippetsPost, font : UIFont = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body), textColor : UIColor = UIColor.label) -> SunlitPost {
 
 		let html = addTextStyle(string: snippet.htmlText, font: font, textColor: textColor)
 		
