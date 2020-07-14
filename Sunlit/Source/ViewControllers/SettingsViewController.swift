@@ -47,12 +47,12 @@ class SettingsViewController: UIViewController {
 		self.wordPressSite.text = PublishingConfiguration.current.getBlogAddress()
 			
 		if PublishingConfiguration.current.hasConfigurationForExternal() {
-			self.wordPressSignoutButton.setTitle("Log Out", for: .normal)
+			self.wordPressSignoutButton.setTitle("Sign Out", for: .normal)
 		}
 		else {
-			self.wordPressUserName.text = "Not signed in"
+			self.wordPressUserName.text = ""
 			self.wordPressSite.text = ""
-			self.wordPressSignoutButton.setTitle("Log In", for: .normal)
+			self.wordPressSignoutButton.setTitle("Sign In", for: .normal)
 		}
 		
 		var appName = PublishingConfiguration.current.getExternalBlogAppName()
@@ -74,7 +74,7 @@ class SettingsViewController: UIViewController {
 	
 	@IBAction func onSignout() {
 
-		Dialog(self).question(title: nil, question: "Are you sure you want to log out of your Micro.blog account?", accept: "Log Out", cancel: "Cancel") {
+		Dialog(self).question(title: nil, question: "Are you sure you want to sign out of your Micro.blog account?", accept: "Sign Out", cancel: "Cancel") {
 			Settings.logout()
 
 			NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
@@ -84,7 +84,7 @@ class SettingsViewController: UIViewController {
 	
 	@IBAction func onSignoutWordPress() {
 		if PublishingConfiguration.current.hasConfigurationForExternal() {
-			Dialog(self).question(title: nil, question: "Are you sure you want to log out of your WordPress account?", accept: "Log Out", cancel: "Cancel") {
+			Dialog(self).question(title: nil, question: "Are you sure you want to sign out of your WordPress account?", accept: "Sign Out", cancel: "Cancel") {
 			
 				PublishingConfiguration.deleteXMLRPCBlogSettings()
 				self.onSelectPostType(self.microBlogButton)
