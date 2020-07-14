@@ -11,7 +11,7 @@ import Snippets
 
 extension SnippetsUser {
 	
-	func attributedTextBio(font : UIFont = UIFont.systemFont(ofSize: 14.0), textColor : UIColor = UIColor.label) -> NSAttributedString {
+	func attributedTextBio(font : UIFont = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body), textColor : UIColor = UIColor.label) -> NSAttributedString {
 		let formattedBio = SunlitPost.addTextStyle(string: self.bio, font: font, textColor: textColor)
 		return NSAttributedString(string: formattedBio).html()
 	}
