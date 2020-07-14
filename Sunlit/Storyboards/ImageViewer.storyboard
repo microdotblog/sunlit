@@ -37,7 +37,7 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="70"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LCc-rb-zmg">
-                                        <rect key="frame" x="124.5" y="13" width="165" height="44"/>
+                                        <rect key="frame" x="57" y="13" width="165" height="44"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="AWe-2L-xq8">
                                                 <rect key="frame" x="52" y="2" width="113" height="39.5"/>
@@ -86,7 +86,7 @@
                                 <color key="backgroundColor" white="0.25217319539999999" alpha="0.79891065139999995" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="LCc-rb-zmg" firstAttribute="centerY" secondItem="FVq-VH-8Ql" secondAttribute="centerY" id="1g0-v3-zeX"/>
-                                    <constraint firstItem="LCc-rb-zmg" firstAttribute="centerX" secondItem="FVq-VH-8Ql" secondAttribute="centerX" id="6uy-za-KVW"/>
+                                    <constraint firstItem="LCc-rb-zmg" firstAttribute="leading" secondItem="UUj-d0-Xt5" secondAttribute="trailing" constant="20" id="Y6T-5V-JVS"/>
                                     <constraint firstItem="UUj-d0-Xt5" firstAttribute="leading" secondItem="FVq-VH-8Ql" secondAttribute="leading" constant="16" id="cmi-6J-qjp"/>
                                     <constraint firstAttribute="height" constant="70" id="oZf-td-Lkk"/>
                                     <constraint firstItem="UUj-d0-Xt5" firstAttribute="centerY" secondItem="FVq-VH-8Ql" secondAttribute="centerY" id="vrV-qU-54r"/>
