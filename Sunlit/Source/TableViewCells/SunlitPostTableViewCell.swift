@@ -114,8 +114,9 @@ class SunlitPostTableViewCell : UITableViewCell {
 		self.conversationButton.isHidden = !self.post.hasConversation
 		
 		let conversationFont = UIFont.preferredFont(forTextStyle: .caption1)
+		let conversationPadding: CGFloat = 15
 		self.conversationButton.titleLabel?.font = conversationFont
-		let conversationHeight = NSString(string: "Conversation").size(withAttributes: [NSAttributedString.Key.font : conversationFont]).height
+		let conversationHeight = NSString(string: "Conversation").size(withAttributes: [NSAttributedString.Key.font : conversationFont]).height + conversationPadding
 		self.conversationHeightConstraint.constant = self.post.hasConversation ? conversationHeight : 0.0
 		
 		// Update the text objects
