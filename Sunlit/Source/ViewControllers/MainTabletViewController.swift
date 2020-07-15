@@ -48,9 +48,11 @@ class MainTabletViewController: UIViewController {
 			ImageCache.fetch(self, user.avatarURL) { (image) in
 				
 				if let image = image {
-					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
+					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 24, height: 24)).withRenderingMode(.alwaysOriginal)
 					DispatchQueue.main.async {
 						self.profileButton.setImage(profileImage, for: .normal)
+						self.profileButton.setImage(profileImage, for: .selected)
+						self.profileButton.imageView?.layer.cornerRadius = 12
 						self.profileButton.centerVertically()
 					}
 				}
@@ -78,9 +80,11 @@ class MainTabletViewController: UIViewController {
 			else {
 				ImageCache.fetch(self, current.avatarURL) { (image) in
 					if let image = ImageCache.prefetch(current.avatarURL) {
-						let profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
+						let profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 24, height: 24)).withRenderingMode(.alwaysOriginal)
 						DispatchQueue.main.async {
 							self.profileButton.setImage(profileImage, for: .normal)
+							self.profileButton.setImage(profileImage, for: .selected)
+							self.profileButton.imageView?.layer.cornerRadius = 12
 						}
 					}
 				}
@@ -88,6 +92,8 @@ class MainTabletViewController: UIViewController {
 		}
 		self.profileButton.setTitle(profileUsername, for: .normal)
 		self.profileButton.setImage(profileImage, for: .normal)
+		self.profileButton.setImage(profileImage, for: .selected)
+		self.profileButton.imageView?.layer.cornerRadius = 12
 		self.profileButton.titleLabel?.lineBreakMode = .byCharWrapping
 		self.profileButton.titleLabel?.numberOfLines = 4
 

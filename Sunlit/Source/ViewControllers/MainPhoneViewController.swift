@@ -113,11 +113,13 @@ class MainPhoneViewController: UIViewController {
 		}
 
 		if let image = profileImage {
-			profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
+			profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 24, height: 24)).withRenderingMode(.alwaysOriginal)
 		}
 
 		self.profileButton.setTitle(profileUsername, for: .normal)
 		self.profileButton.setImage(profileImage, for: .normal)
+		self.profileButton.setImage(profileImage, for: .selected)
+		self.profileButton.imageView?.layer.cornerRadius = 12
 		self.profileButton.centerVertically()
 
 		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
@@ -138,9 +140,11 @@ class MainPhoneViewController: UIViewController {
 			ImageCache.fetch(self, user.avatarURL) { (image) in
 				
 				if let image = image {
-					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
+					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 24, height: 24)).withRenderingMode(.alwaysOriginal)
 					DispatchQueue.main.async {
 						self.profileButton.setImage(profileImage, for: .normal)
+						self.profileButton.setImage(profileImage, for: .selected)
+						self.profileButton.imageView?.layer.cornerRadius = 12
 						self.profileButton.centerVertically()
 						self.view.layoutIfNeeded()
 					}
