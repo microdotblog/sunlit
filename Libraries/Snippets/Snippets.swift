@@ -51,7 +51,7 @@ public class Snippets : NSObject {
 												"app_name" : appName,
 												"redirect_url" : redirect ]
 	
-		_ = UUHttpSession.post(url: self.pathForRoute("account/signin"), queryArguments: arguments, body: nil, contentType: nil) { (parsedServerResponse) in
+		UUHttpSession.post(url: self.pathForRoute("account/signin"), queryArguments: arguments, body: nil, contentType: nil) { (parsedServerResponse) in
 			completion(parsedServerResponse.httpError)
 		}
 	}
@@ -60,7 +60,7 @@ public class Snippets : NSObject {
 	{
 		let arguments : [String : String] = [ "token" : token ]
 		
-		_ = UUHttpSession.post(url: self.pathForRoute("account/verify"), queryArguments: arguments, body: nil, contentType: nil) { (parsedServerResponse) in
+		UUHttpSession.post(url: self.pathForRoute("account/verify"), queryArguments: arguments, body: nil, contentType: nil) { (parsedServerResponse) in
 			if let dictionary = parsedServerResponse.parsedResponse as? [ String : Any ]
 			{
 				if let permanentToken = dictionary["token"] as? String
