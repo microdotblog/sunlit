@@ -113,11 +113,11 @@ class SunlitPostTableViewCell : UITableViewCell {
 
 		self.conversationButton.isHidden = !self.post.hasConversation
 		
-		let conversationFont = UIFont.preferredFont(forTextStyle: .caption1)
-		let conversationPadding: CGFloat = 15
-		self.conversationButton.titleLabel?.font = conversationFont
-		let conversationHeight = NSString(string: "Conversation").size(withAttributes: [NSAttributedString.Key.font : conversationFont]).height + conversationPadding
-		self.conversationHeightConstraint.constant = self.post.hasConversation ? conversationHeight : 0.0
+//		let conversationFont = UIFont.preferredFont(forTextStyle: .caption1)
+//		let conversationPadding: CGFloat = 15
+//		self.conversationButton.titleLabel?.font = conversationFont
+//		let conversationHeight = NSString(string: "Conversation").size(withAttributes: [NSAttributedString.Key.font : conversationFont]).height + conversationPadding
+//		self.conversationHeightConstraint.constant = self.post.hasConversation ? conversationHeight : 0.0
 		
 		// Update the text objects
 		self.textView.attributedText = post.text
@@ -174,6 +174,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 		self.replyField.isHidden = false
 		self.replyButton.isHidden = true
 		self.postButton.isHidden = false
+		self.conversationButton.isHidden = true
 
 		self.replyField.alpha = 0.0
 		self.replyButton.alpha = 1.0
@@ -217,6 +218,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 		self.replyField.isHidden = true
 		self.replyButton.isHidden = false
 		self.postButton.isHidden = true
+		self.conversationButton.isHidden = !self.post.hasConversation
 
 		UIView.animate(withDuration: 0.35) {
 			self.replyField.alpha = 0.0;
