@@ -444,7 +444,7 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 	func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
 	
 		for indexPath in indexPaths {
-			//self.prefetchImages(indexPath)
+			self.prefetchImages(indexPath)
 		}
 	}
 	
