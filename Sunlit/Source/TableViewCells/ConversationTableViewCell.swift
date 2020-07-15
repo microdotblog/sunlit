@@ -33,6 +33,7 @@ class ConversationTableViewCell : UITableViewCell {
 		self.post = post
 		
 		self.replyText.attributedText = post.text
+		self.replyText.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 		self.userName.text = post.owner.fullName
 		self.userHandle.text = "@" + post.owner.userName
 		self.loadPhotos(post.owner, indexPath)
