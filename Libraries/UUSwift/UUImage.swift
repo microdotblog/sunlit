@@ -80,22 +80,17 @@ public extension UUImage
 	
 	func uuScaleAndCropToSize(targetSize : CGSize) -> UUImage
 	{
-		let deviceScale = UUImage.uuScreenScale()
 		let sourceImage = self
 		let imageSize = sourceImage.size
-		let width : CGFloat = imageSize.width
-		let height : CGFloat = imageSize.height
-		let targetWidth : CGFloat = targetSize.width * deviceScale
-		let targetHeight : CGFloat = targetSize.height * deviceScale
 		var scaleFactor : CGFloat = 0.0
-		var scaledWidth : CGFloat = targetWidth
-		var scaledHeight : CGFloat = targetHeight
+		var scaledWidth : CGFloat = targetSize.width
+		var scaledHeight : CGFloat = targetSize.height
 		var thumbnailPoint = CGPoint(x: 0.0, y: 0.0)
 		
 		if (imageSize != targetSize)
 		{
-			let widthFactor = targetWidth / width
-			let heightFactor = targetHeight / height
+			let widthFactor = targetSize.width / imageSize.width
+			let heightFactor = targetSize.height / imageSize.height
 			if (widthFactor > heightFactor)
 			{
 				scaleFactor = widthFactor
@@ -105,21 +100,19 @@ public extension UUImage
 				scaleFactor = heightFactor
 			}
 			
-			scaledWidth = width * scaleFactor
-			scaledHeight = height * scaleFactor
+			scaledWidth = imageSize.width * scaleFactor
+			scaledHeight = imageSize.height * scaleFactor
 			
 			if (widthFactor > heightFactor)
 			{
-				thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5
+                thumbnailPoint.y = (targetSize.height - scaledHeight) * 0.5
 			}
 			else if (widthFactor < heightFactor)
 			{
-				thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5
+				thumbnailPoint.x = (targetSize.width - scaledWidth) * 0.5
 			}
 		}
-		
-		let targetSize = CGSize(width: targetWidth, height: targetHeight)
-		
+				
 		var thumbnailRect : CGRect = .zero
 		thumbnailRect.origin = thumbnailPoint
 		thumbnailRect.size = CGSize(width: scaledWidth, height: scaledHeight)
@@ -243,7 +236,7 @@ public extension UUImage
 
 	private static func uuScreenScale() -> CGFloat
 	{
-		return 1.0 //UIScreen.main.scale
+		return UIScreen.main.scale
 	}
 
 	#else
