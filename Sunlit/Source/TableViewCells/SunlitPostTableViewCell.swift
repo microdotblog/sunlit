@@ -61,11 +61,6 @@ class SunlitPostTableViewCell : UITableViewCell {
 		height = height + SunlitPostTableViewCell.textHeight(post, parentWidth: parentWidth)
 		height = height + 44.0
 		
-		if post.hasConversation {
-			let conversationHeight = NSString(string: "Conversation").size(withAttributes: [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .caption1)]).height
-			height = height + conversationHeight
-		}
-		
 		height = height + 32.0 // Reply container
 		height = height + 16.0
 	
@@ -112,12 +107,6 @@ class SunlitPostTableViewCell : UITableViewCell {
 		self.replyContainer.layer.borderWidth = 0.0
 
 		self.conversationButton.isHidden = !self.post.hasConversation
-		
-//		let conversationFont = UIFont.preferredFont(forTextStyle: .caption1)
-//		let conversationPadding: CGFloat = 15
-//		self.conversationButton.titleLabel?.font = conversationFont
-//		let conversationHeight = NSString(string: "Conversation").size(withAttributes: [NSAttributedString.Key.font : conversationFont]).height + conversationPadding
-//		self.conversationHeightConstraint.constant = self.post.hasConversation ? conversationHeight : 0.0
 		
 		// Update the text objects
 		self.textView.attributedText = post.text
