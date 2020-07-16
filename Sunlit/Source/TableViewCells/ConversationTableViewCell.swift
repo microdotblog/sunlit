@@ -21,8 +21,8 @@ class ConversationTableViewCell : UITableViewCell {
 		self.avatar.clipsToBounds = true
 		self.avatar.layer.cornerRadius = (self.avatar.bounds.size.height - 1) / 2.0
 
-		self.userName.font = UIFont.preferredFont(forTextStyle: .caption1)
-		self.userHandle.font = UIFont.preferredFont(forTextStyle: .caption2)
+		self.userName.font = UIFont.preferredFont(forTextStyle: .headline)
+		self.userHandle.font = UIFont.preferredFont(forTextStyle: .subheadline)
 		
 		self.addUserProfileTapGesture(self.userName)
 		self.addUserProfileTapGesture(self.avatar)
