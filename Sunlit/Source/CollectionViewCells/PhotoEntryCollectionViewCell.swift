@@ -13,25 +13,24 @@ class PhotoEntryCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var date : UILabel!
 
 	static func sizeOf(collectionViewWidth : CGFloat) -> CGSize {
-		var sections = Int(collectionViewWidth / 130.0)
+		var sections = Int(collectionViewWidth / 160.0)
 		if sections < 2 {
 			sections = 2
 		}
 		        
 		let width = (collectionViewWidth / CGFloat(sections)) - 8.0
         
-        let font = UIFont.preferredFont(forTextStyle: .caption1)
+        let font = UIFont.preferredFont(forTextStyle: .footnote)
         let constrainedSize = CGSize(width: width, height: .greatestFiniteMagnitude)
         let dateString = "Date"
         var height : CGFloat = width + dateString.boundingRect(with: constrainedSize, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics], attributes: [NSAttributedString.Key.font: font], context: nil).height
-        height = height + 8.0
-        
+        height = height + 14.0
 		return CGSize(width: width, height: height)
 	}
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.date.font = UIFont.preferredFont(forTextStyle: .caption1)
+        self.date.font = UIFont.preferredFont(forTextStyle: .footnote)
     }
 }

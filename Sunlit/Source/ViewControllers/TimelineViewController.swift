@@ -49,6 +49,7 @@ class TimelineViewController: UIViewController {
 	func updateLoggedInStatus() {
 		let token = Settings.snippetsToken()
 		self.loggedOutView.isHidden = (token != nil)
+		self.loggedOutView.superview?.bringSubviewToFront(self.loggedOutView)
 	}
 	
 	@IBAction func onShowLogin() {
@@ -168,6 +169,7 @@ class TimelineViewController: UIViewController {
 		
 		let token = Settings.snippetsToken()
 		self.loggedOutView.isHidden = (token != nil)
+		self.loggedOutView.superview?.bringSubviewToFront(self.loggedOutView)
 
 		// Safety check for double loads...
 		if self.loadingData == true {

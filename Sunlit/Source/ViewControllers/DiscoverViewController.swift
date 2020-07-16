@@ -55,10 +55,6 @@ class DiscoverViewController: UIViewController {
 		
 		self.collectionViewRefreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
 		self.collectionView.addSubview(self.collectionViewRefreshControl)
-		
-		if let layout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-			layout.estimatedItemSize = CGSize(width: self.collectionView.bounds.size.width / 2.0, height: self.collectionView.bounds.size.width + 48.0)
-		}
 	}
 
 	func setupNotifications() {
