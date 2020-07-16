@@ -17,8 +17,21 @@ class PhotoEntryCollectionViewCell : UICollectionViewCell {
 		if sections < 2 {
 			sections = 2
 		}
-		
+		        
 		let width = (collectionViewWidth / CGFloat(sections)) - 8.0
-		return CGSize(width: width, height: width + 40.0)
+        
+        let font = UIFont.preferredFont(forTextStyle: .caption1)
+        let constrainedSize = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let dateString = "Date"
+        var height : CGFloat = width + dateString.boundingRect(with: constrainedSize, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics], attributes: [NSAttributedString.Key.font: font], context: nil).height
+        height = height + 8.0
+        
+		return CGSize(width: width, height: height)
 	}
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        self.date.font = UIFont.preferredFont(forTextStyle: .caption1)
+    }
 }
