@@ -25,6 +25,10 @@ class TimelineViewController: UIViewController {
 		self.setupTableView()
 		self.loadTimeline()
 	}
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        self.loadTimeline()
+    }
 		
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(loadTimeline), for: .valueChanged)

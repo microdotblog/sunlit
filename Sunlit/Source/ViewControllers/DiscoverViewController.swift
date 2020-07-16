@@ -43,6 +43,11 @@ class DiscoverViewController: UIViewController {
 		self.loadFrequentlyUsedEmoji()
 		self.setupSnippets()
 	}
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        self.loadTimeline()
+    }
+
 		
 	func setupTableViewAndCollectionView() {
 		self.tableViewRefreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
