@@ -51,27 +51,58 @@ class SunlitPostTableViewCell : UITableViewCell {
 		
 		return height
 	}
-	
+    
+    static func authorHeight(_ author : SnippetsUser, parentWidth : CGFloat) -> CGFloat {
+        let fullNameFont = UIFont.preferredFont(forTextStyle: .headline)
+        let userNameFont = UIFont.preferredFont(forTextStyle: .subheadline)
+        let constrainedSize = CGSize(width: parentWidth, height: .greatestFiniteMagnitude)
+        var height : CGFloat = 16.0
+        height = height + author.fullName.boundingRect(with: constrainedSize, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics], attributes: [NSAttributedString.Key.font: fullNameFont], context: nil).height
+        height = height + author.userName.boundingRect(with: constrainedSize, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics], attributes: [NSAttributedString.Key.font: userNameFont], context: nil).height
+        height = height + 16.0
+        
+        return height
+    }
+    
+    static func dateLabelHeight(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
+        let font = UIFont.preferredFont(forTextStyle: .caption1)
+        let constrainedSize = CGSize(width: parentWidth, height: .greatestFiniteMagnitude)
+        let dateString = "Date"
+        var height : CGFloat = 10.0
+        height = height + dateString.boundingRect(with: constrainedSize, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics], attributes: [NSAttributedString.Key.font: font], context: nil).height
+        height = height + 8.0
+        
+        return height
+    }
+    
+    static func textHeight(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
+        let size = CGSize(width: parentWidth - 34.0, height: .greatestFiniteMagnitude)
+        let text = post.text
+        let rect = text.boundingRect(with: size, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics] , context: nil)
+        return ceil(rect.size.height)
+    }
+    
+    static func replyContainerHeight(parentWidth : CGFloat) -> CGFloat {
+        let font = UIFont.preferredFont(forTextStyle: .body)
+        let constrainedSize = CGSize(width: parentWidth, height: .greatestFiniteMagnitude)
+        let dateString = "Reply"
+        var height : CGFloat = 12.0
+        height = height + dateString.boundingRect(with: constrainedSize, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics], attributes: [NSAttributedString.Key.font: font], context: nil).height
+        height = height + 16.0
+        
+        return height
+    }
+    
 	static func height(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
-		var height : CGFloat = 72.0
+        var height : CGFloat = authorHeight(post.owner, parentWidth: parentWidth)
 		height = height + SunlitPostTableViewCell.photoHeight(post, parentWidth: parentWidth)
-		height = height + 8.0
-		height = height + 16.0 // Timestamp
-		height = height + 8.0
+        height = height + SunlitPostTableViewCell.dateLabelHeight(post, parentWidth: parentWidth)
 		height = height + SunlitPostTableViewCell.textHeight(post, parentWidth: parentWidth)
-		height = height + 44.0
-		
-		height = height + 32.0 // Reply container
-		height = height + 16.0
-	
+        height = height + 2.5 * SunlitPostTableViewCell.replyContainerHeight(parentWidth: parentWidth)
+
+        //height = height + 88.0
+
 		return height
-	}
-	
-	static func textHeight(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
-		let size = CGSize(width: parentWidth - 34.0, height: .greatestFiniteMagnitude)
-		let text = post.text
-		let rect = text.boundingRect(with: size, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics] , context: nil)
-		return ceil(rect.size.height)
 	}
 		
 
@@ -87,8 +118,9 @@ class SunlitPostTableViewCell : UITableViewCell {
 		self.replyContainer.layer.borderColor = UIColor.lightGray.cgColor
 		self.replyContainer.layer.borderWidth = 0.0
 		
-		self.userName.font = UIFont.preferredFont(forTextStyle: .caption1)
-		self.userHandle.font = UIFont.preferredFont(forTextStyle: .caption2)
+		self.userName.font = UIFont.preferredFont(forTextStyle: .headline)
+		self.userHandle.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        self.dateLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
 
 		// Configure the user avatar
 		self.userAvatar.clipsToBounds = true
