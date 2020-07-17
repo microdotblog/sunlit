@@ -205,9 +205,9 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         {
             contents = try FileManager.default.contentsOfDirectory(atPath: cacheFolder)
         }
-        catch (let err)
+        catch (_)
         {
-            UUDebugLog("Error fetching contents of directory: %@", String(describing: err))
+            //UUDebugLog("Error fetching contents of directory: %@", String(describing: err))
         }
         
         return contents
@@ -278,9 +278,9 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         {
             data = try Data(contentsOf: pathUrl)
         }
-        catch (let err)
+        catch (_)
         {
-            UUDebugLog("Error loading data: %@", String(describing: err))
+            //UUDebugLog("Error loading data: %@", String(describing: err))
         }
         
         return data
@@ -299,9 +299,9 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         {
             try FileManager.default.removeItem(at: pathUrl)
         }
-        catch (let err)
+        catch (_)
         {
-            UUDebugLog("Error removing file: %@", String(describing: err))
+            //UUDebugLog("Error removing file: %@", String(describing: err))
         }
     }
     
