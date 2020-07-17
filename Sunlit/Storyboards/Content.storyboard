@@ -576,7 +576,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="128" height="168"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="253" verticalHuggingPriority="252" horizontalCompressionResistancePriority="252" verticalCompressionResistancePriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="Eql-Cg-ENS">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="253" verticalHuggingPriority="252" horizontalCompressionResistancePriority="252" verticalCompressionResistancePriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="Eql-Cg-ENS">
                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="138.33333333333334"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17" scale="default"/>
                                                 </imageView>
