@@ -108,10 +108,8 @@ class ExternalBlogConfigurationViewController: UIViewController {
 				self.micropubTokenEndpoint = tokenEndpoint
 				
 				DispatchQueue.main.async {
-					let safariViewController = SFSafariViewController(url: URL(string: authEndpoint)!)
-					safariViewController.delegate = self
-					
-					self.present(safariViewController, animated: true, completion: nil)
+					UIApplication.shared.open(URL(string: authEndpoint)!)
+					self.navigationController?.popViewController(animated: true)
 				}
 				
 			}
@@ -141,6 +139,10 @@ class ExternalBlogConfigurationViewController: UIViewController {
 
 		_ = UUHttpSession.executeRequest(request) { (response) in
 			if let rawResponse = response.rawResponse {
+				// uncomment to force Micropub testing
+//				self.interrogateMicropubURL(path: fullURL, rawResponse)
+//				return
+
 				let links = SnippetsXMLLinkParser.parse(rawResponse, relValue: "EditURI")
 				if let link = links.first {
 					

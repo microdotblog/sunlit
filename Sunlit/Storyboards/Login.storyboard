@@ -19,16 +19,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your Micro.blog email address or the URL of an external blog:" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yoc-na-EpW">
-                                <rect key="frame" x="60" y="108" width="294" height="73"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="73" id="8Z8-Oo-4fr"/>
-                                </constraints>
+                                <rect key="frame" x="60" y="64" width="294" height="38.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TYy-Ce-Fsh">
-                                <rect key="frame" x="0.0" y="193" width="414" height="43"/>
+                                <rect key="frame" x="0.0" y="122.5" width="414" height="43"/>
                                 <subviews>
                                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="eP3-BZ-GjT">
                                         <rect key="frame" x="386" y="11.5" width="20" height="20"/>
@@ -63,8 +60,8 @@
                         <constraints>
                             <constraint firstItem="TYy-Ce-Fsh" firstAttribute="trailing" secondItem="NRI-Ql-psS" secondAttribute="trailing" id="0cZ-bl-KoV"/>
                             <constraint firstItem="yoc-na-EpW" firstAttribute="leading" secondItem="NRI-Ql-psS" secondAttribute="leading" constant="60" id="aWU-Vy-0Jf"/>
-                            <constraint firstItem="TYy-Ce-Fsh" firstAttribute="top" secondItem="yoc-na-EpW" secondAttribute="bottom" constant="12" id="e2f-uD-Uze"/>
-                            <constraint firstItem="yoc-na-EpW" firstAttribute="top" secondItem="NRI-Ql-psS" secondAttribute="top" constant="64" id="hKf-vW-OBF"/>
+                            <constraint firstItem="TYy-Ce-Fsh" firstAttribute="top" secondItem="yoc-na-EpW" secondAttribute="bottom" constant="20" id="e2f-uD-Uze"/>
+                            <constraint firstItem="yoc-na-EpW" firstAttribute="top" secondItem="NRI-Ql-psS" secondAttribute="top" constant="20" id="hKf-vW-OBF"/>
                             <constraint firstItem="NRI-Ql-psS" firstAttribute="trailing" secondItem="yoc-na-EpW" secondAttribute="trailing" constant="60" id="hLU-JH-gur"/>
                             <constraint firstItem="TYy-Ce-Fsh" firstAttribute="leading" secondItem="NRI-Ql-psS" secondAttribute="leading" id="ynx-XZ-9vH"/>
                         </constraints>
@@ -87,20 +84,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter the URL of your weblog:" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MSU-j0-C7E">
-                                <rect key="frame" x="60" y="108" width="294" height="73"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="73" id="oTm-PM-oJy"/>
-                                </constraints>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the URL of your external blog:" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MSU-j0-C7E">
+                                <rect key="frame" x="60" y="64" width="294" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e1v-dV-XQG">
-                                <rect key="frame" x="16" y="193" width="382" height="43"/>
+                                <rect key="frame" x="0.0" y="103.5" width="414" height="44"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="WordPress or Micropub blog URL" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uAa-l1-JZe">
-                                        <rect key="frame" x="12" y="4" width="358" height="35"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uAa-l1-JZe">
+                                        <rect key="frame" x="60" y="4" width="294" height="36"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL" returnKeyType="next" textContentType="url"/>
                                         <connections>
@@ -110,43 +104,65 @@
                                 </subviews>
                                 <color key="backgroundColor" name="color_signin_bar"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="43" id="HyB-dC-IGV"/>
+                                    <constraint firstAttribute="height" constant="44" id="HyB-dC-IGV"/>
                                     <constraint firstAttribute="bottom" secondItem="uAa-l1-JZe" secondAttribute="bottom" constant="4" id="Ixb-4a-nzL"/>
-                                    <constraint firstAttribute="trailing" secondItem="uAa-l1-JZe" secondAttribute="trailing" constant="12" id="L7U-wW-kqT"/>
+                                    <constraint firstAttribute="trailing" secondItem="uAa-l1-JZe" secondAttribute="trailing" constant="60" id="L7U-wW-kqT"/>
                                     <constraint firstItem="uAa-l1-JZe" firstAttribute="top" secondItem="e1v-dV-XQG" secondAttribute="top" constant="4" id="aDr-vO-Yff"/>
-                                    <constraint firstItem="uAa-l1-JZe" firstAttribute="leading" secondItem="e1v-dV-XQG" secondAttribute="leading" constant="12" id="adI-9q-8bt"/>
+                                    <constraint firstItem="uAa-l1-JZe" firstAttribute="leading" secondItem="e1v-dV-XQG" secondAttribute="leading" constant="60" id="adI-9q-8bt"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rlG-Rj-BvX">
-                                <rect key="frame" x="16" y="193" width="382" height="96"/>
+                                <rect key="frame" x="0.0" y="103.5" width="414" height="96"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Pj5-bA-bY2">
-                                        <rect key="frame" x="0.0" y="0.0" width="382" height="96"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="96"/>
                                         <subviews>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eGl-OX-b9Y">
-                                                <rect key="frame" x="0.0" y="0.0" width="382" height="43"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="484-tW-n8h">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                                <subviews>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eGl-OX-b9Y">
+                                                        <rect key="frame" x="60" y="0.0" width="294" height="44"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="44" id="hcR-6a-DOd"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                        <textInputTraits key="textInputTraits" textContentType="username"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="AHk-0v-KIm" id="nKg-vV-ula"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
                                                 <color key="backgroundColor" name="color_signin_bar"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="43" id="hcR-6a-DOd"/>
+                                                    <constraint firstAttribute="trailing" secondItem="eGl-OX-b9Y" secondAttribute="trailing" constant="60" id="QB9-5U-n2p"/>
+                                                    <constraint firstAttribute="height" constant="44" id="m1q-Re-dib"/>
+                                                    <constraint firstItem="eGl-OX-b9Y" firstAttribute="leading" secondItem="484-tW-n8h" secondAttribute="leading" constant="60" id="pE5-XP-oLJ"/>
+                                                    <constraint firstItem="eGl-OX-b9Y" firstAttribute="centerY" secondItem="484-tW-n8h" secondAttribute="centerY" id="qxU-1P-Jpk"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" textContentType="username"/>
-                                                <connections>
-                                                    <outlet property="delegate" destination="AHk-0v-KIm" id="nKg-vV-ula"/>
-                                                </connections>
-                                            </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lpZ-9W-w3G">
-                                                <rect key="frame" x="0.0" y="53" width="382" height="43"/>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ref-4g-2hN">
+                                                <rect key="frame" x="0.0" y="52" width="414" height="44"/>
+                                                <subviews>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lpZ-9W-w3G">
+                                                        <rect key="frame" x="60" y="0.0" width="294" height="44"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="44" id="2lG-zX-HRb"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                        <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="AHk-0v-KIm" id="z6U-sf-egC"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
                                                 <color key="backgroundColor" name="color_signin_bar"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="43" id="2lG-zX-HRb"/>
+                                                    <constraint firstItem="lpZ-9W-w3G" firstAttribute="centerY" secondItem="Ref-4g-2hN" secondAttribute="centerY" id="Zpr-Ny-Mjm"/>
+                                                    <constraint firstAttribute="height" constant="44" id="cTu-rh-fAt"/>
+                                                    <constraint firstItem="lpZ-9W-w3G" firstAttribute="leading" secondItem="Ref-4g-2hN" secondAttribute="leading" constant="60" id="u8p-zY-QHr"/>
+                                                    <constraint firstAttribute="trailing" secondItem="lpZ-9W-w3G" secondAttribute="trailing" constant="60" id="wke-pn-bnf"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
-                                                <connections>
-                                                    <outlet property="delegate" destination="AHk-0v-KIm" id="z6U-sf-egC"/>
-                                                </connections>
-                                            </textField>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </stackView>
@@ -161,7 +177,7 @@
                                 </constraints>
                             </view>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Mv4-HS-Wbw">
-                                <rect key="frame" x="362" y="204.5" width="20" height="20"/>
+                                <rect key="frame" x="378" y="115.5" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="eOC-rO-bZV"/>
                                     <constraint firstAttribute="width" constant="20" id="myB-Ge-AKr"/>
@@ -173,15 +189,15 @@
                         <constraints>
                             <constraint firstItem="MSU-j0-C7E" firstAttribute="leading" secondItem="nAp-Dr-naR" secondAttribute="leading" constant="60" id="0do-uh-sMc"/>
                             <constraint firstItem="nAp-Dr-naR" firstAttribute="trailing" secondItem="MSU-j0-C7E" secondAttribute="trailing" constant="60" id="5KY-zl-4sH"/>
-                            <constraint firstItem="e1v-dV-XQG" firstAttribute="top" secondItem="MSU-j0-C7E" secondAttribute="bottom" constant="12" id="J0n-Zr-tbH"/>
+                            <constraint firstItem="e1v-dV-XQG" firstAttribute="top" secondItem="MSU-j0-C7E" secondAttribute="bottom" constant="20" id="J0n-Zr-tbH"/>
                             <constraint firstItem="rlG-Rj-BvX" firstAttribute="top" secondItem="e1v-dV-XQG" secondAttribute="top" id="LN8-gx-ydS"/>
-                            <constraint firstItem="nAp-Dr-naR" firstAttribute="trailing" secondItem="rlG-Rj-BvX" secondAttribute="trailing" constant="16" id="MA2-ps-EST"/>
-                            <constraint firstItem="e1v-dV-XQG" firstAttribute="trailing" secondItem="nAp-Dr-naR" secondAttribute="trailing" constant="-16" id="VxZ-L0-HwR"/>
-                            <constraint firstItem="rlG-Rj-BvX" firstAttribute="leading" secondItem="nAp-Dr-naR" secondAttribute="leading" constant="16" id="ccw-F3-pN3"/>
+                            <constraint firstItem="nAp-Dr-naR" firstAttribute="trailing" secondItem="rlG-Rj-BvX" secondAttribute="trailing" id="MA2-ps-EST"/>
+                            <constraint firstItem="e1v-dV-XQG" firstAttribute="trailing" secondItem="nAp-Dr-naR" secondAttribute="trailing" id="VxZ-L0-HwR"/>
+                            <constraint firstItem="rlG-Rj-BvX" firstAttribute="leading" secondItem="nAp-Dr-naR" secondAttribute="leading" id="ccw-F3-pN3"/>
                             <constraint firstItem="Mv4-HS-Wbw" firstAttribute="centerY" secondItem="e1v-dV-XQG" secondAttribute="centerY" id="dZr-WW-Obd"/>
                             <constraint firstItem="Mv4-HS-Wbw" firstAttribute="trailing" secondItem="e1v-dV-XQG" secondAttribute="trailing" constant="-16" id="eD0-fg-VCN"/>
-                            <constraint firstItem="e1v-dV-XQG" firstAttribute="leading" secondItem="nAp-Dr-naR" secondAttribute="leading" constant="16" id="uIf-MG-uve"/>
-                            <constraint firstItem="MSU-j0-C7E" firstAttribute="top" secondItem="nAp-Dr-naR" secondAttribute="top" constant="64" id="zjI-ga-HwA"/>
+                            <constraint firstItem="e1v-dV-XQG" firstAttribute="leading" secondItem="nAp-Dr-naR" secondAttribute="leading" id="uIf-MG-uve"/>
+                            <constraint firstItem="MSU-j0-C7E" firstAttribute="top" secondItem="nAp-Dr-naR" secondAttribute="top" constant="20" id="zjI-ga-HwA"/>
                         </constraints>
                     </view>
                     <connections>
