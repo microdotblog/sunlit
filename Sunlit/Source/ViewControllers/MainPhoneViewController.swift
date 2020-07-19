@@ -47,11 +47,7 @@ class MainPhoneViewController: UIViewController {
 		self.discoverButton.centerVertically()
 		self.timelineButton.centerVertically()
 		
-		//self.stackView.frame = self.tabBar.bounds
-		//self.scrollView.frame = self.contentView.bounds
-		
 		var frame = self.scrollView.frame
-
 		self.timelineViewController.view.frame = frame
 		
 		frame.origin.x += frame.size.width
@@ -62,7 +58,7 @@ class MainPhoneViewController: UIViewController {
 		
 		let contentSize = CGSize(width: frame.size.width * 3.0, height: 0.0)
 		self.scrollView.contentSize = contentSize
-		
+        		
 		self.timelineViewController.tableView.reloadData()
 		self.discoverViewController.tableView.reloadData()
 		self.discoverViewController.collectionView.reloadData()
@@ -191,7 +187,6 @@ class MainPhoneViewController: UIViewController {
 	func onShowProfile() {
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 2.0
-		
 		self.scrollView.setContentOffset(offset, animated: true)
 	}
 	
@@ -205,7 +200,6 @@ class MainPhoneViewController: UIViewController {
 	func onShowDiscover() {
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 1.0
-		
 		self.scrollView.setContentOffset(offset, animated: true)
 	}
 	
