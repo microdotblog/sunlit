@@ -842,7 +842,7 @@ extension Snippets {
    
     public class Configuration : NSObject {
         
-        init(endPoint : String, token : String, mediaEndPoint : String? = nil) {
+        public init(endPoint : String, token : String, mediaEndPoint : String? = nil) {
             self.endpoint = endPoint
             self.token = token
             
