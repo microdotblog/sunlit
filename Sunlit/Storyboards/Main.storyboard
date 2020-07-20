@@ -169,108 +169,59 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" axis="vertical" distribution="fillProportionally" alignment="top" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="LeN-xg-aHV">
-                                <rect key="frame" x="32" y="124" width="350" height="121"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oUB-KM-K4B">
-                                        <rect key="frame" x="0.0" y="0.0" width="81.5" height="19"/>
-                                        <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Timeline" image="bubble.left.and.bubble.right" catalog="system">
-                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="14" scale="default"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="onTimeLine" destination="Maa-K5-Q6T" eventType="touchUpInside" id="qYy-Rn-X2z"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RCF-fg-lGf">
-                                        <rect key="frame" x="0.0" y="51" width="80" height="19"/>
-                                        <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Discover" image="magnifyingglass.circle" catalog="system">
-                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="onDiscover" destination="Maa-K5-Q6T" eventType="touchUpInside" id="itl-NH-Dir"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8h-Pp-xpL">
-                                        <rect key="frame" x="0.0" y="102" width="64" height="19"/>
-                                        <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Profile" image="person.circle" catalog="system">
-                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="onProfile" destination="Maa-K5-Q6T" eventType="touchUpInside" id="7sM-r6-9uY"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="1IH-m8-7BA">
-                                <rect key="frame" x="87" y="624" width="240" height="206"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uk9-mv-Ved">
-                                        <rect key="frame" x="0.0" y="0.0" width="240" height="26"/>
-                                        <state key="normal" title="Settings" image="gear" catalog="system"/>
-                                        <connections>
-                                            <action selector="onSettings" destination="Maa-K5-Q6T" eventType="touchUpInside" id="S73-cf-3tL"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9J4-PY-jEV">
-                                        <rect key="frame" x="0.0" y="58" width="240" height="23.5"/>
-                                        <inset key="titleEdgeInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <inset key="imageEdgeInsets" minX="-20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Post" image="square.and.pencil" catalog="system"/>
-                                        <connections>
-                                            <action selector="onCompose" destination="Maa-K5-Q6T" eventType="touchUpInside" id="IXZ-wu-TS0"/>
-                                        </connections>
-                                    </button>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lxf-c6-O0H">
-                                        <rect key="frame" x="0.0" y="113.5" width="240" height="40"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="hUB-LX-nQ6"/>
-                                        </constraints>
-                                    </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version 3.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fX3-GC-4lM">
-                                        <rect key="frame" x="0.0" y="185.5" width="240" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aS5-T7-oCe">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TabletMenuCell" textLabel="pVu-PE-sdp" imageView="KGp-lY-Xrc" rowHeight="67" style="IBUITableViewCellStyleDefault" id="Iqs-nQ-QbL">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="67"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Iqs-nQ-QbL" id="3ko-fU-hvv">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="67"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pVu-PE-sdp">
+                                                    <rect key="frame" x="61" y="0.0" width="333" height="67"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="bubble.left.and.bubble.right" catalog="system" id="KGp-lY-Xrc">
+                                                    <rect key="frame" x="18" y="23.5" width="28" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="Maa-K5-Q6T" id="SUs-sO-FbO"/>
+                                    <outlet property="delegate" destination="Maa-K5-Q6T" id="A24-U8-r1x"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="llH-5D-grk"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="llH-5D-grk" firstAttribute="trailing" secondItem="LeN-xg-aHV" secondAttribute="trailing" constant="32" id="0kr-dR-Rhp"/>
-                            <constraint firstItem="1IH-m8-7BA" firstAttribute="centerX" secondItem="zDx-U3-Dfg" secondAttribute="centerX" id="3Ei-UU-515"/>
-                            <constraint firstItem="1IH-m8-7BA" firstAttribute="bottom" secondItem="llH-5D-grk" secondAttribute="bottom" constant="-32" id="3JO-TQ-cbd"/>
-                            <constraint firstItem="LeN-xg-aHV" firstAttribute="leading" secondItem="llH-5D-grk" secondAttribute="leading" constant="32" id="49N-Z3-AdV"/>
-                            <constraint firstItem="LeN-xg-aHV" firstAttribute="top" secondItem="llH-5D-grk" secondAttribute="top" constant="80" id="4kQ-CR-2Pw"/>
-                            <constraint firstItem="LeN-xg-aHV" firstAttribute="centerX" secondItem="zDx-U3-Dfg" secondAttribute="centerX" id="Wm8-aL-Cw7"/>
+                            <constraint firstAttribute="bottom" secondItem="aS5-T7-oCe" secondAttribute="bottom" id="6ac-52-zdV"/>
+                            <constraint firstItem="aS5-T7-oCe" firstAttribute="top" secondItem="llH-5D-grk" secondAttribute="top" id="kvQ-2d-az5"/>
+                            <constraint firstItem="aS5-T7-oCe" firstAttribute="trailing" secondItem="llH-5D-grk" secondAttribute="trailing" id="qdt-1C-ZSJ"/>
+                            <constraint firstItem="aS5-T7-oCe" firstAttribute="leading" secondItem="llH-5D-grk" secondAttribute="leading" id="wUa-8i-eRd"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="KkB-vz-Gj1"/>
                     <connections>
-                        <outlet property="composeButton" destination="9J4-PY-jEV" id="zxh-ij-JHx"/>
-                        <outlet property="discoverButton" destination="RCF-fg-lGf" id="tfS-YL-fzI"/>
-                        <outlet property="profileButton" destination="f8h-Pp-xpL" id="5D6-id-Ghr"/>
-                        <outlet property="settingsButton" destination="uk9-mv-Ved" id="jxJ-PE-RbG"/>
-                        <outlet property="timelineButton" destination="oUB-KM-K4B" id="WwT-Ft-gvl"/>
-                        <outlet property="versionLabel" destination="fX3-GC-4lM" id="lbK-RE-JuY"/>
+                        <outlet property="tableView" destination="aS5-T7-oCe" id="eGH-xQ-CIZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vI0-mF-Uir" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1210" y="475"/>
+            <point key="canvasLocation" x="-1210.144927536232" y="474.77678571428567"/>
         </scene>
     </scenes>
     <resources>
         <image name="bubble.left.and.bubble.right" catalog="system" width="128" height="96"/>
-        <image name="gear" catalog="system" width="128" height="119"/>
-        <image name="magnifyingglass.circle" catalog="system" width="128" height="121"/>
-        <image name="person.circle" catalog="system" width="128" height="121"/>
-        <image name="square.and.pencil" catalog="system" width="128" height="115"/>
         <image name="welcome_waves" width="320" height="200"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
