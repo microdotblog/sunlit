@@ -22,7 +22,6 @@ class ExternalBlogConfigurationViewController: UIViewController {
 	@IBOutlet var accountEntryView : UIView!
 	@IBOutlet var busyIndicator : UIActivityIndicatorView!
 	
-	var micropubTokenEndpoint = ""
 	var wordpressRsdPath = ""
 	var usernameText = ""
 	var passwordText = ""
@@ -96,6 +95,9 @@ class ExternalBlogConfigurationViewController: UIViewController {
 				if !authEndpoint.contains("?") {
 					authEndpoint = authEndpoint + "?"
 				}
+				else {
+					authEndpoint = authEndpoint + "&"
+				}
 				
 				authEndpoint = authEndpoint + "me=" + path.uuUrlEncoded()
 				authEndpoint = authEndpoint + "&redirect_uri=" + String("https://sunlit.io/micropub/redirect").uuUrlEncoded()
@@ -104,14 +106,11 @@ class ExternalBlogConfigurationViewController: UIViewController {
 				authEndpoint = authEndpoint + "&scope=create"
 				authEndpoint = authEndpoint + "&response_type=code"
 				
-				PublishingConfiguration.configureMicropubBlog(username: path, endpoint: micropubEndpoint, stateKey: micropubState)
-				self.micropubTokenEndpoint = tokenEndpoint
+				PublishingConfiguration.configureMicropubBlog(username: path, postingEndpoint: micropubEndpoint, authEndpoint: authEndpoint, tokenEndpoint: tokenEndpoint, stateKey: micropubState)
 				
 				DispatchQueue.main.async {
-					let safariViewController = SFSafariViewController(url: URL(string: authEndpoint)!)
-					safariViewController.delegate = self
-					
-					self.present(safariViewController, animated: true, completion: nil)
+					UIApplication.shared.open(URL(string: authEndpoint)!)
+					self.navigationController?.popViewController(animated: true)
 				}
 				
 			}
@@ -141,6 +140,10 @@ class ExternalBlogConfigurationViewController: UIViewController {
 
 		_ = UUHttpSession.executeRequest(request) { (response) in
 			if let rawResponse = response.rawResponse {
+				// uncomment to force Micropub testing
+				self.interrogateMicropubURL(path: fullURL, rawResponse)
+				return
+
 				let links = SnippetsXMLLinkParser.parse(rawResponse, relValue: "EditURI")
 				if let link = links.first {
 					

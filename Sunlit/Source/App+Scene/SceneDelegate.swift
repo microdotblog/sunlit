@@ -70,10 +70,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
 		if let urlContext = URLContexts.first {
 			let url = urlContext.url
-			let token = url.lastPathComponent
-
-			DispatchQueue.main.async {
-				NotificationCenter.default.post(name: .temporaryTokenReceivedNotification, object: token)
+			if url.absoluteString.contains("micropub?code=") {
+				DispatchQueue.main.async {
+					NotificationCenter.default.post(name: .micropubTokenReceivedNotification, object: url)
+				}
+			}
+			else {
+				let token = url.lastPathComponent
+				DispatchQueue.main.async {
+					NotificationCenter.default.post(name: .temporaryTokenReceivedNotification, object: token)
+				}
 			}
 		}
 	}

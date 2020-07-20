@@ -10,6 +10,7 @@ import UIKit
 import SafariServices
 import AVFoundation
 import Snippets
+import UUSwift
 
 class MainViewController: UIViewController {
 	
@@ -85,6 +86,7 @@ class MainViewController: UIViewController {
 	
 	func setupNotifications() {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: .temporaryTokenReceivedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleMicropubTokenReceivedNotification(_:)), name: .micropubTokenReceivedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowLoginNotification), name: .showLoginNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleOpenURLNotification(_:)), name: .openURLNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowCurrentUserProfileNotification), name: .showCurrentUserProfileNotification, object: nil)
@@ -177,7 +179,52 @@ class MainViewController: UIViewController {
 			}
 		}
 	}
-		
+
+	@objc func handleMicropubTokenReceivedNotification(_ notification : Notification) {
+		if let url = notification.object as? URL {
+			if let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+				var code = ""
+				var state = ""
+				
+				if let items = components.queryItems {
+					for q in items {
+						if let val = q.value {
+							if q.name == "code" {
+								code = val
+							}
+							else if q.name == "state" {
+								state = val
+							}
+						}
+					}
+				}
+
+				if (code.count > 0) && (state.count > 0) {
+					let me = PublishingConfiguration.current.getBlogName()
+					let token_endpoint = PublishingConfiguration.current.getTokenEndpoint()
+					
+					var params = ""
+					params = params + "grant_type=authorization_code"
+					params = params + "&code=" + code
+					params = params + "&client_id=" + String("https://sunlit.io/").uuUrlEncoded()
+					params = params + "&redirect_uri=" + String("https://sunlit.io/micropub/redirect").uuUrlEncoded()
+					params = params + "&me=" + me.uuUrlEncoded()
+					
+					let d = params.data(using: .utf8)
+
+					UUHttpSession.post(url: token_endpoint, queryArguments: [ : ], body: d, contentType: "application/x-www-form-urlencoded") { (parsedServerResponse) in
+						if let dictionary = parsedServerResponse.parsedResponse as? [ String : Any ] {
+							if let access_token = dictionary["access_token"] as? String {
+								PublishingConfiguration.configureMicropubBlog(accessToken: access_token)
+								Settings.useExternalBlog(true)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	@objc func handleShowCurrentUserProfileNotification() {
 		self.onTabletShowProfile()
 	}

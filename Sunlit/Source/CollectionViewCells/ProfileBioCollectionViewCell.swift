@@ -20,10 +20,12 @@ class ProfileBioCollectionViewCell : UICollectionViewCell {
 		}
 		
 		if owner.bio.count > 0 {
-			let text = owner.attributedTextBio()
-			let rect = text.boundingRect(with: size, options: .usesLineFragmentOrigin , context: nil)
-			size.height = rect.size.height
-			size.height = size.height + 16.0
+			DispatchQueue.main.async {
+				let text = owner.attributedTextBio()
+				let rect = text.boundingRect(with: size, options: .usesLineFragmentOrigin , context: nil)
+				size.height = rect.size.height
+				size.height = size.height + 16.0
+			}
 		}
 		
 		size.width = collectionViewWidth
