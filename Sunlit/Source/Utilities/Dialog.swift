@@ -57,8 +57,8 @@ class Dialog {
 			
 			// Check for a media endpoint definition...
 			if let mediaEndPoint = configuration["media-endpoint"] as? String {
-				PublishingConfiguration.configureMicropubMediaEndpoint(mediaEndPoint)
-				Snippets.shared.setMediaEndPoint(mediaEndPoint)
+//				PublishingConfiguration.configureMicropubMediaEndpoint(mediaEndPoint)
+//				Snippets.shared.setMediaEndPoint(mediaEndPoint)
 			}
 			
 			DispatchQueue.main.async {
@@ -88,7 +88,8 @@ class Dialog {
 				let blogId = destination["uid"] as? String {
 				let action = UIAlertAction(title: title, style: .default) { (action) in
 					PublishingConfiguration.configureSnippetsBlog(destination)
-					Snippets.shared.setBlogIdentifier(blogId)
+					let config = Snippets.Configuration(blogUID: blogId)
+					Snippets.shared.configure(configuration: config)
 					
 					if let completion = self.completion {
 						completion()

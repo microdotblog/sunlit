@@ -141,8 +141,8 @@ class ExternalBlogConfigurationViewController: UIViewController {
 		_ = UUHttpSession.executeRequest(request) { (response) in
 			if let rawResponse = response.rawResponse {
 				// uncomment to force Micropub testing
-				self.interrogateMicropubURL(path: fullURL, rawResponse)
-				return
+//				self.interrogateMicropubURL(path: fullURL, rawResponse)
+//				return
 
 				let links = SnippetsXMLLinkParser.parse(rawResponse, relValue: "EditURI")
 				if let link = links.first {

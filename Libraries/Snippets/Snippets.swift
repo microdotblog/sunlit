@@ -492,7 +492,7 @@ public class Snippets : NSObject {
 		}
 
 		let body : Data = bodyText.data(using: .utf8)!
-		let request = self.securePost(self.publishingConfiguration, path: self.pathForPublishingRoute("micropub"), arguments: [:], body: body)
+		let request = self.securePost(self.publishingConfiguration, path: self.pathForPublishingRoute(), arguments: [:], body: body)
 		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 			let publishedPath = parsedServerResponse.httpResponse?.allHeaderFields["Location"] as? String
 			completion(parsedServerResponse.httpError, publishedPath)
@@ -532,7 +532,7 @@ public class Snippets : NSObject {
 		do {
 			let body = try JSONSerialization.data(withJSONObject: arguments, options: .prettyPrinted)
 			
-			let request = self.securePost(self.publishingConfiguration, path: self.pathForPublishingRoute("micropub"), arguments: [:], body: body)
+			let request = self.securePost(self.publishingConfiguration, path: self.pathForPublishingRoute(), arguments: [:], body: body)
 			
 			_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 				let publishedPath = parsedServerResponse.httpResponse?.allHeaderFields["Location"] as? String
@@ -554,7 +554,7 @@ public class Snippets : NSObject {
 		}
 
 		let body : Data = bodyText.data(using: .utf8)!
-		let request = self.securePost(self.publishingConfiguration, path: self.pathForPublishingRoute("micropub"), arguments: [:], body: body)
+		let request = self.securePost(self.publishingConfiguration, path: self.pathForPublishingRoute(), arguments: [:], body: body)
 		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 			completion(parsedServerResponse.httpError)
 		})
@@ -602,7 +602,7 @@ public class Snippets : NSObject {
 		}
 
 		let body : Data = bodyText.data(using: .utf8)!
-        let request = self.securePost(self.publishingConfiguration, path: self.pathForPublishingRoute("micropub"), arguments: [:], body: body)
+        let request = self.securePost(self.publishingConfiguration, path: self.pathForPublishingRoute(), arguments: [:], body: body)
 		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 			completion(parsedServerResponse.httpError)
 		})
@@ -681,7 +681,7 @@ public class Snippets : NSObject {
 		formData.append(String("\r\n").data(using: String.Encoding.utf8)!)
 		formData.append(String("--\(boundary)--\r\n").data(using: String.Encoding.utf8)!)
 		
-        let request = self.securePost(self.publishingConfiguration, path: self.publishingConfiguration.mediaEndPoint, arguments: arguments, body: formData)
+        let request = self.securePost(self.publishingConfiguration, path: self.publishingConfiguration.mediaEndpoint, arguments: arguments, body: formData)
 		request.headerFields["Content-Type"] = "multipart/form-data; boundary=\(boundary)"
 
 		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
@@ -722,7 +722,7 @@ public class Snippets : NSObject {
 		formData.append(String("\r\n").data(using: String.Encoding.utf8)!)
 		formData.append(String("--\(boundary)--\r\n").data(using: String.Encoding.utf8)!)
 		
-        let request = self.securePost(self.publishingConfiguration, path: self.publishingConfiguration.mediaEndPoint, arguments: arguments, body: formData)
+        let request = self.securePost(self.publishingConfiguration, path: self.publishingConfiguration.mediaEndpoint, arguments: arguments, body: formData)
 		request.headerFields["Content-Type"] = "multipart/form-data; boundary=\(boundary)"
 		
 		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
@@ -745,10 +745,13 @@ public class Snippets : NSObject {
 		return fullPath.appendingPathComponent(route) as String
 	}
 
-    private func pathForPublishingRoute(_ route : String) -> String
+    private func pathForPublishingRoute(_ route : String = "") -> String
     {
-        let fullPath : NSString = self.publishingConfiguration.endpoint as NSString
-        return fullPath.appendingPathComponent(route) as String
+		var fullPath: NSString = self.publishingConfiguration.micropubEndpoint as NSString
+		if route.count > 0 {
+			fullPath = fullPath.appendingPathComponent(route) as NSString
+		}
+		return fullPath as String
     }
 
     
@@ -756,8 +759,8 @@ public class Snippets : NSObject {
 	// MARK: - Private/internal helper functions
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private var publishingConfiguration = Snippets.Configuration(endPoint: "http://micro.blog", token: "")
-    private var timelineConfiguration = Snippets.Configuration(endPoint: "http://micro.blog", token: "")
+	private var publishingConfiguration = Snippets.Configuration(token: "", endpoint: "http://micro.blog")
+    private var timelineConfiguration = Snippets.Configuration(token: "", endpoint: "http://micro.blog")
     private var uid : String?
 
     private func secureGet(_ configuration: Snippets.Configuration, path : String, arguments : [String : String]) -> UUHttpRequest
@@ -842,21 +845,28 @@ extension Snippets {
    
     public class Configuration : NSObject {
         
-        public init(endPoint : String, token : String, mediaEndPoint : String? = nil) {
-            self.endpoint = endPoint
-            self.token = token
-            
-            let mediaPath = self.endpoint as NSString
-            self.mediaEndPoint = mediaPath.appendingPathComponent("micropub/media")
-            
-            if let mediaPath = mediaEndPoint {
-                self.mediaEndPoint = mediaPath
-            }
+		public init(token: String? = "", endpoint: String? = nil, micropubEndpoint: String? = nil, mediaEndpoint: String? = nil, blogUID: String? = nil) {
+			if let token = token {
+				self.token = token
+			}
+			if let endpoint = endpoint {
+				self.endpoint = endpoint
+			}
+			if let micropub_endpoint = micropubEndpoint {
+				self.micropubEndpoint = micropub_endpoint
+			}
+			if let media_endpoint = mediaEndpoint {
+				self.mediaEndpoint = media_endpoint
+			}
+			if let blog_uid = blogUID {
+				self.uid = blog_uid
+			}
         }
         
-        var endpoint = "http://micro.blog/"
-        var token = ""
-        var mediaEndPoint = "http://micro.blog/micropub/media"
+		var token = ""
+		var endpoint = "http://micro.blog/"
+		var micropubEndpoint = "http://micro.blog/micropub"
+        var mediaEndpoint = "http://micro.blog/micropub/media"
         var uid : String? = nil
     }
 

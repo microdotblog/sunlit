@@ -57,7 +57,8 @@ class Settings {
 	static func logout() {
 		Settings.deleteSnippetsToken()
 		SnippetsUser.deleteCurrentUser()
-		Snippets.shared.configure(permanentToken: "", blogUid: nil, mediaEndPoint: nil)
+		let config = Snippets.Configuration(token: "", endpoint: "", micropubEndpoint: "", mediaEndpoint: "")
+		Snippets.shared.configure(configuration: config)
 	}
 	
 	static func saveSnippetsToken(_ token : String) {
