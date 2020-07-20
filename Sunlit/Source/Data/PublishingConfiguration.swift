@@ -42,16 +42,18 @@ class PublishingConfiguration {
 		Settings.setSecureString(password, forKey: PublishingConfiguration.xmlRPCBlogUsernameKey)
 	}
 	
-	static func configureMicropubBlog(username : String, endpoint : String, stateKey : String, mediaEndpoint : String? = nil) {
+	static func configureMicropubBlog(username : String, postingEndpoint : String, authEndpoint : String, tokenEndpoint : String, stateKey : String, mediaEndpoint : String? = nil) {
 		Settings.setInsecureString(username, forKey: PublishingConfiguration.micropubUserKey)
-		Settings.setInsecureString(endpoint, forKey: PublishingConfiguration.micropubPostingEndpointKey)
+		Settings.setInsecureString(postingEndpoint, forKey: PublishingConfiguration.micropubPostingEndpointKey)
+		Settings.setInsecureString(authEndpoint, forKey: PublishingConfiguration.micropubAuthEndpointKey)
+		Settings.setInsecureString(tokenEndpoint, forKey: PublishingConfiguration.micropubTokenEndpointKey)
 		Settings.setInsecureString(stateKey, forKey: PublishingConfiguration.micropubStateKey)
 		
 		if let mediaPath = mediaEndpoint {
 			Settings.setInsecureString(mediaPath, forKey: PublishingConfiguration.micropubMediaEndpointKey)
 		}
 		else {
-			Settings.setInsecureString(endpoint, forKey: PublishingConfiguration.micropubMediaEndpointKey)
+			Settings.setInsecureString(postingEndpoint, forKey: PublishingConfiguration.micropubMediaEndpointKey)
 		}
 	}
 	
@@ -101,7 +103,15 @@ class PublishingConfiguration {
 	func getPostingEndpoint() -> String {
 		return self.postingEndpoint
 	}
-	
+
+	func getAuthEndpoint() -> String {
+		return self.authEndpoint
+	}
+
+	func getTokenEndpoint() -> String {
+		return self.tokenEndpoint
+	}
+
 	func getBlogIdentifier() -> String {
 		return self.blogId
 	}
@@ -142,6 +152,8 @@ class PublishingConfiguration {
 			self.address = self.selectedBlogName() ?? ""
 			self.mediaEndpoint = Settings.getInsecureString(forKey: PublishingConfiguration.micropubMediaEndpointKey)
 			self.postingEndpoint = Settings.getInsecureString(forKey: PublishingConfiguration.micropubPostingEndpointKey)
+			self.authEndpoint = Settings.getInsecureString(forKey: PublishingConfiguration.micropubAuthEndpointKey)
+			self.tokenEndpoint = Settings.getInsecureString(forKey: PublishingConfiguration.micropubTokenEndpointKey)
 			self.blogId = self.selectedBlogIdentifier() ?? ""
 		}
 	}
@@ -174,6 +186,8 @@ class PublishingConfiguration {
 	
 	private var mediaEndpoint = ""
 	private var postingEndpoint = ""
+	private var authEndpoint = ""
+	private var tokenEndpoint = ""
 	private var blogId = ""
 
 
@@ -189,6 +203,8 @@ class PublishingConfiguration {
 	private static let xmlRPCBlogAppKey = "ExternalBlogApp"
 	
 	private static let micropubPostingEndpointKey = "ExternalMicropubPostingEndpoint"
+	private static let micropubAuthEndpointKey = "ExternalMicropubAuthEndpoint"
+	private static let micropubTokenEndpointKey = "ExternalMicropubTokenEndpoint"
 	private static let micropubMediaEndpointKey = "ExternalMicropubMediaEndpoint"
 	private static let micropubUserKey = "ExternalMicropubMe"
 	private static let micropubStateKey = "ExternalMicropubState"
