@@ -622,7 +622,7 @@ public class Snippets : NSObject {
 	@objc public func reply(originalPost : SnippetsPost, content : String, completion: @escaping(Error?) -> ())
 	{
 		// Pre-flight check to see if we are even configured...
-        if self.publishingConfiguration.token.count == 0 {
+        if self.timelineConfiguration.token.count == 0 {
 			completion(SnippetsError.invalidOrMissingToken)
 			return
 		}
@@ -635,7 +635,7 @@ public class Snippets : NSObject {
 			arguments["mp-destination"] = blogUid
 		}
 		
-        let request = self.securePost(self.timelineConfiguration, path: self.pathForPublishingRoute("posts/reply"), arguments: arguments)
+        let request = self.securePost(self.timelineConfiguration, path: self.pathForTimelineRoute("posts/reply"), arguments: arguments)
 		
 		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 			completion(parsedServerResponse.httpError)
