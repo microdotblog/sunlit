@@ -58,6 +58,9 @@ class DiscoverViewController: UIViewController {
 	}
 
 	func setupNotifications() {
+		// Clear out any old notification registrations...
+		NotificationCenter.default.removeObserver(self)
+
 		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: .scrollTableViewNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)

@@ -37,6 +37,9 @@ class TimelineViewController: UIViewController {
 	}
 	
 	func setupNotifications() {
+		// Clear out any old notification registrations...
+		NotificationCenter.default.removeObserver(self)
+
 		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: .scrollTableViewNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
