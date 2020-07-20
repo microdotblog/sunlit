@@ -221,6 +221,10 @@ class MainViewController: UIViewController {
 							if let access_token = dictionary["access_token"] as? String {
 								PublishingConfiguration.configureMicropubBlog(accessToken: access_token)
 								Settings.useExternalBlog(true)
+								
+								let publishingConfig = Snippets.shared.publishingConfiguration
+								publishingConfig.token = access_token
+								Snippets.shared.configurePublishing(publishingConfig)
 							}
 						}
 					}

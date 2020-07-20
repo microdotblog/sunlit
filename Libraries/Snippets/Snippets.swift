@@ -768,7 +768,7 @@ public class Snippets : NSObject {
 	// MARK: - Private/internal helper functions
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private var internalTimelineConfiguration = Snippets.Configuration(endpoint: "http://micro.blog")
+    private var internalTimelineConfiguration = Snippets.Configuration()
 	private var internalPublishingConfiguration : Snippets.Configuration? = nil
 
     private func secureGet(_ configuration: Snippets.Configuration, path : String, arguments : [String : String]) -> UUHttpRequest
@@ -852,24 +852,6 @@ extension Snippets {
 extension Snippets {
    
     public class Configuration : NSObject {
-        
-		public init(token: String? = "", endpoint: String? = nil, micropubEndpoint: String? = nil, mediaEndpoint: String? = nil, blogUID: String? = nil) {
-			if let token = token {
-				self.token = token
-			}
-			if let endpoint = endpoint {
-				self.endpoint = endpoint
-			}
-			if let micropub_endpoint = micropubEndpoint {
-				self.micropubEndpoint = micropub_endpoint
-			}
-			if let media_endpoint = mediaEndpoint {
-				self.mediaEndpoint = media_endpoint
-			}
-			if let blog_uid = blogUID {
-				self.uid = blog_uid
-			}
-        }
         
 		public var token = ""
 		public var endpoint = "http://micro.blog/"

@@ -57,7 +57,13 @@ class Settings {
 	static func logout() {
 		Settings.deleteSnippetsToken()
 		SnippetsUser.deleteCurrentUser()
-		let config = Snippets.Configuration(token: "", endpoint: "", micropubEndpoint: "", mediaEndpoint: "")
+		
+		let config = Snippets.shared.timelineConfiguration
+		config.endpoint = ""
+		config.uid = ""
+		config.token = ""
+		config.micropubEndpoint = ""
+		config.mediaEndpoint = ""
 		Snippets.shared.configureTimeline(config)
 		Snippets.shared.configurePublishing(config)
 	}
