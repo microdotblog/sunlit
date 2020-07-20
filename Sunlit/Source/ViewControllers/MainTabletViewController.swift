@@ -31,7 +31,7 @@ class MainTabletViewController: UIViewController {
 	}
     
 	func updateInterfaceForLogin() {
-		
+/*
 		if let user = SnippetsUser.current() {
 			
 			// Update the user name...
@@ -63,9 +63,11 @@ class MainTabletViewController: UIViewController {
 //			self.profileButton.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
 //			self.profileButton.setTitle("Profile", for: .normal)
 		}
+*/
 	}
 	
 	func setupButtons() {
+/*
 		var profileImage : UIImage? = UIImage(systemName: "person.crop.circle.fill")
 		var profileUsername = "Profile"
 		if let current = SnippetsUser.current() {
@@ -97,6 +99,7 @@ class MainTabletViewController: UIViewController {
 //
 //		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
 //		self.profileButton.addGestureRecognizer(longpressGesture)
+*/
 	}
 	
 	@objc func handleCurrentUserUpdatedNotification() {

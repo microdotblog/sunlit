@@ -46,10 +46,10 @@ class MainViewController: UIViewController {
 	}
 		
 	func setupSnippets() {
-		let blogIdentifier = PublishingConfiguration.current.getBlogIdentifier()
 		if let token = Settings.snippetsToken() {
-			let config = Snippets.Configuration(token: token, blogUID: blogIdentifier)
-			Snippets.shared.configure(configuration: config)
+			let timelineConfig = Snippets.shared.timelineConfiguration
+			timelineConfig.token = token
+			Snippets.shared.timelineConfiguration = timelineConfig
 		}
 	}
 
@@ -157,8 +157,10 @@ class MainViewController: UIViewController {
 					
 					// Save our info and setup Snippets
 					Settings.saveSnippetsToken(permanentToken)
-					let config = Snippets.Configuration(token: permanentToken)
-					Snippets.shared.configure(configuration: config)
+					
+					let config = Snippets.shared.timelineConfiguration
+					config.token = permanentToken
+					Snippets.shared.configureTimeline(config)
 
 					// We can hide the login view now...
 					DispatchQueue.main.async {

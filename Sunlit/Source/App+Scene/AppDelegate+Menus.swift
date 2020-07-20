@@ -16,8 +16,9 @@ extension AppDelegate {
 		guard builder.system == .main else { return }
 		
 		if let token = Settings.snippetsToken() {
-			let config = Snippets.Configuration(token: token)
-			Snippets.shared.configure(configuration: config)
+			let config = Snippets.shared.timelineConfiguration
+			config.token = token
+			Snippets.shared.configurePublishing(config)
 		}
 		
 		// remove Format menu

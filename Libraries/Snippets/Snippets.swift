@@ -19,24 +19,36 @@ public class Snippets : NSObject {
     
 	@objc public static let shared = Snippets()
     
-    @objc public func configure(configuration : Snippets.Configuration) {
+    @objc public func configureTimeline(_ configuration : Snippets.Configuration) {
         self.timelineConfiguration = configuration
-        self.publishingConfiguration = configuration
     }
-    
-    @objc public func configure(publishingConfiguration : Snippets.Configuration, timelineConfiguration : Snippets.Configuration) {
-        self.timelineConfiguration = timelineConfiguration
-        self.publishingConfiguration = publishingConfiguration
-    }
+
+	@objc public func configurePublishing(_ configuration : Snippets.Configuration) {
+		self.publishingConfiguration = configuration
+	}
 	
-    @objc public func setPublishingConfiguration(_ configuration : Snippets.Configuration) {
-        self.publishingConfiguration = configuration
-    }
-    
-    @objc public func setTimelineConfiguration(_ configuration : Snippets.Configuration) {
-        self.timelineConfiguration = configuration
-    }
-    
+	@objc public var publishingConfiguration : Configuration {
+		get {
+			if let config = self.internalPublishingConfiguration {
+				return config
+			}
+			
+			return self.internalTimelineConfiguration
+		}
+		set(configuration) {
+			self.internalPublishingConfiguration = configuration
+		}
+	}
+
+	@objc public var timelineConfiguration : Configuration {
+		get {
+			return self.internalTimelineConfiguration
+		}
+		set(configuration) {
+			self.internalTimelineConfiguration = configuration
+		}
+	}
+	    
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// MARK: - Signin
 	// Sign-in is generally a 2-step process. First, request an email with a temporary token. Then exchange the temporary token for a permanent token
@@ -144,7 +156,7 @@ public class Snippets : NSObject {
 		}
 		
 		var arguments = [ "q" : "source" ]
-		if let blogUid = self.uid {
+		if let blogUid = self.publishingConfiguration.uid {
 			arguments["mp-destination"] = blogUid
 		}
 		
@@ -464,7 +476,7 @@ public class Snippets : NSObject {
 		bodyText = self.appendParameter(body: bodyText, name: "content", content: content)
 		bodyText = self.appendParameter(body: bodyText, name: "h", content: "entry")
 
-		if let blogUid = self.uid {
+		if let blogUid = self.publishingConfiguration.uid {
 			bodyText = self.appendParameter(body: bodyText, name: "mp-destination", content: blogUid)
 		}
 
@@ -525,7 +537,7 @@ public class Snippets : NSObject {
 		}
 
 		
-		if let blogUid = self.uid {
+		if let blogUid = self.publishingConfiguration.uid {
 			arguments["mp-destination"] = blogUid
 		}
 		
@@ -549,7 +561,7 @@ public class Snippets : NSObject {
 		var bodyText = ""
 		bodyText = self.appendParameter(body: bodyText, name: "action", content: "delete")
 		bodyText = self.appendParameter(body: bodyText, name: "url", content: path)
-		if let blogUid = self.uid {
+		if let blogUid = self.publishingConfiguration.uid {
 			bodyText = self.appendParameter(body: bodyText, name: "mp-destination", content: blogUid)
 		}
 
@@ -597,7 +609,7 @@ public class Snippets : NSObject {
 		var bodyText = ""
 		bodyText = self.appendParameter(body: bodyText, name: "action", content: "update")
 		bodyText = self.appendParameter(body: bodyText, name: "url", content: path)
-		if let blogUid = self.uid {
+		if let blogUid = self.publishingConfiguration.uid {
 			bodyText = self.appendParameter(body: bodyText, name: "mp-destination", content: blogUid)
 		}
 
@@ -630,8 +642,7 @@ public class Snippets : NSObject {
 		var arguments : [ String : String ] = [ "id" : originalPost.identifier,
 											    "text" : content ]
 		
-		if let blogUid = self.uid
-		{
+		if let blogUid = self.publishingConfiguration.uid {
 			arguments["mp-destination"] = blogUid
 		}
 		
@@ -665,8 +676,7 @@ public class Snippets : NSObject {
 		
 		var arguments : [ String : String ] = [:]
 
-		if let blogUid = self.uid
-		{
+		if let blogUid = self.publishingConfiguration.uid {
 			arguments["mp-destination"] = blogUid
 			
 			formData.append(String("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
@@ -706,8 +716,7 @@ public class Snippets : NSObject {
 		
 		var arguments : [ String : String ] = [:]
 		
-		if let blogUid = self.uid
-		{
+		if let blogUid = self.publishingConfiguration.uid {
 			arguments["mp-destination"] = blogUid
 			
 			formData.append(String("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
@@ -759,9 +768,8 @@ public class Snippets : NSObject {
 	// MARK: - Private/internal helper functions
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	private var publishingConfiguration = Snippets.Configuration(token: "", endpoint: "http://micro.blog")
-    private var timelineConfiguration = Snippets.Configuration(token: "", endpoint: "http://micro.blog")
-    private var uid : String?
+    private var internalTimelineConfiguration = Snippets.Configuration(endpoint: "http://micro.blog")
+	private var internalPublishingConfiguration : Snippets.Configuration? = nil
 
     private func secureGet(_ configuration: Snippets.Configuration, path : String, arguments : [String : String]) -> UUHttpRequest
 	{
@@ -863,11 +871,11 @@ extension Snippets {
 			}
         }
         
-		var token = ""
-		var endpoint = "http://micro.blog/"
-		var micropubEndpoint = "http://micro.blog/micropub"
-        var mediaEndpoint = "http://micro.blog/micropub/media"
-        var uid : String? = nil
+		public var token = ""
+		public var endpoint = "http://micro.blog/"
+		public var micropubEndpoint = "http://micro.blog/micropub"
+		public var mediaEndpoint = "http://micro.blog/micropub/media"
+		public var uid : String? = nil
     }
 
 }

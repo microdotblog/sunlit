@@ -58,7 +58,8 @@ class Settings {
 		Settings.deleteSnippetsToken()
 		SnippetsUser.deleteCurrentUser()
 		let config = Snippets.Configuration(token: "", endpoint: "", micropubEndpoint: "", mediaEndpoint: "")
-		Snippets.shared.configure(configuration: config)
+		Snippets.shared.configureTimeline(config)
+		Snippets.shared.configurePublishing(config)
 	}
 	
 	static func saveSnippetsToken(_ token : String) {
