@@ -28,9 +28,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
 	func attemptLogin(_ emailAddress : String?) {
 		
-		if let input = emailAddress {
-
-			let email = input.uuTrimWhitespace()
+		if let email = emailAddress {
 			
 			if !email.uuIsValidEmail() {
 				Dialog(self).information("Please enter a valid email address.")
@@ -59,8 +57,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 
 		if let text = textField.text {
-			if text.uuIsValidEmail() {
-				self.attemptLogin(text)
+			
+			let email = text.uuTrimWhitespace()
+
+			if email.uuIsValidEmail() {
+				self.attemptLogin(email)
 			}
 			else if text.contains(".micro.blog") {
 				Dialog(self).information("To sign in with Micro.blog, enter your email address.")
