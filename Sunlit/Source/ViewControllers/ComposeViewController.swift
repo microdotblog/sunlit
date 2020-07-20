@@ -69,6 +69,9 @@ class ComposeViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		
 		self.blogSelectorButton.setTitle(PublishingConfiguration.current.getBlogAddress(), for: .normal)
+		if Settings.usesExternalBlog() {
+			self.blogSelectorButton.isEnabled = false
+		}
 	}
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
