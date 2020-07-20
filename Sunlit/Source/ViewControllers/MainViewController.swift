@@ -215,9 +215,8 @@ class MainViewController: UIViewController {
 					UUHttpSession.post(url: token_endpoint, queryArguments: [ : ], body: d, contentType: "application/x-www-form-urlencoded") { (parsedServerResponse) in
 						if let dictionary = parsedServerResponse.parsedResponse as? [ String : Any ] {
 							if let access_token = dictionary["access_token"] as? String {
-								// Save our info and setup Snippets
-								Settings.saveSnippetsToken(access_token)
-								Snippets.shared.configure(permanentToken: access_token, blogUid: nil)
+								PublishingConfiguration.configureMicropubBlog(accessToken: access_token)
+								Settings.useExternalBlog(true)
 							}
 						}
 					}

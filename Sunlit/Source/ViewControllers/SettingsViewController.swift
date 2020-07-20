@@ -23,9 +23,9 @@ class SettingsViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		
-		self.navigationItem.title = "Settings"
-		self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Credits", style: .plain, target: self, action: #selector(onViewCredits))
+	
+		self.setupNavigation()
+		self.setupNotifications()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -41,10 +41,24 @@ class SettingsViewController: UIViewController {
 		self.updateWordpressSettings()
 	}
 	
+	func setupNavigation() {
+		self.navigationItem.title = "Settings"
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Credits", style: .plain, target: self, action: #selector(onViewCredits))
+	}
+	
+	func setupNotifications() {
+	}
+	
 	func updateWordpressSettings() {
-		
-		self.wordPressUserName.text = PublishingConfiguration.current.getBlogName()
-		self.wordPressSite.text = PublishingConfiguration.current.getBlogAddress()
+		let blog_name = PublishingConfiguration.current.getBlogName()
+		let blog_address = PublishingConfiguration.current.getBlogAddress()
+		self.wordPressUserName.text = blog_name
+		if blog_address != blog_name {
+			self.wordPressSite.text = blog_address
+		}
+		else {
+			self.wordPressSite.text = ""
+		}
 			
 		if PublishingConfiguration.current.hasConfigurationForExternal() {
 			self.wordPressSignoutButton.setTitle("Sign Out", for: .normal)
@@ -60,6 +74,19 @@ class SettingsViewController: UIViewController {
 			appName = "External Weblog"
 		}
 		self.wordPressAppTitle.text = appName
+
+		if self.wordPressButton.isSelected {
+			self.wordPressAppTitle.isHidden = false
+			self.wordPressSignoutButton.isHidden = false
+			self.wordPressUserName.isHidden = false
+			self.wordPressSite.isHidden = false
+		}
+		else {
+			self.wordPressAppTitle.isHidden = true
+			self.wordPressSignoutButton.isHidden = true
+			self.wordPressUserName.isHidden = true
+			self.wordPressSite.isHidden = true
+		}
 	}
 	
 	func wordPressLogin() {
@@ -84,9 +111,10 @@ class SettingsViewController: UIViewController {
 	
 	@IBAction func onSignoutWordPress() {
 		if PublishingConfiguration.current.hasConfigurationForExternal() {
-			Dialog(self).question(title: nil, question: "Are you sure you want to sign out of your WordPress account?", accept: "Sign Out", cancel: "Cancel") {
+			Dialog(self).question(title: nil, question: "Are you sure you want to sign out of your external blog?", accept: "Sign Out", cancel: "Cancel") {
 			
 				PublishingConfiguration.deleteXMLRPCBlogSettings()
+				PublishingConfiguration.deleteMicropubSettings()
 				self.onSelectPostType(self.microBlogButton)
 			}
 		}
@@ -111,7 +139,7 @@ class SettingsViewController: UIViewController {
 
 		// Three configurations here to manage...
 		if self.wordPressButton.isSelected && !PublishingConfiguration.current.hasConfigurationForExternal() {
-			self.wordPressLogin()
+//			self.wordPressLogin()
 		}
 		else if self.wordPressButton.isSelected {
 			Settings.useExternalBlog(true)
