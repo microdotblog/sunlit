@@ -168,7 +168,7 @@ class DiscoverViewController: UIViewController {
 		let scrollView = UIScrollView()
 		let contentView = UIView()
 		scrollView.addSubview(contentView)
-		scrollView.backgroundColor = UIColor.white
+		scrollView.backgroundColor = UIColor(named: "color_emoji_selection")!
 		
 		var buttonOffset = CGPoint(x: 0, y: 0)
 		for symbol in emoji {
@@ -320,14 +320,15 @@ class DiscoverViewController: UIViewController {
 	@objc func keyboardOnScreenNotification(_ notification : Notification) {
 		if let info : [AnyHashable : Any] = notification.userInfo {
 			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+				self.keyboardAccessoryView.isHidden = false
+				self.keyboardAccessoryView.alpha = 1.0
+				self.view.addSubview(self.keyboardAccessoryView)
 
 				let frame = value.cgRectValue
-				var offset = frame.origin.y - self.keyboardAccessoryView.frame.size.height
-				offset = offset - 88.0
-				self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: 44)
-				UIView.animate(withDuration: 0.25) {
-					self.keyboardAccessoryView.alpha = 1.0
-				}
+				let height = self.keyboardAccessoryView.frame.size.height
+				let safeArea : CGFloat = self.view.safeAreaInsets.bottom
+				let offset = frame.origin.y - height + safeArea
+				self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: height)
 			}
 		}
 	}
@@ -345,7 +346,7 @@ class DiscoverViewController: UIViewController {
 			let keyboardTop = keyboardRect.origin.y - self.keyboardAccessoryView.frame.size.height
 			var tableViewLocation = dictionary["tableViewLocation"] as! CGFloat
 			tableViewLocation = tableViewLocation - self.keyboardAccessoryView.frame.size.height
-			let screenOffset = self.tableView.safeAreaTop() + self.tableView.frame.origin.y + (tableViewLocation - self.tableView.contentOffset.y)
+			let screenOffset = self.tableView.frame.origin.y + (tableViewLocation - self.tableView.contentOffset.y)
 			let visibleOffset = self.tableView.contentOffset.y + (screenOffset - keyboardTop) + 60.0
 			
 			self.tableView.setContentOffset(CGPoint(x: 0, y: visibleOffset), animated: true)

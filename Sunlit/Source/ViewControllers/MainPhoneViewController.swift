@@ -94,6 +94,7 @@ class MainPhoneViewController: UIViewController {
 		self.scrollView.contentSize = CGSize(width: frame.origin.x, height: 0)
 
 		self.timelineButton.isSelected = true
+		self.timelineButton.isEnabled = false
 		self.currentViewController = self.timelineViewController
 		self.timelineViewController.prepareToDisplay()
 	}
@@ -164,6 +165,8 @@ class MainPhoneViewController: UIViewController {
 				self.onShowProfile()
 			}
 			else {
+				self.timelineButton.isEnabled = false
+				self.profileButton.isEnabled = true
 				self.timelineButton.isSelected = true
 				self.profileButton.isSelected = false
 				
@@ -216,6 +219,9 @@ extension MainPhoneViewController : UIScrollViewDelegate {
 		let offset = scrollView.contentOffset.x
 		let frameSize = scrollView.bounds.size.width
 
+		self.timelineButton.isEnabled = true
+		self.profileButton.isEnabled = true
+		self.discoverButton.isEnabled = true
 		self.timelineButton.isSelected = false
 		self.profileButton.isSelected = false
 		self.discoverButton.isSelected = false
@@ -223,14 +229,17 @@ extension MainPhoneViewController : UIScrollViewDelegate {
 		let previousViewController = self.currentViewController
 		if offset < (frameSize / 2.0) {
 			self.timelineButton.isSelected = true
+			self.timelineButton.isEnabled = false
 			self.currentViewController = self.timelineViewController
 		}
 		else if offset < (frameSize + (frameSize / 2.0)) {
 			self.discoverButton.isSelected = true
+			self.discoverButton.isEnabled = false
 			self.currentViewController = self.discoverViewController
 		}
 		else {
 			self.profileButton.isSelected = true
+			self.profileButton.isEnabled = false
 			self.currentViewController = self.profileViewController
 		}
 		

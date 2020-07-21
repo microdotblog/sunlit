@@ -80,7 +80,7 @@ class TimelineViewController: UIViewController {
 				let frame = value.cgRectValue
 				let height = self.keyboardAccessoryView.frame.size.height
 				let safeArea : CGFloat = self.view.safeAreaInsets.bottom
-				let offset = frame.origin.y - height + safeArea - self.view.safeAreaTop()
+				let offset = frame.origin.y - height + safeArea
 				self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: height)
 			}
 		}
@@ -104,7 +104,7 @@ class TimelineViewController: UIViewController {
 			var tableViewLocation = dictionary["tableViewLocation"] as! CGFloat
 			let keyboardTop = keyboardRect.origin.y - self.keyboardAccessoryView.frame.size.height
 			tableViewLocation = tableViewLocation - self.keyboardAccessoryView.frame.size.height
-			let screenOffset = self.tableView.safeAreaTop() + self.tableView.frame.origin.y + (tableViewLocation - self.tableView.contentOffset.y)
+			let screenOffset = self.tableView.frame.origin.y + (tableViewLocation - self.tableView.contentOffset.y)
 			let visibleOffset = self.tableView.contentOffset.y + (screenOffset - keyboardTop) + 60.0
 			
 			self.tableView.setContentOffset(CGPoint(x: 0, y: visibleOffset), animated: true)
@@ -145,7 +145,7 @@ class TimelineViewController: UIViewController {
 		let scrollView = UIScrollView()
 		let contentView = UIView()
 		scrollView.addSubview(contentView)
-		scrollView.backgroundColor = UIColor.white
+		scrollView.backgroundColor = UIColor(named: "color_emoji_selection")!
 		
 		var buttonOffset = CGPoint(x: 0, y: 0)
 		for symbol in emoji {
