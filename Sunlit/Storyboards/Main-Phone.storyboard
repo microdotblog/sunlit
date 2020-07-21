@@ -51,7 +51,7 @@
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
                                                 <state key="normal" title="Timeline">
-                                                    <imageReference key="image" image="bubble.left.and.bubble.right" catalog="system" symbolScale="default" renderingMode="original"/>
+                                                    <imageReference key="image" image="bubble.left.and.bubble.right" catalog="system" symbolScale="default"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="18" scale="default" weight="regular"/>
                                                 </state>
                                                 <state key="selected">
@@ -66,9 +66,7 @@
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="Discover">
-                                                    <imageReference key="image" image="magnifyingglass.circle" catalog="system" renderingMode="original"/>
-                                                </state>
+                                                <state key="normal" title="Discover" image="magnifyingglass.circle" catalog="system"/>
                                                 <state key="selected">
                                                     <imageReference key="image" image="magnifyingglass.circle.fill" catalog="system" renderingMode="original"/>
                                                 </state>
