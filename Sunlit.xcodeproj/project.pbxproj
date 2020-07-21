@@ -18,11 +18,9 @@
 		C55DC4A3248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3992489D5CB00C1F8A5 /* NextLevelSessionExporter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C5A1DE4124901D8C00B50B54 /* Conversation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3824901D8C00B50B54 /* Conversation.storyboard */; };
 		C5A1DE4224901D8C00B50B54 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3924901D8C00B50B54 /* Profile.storyboard */; };
-		C5A1DE4324901D8C00B50B54 /* ChooseBlog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3A24901D8C00B50B54 /* ChooseBlog.storyboard */; };
 		C5A1DE4424901D8C00B50B54 /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3B24901D8C00B50B54 /* About.storyboard */; };
 		C5A1DE4524901D8C00B50B54 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3C24901D8C00B50B54 /* Login.storyboard */; };
 		C5A1DE4624901D8C00B50B54 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3D24901D8C00B50B54 /* Settings.storyboard */; };
-		C5A1DE4724901D8C00B50B54 /* Drafts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3E24901D8C00B50B54 /* Drafts.storyboard */; };
 		C5A1DE4824901D8C00B50B54 /* Compose.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3F24901D8C00B50B54 /* Compose.storyboard */; };
 		C5A1DE4924901D8C00B50B54 /* ImageViewer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE4024901D8C00B50B54 /* ImageViewer.storyboard */; };
 		C5A1DE4F24901D9D00B50B54 /* UIButton+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DE4A24901D9D00B50B54 /* UIButton+Sunlit.swift */; };
@@ -282,11 +280,9 @@
 		C5A1DE2D24901D6A00B50B54 /* Sunlit.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Sunlit.entitlements; sourceTree = "<group>"; };
 		C5A1DE3824901D8C00B50B54 /* Conversation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Conversation.storyboard; path = Storyboards/Conversation.storyboard; sourceTree = "<group>"; };
 		C5A1DE3924901D8C00B50B54 /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Profile.storyboard; path = Storyboards/Profile.storyboard; sourceTree = "<group>"; };
-		C5A1DE3A24901D8C00B50B54 /* ChooseBlog.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ChooseBlog.storyboard; path = Storyboards/ChooseBlog.storyboard; sourceTree = "<group>"; };
 		C5A1DE3B24901D8C00B50B54 /* About.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = About.storyboard; path = Storyboards/About.storyboard; sourceTree = "<group>"; };
 		C5A1DE3C24901D8C00B50B54 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Login.storyboard; path = Storyboards/Login.storyboard; sourceTree = "<group>"; };
 		C5A1DE3D24901D8C00B50B54 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Settings.storyboard; path = Storyboards/Settings.storyboard; sourceTree = "<group>"; };
-		C5A1DE3E24901D8C00B50B54 /* Drafts.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Drafts.storyboard; path = Storyboards/Drafts.storyboard; sourceTree = "<group>"; };
 		C5A1DE3F24901D8C00B50B54 /* Compose.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Compose.storyboard; path = Storyboards/Compose.storyboard; sourceTree = "<group>"; };
 		C5A1DE4024901D8C00B50B54 /* ImageViewer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ImageViewer.storyboard; path = Storyboards/ImageViewer.storyboard; sourceTree = "<group>"; };
 		C5A1DE4A24901D9D00B50B54 /* UIButton+Sunlit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIButton+Sunlit.swift"; path = "Source/Extensions/UIButton+Sunlit.swift"; sourceTree = "<group>"; };
@@ -681,10 +677,8 @@
 				C5A1DF3124906B9D00B50B54 /* LaunchScreen.storyboard */,
 				C5A1DF3024906B9D00B50B54 /* Content.storyboard */,
 				C5A1DE3B24901D8C00B50B54 /* About.storyboard */,
-				C5A1DE3A24901D8C00B50B54 /* ChooseBlog.storyboard */,
 				C5A1DE3F24901D8C00B50B54 /* Compose.storyboard */,
 				C5A1DE3824901D8C00B50B54 /* Conversation.storyboard */,
-				C5A1DE3E24901D8C00B50B54 /* Drafts.storyboard */,
 				C5A1DE4024901D8C00B50B54 /* ImageViewer.storyboard */,
 				C5A1DE3C24901D8C00B50B54 /* Login.storyboard */,
 				C5A1DE3924901D8C00B50B54 /* Profile.storyboard */,
@@ -1246,7 +1240,6 @@
 				C5A1DE4524901D8C00B50B54 /* Login.storyboard in Resources */,
 				C5A1DE4824901D8C00B50B54 /* Compose.storyboard in Resources */,
 				C5A1DE4424901D8C00B50B54 /* About.storyboard in Resources */,
-				C5A1DE4324901D8C00B50B54 /* ChooseBlog.storyboard in Resources */,
 				C5A1DE4124901D8C00B50B54 /* Conversation.storyboard in Resources */,
 				C5A1DF3224906B9D00B50B54 /* Content.storyboard in Resources */,
 				C5A1DE9D24901E0B00B50B54 /* Assets.xcassets in Resources */,
@@ -1256,7 +1249,6 @@
 				C5A1DE4224901D8C00B50B54 /* Profile.storyboard in Resources */,
 				C5E26A36249EADE400F9E158 /* Main.storyboard in Resources */,
 				C5A1DF3324906B9D00B50B54 /* LaunchScreen.storyboard in Resources */,
-				C5A1DE4724901D8C00B50B54 /* Drafts.storyboard in Resources */,
 				C5E26A34249EAA0900F9E158 /* Main-Phone.storyboard in Resources */,
 				C5A1DE4624901D8C00B50B54 /* Settings.storyboard in Resources */,
 			);
