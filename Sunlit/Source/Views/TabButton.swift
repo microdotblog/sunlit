@@ -22,6 +22,9 @@ class TabButton: UIButton {
 				self.selectedImage = img.withTintColor(c, renderingMode: .alwaysOriginal)
 			}
 		}
+		
+		self.setTitleColor(UIColor(named: "color_tab_normal"), for: .normal)
+		self.setTitleColor(UIColor(named: "color_tab_normal"), for: .selected)
 	}
 	
 	override func setImage(_ image: UIImage?, for state: UIControl.State) {
