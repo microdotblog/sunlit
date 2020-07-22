@@ -320,15 +320,30 @@ class DiscoverViewController: UIViewController {
 	@objc func keyboardOnScreenNotification(_ notification : Notification) {
 		if let info : [AnyHashable : Any] = notification.userInfo {
 			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-				self.keyboardAccessoryView.isHidden = false
-				self.keyboardAccessoryView.alpha = 1.0
-				self.view.addSubview(self.keyboardAccessoryView)
+				// run later outside of animation context
+				DispatchQueue.main.async {
+					// start at bottom of screen
+					var start_r = self.view.bounds
+					start_r.origin.y = start_r.size.height
+					start_r.size.height = self.keyboardAccessoryView.bounds.size.height
+					self.keyboardAccessoryView.frame = start_r
+					self.view.addSubview(self.keyboardAccessoryView)
 
-				let frame = value.cgRectValue
-				let height = self.keyboardAccessoryView.frame.size.height
-				let safeArea : CGFloat = self.view.safeAreaInsets.bottom
-				let offset = frame.origin.y - height + safeArea
-				self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: height)
+					// show it
+					self.keyboardAccessoryView.isHidden = false
+					self.keyboardAccessoryView.alpha = 1.0
+
+					// animate into position
+					let frame = value.cgRectValue
+					let height = self.keyboardAccessoryView.frame.size.height
+					let safeArea : CGFloat = self.view.safeAreaInsets.bottom
+					let offset = frame.origin.y - height + safeArea
+
+					// TODO: this would be better using the UIKeyboard curve
+					UIView.animate(withDuration: 0.3, delay: 0.05, options: [ .curveEaseInOut ], animations: {
+						self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: height)
+					})
+				}
 			}
 		}
 	}
