@@ -32,7 +32,7 @@ class ProfileViewController: UIViewController {
 			self.fetchUserInfo(user)
 		}
 		
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonWithImage(named: "back_button", target: self, action: #selector(dismissViewController))
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(dismissViewController))
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
