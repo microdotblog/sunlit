@@ -17,23 +17,23 @@ extension Date {
 		let daysDifference = hoursDifference / 24.0
 		
 		if secondsDifference < 60.0 {
-			return "Less than a minute ago"
+			return "Less than 1 minute ago"
 		}
 		if minutesDifference < 60.0 {
 			if minutesDifference < 2.0 {
-				return "One minute ago..."
+				return "1 minute ago"
 			}
 			return "\(Int(minutesDifference)) minutes ago"
 		}
 		if hoursDifference < 24.0 {
 			if hoursDifference < 2.0 {
-				return "One hour ago..."
+				return "1 hour ago"
 			}
 			return "\(Int(hoursDifference)) hours ago"
 		}
 		if daysDifference < 7.0 {
 			if daysDifference < 2.0 {
-				return "One day ago..."
+				return "1 day ago"
 			}
 			return "\(Int(daysDifference)) days ago"
 		}
