@@ -11,11 +11,28 @@ import UIKit
 class TabButton: UIButton {
 
 	var defaultImage: UIImage?
+	var selectedImage: UIImage?
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		self.defaultImage = self.image(for: .normal)
+		if let img = self.defaultImage {
+			if let c = UIColor(named: "color_tab_selected") {
+				self.selectedImage = img.withTintColor(c, renderingMode: .alwaysOriginal)
+			}
+		}
+	}
+	
+	override func setImage(_ image: UIImage?, for state: UIControl.State) {
+		super.setImage(image, for: state)
+
+		if let img = image {
+			if !img.isSymbolImage {
+				self.defaultImage = nil
+				self.selectedImage = nil
+			}
+		}
 	}
 	
     override var isSelected: Bool {
@@ -23,32 +40,26 @@ class TabButton: UIButton {
 			if self.isSelected {
 				self.setTitleColor(UIColor(named: "color_tab_selected"), for: .normal)
 				self.setTitleColor(UIColor(named: "color_tab_selected"), for: .selected)
-
-//				self.setImage(self.defaultImage, for: .normal)
-//				self.setImage(self.defaultImage, for: .selected)
+				
+				if let img = self.selectedImage {
+					if img.isSymbolImage {
+						self.setImage(img, for: .normal)
+						self.setImage(img, for: .selected)
+					}
+				}
 			}
 			else {
 				self.setTitleColor(UIColor(named: "color_tab_normal"), for: .normal)
 				self.setTitleColor(UIColor(named: "color_tab_normal"), for: .selected)
 
-//				self.setImage(self.defaultImage, for: .normal)
-//				self.setImage(self.defaultImage, for: .selected)
+				if let img = self.defaultImage {
+					if img.isSymbolImage {
+						self.setImage(img, for: .normal)
+						self.setImage(img, for: .selected)
+					}
+				}
 			}
         }
     }
-
-	override func draw(_ rect: CGRect) {
-		if self.isSelected {
-//			let c = UIColor.white
-//			c.set()
-//
-//			let r = self.contentRect(forBounds: self.bounds)
-//
-//			let path = UIBezierPath(roundedRect: r, cornerRadius: 10)
-//			path.fill()
-		}
-		
-		super.draw(rect)
-	}
 	
 }
