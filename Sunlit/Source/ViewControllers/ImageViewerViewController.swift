@@ -39,14 +39,18 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		self.navigationController?.setNavigationBarHidden(true, animated: true)
 	}
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // This is needed to "lock" the image into place so it won't bounce-scroll when it initially appears
+        self.scrollView.zoomScale = 1.0
+    }
+    
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		self.image.frame = self.scrollView.bounds
 	}
 	
 	func setupNavigationBar() {
-		//self.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonWithImage(named: "back_button", target: self, action: #selector(dismissViewController))
-		//self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(onShare))
 		self.navigationItem.rightBarButtonItem?.tintColor = .black
 	}
 	
@@ -68,7 +72,6 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		swipeGesture.require(toFail: singleTapGesture)
 		swipeGesture.require(toFail: doubleTapGesture)
 		self.scrollView.addGestureRecognizer(swipeGesture)
-		
 	}
 	
 	func setupPostInfo() {
