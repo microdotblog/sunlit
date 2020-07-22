@@ -38,7 +38,9 @@ class ConversationViewController: UIViewController {
 		self.tableView.addSubview(self.tableViewRefreshControl)
 
 		self.loadConversation()
+
 		self.navigationItem.title = "Conversation"
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back))
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -52,6 +54,9 @@ class ConversationViewController: UIViewController {
 		NotificationCenter.default.removeObserver(self)
 	}
 
+	@IBAction func back() {
+		self.navigationController?.popViewController(animated: true)
+	}
 
 	func setupNotifications() {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleAvatarLoadedNotification(_:)), name: .refreshCellNotification, object: nil)

@@ -33,7 +33,13 @@ class ExternalBlogConfigurationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back))
     }
+
+	@IBAction func back() {
+		self.navigationController?.popViewController(animated: true)
+	}
 	
 	func interrogateWordPressURL() {
 		
