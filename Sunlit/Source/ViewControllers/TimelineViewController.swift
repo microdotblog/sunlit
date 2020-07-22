@@ -209,11 +209,14 @@ class TimelineViewController: UIViewController {
 					var indexPaths : [IndexPath] = []
 					for entry in entries {
 						let post = SunlitPost.create(entry)
-						self.tableViewData.append(post)
-						
-						let indexPath = IndexPath(row: row, section: 0)
-						indexPaths.append(indexPath)
-						row = row + 1
+                        
+                        if post.images.count > 0 {
+                            self.tableViewData.append(post)
+                            
+                            let indexPath = IndexPath(row: row, section: 0)
+                            indexPaths.append(indexPath)
+                            row = row + 1
+                        }
 					}
 					
 					self.tableView.insertRows(at: indexPaths, with: .automatic)
@@ -267,7 +270,9 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
 		
 		for entry in entries {
 			let post = SunlitPost.create(entry)
-			posts.append(post)
+            if post.images.count > 0 {
+                posts.append(post)
+            }
 		}
 		
 		self.tableViewData = posts
