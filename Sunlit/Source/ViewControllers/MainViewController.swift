@@ -115,6 +115,12 @@ class MainViewController: UIViewController {
 	
 	@objc func handleViewUserProfileNotification(_ notification : Notification) {
 		if let owner = notification.object as? SnippetsUser {
+            if let profileController = self.navigationController?.topViewController as? ProfileViewController {
+                if profileController.user.userName == owner.userName {
+                    return
+                }
+            }
+            
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Profile", bundle: nil)
 			let profileViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
 			profileViewController.user = owner

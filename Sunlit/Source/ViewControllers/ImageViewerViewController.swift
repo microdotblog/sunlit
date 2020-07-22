@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Snippets
 import SafariServices
 
 class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
@@ -72,6 +73,10 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		swipeGesture.require(toFail: singleTapGesture)
 		swipeGesture.require(toFail: doubleTapGesture)
 		self.scrollView.addGestureRecognizer(swipeGesture)
+        
+        let userProfileGesture = UITapGestureRecognizer(target: self, action: #selector(onViewUserProfile))
+        self.userAvatar.addGestureRecognizer(userProfileGesture)
+        self.userAvatar.isUserInteractionEnabled = true
 	}
 	
 	func setupPostInfo() {
@@ -123,8 +128,21 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		}) { (complete) in
 			
 		}
-		
 	}
+    
+    @objc func onViewUserProfile() {
+        
+        // They don't need to see their own profile...
+        if let current = SnippetsUser.current() {
+            if current.userName == self.post.owner.userName {
+                return
+            }
+        }
+        
+        self.dismiss(animated: true) {
+            NotificationCenter.default.post(name: .viewUserProfileNotification, object: self.post.owner)
+        }
+    }
 	
 	@IBAction @objc func onShare() {
 		
