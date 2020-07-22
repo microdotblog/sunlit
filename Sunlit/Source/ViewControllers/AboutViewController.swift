@@ -17,10 +17,15 @@ class AboutViewController: UIViewController {
         super.viewDidLoad()
 
 		self.navigationItem.title = "Credits"
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back))
 		
 		if let urlPath = Bundle.main.url(forResource: "credits", withExtension: "html") {
 			self.webview.load(URLRequest(url: urlPath))
 		}
 	}
 
+	@IBAction func back() {
+		self.navigationController?.popViewController(animated: true)
+	}
+	
 }
