@@ -124,9 +124,9 @@ class SettingsViewController: UIViewController {
 	}
 	
 	@IBAction @objc func onViewCredits() {
-		let storyBoard: UIStoryboard = UIStoryboard(name: "About", bundle: nil)
-		let newPostViewController = storyBoard.instantiateViewController(withIdentifier: "AboutViewController")
-		self.present(newPostViewController, animated: true, completion: nil)
+		let storyboard: UIStoryboard = UIStoryboard(name: "About", bundle: nil)
+		let about_controller = storyboard.instantiateViewController(withIdentifier: "AboutViewController")
+		self.navigationController?.pushViewController(about_controller, animated: true)
 	}
 	
 	@IBAction func onSelectPostType(_ button : UIButton) {

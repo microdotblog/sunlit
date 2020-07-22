@@ -16,6 +16,8 @@ class AboutViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+		self.navigationItem.title = "Credits"
+		
 		if let urlPath = Bundle.main.url(forResource: "credits", withExtension: "html") {
 			self.webview.load(URLRequest(url: urlPath))
 		}
