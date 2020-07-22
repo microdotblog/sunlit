@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// We might want to change this in the future but for now, it covers basically a single view in one of the collection views
 		UURemoteData.shared.maxActiveRequests = 6
-		
+
 		return true
 	}
 	

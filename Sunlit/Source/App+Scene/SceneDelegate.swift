@@ -12,7 +12,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	var window: UIWindow?
 
-	func configureSplitViewController() {
+	func setupColor() {
+		self.window?.tintColor = UIColor(named: "color_tab_selected")
+	}
+	
+	func setupSplitView() {
 		guard let splitViewController = UIApplication.shared.windows[0].rootViewController
 		  as? UISplitViewController else {
 		  fatalError("Missing SplitViewController")
@@ -30,13 +34,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			splitViewController.viewControllers = [navigationController, navigationController]
 		}
 	}
+	
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 		// Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
 		// If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		guard let _ = (scene as? UIWindowScene) else { return }
-		
-		self.configureSplitViewController()
+
+		self.setupColor()
+		self.setupSplitView()
 	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {

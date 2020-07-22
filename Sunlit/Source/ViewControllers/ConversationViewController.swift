@@ -18,7 +18,7 @@ class ConversationViewController: UIViewController {
 	@IBOutlet var replyField : UITextView!
 	@IBOutlet var postButton : UIButton!
 	@IBOutlet var replyFieldPlaceholder : UILabel!
-	@IBOutlet var replyContainerBottomConstraint : NSLayoutConstraint!
+	@IBOutlet var tableBottomConstraint : NSLayoutConstraint!
 
 	var posts : [SunlitPost] = []
 	var sourcePost : SunlitPost? = nil
@@ -106,7 +106,7 @@ class ConversationViewController: UIViewController {
 				let frame = value.cgRectValue
 				
 				UIView.animate(withDuration: 0.25) {
-					self.replyContainerBottomConstraint.constant = frame.size.height - self.view.safeAreaInsets.bottom
+					self.tableBottomConstraint.constant = frame.size.height + 44
 					self.postButton.alpha = 1.0
 					self.view.layoutIfNeeded()
 					self.replyFieldPlaceholder.alpha = 0.0
@@ -118,7 +118,7 @@ class ConversationViewController: UIViewController {
 	@objc func keyboardOffScreenNotification(_ notification : Notification) {
 				
 			UIView.animate(withDuration: 0.25) {
-				self.replyContainerBottomConstraint.constant = self.view.safeAreaInsets.bottom
+				self.tableBottomConstraint.constant = 44
 				self.postButton.alpha = 0.0
 				self.view.layoutIfNeeded()
 				
