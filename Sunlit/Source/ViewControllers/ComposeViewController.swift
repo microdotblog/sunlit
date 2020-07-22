@@ -508,12 +508,11 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 
 
 	func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
-		
+
 		if let destination = destinationIndexPath {
 
 			// Check to see if it's being dragged to an uncreated section (at the bottom)
 			if destination.section >= self.sections.count {
-				//let proposal = UICollectionViewDropProposal(operation: .forbidden)
 				let proposal = UICollectionViewDropProposal(operation: .move, intent: .insertIntoDestinationIndexPath)
 				return proposal
 			}
@@ -526,7 +525,14 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			}
 			
 			// Otherwise, we are good to move it...
-			let proposal = UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+			var intent : UICollectionViewDropProposal.Intent = .insertAtDestinationIndexPath
+			
+			// WORKAROUND: On iOS 14.0 .insertAtDestinationIndexPath causes the collection view to crash while dragging the cell around
+			if #available(iOS 14.0, *) {
+				intent = .unspecified
+			}
+			
+			let proposal = UICollectionViewDropProposal(operation: .move, intent: intent)
 			return proposal
 		}
 		else {
@@ -536,6 +542,7 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 	}
 
 	func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+		
 		if let destinationIndexPath = coordinator.destinationIndexPath,
 		   let drop = coordinator.items.first,
 		   let sourceIndexPath = drop.sourceIndexPath{
