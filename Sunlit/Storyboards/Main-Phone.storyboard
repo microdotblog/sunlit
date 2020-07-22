@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17132" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zzu-uT-cxA">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17105.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17105"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -45,7 +45,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="kuJ-kE-FD1">
                                         <rect key="frame" x="0.0" y="8" width="382" height="88"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rpx-zo-iR9" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rpx-zo-iR9" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="122" height="88"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
@@ -54,14 +54,11 @@
                                                     <imageReference key="image" image="bubble.left.and.bubble.right" catalog="system" symbolScale="default"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="18" scale="default" weight="regular"/>
                                                 </state>
-                                                <state key="selected">
-                                                    <imageReference key="image" image="bubble.left.and.bubble.right.fill" catalog="system" renderingMode="original"/>
-                                                </state>
                                                 <connections>
                                                     <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="XVD-o9-rUI"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1L-Lm-SBr" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1L-Lm-SBr" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
                                                 <rect key="frame" x="130" y="0.0" width="122" height="88"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
@@ -74,7 +71,7 @@
                                                     <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="aCT-Oc-ubS"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Wz-cV-0mQ" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Wz-cV-0mQ" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
                                                 <rect key="frame" x="260" y="0.0" width="122" height="88"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
@@ -135,7 +132,6 @@
     </scenes>
     <resources>
         <image name="bubble.left.and.bubble.right" catalog="system" width="128" height="96"/>
-        <image name="bubble.left.and.bubble.right.fill" catalog="system" width="128" height="97"/>
         <image name="magnifyingglass.circle" catalog="system" width="128" height="121"/>
         <image name="magnifyingglass.circle.fill" catalog="system" width="128" height="121"/>
         <image name="person.circle.fill" catalog="system" width="128" height="121"/>
