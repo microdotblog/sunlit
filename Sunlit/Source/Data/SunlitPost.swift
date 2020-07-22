@@ -25,6 +25,10 @@ class SunlitPost : SnippetsPost {
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
+	// These are exclusion patterns in the image source that can help remove any images from displaying, like emojis.
+	static let exclusionPatterns : [String] = ["/images/core/emoji"]
+	static let minimumResolution : Float = 100.0
+	
 	static func create(_ snippet : SnippetsPost, font : UIFont = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body), textColor : UIColor = UIColor.label) -> SunlitPost {
 
 		let html = addTextStyle(string: snippet.htmlText, font: font, textColor: textColor)
@@ -161,12 +165,38 @@ class SunlitPost : SnippetsPost {
 			let emojiImages = ["mini_thumbnail", "wp-smiley"]
 			for image in srcs.array() {
 				
+				var exclude = false
+				
 				// Skip emoji images...
 				if let className = try? image.className(), emojiImages.contains(className) {
-					continue
+					exclude = true
 				}
 
-				elements.append(image)
+				if let width = try? image.attr("width") as NSString {
+					if width.floatValue > 0.0 && width.floatValue < SunlitPost.minimumResolution {
+						exclude = true
+					}
+				}
+			
+				if let height = try? image.attr("height") as NSString {
+					if height.floatValue > 0.0 && height.floatValue < SunlitPost.minimumResolution {
+						exclude = true
+					}
+				}
+
+				
+				for excludedPattern in SunlitPost.exclusionPatterns {
+					
+					if let text = try? image.attr("src") {
+						if text.contains(excludedPattern) {
+							exclude = true
+						}
+					}
+				}
+
+				if !exclude {
+					elements.append(image)
+				}
 			}
 		}
 
