@@ -307,7 +307,7 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 	
 	func configureVideoPlayer(_ cell : SunlitPostCollectionViewCell, _ indexPath : IndexPath) {
 	
-		cell.timeStampLabel.text = "00:00:00"
+		cell.timeStampLabel.text = "00:00"
 		cell.timeStampLabel.alpha = 0.0
 		cell.timeStampLabel.isHidden = false
 
@@ -326,12 +326,10 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 			self.playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
 
 			player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main) { (time : CMTime) in
-				let rawTime = Double(CMTimeGetSeconds(time))
 				var seconds = Int(CMTimeGetSeconds(time))
-				let milliseconds = Int((rawTime - Double(seconds)) * 100)
 				let minutes = (seconds / 60)
 				seconds = seconds - (60 * minutes)
-				let timeString = String(format: "%02d:%02d:%02d", minutes, seconds, milliseconds)
+				let timeString = String(format: "%02d:%02d", minutes, seconds)
 				cell.timeStampLabel.text = timeString
 				
 				// Animate in the timestamp label
