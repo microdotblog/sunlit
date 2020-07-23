@@ -134,13 +134,11 @@ class SunlitPost : SnippetsPost {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	static func addTextStyle(string : String, font : UIFont, textColor : UIColor) -> String {
-		
 		let cssString = "<style>" +
 		"html *" +
 		"{" +
-		"font-size: \(font.pointSize)pt !important;" +
 		"color: \(textColor.uuHexString) !important;" +
-		"font-family: \(font.familyName), Helvetica !important;" +
+		"font: -apple-system-body !important;" +
 		"}</style>"
 
 		return cssString + string
