@@ -38,11 +38,11 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="4d9-ih-VvI">
-                                                    <rect key="frame" x="8" y="24" width="60" height="60"/>
+                                                    <rect key="frame" x="8" y="15" width="60" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </imageView>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="kMa-aZ-3KF">
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="kMa-aZ-3KF">
                                                     <rect key="frame" x="294" y="26" width="100" height="37"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                 </activityIndicatorView>
@@ -64,18 +64,6 @@
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </view>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="http://cheesemaker.micro.blog" translatesAutoresizingMaskIntoConstraints="NO" id="alc-fu-tFa">
-                                                    <rect key="frame" x="8" y="199" width="208" height="32"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                    <color key="textColor" systemColor="labelColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                    <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES"/>
-                                                    <connections>
-                                                        <outlet property="delegate" destination="Ief-kE-dcT" id="LnG-3Q-afr"/>
-                                                    </connections>
-                                                </textView>
                                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QQy-Kw-9by">
                                                     <rect key="frame" x="294" y="24" width="100" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -85,12 +73,21 @@
                                                         <color key="titleColor" systemColor="labelColor"/>
                                                     </state>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v7a-8d-Kwq">
+                                                    <rect key="frame" x="8" y="202" width="386" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <state key="normal" title="https://cheesemaker.micro.blog/"/>
+                                                    <connections>
+                                                        <action selector="openBlogAddress" destination="sLQ-vr-7BF" eventType="touchUpInside" id="eVE-Ub-LZf"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="406" height="240"/>
                                         <connections>
                                             <outlet property="avatar" destination="4d9-ih-VvI" id="ebR-7D-bgW"/>
-                                            <outlet property="blogAddress" destination="alc-fu-tFa" id="0qZ-Ls-bUA"/>
+                                            <outlet property="blogAddress" destination="v7a-8d-Kwq" id="GBK-wP-EwO"/>
                                             <outlet property="followButton" destination="QQy-Kw-9by" id="RoS-zb-oeh"/>
                                             <outlet property="fullName" destination="nDe-kP-FFY" id="36N-dq-Dyv"/>
                                             <outlet property="userHandle" destination="iK1-Yv-Hfd" id="DhT-yG-F3C"/>
@@ -128,19 +125,18 @@
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="240"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="05-07-2020" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CAI-qb-EB7">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="05-07-2020" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CAI-qb-EB7">
                                                     <rect key="frame" x="0.0" y="200" width="200" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" id="TQE-Ty-cpV">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" id="TQE-Ty-cpV">
                                                     <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" name="color_timeline_header"/>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" name="color_signin_bar"/>
                                         </collectionViewCellContentView>
                                         <color key="backgroundColor" systemColor="lightTextColor"/>
                                         <connections>
@@ -176,9 +172,6 @@
         </scene>
     </scenes>
     <resources>
-        <namedColor name="color_signin_bar">
-            <color white="0.94999998807907104" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </namedColor>
         <namedColor name="color_timeline_header">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

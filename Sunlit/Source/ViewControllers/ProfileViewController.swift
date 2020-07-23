@@ -269,7 +269,7 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		if address.count > 0 && !address.contains("http") {
 			address = "https://" + address
 		}
-		cell.blogAddress.text = address
+		cell.blogAddress.setTitle(address, for: .normal)
 			
 		if let image = ImageCache.prefetch(user.avatarURL) {
 			cell.avatar.image = image
@@ -297,13 +297,13 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 			cell.photo.image = image
 		}
 		
-		cell.photo.layer.borderColor = UIColor.lightGray.cgColor
-		cell.photo.layer.borderWidth = 0.5
+//		cell.photo.layer.borderColor = UIColor.lightGray.cgColor
+//		cell.photo.layer.borderWidth = 0.5
 		
-		cell.contentView.layer.cornerRadius = 8.0
+//		cell.contentView.layer.cornerRadius = 8.0
 		cell.contentView.clipsToBounds = true
-		cell.contentView.layer.borderWidth = 0.5
-		cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
+//		cell.contentView.layer.borderWidth = 0.5
+//		cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
 	}
 	
 }

@@ -14,11 +14,19 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var followButton : UIButton!
 	@IBOutlet var fullName : UILabel!
 	@IBOutlet var userHandle : UILabel!
-	@IBOutlet var blogAddress : UITextView!
+	@IBOutlet var blogAddress : UIButton!
 	@IBOutlet var followingCount : UILabel!
 	@IBOutlet var postCount : UILabel!
 	
 	static func sizeOf(_ owner : SnippetsUser?, collectionViewWidth : CGFloat) -> CGSize {
 		return CGSize(width: collectionViewWidth, height: 120.0)
+	}
+	
+	@IBAction func openBlogAddress() {
+		if let s = blogAddress.title(for: .normal) {
+			if let url = URL(string: s) {
+				UIApplication.shared.open(url)
+			}
+		}
 	}
 }
