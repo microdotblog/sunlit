@@ -261,13 +261,15 @@ class MainViewController: UIViewController {
 
 	
 	@IBAction @objc func onNewPost() {
-		let pickerController = UIImagePickerController()
-		pickerController.modalPresentationCapturesStatusBarAppearance = true
-		pickerController.delegate = self
-		pickerController.allowsEditing = false
-		pickerController.mediaTypes = ["public.image", "public.movie"]
-		pickerController.sourceType = .savedPhotosAlbum
-		self.present(pickerController, animated: true, completion: nil)
+        if let _ = SnippetsUser.current() {
+            let pickerController = UIImagePickerController()
+            pickerController.modalPresentationCapturesStatusBarAppearance = true
+            pickerController.delegate = self
+            pickerController.allowsEditing = false
+            pickerController.mediaTypes = ["public.image", "public.movie"]
+            pickerController.sourceType = .savedPhotosAlbum
+            self.present(pickerController, animated: true, completion: nil)
+        }
 	}
 	
 
