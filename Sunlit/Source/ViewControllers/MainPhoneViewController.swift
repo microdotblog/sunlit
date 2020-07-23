@@ -165,10 +165,10 @@ class MainPhoneViewController: UIViewController {
 				self.onShowProfile()
 			}
 			else {
-				self.timelineButton.isEnabled = false
-				self.profileButton.isEnabled = true
-				self.timelineButton.isSelected = true
-				self.profileButton.isSelected = false
+//				self.timelineButton.isEnabled = false
+//				self.profileButton.isEnabled = true
+//				self.timelineButton.isSelected = true
+//				self.profileButton.isSelected = false
 				
 				NotificationCenter.default.post(name: .showLoginNotification, object: nil)
 			}
