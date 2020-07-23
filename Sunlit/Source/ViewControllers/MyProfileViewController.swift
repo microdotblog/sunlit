@@ -263,8 +263,8 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 			self.loadPhoto(user.avatarURL, indexPath)
 		}
 		
-		cell.followingCount.text = "---"
-		cell.postCount.text = "---"
+		cell.followingCount.text = "-"
+		cell.postCount.text = "-"
 		
 		if self.user.followingCount > 0 {
 			cell.followingCount.text = "\(self.user.followingCount)"
