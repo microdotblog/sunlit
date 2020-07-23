@@ -44,6 +44,7 @@ class SettingsViewController: UIViewController {
 	func setupNavigation() {
 		self.navigationItem.title = "Settings"
 		self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Credits", style: .plain, target: self, action: #selector(onViewCredits))
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(onDismiss))
 	}
 	
 	func setupNotifications() {
