@@ -151,7 +151,8 @@ class MainViewController: UIViewController {
 	@objc func handleShowLoginNotification() {
 		let storyboard = UIStoryboard(name: "Login", bundle: nil)
 		self.loginViewController = storyboard.instantiateViewController(identifier: "LoginViewController")
-		self.present(self.loginViewController!, animated: true, completion: nil)
+		let nav_controller = UINavigationController(rootViewController: self.loginViewController!)
+		self.present(nav_controller, animated: true, completion: nil)
 	}
 
 	@objc func handleTemporaryTokenReceivedNotification(_ notification : Notification) {

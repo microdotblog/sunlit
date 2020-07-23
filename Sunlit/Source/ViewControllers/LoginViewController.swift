@@ -22,9 +22,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 		
+		self.navigationItem.title = "Sign In"
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(close))
+
 		self.emailField.becomeFirstResponder()
     }
     
+	@IBAction func close() {
+		self.dismiss(animated: true)
+	}
 
 	func attemptLogin(_ emailAddress : String?) {
 		
@@ -70,10 +76,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 				// TODO: Need to add support for Wordpress and other Micropub sites here...
 			}
 			else {
-				let path = "sunlit://micropub/" + text.uuTrimWhitespace()
-				UIApplication.shared.open(URL(string: path)!, options: [:]) { (complete) in
-					self.dismiss(animated: true, completion: nil)
-				}
+//				let path = "sunlit://micropub/" + text.uuTrimWhitespace()
+//				UIApplication.shared.open(URL(string: path)!, options: [:]) { (complete) in
+//					self.dismiss(animated: true, completion: nil)
+//				}
 			}
 		}
 		return false
