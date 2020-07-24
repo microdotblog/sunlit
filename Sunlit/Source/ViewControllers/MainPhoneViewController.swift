@@ -59,10 +59,10 @@ class MainPhoneViewController: UIViewController {
 		let contentSize = CGSize(width: frame.size.width * 3.0, height: 0.0)
 		self.scrollView.contentSize = contentSize
         		
-		self.timelineViewController.tableView.reloadData()
-		self.discoverViewController.tableView.reloadData()
-		self.discoverViewController.collectionView.reloadData()
-		self.profileViewController.collectionView.reloadData()
+//		self.timelineViewController.tableView.reloadData()
+//		self.discoverViewController.tableView.reloadData()
+//		self.discoverViewController.collectionView.reloadData()
+//		self.profileViewController.collectionView.reloadData()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
