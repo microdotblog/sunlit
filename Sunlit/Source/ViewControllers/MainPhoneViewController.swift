@@ -113,7 +113,9 @@ class MainPhoneViewController: UIViewController {
 		var profileImage : UIImage? = UIImage(systemName: "person.crop.circle")
 		var profileUsername = "Profile"
 		if let current = SnippetsUser.current() {
-			profileUsername = "@" + current.userName
+			if current.userName.count < 10 {
+				profileUsername = "@" + current.userName
+			}
 			if let image = ImageCache.prefetch(current.avatarURL) {
 				profileImage = image
 			}
@@ -139,7 +141,12 @@ class MainPhoneViewController: UIViewController {
 			
 			// Update the user name...
 			DispatchQueue.main.async {
-				self.profileButton.setTitle("@" + user.userName, for: .normal)
+				if user.userName.count < 10 {
+					self.profileButton.setTitle("@" + user.userName, for: .normal)
+				}
+				else {
+					self.profileButton.setTitle("Profile", for: .normal)
+				}
 				self.profileButton.centerVertically()
 			}
 			

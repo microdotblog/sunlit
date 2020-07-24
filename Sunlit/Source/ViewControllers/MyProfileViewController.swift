@@ -314,8 +314,13 @@ MARK: -
 
 extension MyProfileViewController : SnippetsScrollContentProtocol {
 	func prepareToDisplay() {
-		self.navigationController?.navigationBar.topItem?.title = "My Profile"
 		self.user = SnippetsUser.current()
+		if self.user.userName.count < 10 {
+			self.navigationController?.navigationBar.topItem?.title = "@" + self.user.userName
+		}
+		else {
+			self.navigationController?.navigationBar.topItem?.title = "Profile"
+		}
 		self.collectionView.reloadData()
 
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
