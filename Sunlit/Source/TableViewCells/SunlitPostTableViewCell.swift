@@ -140,6 +140,8 @@ class SunlitPostTableViewCell : UITableViewCell {
 
 		self.conversationButton.isHidden = !self.post.hasConversation
 		
+        self.replyField.text = ""
+        
 		// Update the text objects
 		self.textView.attributedText = post.text
 		self.userHandle.text = "@" + post.owner.userName
@@ -209,12 +211,6 @@ class SunlitPostTableViewCell : UITableViewCell {
 		}
 		
 		self.replyField.becomeFirstResponder()
-		
-		if replyField.text.count <= 0 {
-			for name in self.post.mentionedUsernames {
-				replyField.text = replyField.text + name + " "
-			}
-		}
 	}
 	
 	@objc func keyboardOnScreen(_ notification : Notification) {
