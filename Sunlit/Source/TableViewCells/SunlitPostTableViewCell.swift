@@ -181,7 +181,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 			NotificationCenter.default.post(name: .notifyReplyPostedNotification, object: error)
 		}
 		
-		self.textView.resignFirstResponder()
+        self.replyField.resignFirstResponder()
 	}
 	
 	@IBAction func onViewConversation() {
