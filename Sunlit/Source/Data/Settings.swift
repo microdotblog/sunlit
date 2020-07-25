@@ -59,11 +59,11 @@ class Settings {
 		SnippetsUser.deleteCurrentUser()
 		
 		let config = Snippets.shared.timelineConfiguration
-		config.endpoint = ""
 		config.uid = ""
 		config.token = ""
-		config.micropubEndpoint = ""
-		config.mediaEndpoint = ""
+        config.endpoint = "http://micro.blog/"
+		config.micropubEndpoint = "http://micro.blog/micropub"
+		config.mediaEndpoint = "http://micro.blog/micropub/media"
 		Snippets.shared.configureTimeline(config)
 		Snippets.shared.configurePublishing(config)
 	}
