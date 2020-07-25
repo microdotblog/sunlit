@@ -72,7 +72,7 @@ class SettingsViewController: UIViewController {
 		
 		var appName = PublishingConfiguration.current.getExternalBlogAppName()
 		if appName.count <= 0 {
-			appName = "External Weblog"
+			appName = "External Blog"
 		}
 		self.wordPressAppTitle.text = appName
 
