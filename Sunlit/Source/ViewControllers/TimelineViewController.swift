@@ -374,6 +374,7 @@ MARK: -
 extension TimelineViewController : SnippetsScrollContentProtocol {
 	func prepareToDisplay() {
 		self.navigationController?.navigationBar.topItem?.title = "Timeline"
+		self.navigationController?.navigationBar.topItem?.titleView = nil
 		self.setupNotifications()
 		self.updateLoggedInStatus()
 	}

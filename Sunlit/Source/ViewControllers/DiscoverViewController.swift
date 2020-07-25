@@ -30,7 +30,7 @@ class DiscoverViewController: UIViewController {
 	var collection = "photos"
 	var collectionTitle = "photos"
 	var loadingData = false
-	
+	var isShowingCollectionView = true
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -43,7 +43,48 @@ class DiscoverViewController: UIViewController {
 		self.loadFrequentlyUsedEmoji()
 		self.setupSnippets()
 	}
-    
+
+	func setupNavigation() {
+		var items: [ UIImage ]  = []
+		if let grid_image = UIImage(systemName: "square.grid.2x2") {
+			items.append(grid_image)
+		}
+		if let list_image = UIImage(systemName: "rectangle.grid.1x2") {
+			items.append(list_image)
+		}
+		let segmented_control = UISegmentedControl(items: items)
+		
+		if self.isShowingCollectionView {
+			segmented_control.selectedSegmentIndex = 0
+		}
+		else {
+			segmented_control.selectedSegmentIndex = 1
+		}
+		
+		segmented_control.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+		self.navigationController?.navigationBar.topItem?.titleView = segmented_control
+	}
+	
+	@IBAction func segmentChanged(_ sender: UISegmentedControl) {
+		if sender.selectedSegmentIndex == 0 {
+			self.isShowingCollectionView = true
+		}
+		else {
+			self.isShowingCollectionView = false
+		}
+		
+		self.refresh(self.posts)
+
+		if self.isShowingCollectionView {
+			self.collectionView.isHidden = false
+			self.tableView.isHidden = true
+		}
+		else {
+			self.collectionView.isHidden = true
+			self.tableView.isHidden = false
+		}
+	}
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         self.loadTimeline()
     }
@@ -89,11 +130,11 @@ class DiscoverViewController: UIViewController {
 		self.collectionViewRefreshControl.endRefreshing()
 		self.busyIndicator.isHidden = true
 		
-		if self.tableView.isHidden == false {
-			self.tableView.reloadData()
-		}
-		else if self.collectionView.isHidden == false {
+		if self.isShowingCollectionView {
 			self.collectionView.reloadData()
+		}
+		else {
+			self.tableView.reloadData()
 		}
 	}
 
@@ -109,7 +150,7 @@ class DiscoverViewController: UIViewController {
 			DispatchQueue.main.async {
 				
 				// Default to using the collection view...
-				if self.tableView.isHidden == true && self.collectionView.isHidden == true {
+				if self.isShowingCollectionView {
 					self.collectionView.isHidden = false
 				}
 
@@ -240,8 +281,7 @@ class DiscoverViewController: UIViewController {
 	@objc func setupSnippets() {
 		self.loadTimeline()
 	}
-	
-	
+		
 	func prefetchImages(_ indexPath : IndexPath) {
 		let post = self.posts[indexPath.row]
 		let imageSource = post.images[0]
@@ -293,17 +333,7 @@ class DiscoverViewController: UIViewController {
 			self.collectionTitle = title
 
 			DispatchQueue.main.async {
-				
-				if title == "photos" {
-					self.tableView.isHidden = true
-					self.collectionView.isHidden = false
-				}
-				else {
-					self.tableView.isHidden = false
-					self.collectionView.isHidden = true
-				}
-				
-				self.navigationController?.navigationBar.topItem?.title = "Discover " + title
+				self.setupNavigation()
 				self.refresh([])
 				
 				self.busyIndicator.isHidden = false
@@ -575,7 +605,7 @@ MARK: -
 
 extension DiscoverViewController : SnippetsScrollContentProtocol {
 	func prepareToDisplay() {
-		self.navigationController?.navigationBar.topItem?.title = "Discover " + self.collectionTitle
+		self.setupNavigation()
 		self.setupNotifications()
 		self.loadTagmoji()
 	}

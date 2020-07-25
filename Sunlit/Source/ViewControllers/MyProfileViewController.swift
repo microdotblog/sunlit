@@ -321,6 +321,7 @@ extension MyProfileViewController : SnippetsScrollContentProtocol {
 		else {
 			self.navigationController?.navigationBar.topItem?.title = "Profile"
 		}
+		self.navigationController?.navigationBar.topItem?.titleView = nil
 		self.collectionView.reloadData()
 
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
