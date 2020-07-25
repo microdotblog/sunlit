@@ -63,25 +63,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 
 		if let text = textField.text {
-			
 			let email = text.uuTrimWhitespace()
-
-			if email.uuIsValidEmail() {
-				self.attemptLogin(email)
-			}
-			else if text.contains(".micro.blog") {
-				Dialog(self).information("To sign in with Micro.blog, enter your email address.")
-			}
-			else if text.contains(".") {
-				// TODO: Need to add support for Wordpress and other Micropub sites here...
-			}
-			else {
-//				let path = "sunlit://micropub/" + text.uuTrimWhitespace()
-//				UIApplication.shared.open(URL(string: path)!, options: [:]) { (complete) in
-//					self.dismiss(animated: true, completion: nil)
-//				}
-			}
+			self.attemptLogin(email)
 		}
+		
 		return false
 	}
 	
