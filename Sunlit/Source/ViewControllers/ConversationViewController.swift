@@ -64,6 +64,20 @@ class ConversationViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 	
+    func buildReplyText() -> String {
+        var userList = ""
+        var users = Set<String>()
+        for reply in self.posts {
+            users.insert(reply.owner.userName)
+        }
+
+        for user in users {
+            userList = userList + "@" + user + " "
+        }
+
+        return userList + self.replyField.text
+    }
+    
 	@objc func loadConversation() {
 		if let post = sourcePost {
 			Snippets.shared.fetchConversation(post: post) { (error, posts : [SnippetsPost]) in
@@ -88,7 +102,9 @@ class ConversationViewController: UIViewController {
 	}
 	
 	@IBAction func onPostReply() {
-		Snippets.shared.reply(originalPost: self.sourcePost!, content: self.replyField.text) { (error) in
+        
+        let replyText = self.buildReplyText()
+		Snippets.shared.reply(originalPost: self.sourcePost!, content: replyText) { (error) in
 			
 			DispatchQueue.main.async {
 				if let err = error {
@@ -143,19 +159,6 @@ class ConversationViewController: UIViewController {
 }
 
 extension ConversationViewController : UITextViewDelegate {
-	
-	func textViewDidBeginEditing(_ textView: UITextView) {
-		if self.replyField.text.count <= 0 {
-			var users = Set<String>()
-			for reply in self.posts {
-				users.insert(reply.owner.userName)
-			}
-	
-			for user in users {
-				self.replyField.text = self.replyField.text + "@" + user + " "
-			}
-		}
-	}
 	
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
 		

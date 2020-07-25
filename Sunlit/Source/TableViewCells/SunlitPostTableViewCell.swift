@@ -177,7 +177,14 @@ class SunlitPostTableViewCell : UITableViewCell {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 	@IBAction func onReply() {
-		Snippets.shared.reply(originalPost: self.post, content: self.replyField.text) { (error) in
+        
+        var userList = ""
+        for name in self.post.mentionedUsernames {
+            userList = userList + name + " "
+        }
+        
+        let replyText = userList + self.replyField.text
+		Snippets.shared.reply(originalPost: self.post, content: replyText) { (error) in
 			NotificationCenter.default.post(name: .notifyReplyPostedNotification, object: error)
 		}
 		
