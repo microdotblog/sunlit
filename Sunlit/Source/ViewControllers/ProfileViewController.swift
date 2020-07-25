@@ -248,6 +248,9 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		cell.followButton.layer.cornerRadius = (cell.followButton.bounds.size.height - 1) / 2.0
 		cell.followButton.setTitle("Unfollow", for: .normal)
 		cell.followButton.isHidden = true
+        cell.busyIndicator.isHidden = false
+        cell.busyIndicator.startAnimating()
+        
 		cell.followButton.addTarget(self, action: #selector(onFollowUser), for: .touchUpInside)
 		
 		if self.user.isFollowing {
@@ -258,6 +261,11 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 			cell.followButton.isHidden = false
 			cell.followButton.setTitle("Follow", for: .normal)
 		}
+        
+        if SnippetsUser.current() == nil {
+            cell.followButton.isHidden = true
+            cell.busyIndicator.isHidden = true
+        }
 			
 		cell.avatar.clipsToBounds = true
 		cell.avatar.layer.cornerRadius = (cell.avatar.bounds.size.height - 1) / 2.0

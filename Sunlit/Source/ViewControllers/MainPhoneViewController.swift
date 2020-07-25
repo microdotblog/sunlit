@@ -141,6 +141,8 @@ class MainPhoneViewController: UIViewController {
 			
 			// Update the user name...
 			DispatchQueue.main.async {
+                self.scrollView.isScrollEnabled = true
+
 				if user.userName.count < 10 {
 					self.profileButton.setTitle("@" + user.userName, for: .normal)
 				}
@@ -169,6 +171,7 @@ class MainPhoneViewController: UIViewController {
 			self.profileButton.setImage(UIImage(systemName: "person.crop.circle"), for: .normal)
 			self.profileButton.setTitle("Profile", for: .normal)
 			self.onTabBarButtonPressed(self.timelineButton)
+            self.scrollView.isScrollEnabled = false
 		}
 	}
 
@@ -182,11 +185,6 @@ class MainPhoneViewController: UIViewController {
 				self.onShowProfile()
 			}
 			else {
-//				self.timelineButton.isEnabled = false
-//				self.profileButton.isEnabled = true
-//				self.timelineButton.isSelected = true
-//				self.profileButton.isSelected = false
-				
 				NotificationCenter.default.post(name: .showLoginNotification, object: nil)
 			}
 		}

@@ -17,6 +17,7 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var blogAddress : UIButton!
 	@IBOutlet var followingCount : UILabel!
 	@IBOutlet var postCount : UILabel!
+    @IBOutlet var busyIndicator : UIActivityIndicatorView!
 	
 	static func sizeOf(_ owner : SnippetsUser?, collectionViewWidth : CGFloat) -> CGSize {
 		return CGSize(width: collectionViewWidth, height: 120.0)

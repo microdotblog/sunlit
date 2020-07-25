@@ -192,10 +192,22 @@ class SunlitPostTableViewCell : UITableViewCell {
 	}
 	
 	@IBAction func onViewConversation() {
-		NotificationCenter.default.post(name: .viewConversationNotification, object: self.post)
-	}
+        if SnippetsUser.current() != nil {
+            NotificationCenter.default.post(name: .viewConversationNotification, object: self.post)
+        }
+        else {
+            NotificationCenter.default.post(name: .showLoginNotification, object: nil)
+        }
+    }
 	
 	@IBAction func onActivateReply() {
+        
+        // Check to see if the user is logged in. Otherwise, let's throw up the login scren
+        if SnippetsUser.current() == nil {
+            NotificationCenter.default.post(name: .showLoginNotification, object: nil)
+            return
+        }
+        
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreen(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreen(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleEmojiSelectedNotification(_:)), name: .emojiSelectedNotification, object: nil)

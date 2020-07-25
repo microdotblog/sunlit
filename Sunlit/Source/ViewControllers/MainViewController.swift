@@ -68,8 +68,15 @@ class MainViewController: UIViewController {
 			}
 			let settingsButton = UIBarButtonItem(image: UIImage(systemName: settingsSymbol), style: .plain, target: self, action: #selector(onSettings))
 			self.navigationItem.title = "Timeline"
-			self.navigationItem.leftBarButtonItem = settingsButton
-			self.navigationItem.rightBarButtonItem = postButton
+            
+            if SnippetsUser.current() != nil {
+                self.navigationItem.rightBarButtonItem = postButton
+                self.navigationItem.leftBarButtonItem = settingsButton
+            }
+            else {
+                self.navigationItem.rightBarButtonItem = nil
+                self.navigationItem.leftBarButtonItem = nil
+            }
 		}
 		else if UIDevice.current.userInterfaceIdiom == .pad {
 			self.navigationController?.setNavigationBarHidden(true, animated: false)
@@ -86,6 +93,7 @@ class MainViewController: UIViewController {
 	}
 	
 	func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUserUpdatedNotification(_:)), name: .currentUserUpdatedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: .temporaryTokenReceivedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleMicropubTokenReceivedNotification(_:)), name: .micropubTokenReceivedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowLoginNotification), name: .showLoginNotification, object: nil)
@@ -113,6 +121,10 @@ class MainViewController: UIViewController {
 		}
 	}
 	
+    @objc func handleUserUpdatedNotification(_ notification : Notification) {
+        self.setupNavigationBar()
+    }
+    
 	@objc func handleViewUserProfileNotification(_ notification : Notification) {
 		if let owner = notification.object as? SnippetsUser {
             if let profileController = self.navigationController?.topViewController as? ProfileViewController {
