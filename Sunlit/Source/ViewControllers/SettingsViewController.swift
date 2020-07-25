@@ -31,13 +31,7 @@ class SettingsViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 
-		self.wordPressButton.isSelected = Settings.usesExternalBlog()
-		self.microBlogButton.isSelected = !Settings.usesExternalBlog()
-		
-		self.updateWordpressSettings()
-		let settingsHeight : CGFloat = self.wordPressButton.isSelected ? 128.0 : 0.0
-		self.wordPressSettingsViewHeightConstraint.constant = settingsHeight
-
+		self.updateButtons()
 		self.updateWordpressSettings()
 	}
 	
@@ -48,8 +42,23 @@ class SettingsViewController: UIViewController {
 	}
 	
 	func setupNotifications() {
+		NotificationCenter.default.addObserver(self, selector: #selector(finishedExternalConfigNotification), name: .finishedExternalConfigNotification, object: nil)
+	}
+		
+	@objc func finishedExternalConfigNotification(_ notification: Notification) {
+		self.updateButtons()
+		self.updateWordpressSettings()
 	}
 	
+	func updateButtons() {
+		self.wordPressButton.isSelected = Settings.usesExternalBlog()
+		self.microBlogButton.isSelected = !Settings.usesExternalBlog()
+		
+		self.updateWordpressSettings()
+		let settingsHeight : CGFloat = self.wordPressButton.isSelected ? 128.0 : 0.0
+		self.wordPressSettingsViewHeightConstraint.constant = settingsHeight
+	}
+
 	func updateWordpressSettings() {
 		let blog_name = PublishingConfiguration.current.getBlogName()
 		let blog_address = PublishingConfiguration.current.getBlogAddress()

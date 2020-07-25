@@ -238,12 +238,16 @@ class MainViewController: UIViewController {
 					UUHttpSession.post(url: token_endpoint, queryArguments: [ : ], body: d, contentType: "application/x-www-form-urlencoded") { (parsedServerResponse) in
 						if let dictionary = parsedServerResponse.parsedResponse as? [ String : Any ] {
 							if let access_token = dictionary["access_token"] as? String {
-								PublishingConfiguration.configureMicropubBlog(accessToken: access_token)
-								Settings.useExternalBlog(true)
-								
-								let publishingConfig = Snippets.shared.publishingConfiguration
-								publishingConfig.token = access_token
-								Snippets.shared.configurePublishing(publishingConfig)
+								DispatchQueue.main.async {
+									PublishingConfiguration.configureMicropubBlog(accessToken: access_token)
+									Settings.useExternalBlog(true)
+									
+									let publishingConfig = Snippets.shared.publishingConfiguration
+									publishingConfig.token = access_token
+									Snippets.shared.configurePublishing(publishingConfig)
+									
+									NotificationCenter.default.post(name: .finishedExternalConfigNotification, object: self)
+								}
 							}
 						}
 					}
