@@ -76,7 +76,8 @@ public struct UUContentType
     public static let textPlain        = "text/plain"
     public static let binary           = "application/octet-stream"
     public static let imagePng         = "image/png"
-    public static let imageJpeg        = "image/jpeg"
+	public static let imageJpeg        = "image/jpeg"
+	public static let formEncoded      = "application/x-www-form-urlencoded"
 }
 
 public struct UUHeader
@@ -303,6 +304,35 @@ open class UUImageResponseHandler : NSObject, UUHttpResponseHandler
     }
 }
 
+open class UUFormEncodedResponseHandler : NSObject, UUHttpResponseHandler
+{
+	public var supportedMimeTypes: [String]
+	{
+		return [UUContentType.formEncoded]
+	}
+	
+	open func parseResponse(_ data: Data, _ response: HTTPURLResponse, _ request: URLRequest) -> Any?
+	{
+		var parsed: [ String: Any ] = [:]
+		
+		if let s = String.init(data: data, encoding: .utf8) {
+			let components = s.components(separatedBy: "&")
+			for c in components {
+				let pair = c.components(separatedBy: "=")
+				if pair.count == 2 {
+					if let key = pair.first {
+						if let val = pair.last {
+							parsed[key] = val.removingPercentEncoding
+						}
+					}
+				}
+			}
+		}
+		
+		return parsed
+	}
+}
+
 @objc
 public class UUHttpSession: NSObject
 {
@@ -330,7 +360,8 @@ public class UUHttpSession: NSObject
         registerResponseHandler(UUJsonResponseHandler())
         registerResponseHandler(UUTextResponseHandler())
         registerResponseHandler(UUBinaryResponseHandler())
-        registerResponseHandler(UUImageResponseHandler())
+		registerResponseHandler(UUImageResponseHandler())
+		registerResponseHandler(UUFormEncodedResponseHandler())
     }
     
     private func registerResponseHandler(_ handler : UUHttpResponseHandler)
