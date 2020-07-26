@@ -38,12 +38,12 @@ class ProfileViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		self.navigationController?.setNavigationBarHidden(false, animated: true)
+//		self.navigationController?.setNavigationBarHidden(false, animated: true)
 	}
 	
 	@objc func dismissViewController() {
 		self.navigationController?.popViewController(animated: true)
-		self.navigationController?.setNavigationBarHidden(true, animated: true)
+//		self.navigationController?.setNavigationBarHidden(true, animated: true)
 	}
 	
 	func fetchUserInfo(_ user : SnippetsUser) {
