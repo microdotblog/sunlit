@@ -19,36 +19,6 @@ public class Snippets : NSObject {
     
 	@objc public static let shared = Snippets()
     
-    @objc public func configureTimeline(_ configuration : Snippets.Configuration) {
-        self.timelineConfiguration = configuration
-    }
-
-	@objc public func configurePublishing(_ configuration : Snippets.Configuration) {
-		self.publishingConfiguration = configuration
-	}
-	
-	@objc public var publishingConfiguration : Configuration {
-		get {
-			if let config = self.internalPublishingConfiguration {
-				return config
-			}
-			
-			return self.internalTimelineConfiguration
-		}
-		set(configuration) {
-			self.internalPublishingConfiguration = configuration
-		}
-	}
-
-	@objc public var timelineConfiguration : Configuration {
-		get {
-			return self.internalTimelineConfiguration
-		}
-		set(configuration) {
-			self.internalTimelineConfiguration = configuration
-		}
-	}
-	    
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// MARK: - Signin
 	// Sign-in is generally a 2-step process. First, request an email with a temporary token. Then exchange the temporary token for a permanent token
@@ -850,6 +820,36 @@ extension Snippets {
 }
 
 extension Snippets {
+    
+    @objc public func configureTimeline(_ configuration : Snippets.Configuration) {
+        self.timelineConfiguration = configuration
+    }
+
+    @objc public func configurePublishing(_ configuration : Snippets.Configuration) {
+        self.publishingConfiguration = configuration
+    }
+    
+    @objc public var publishingConfiguration : Configuration {
+        get {
+            if let config = self.internalPublishingConfiguration {
+                return config
+            }
+            
+            return self.internalTimelineConfiguration
+        }
+        set(configuration) {
+            self.internalPublishingConfiguration = configuration
+        }
+    }
+
+    @objc public var timelineConfiguration : Configuration {
+        get {
+            return self.internalTimelineConfiguration
+        }
+        set(configuration) {
+            self.internalTimelineConfiguration = configuration
+        }
+    }
    
     public class Configuration : NSObject {
         
@@ -858,6 +858,16 @@ extension Snippets {
 		public var micropubEndpoint = "http://micro.blog/micropub"
 		public var mediaEndpoint = "http://micro.blog/micropub/media"
 		public var uid : String? = nil
+        
+        public static func reset() {
+            Snippets.shared.timelineConfiguration.token = ""
+            Snippets.shared.timelineConfiguration.endpoint = "http://micro.blog/"
+            Snippets.shared.timelineConfiguration.micropubEndpoint = "http://micro.blog/micropub"
+            Snippets.shared.timelineConfiguration.mediaEndpoint = "http://micro.blog/micropub/media"
+            Snippets.shared.timelineConfiguration.uid = nil
+            
+            Snippets.shared.internalPublishingConfiguration = nil
+        }
     }
 
 }
