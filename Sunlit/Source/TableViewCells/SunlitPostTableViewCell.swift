@@ -115,7 +115,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 		super.awakeFromNib()
 		
 		self.replyContainer.layer.cornerRadius = 18.0
-		self.replyContainer.layer.borderColor = UIColor.lightGray.cgColor
+		self.replyContainer.layer.borderColor = UIColor.separator.cgColor
 		self.replyContainer.layer.borderWidth = 0.0
 		
 		self.userName.font = UIFont.preferredFont(forTextStyle: .headline)
