@@ -104,7 +104,7 @@
                                         </constraints>
                                     </view>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vpU-s5-4V2">
-                                        <rect key="frame" x="8" y="8" width="398" height="38"/>
+                                        <rect key="frame" x="12" y="8" width="390" height="38"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="uuCornerRadius">
@@ -119,7 +119,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <button opaque="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Td-Zo-NLB">
-                                        <rect key="frame" x="358" y="10.5" width="40" height="33"/>
+                                        <rect key="frame" x="350" y="10.5" width="40" height="33"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="jOG-jx-JIV"/>
@@ -133,7 +133,7 @@
                                         </connections>
                                     </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fge-xx-GRZ">
-                                        <rect key="frame" x="24" y="8" width="328" height="38"/>
+                                        <rect key="frame" x="28" y="8" width="316" height="38"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -153,9 +153,9 @@
                                     <constraint firstItem="fge-xx-GRZ" firstAttribute="bottom" secondItem="vpU-s5-4V2" secondAttribute="bottom" id="01t-3q-iI8"/>
                                     <constraint firstItem="goW-pK-Jfh" firstAttribute="leading" secondItem="yzi-09-OSy" secondAttribute="leading" id="36S-Ij-B0s"/>
                                     <constraint firstItem="fge-xx-GRZ" firstAttribute="top" secondItem="vpU-s5-4V2" secondAttribute="top" id="AVU-Oa-rAX"/>
-                                    <constraint firstItem="vpU-s5-4V2" firstAttribute="leading" secondItem="yzi-09-OSy" secondAttribute="leading" constant="8" id="CmZ-HA-Ykv"/>
-                                    <constraint firstAttribute="trailing" secondItem="8Td-Zo-NLB" secondAttribute="trailing" constant="16" id="Cwi-C6-XbN"/>
-                                    <constraint firstAttribute="trailing" secondItem="vpU-s5-4V2" secondAttribute="trailing" constant="8" id="Jeb-z7-YKo"/>
+                                    <constraint firstItem="vpU-s5-4V2" firstAttribute="leading" secondItem="yzi-09-OSy" secondAttribute="leading" constant="12" id="CmZ-HA-Ykv"/>
+                                    <constraint firstAttribute="trailing" secondItem="vpU-s5-4V2" secondAttribute="trailing" constant="12" id="Jeb-z7-YKo"/>
+                                    <constraint firstItem="8Td-Zo-NLB" firstAttribute="trailing" secondItem="vpU-s5-4V2" secondAttribute="trailing" constant="-12" id="TAx-jK-Bsb"/>
                                     <constraint firstAttribute="trailing" secondItem="goW-pK-Jfh" secondAttribute="trailing" id="Xoo-jc-fg5"/>
                                     <constraint firstItem="vpU-s5-4V2" firstAttribute="top" secondItem="yzi-09-OSy" secondAttribute="top" constant="8" id="Y3S-pi-exC"/>
                                     <constraint firstItem="jHc-xR-l5T" firstAttribute="centerY" secondItem="vpU-s5-4V2" secondAttribute="centerY" id="aDV-59-WRd"/>
