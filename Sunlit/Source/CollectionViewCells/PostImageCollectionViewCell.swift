@@ -13,7 +13,10 @@ class PostImageCollectionViewCell: UICollectionViewCell {
 	@IBOutlet var widthConstraint : NSLayoutConstraint!
 
 	static func size(_ collectionViewWidth : CGFloat) -> CGSize {
-		let size : CGFloat = (collectionViewWidth / 3.0)
+		var size : CGFloat = 200.0
+		if size * 3.0 > collectionViewWidth {
+			size = collectionViewWidth / 3.0
+		}
 		return CGSize(width: size, height: size)
 	}
 }
