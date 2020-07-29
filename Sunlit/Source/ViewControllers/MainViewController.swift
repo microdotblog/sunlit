@@ -80,6 +80,15 @@ class MainViewController: UIViewController {
 		}
 		else if UIDevice.current.userInterfaceIdiom == .pad {
 			self.navigationController?.setNavigationBarHidden(false, animated: false)
+			
+			let postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
+			if SnippetsUser.current() != nil {
+				self.navigationItem.rightBarButtonItem = postButton
+			}
+			else {
+				self.navigationItem.rightBarButtonItem = nil
+			}
+
 		}
 
 	}
