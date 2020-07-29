@@ -29,6 +29,8 @@ class MainTabletViewController: UIViewController {
 
 		self.updateInterfaceForUserState()
 		self.onTimeLine()
+		
+		self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
 
 		self.versionLabel.text = "Version " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
 	}
