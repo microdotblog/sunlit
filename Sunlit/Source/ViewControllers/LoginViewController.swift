@@ -75,6 +75,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			self.emailField.resignFirstResponder()
 			self.emailField.isEnabled = false
 			self.spinner.isHidden = false
+			self.spinner.startAnimating()
 		}
 	}
 
