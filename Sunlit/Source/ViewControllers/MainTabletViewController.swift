@@ -26,10 +26,17 @@ class MainTabletViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
 		self.setupButtons()
 		self.onTimeLine()
+		self.navigationController?.setNavigationBarHidden(false, animated: true)
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(onCollapseMenu))
+
+		if let splitView = self.navigationController?.parent as? UISplitViewController {
+			splitView.delegate = self
+		}
 		
 //		self.versionLabel.text = "Version " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
 	}
-    
+
+	
 	func updateInterfaceForLogin() {
 /*
 		if let user = SnippetsUser.current() {
@@ -181,4 +188,20 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 		}
 	}
 	
+}
+
+extension MainTabletViewController : UISplitViewControllerDelegate {
+	
+
+	@objc func onCollapseMenu() {
+		if let splitView = self.navigationController?.parent as? UISplitViewController {
+			
+			NotificationCenter.default.post(name: .splitViewWillCollapseNotification, object: nil)
+			
+			UIView.animate(withDuration: 0.15) {
+				splitView.preferredDisplayMode = .primaryHidden
+			}
+		}
+	}
+
 }

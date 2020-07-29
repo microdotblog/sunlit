@@ -28,4 +28,6 @@ extension NSNotification.Name {
 	static let refreshCellNotification = NSNotification.Name("Feed Image Loaded Notification")
 	static let scrollTableViewNotification = NSNotification.Name("Scroll Table View Notification")
 	static let emojiSelectedNotification = NSNotification.Name("Emoji Selected Notification")
+	static let splitViewWillCollapseNotification = NSNotification.Name("Splitview Will Collapse Notification")
+	static let splitViewWillExpandNotification = NSNotification.Name("Splitview Will Expand Notification")
 }
