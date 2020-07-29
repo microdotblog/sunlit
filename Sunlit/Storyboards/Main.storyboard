@@ -114,7 +114,7 @@
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version 3.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVd-Ny-tXZ">
-                                <rect key="frame" x="0.0" y="846" width="414" height="16"/>
+                                <rect key="frame" x="0.0" y="830" width="414" height="16"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -122,7 +122,7 @@
                         <viewLayoutGuide key="safeArea" id="llH-5D-grk"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottomMargin" secondItem="HVd-Ny-tXZ" secondAttribute="bottom" id="0ru-PQ-AVO"/>
+                            <constraint firstItem="llH-5D-grk" firstAttribute="bottom" secondItem="HVd-Ny-tXZ" secondAttribute="bottom" constant="16" id="0ru-PQ-AVO"/>
                             <constraint firstItem="HVd-Ny-tXZ" firstAttribute="trailing" secondItem="llH-5D-grk" secondAttribute="trailing" id="2e4-cc-kxE"/>
                             <constraint firstAttribute="bottom" secondItem="aS5-T7-oCe" secondAttribute="bottom" id="6ac-52-zdV"/>
                             <constraint firstItem="aS5-T7-oCe" firstAttribute="top" secondItem="llH-5D-grk" secondAttribute="top" id="kvQ-2d-az5"/>
