@@ -22,10 +22,10 @@ Sunlit is available under the MIT license. See [`LICENSE.md`](https://github.com
 
 
 ## Screenshots
-![Screenshot 1](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot01.jpeg?raw=true)
-![Screenshot 2](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot02.jpeg?raw=true)
-![Screenshot 3](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot03.jpeg?raw=true)
-![Screenshot 4](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot04.jpeg?raw=true)
+![](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot01.jpeg?raw=true | width=200)
+![](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot02.jpeg?raw=true | width=200)
+![](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot03.jpeg?raw=true | width=200)
+![](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot04.jpeg?raw=true | width=200)
 
 
 ## Requirements
