@@ -15,13 +15,10 @@ Sunlit is available under the MIT license. See [`LICENSE.md`](https://github.com
 
 
 ## Third Party Components included in Sunlit:
-[Snippets](https://github.com/microdotblog/snippets">https://github.com/microdotblog/snippets)
-
-[UUSwift](https://github.com/SilverPineSoftware/UUSwift)
-
-[SwiftSoup](https://github.com/scinfu/SwiftSoup)
-
-[NextLevel Session Exporter](https://github.com/NextLevel/NextLevelSessionExporter)
+*[Snippets](https://github.com/microdotblog/snippets">https://github.com/microdotblog/snippets)
+*[UUSwift](https://github.com/SilverPineSoftware/UUSwift)
+*[SwiftSoup](https://github.com/scinfu/SwiftSoup)
+*[NextLevel Session Exporter](https://github.com/NextLevel/NextLevelSessionExporter)
 
 
 ## Screenshots
