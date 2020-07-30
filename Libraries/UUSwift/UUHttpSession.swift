@@ -99,6 +99,7 @@ public class UUHttpRequest: NSObject
     public var processMimeTypes : Bool = true
     public var startTime : TimeInterval = 0
     public var httpRequest : URLRequest? = nil
+	public var httpTask : URLSessionTask? = nil
     public var responseHandler : UUHttpResponseHandler? = nil
     public var form : UUHttpForm? = nil
     
@@ -119,6 +120,10 @@ public class UUHttpRequest: NSObject
         self.init(url: url, method: method, queryArguments: queryArguments, headers: headers, body: nil, contentType: nil)
         self.form = form
     }
+	
+	public func cancel() {
+		self.httpTask?.cancel()
+	}
 }
 
 public class UUHttpResponse : NSObject
@@ -412,7 +417,8 @@ public class UUHttpSession: NSObject
             
             self.handleResponse(request, data, response, error, completion)
         }
-        
+		request.httpTask = task
+		
         activeTasks.append(task)
         task.resume()
         return request
