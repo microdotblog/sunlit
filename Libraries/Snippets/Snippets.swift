@@ -481,12 +481,12 @@ public class Snippets : NSObject {
 		})
 	}
 	
-	@objc public func postHtml(title : String, content : String, isDraft : Bool = false, completion: @escaping(Error?, String?) -> ())
+	@objc public func postHtml(title : String, content : String, isDraft : Bool = false, completion: @escaping(Error?, String?) -> ()) -> UUHttpRequest?
 	{
 		// Pre-flight check to see if we are even configured...
         if self.publishingConfiguration.token.count == 0 {
 			completion(SnippetsError.invalidOrMissingToken, nil)
-			return
+			return nil
 		}
 
 		
@@ -516,7 +516,7 @@ public class Snippets : NSObject {
 			
 			let request = self.securePost(self.publishingConfiguration, path: self.pathForPublishingRoute(), arguments: [:], body: body)
 			
-			_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
+			return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 				let publishedPath = parsedServerResponse.httpResponse?.allHeaderFields["Location"] as? String
 				completion(parsedServerResponse.httpError, publishedPath)
 			})
@@ -524,9 +524,11 @@ public class Snippets : NSObject {
 		}
 		catch {
 		}
+		
+		return nil
 	}
 	
-	private func deletePostByUrl(path : String, completion: @escaping(Error?) -> ())
+	private func deletePostByUrl(path : String, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
 	{
 		var bodyText = ""
 		bodyText = self.appendParameter(body: bodyText, name: "action", content: "delete")
@@ -537,44 +539,44 @@ public class Snippets : NSObject {
 
 		let body : Data = bodyText.data(using: .utf8)!
 		let request = self.securePost(self.publishingConfiguration, path: self.pathForPublishingRoute(), arguments: [:], body: body)
-		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
+		return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 			completion(parsedServerResponse.httpError)
 		})
 	}
 	
-	private func deletePostByIdentifier(identifier : String, completion: @escaping(Error?) -> ())
+	private func deletePostByIdentifier(identifier : String, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
 	{
 		let arguments : [ String : String ] = [ "id" : identifier ]
 		let route = "posts/\(identifier)"
 
         let request = self.secureDelete(self.publishingConfiguration, path: self.pathForPublishingRoute(route), arguments: arguments)
 		
-		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
+		return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 			completion(parsedServerResponse.httpError)
 		})
 	}
 	
-	@objc public func deletePost(post : SnippetsPost, completion: @escaping(Error?) -> ())
+	@objc public func deletePost(post : SnippetsPost, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
 	{
 		// Pre-flight check to see if we are even configured...
         if self.publishingConfiguration.token.count == 0 {
 			completion(SnippetsError.invalidOrMissingToken)
-			return
+			return nil
 		}
 		
 		// There are actually two ways to delete posts. The safer way is if you have the post identifier
 		// The other way is more of the "micropub" way in which you just have the path to the post
 		if (post.identifier.count > 0)
 		{
-			self.deletePostByIdentifier(identifier: post.identifier, completion: completion)
+			return self.deletePostByIdentifier(identifier: post.identifier, completion: completion)
 		}
 		else
 		{
-			self.deletePostByUrl(path: post.path, completion: completion)
+			return self.deletePostByUrl(path: post.path, completion: completion)
 		}
 	}
 	
-	private func updatePostByUrl(path : String, completion: @escaping(Error?) -> ())
+	private func updatePostByUrl(path : String, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
 	{
 		var bodyText = ""
 		bodyText = self.appendParameter(body: bodyText, name: "action", content: "update")
@@ -585,28 +587,28 @@ public class Snippets : NSObject {
 
 		let body : Data = bodyText.data(using: .utf8)!
         let request = self.securePost(self.publishingConfiguration, path: self.pathForPublishingRoute(), arguments: [:], body: body)
-		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
+		return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 			completion(parsedServerResponse.httpError)
 		})
 	}
 	
-	@objc public func updatePost(post : SnippetsPost, completion: @escaping(Error?) -> ())
+	@objc public func updatePost(post : SnippetsPost, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
 	{
 		// Pre-flight check to see if we are even configured...
         if self.publishingConfiguration.token.count == 0 {
 			completion(SnippetsError.invalidOrMissingToken)
-			return
+			return nil
 		}
 		
-		self.updatePostByUrl(path: post.path, completion: completion)
+		return self.updatePostByUrl(path: post.path, completion: completion)
 	}
 
-	@objc public func reply(originalPost : SnippetsPost, content : String, completion: @escaping(Error?) -> ())
+	@objc public func reply(originalPost : SnippetsPost, content : String, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
 	{
 		// Pre-flight check to see if we are even configured...
         if self.timelineConfiguration.token.count == 0 {
 			completion(SnippetsError.invalidOrMissingToken)
-			return
+			return nil
 		}
 		
 		var arguments : [ String : String ] = [ "id" : originalPost.identifier,
@@ -618,7 +620,7 @@ public class Snippets : NSObject {
 		
         let request = self.securePost(self.timelineConfiguration, path: self.pathForTimelineRoute("posts/reply"), arguments: arguments)
 		
-		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
+		return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 			completion(parsedServerResponse.httpError)
 		})
 	}

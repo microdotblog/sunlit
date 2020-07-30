@@ -322,7 +322,7 @@ class ComposeViewController: UIViewController {
 				}
 			}
 			else {
-				Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
+				self.activeUpload = Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
 					DispatchQueue.main.async {
 						self.handleUploadCompletion(error, remotePath)
 					}
