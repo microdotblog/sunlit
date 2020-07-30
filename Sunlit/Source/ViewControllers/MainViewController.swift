@@ -91,6 +91,7 @@ class MainViewController: UIViewController {
 
 		}
 
+		self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
 	}
 
 	
