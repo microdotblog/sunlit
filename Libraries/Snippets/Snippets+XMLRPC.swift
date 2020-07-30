@@ -95,10 +95,10 @@ import UUSwift
 
 extension Snippets {
 
-	@objc public func executeRPC(request : SnippetsXMLRPCRequest, params:[Any], completion: @escaping(Error?,Data?) -> ()) {
+	@objc public func executeRPC(request : SnippetsXMLRPCRequest, params:[Any], completion: @escaping(Error?,Data?) -> ()) -> UUHttpRequest {
 		
 		let xmlRPCRequest = SnippetsRPCDiscovery(url: request.identity.endpoint)
-		_ = xmlRPCRequest.sendMethod(method: request.method, params: params) { (response) in
+		return xmlRPCRequest.sendMethod(method: request.method, params: params) { (response) in
 			completion(response.httpError, response.rawResponse)
 		}
 	}
@@ -108,7 +108,7 @@ extension Snippets {
 							   content : String,
 							   postFormat : String,
 							   postCategory : String,
-							   request : SnippetsXMLRPCRequest, completion: @escaping(Error?, String?) -> ()) {
+							   request : SnippetsXMLRPCRequest, completion: @escaping(Error?, String?) -> ()) -> UUHttpRequest {
 		
 		let params : [Any] = self.buildPostParameters(identity : request.identity,
 													  postIdentifier: postIdentifier,
@@ -117,7 +117,7 @@ extension Snippets {
 													  postFormat: postFormat,
 													  postCategory: postCategory)
 
-		self.executeRPC(request: request, params: params)
+		return self.executeRPC(request: request, params: params)
 		{ (error, responseData) in
 
 			if let data : Data = responseData {
@@ -146,7 +146,7 @@ extension Snippets {
 						   content : String,
 						   postFormat : String,
 						   postCategory : String,
-						   request : SnippetsXMLRPCRequest, completion: @escaping(Error?, String?) -> ()) {
+						   request : SnippetsXMLRPCRequest, completion: @escaping(Error?, String?) -> ()) -> UUHttpRequest {
 
 		let params : [Any] = self.buildPostParameters(identity:request.identity,
 													  postIdentifier: nil,
@@ -155,7 +155,7 @@ extension Snippets {
 													  postFormat: postFormat,
 													  postCategory: postCategory)
 		
-		self.executeRPC(request: request, params: params) { (error, responseData) in
+		return self.executeRPC(request: request, params: params) { (error, responseData) in
 
 			if let data : Data = responseData {
 				SnippetsXMLRPCParser.parsedResponseFromData(data, completion: { (responseFault, responseParams) in
@@ -177,9 +177,7 @@ extension Snippets {
 	}
 	
 
-	@objc public func uploadImage(image : SnippetsImage, 	request : SnippetsXMLRPCRequest,
-													completion: @escaping(Error?, String?, String?) -> ())
-	{
+	@objc public func uploadImage(image : SnippetsImage, 	request : SnippetsXMLRPCRequest, completion: @escaping(Error?, String?, String?) -> ()) -> UUHttpRequest {
 		let d = image.uuJpegData(0.8)
 		
 		let filename = UUID().uuidString.replacingOccurrences(of: "-", with: "") + ".jpg"
@@ -189,7 +187,7 @@ extension Snippets {
 													   "type" : "image/jpeg",
 													   "bits": d! ]]
 
-		self.executeRPC(request: request, params: params) { (error, responseData) in
+		return self.executeRPC(request: request, params: params) { (error, responseData) in
 			if let data : Data = responseData {
 				SnippetsXMLRPCParser.parsedResponseFromData(data, completion: { (responseFault, responseParams) in
 
@@ -227,8 +225,7 @@ extension Snippets {
 	}
 
 	@objc public func uploadVideo(data : Data, 	request : SnippetsXMLRPCRequest,
-								  completion: @escaping(Error?, String?, String?) -> ())
-	{
+								  completion: @escaping(Error?, String?, String?) -> ()) -> UUHttpRequest {
 		
 		let filename = UUID().uuidString.replacingOccurrences(of: "-", with: "") + ".mov"
 		let params : [Any] = [ request.identity.blogId,
@@ -237,7 +234,7 @@ extension Snippets {
 																"type" : "video/mov",
 																"bits": data ]]
 		
-		self.executeRPC(request: request, params: params) { (error, responseData) in
+		return self.executeRPC(request: request, params: params) { (error, responseData) in
 			if let data : Data = responseData {
 				SnippetsXMLRPCParser.parsedResponseFromData(data, completion: { (responseFault, responseParams) in
 					
@@ -274,11 +271,11 @@ extension Snippets {
 		}
 	}
 	
-	@objc public func unpublish(postIdentifier : String, request : SnippetsXMLRPCRequest, completion: @escaping(Error?) -> ()) {
+	@objc public func unpublish(postIdentifier : String, request : SnippetsXMLRPCRequest, completion: @escaping(Error?) -> ()) -> UUHttpRequest {
 
 		let params : [Any] = [ "", postIdentifier, request.identity.blogUsername, request.identity.blogPassword ]
 		
-		self.executeRPC(request: request, params: params) { (error, responseData) in
+		return self.executeRPC(request: request, params: params) { (error, responseData) in
 			if let data : Data = responseData {
 				SnippetsXMLRPCParser.parsedResponseFromData(data, completion: { (responseFault, responseParams) in
 					if let fault = responseFault {
@@ -301,7 +298,7 @@ extension Snippets {
 		}
 	}
 
-	@objc public func fetchPostURL(postIdentifier : String, request : SnippetsXMLRPCRequest, completion: @escaping(Error?, String?) -> ()) {
+	@objc public func fetchPostURL(postIdentifier : String, request : SnippetsXMLRPCRequest, completion: @escaping(Error?, String?) -> ()) -> UUHttpRequest {
 		
 		var params : [Any] = [ postIdentifier, request.identity.blogUsername, request.identity.blogPassword ]
 		if request.identity.wordPress == true {
@@ -309,7 +306,7 @@ extension Snippets {
 			params.append(["link"])
 		}
 
-		self.executeRPC(request: request, params: params) { (error, responseData) in
+		return self.executeRPC(request: request, params: params) { (error, responseData) in
 			if let data : Data = responseData {
 				SnippetsXMLRPCParser.parsedResponseFromData(data, completion: { (responseFault, responseParams) in
 					if let responseDictionary = responseParams.first as? NSDictionary {

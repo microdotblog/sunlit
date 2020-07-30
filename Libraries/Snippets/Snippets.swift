@@ -624,12 +624,12 @@ public class Snippets : NSObject {
 	}
 	
 	
-	@objc public func uploadImage(image : SnippetsImage, completion: @escaping(Error?, String?)->())
+	@objc public func uploadImage(image : SnippetsImage, completion: @escaping(Error?, String?)->()) -> UUHttpRequest?
 	{
 		// Pre-flight check to see if we are even configured...
         if self.publishingConfiguration.token.count == 0 {
 			completion(SnippetsError.invalidOrMissingToken, nil)
-			return
+			return nil
 		}
 		
 		let resizedImage = image
@@ -664,7 +664,7 @@ public class Snippets : NSObject {
         let request = self.securePost(self.publishingConfiguration, path: self.publishingConfiguration.mediaEndpoint, arguments: arguments, body: formData)
 		request.headerFields["Content-Type"] = "multipart/form-data; boundary=\(boundary)"
 
-		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
+		return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 			
 			let publishedPath = parsedServerResponse.httpResponse?.allHeaderFields["Location"] as? String
 			completion(parsedServerResponse.httpError, publishedPath)
@@ -672,12 +672,12 @@ public class Snippets : NSObject {
 		
 	}
 
-	@objc public func uploadVideo(data : Data, completion: @escaping(Error?, String?, String?)->())
+	@objc public func uploadVideo(data : Data, completion: @escaping(Error?, String?, String?)->()) -> UUHttpRequest?
 	{
 		// Pre-flight check to see if we are even configured...
         if self.publishingConfiguration.token.count == 0 {
 			completion(SnippetsError.invalidOrMissingToken, nil, nil)
-			return
+			return nil
 		}
 
 		var formData : Data = Data()
@@ -704,7 +704,7 @@ public class Snippets : NSObject {
         let request = self.securePost(self.publishingConfiguration, path: self.publishingConfiguration.mediaEndpoint, arguments: arguments, body: formData)
 		request.headerFields["Content-Type"] = "multipart/form-data; boundary=\(boundary)"
 		
-		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
+		return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 			
             var publishedPath : String? = nil
             var posterPath : String? = nil
