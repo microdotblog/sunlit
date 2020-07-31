@@ -14,6 +14,7 @@ class TimelineViewController: UIViewController {
 
 	@IBOutlet var tableView : UITableView!
 	@IBOutlet var loggedOutView : UIView!
+		
 	var refreshControl = UIRefreshControl()
 	var keyboardAccessoryView : UIView!
 	var tableViewData : [SunlitPost] = []
@@ -21,21 +22,27 @@ class TimelineViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		self.navigationItem.title = "Timeline"
+
+		self.setupNavigation()
 		self.setupTableView()
+		
 		self.loadTimeline()
 	}
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         self.loadTimeline()
     }
-		
+	
+	func setupNavigation() {
+		self.navigationItem.title = "Timeline"
+	}
+	
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(loadTimeline), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
 		self.loadFrequentlyUsedEmoji()
 	}
-	
+
 	func setupNotifications() {
 		// Clear out any old notification registrations...
 		NotificationCenter.default.removeObserver(self)
