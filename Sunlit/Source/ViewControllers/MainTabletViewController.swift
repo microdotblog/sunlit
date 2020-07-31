@@ -46,7 +46,7 @@ class MainTabletViewController: UIViewController {
 	
 	func updateInterfaceForUserState() {
 		if SnippetsUser.current() == nil {
-			menuTitles = [ "Login", "Discover" ]
+			menuTitles = [ "Timeline", "Discover" ]
 		}
 		else {
 			menuTitles = [ "Timeline", "Discover", "Profile", "Settings" ]
