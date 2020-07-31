@@ -114,7 +114,15 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 		}
 
 		cell.textLabel?.text = title
-		cell.imageView?.image = UIImage(systemName: icon)
+		
+		if icon == "bubble.left.and.bubble.right" {
+			// make this smaller since it is so wide
+			let config = UIImage.SymbolConfiguration(scale: .small)
+			cell.imageView?.image = UIImage(systemName: icon, withConfiguration: config)
+		}
+		else {
+			cell.imageView?.image = UIImage(systemName: icon)
+		}
 		
 		return cell
 	}
