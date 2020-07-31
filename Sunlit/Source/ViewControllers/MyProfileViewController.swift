@@ -17,6 +17,7 @@ class MyProfileViewController: UIViewController {
 	var userPosts : [SunlitPost] = []
 	var followingUsers : [SnippetsUser] = []
 	var loadInProgress = false
+	var refreshControl = UIRefreshControl()
 	
 	@IBOutlet var collectionView : UICollectionView!
 	
@@ -33,6 +34,8 @@ class MyProfileViewController: UIViewController {
 			self.navigationItem.title = user.fullName
 		}
 		
+		self.refreshControl.addTarget(self, action: #selector(fetchUserInfo), for: .valueChanged)
+		self.collectionView.addSubview(self.refreshControl)
     }
 		
 	@objc func handleCurrentUserUpdatedNotification() {
@@ -43,7 +46,7 @@ class MyProfileViewController: UIViewController {
 		}
 	}
 	
-	func fetchUserInfo() {
+	@objc func fetchUserInfo() {
 		
 		if self.loadInProgress == true {
 			return
@@ -71,6 +74,7 @@ class MyProfileViewController: UIViewController {
 						self.loadInProgress = false
 						self.userPosts = posts
 						self.collectionView.reloadData()
+						self.refreshControl.endRefreshing()
 					}
 				}
 				

@@ -8,6 +8,7 @@
 
 import UIKit
 import Snippets
+import UUSwift
 
 class MediaLocation : NSObject {
 	var path : String = ""
@@ -18,6 +19,16 @@ class MediaUploader {
 	
 	var mediaQueue : [SunlitMedia] = []
 	var results : [SunlitMedia : MediaLocation] = [ : ]
+	var currentUpload : UUHttpRequest? = nil
+	
+	func cancelAll() {
+		if let activeUpload = self.currentUpload {
+			activeUpload.cancel()
+		}
+		
+		self.currentUpload = nil
+		self.mediaQueue.removeAll()
+	}
 	
 	func uploadMedia(_ media : [SunlitMedia], completion: @escaping (Error?, [SunlitMedia : MediaLocation]) -> Void) {
 		self.mediaQueue = media
@@ -71,7 +82,7 @@ class MediaUploader {
 		if let identity = PublishingConfiguration.current.xmlRPCIdentity() {
 			let request = SnippetsXMLRPCRequest.publishPhotoRequest(identity: identity)
 			
-			Snippets.shared.uploadImage(image: media.image, request: request) { (error, remotePath, pubilshedIdentifier) in
+			self.currentUpload = Snippets.shared.uploadImage(image: media.image, request: request) { (error, remotePath, pubilshedIdentifier) in
 				if let path = remotePath {
 					let location = MediaLocation()
 					location.path = path
@@ -98,7 +109,7 @@ class MediaUploader {
 		if let identity = PublishingConfiguration.current.xmlRPCIdentity() {
 			let request = SnippetsXMLRPCRequest.publishPhotoRequest(identity: identity)
 			
-			Snippets.shared.uploadVideo(data: data, request: request) { (error, remotePath, publishedIdentifier) in
+			self.currentUpload = Snippets.shared.uploadVideo(data: data, request: request) { (error, remotePath, publishedIdentifier) in
 				if let path = remotePath {
 					//let thumbnailPath = posterPath {
 					
@@ -123,7 +134,7 @@ class MediaUploader {
 	}
 	
 	func uploadImageToMicropub(_ media : SunlitMedia, _ completion : @escaping (Error?, [SunlitMedia : MediaLocation]) -> Void) {
-		Snippets.shared.uploadImage(image: media.getImage()) { (error, remotePath) in
+		self.currentUpload = Snippets.shared.uploadImage(image: media.getImage()) { (error, remotePath) in
 		
 			if let path = remotePath {
 				let location = MediaLocation()
@@ -145,7 +156,7 @@ class MediaUploader {
 	}
 	
 	func uploadVideoToMicropub(_ media : SunlitMedia, _ data : Data, _ completion : @escaping (Error?, [SunlitMedia : MediaLocation]) -> Void) {
-		Snippets.shared.uploadVideo(data: data) { (error, publishedPath, posterPath) in
+		self.currentUpload = Snippets.shared.uploadVideo(data: data) { (error, publishedPath, posterPath) in
 			if let path = publishedPath,
 				let thumbnailPath = posterPath {
 				let location = MediaLocation()

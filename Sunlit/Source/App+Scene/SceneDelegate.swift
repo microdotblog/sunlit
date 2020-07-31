@@ -29,6 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			}
 		
 		splitViewController.preferredDisplayMode = .allVisible
+		splitViewController.presentsWithGesture = false
 		
 		if UIDevice.current.userInterfaceIdiom == .phone {
 			splitViewController.viewControllers = [navigationController, navigationController]

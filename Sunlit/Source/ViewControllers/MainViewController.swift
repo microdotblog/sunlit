@@ -79,9 +79,19 @@ class MainViewController: UIViewController {
             }
 		}
 		else if UIDevice.current.userInterfaceIdiom == .pad {
-			self.navigationController?.setNavigationBarHidden(true, animated: false)
+			self.navigationController?.setNavigationBarHidden(false, animated: false)
+			
+			let postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
+			if SnippetsUser.current() != nil {
+				self.navigationItem.rightBarButtonItem = postButton
+			}
+			else {
+				self.navigationItem.rightBarButtonItem = nil
+			}
+
 		}
 
+		self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
 	}
 
 	
@@ -106,6 +116,9 @@ class MainViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewPostNotification(_:)), name: .viewPostNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewUserProfileNotification(_:)), name: .viewUserProfileNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: .notifyReplyPostedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleSplitViewWillCollapseNotification(_:)), name: .splitViewWillCollapseNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleSplitViewWillExpandNotification(_:)), name: .splitViewWillExpandNotification, object: nil)
+
 	}
 
 	@objc func handleViewPostNotification(_ notification : Notification) {
@@ -276,7 +289,28 @@ class MainViewController: UIViewController {
 		self.onSettings()
 	}
 
+	@objc func onExpandSplitViewController() {
+		if let splitViewController = self.splitViewController {
+
+			NotificationCenter.default.post(name: .splitViewWillExpandNotification, object: nil)
+
+			UIView.animate(withDuration: 0.15) {
+				splitViewController.preferredDisplayMode = .allVisible
+			}
+		}
+	}
 	
+	@objc func handleSplitViewWillCollapseNotification(_ notification : Notification) {
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(onExpandSplitViewController))
+		self.navigationController?.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(onExpandSplitViewController))
+	}
+
+	@objc func handleSplitViewWillExpandNotification(_ notification : Notification) {
+		self.navigationItem.leftBarButtonItem = nil
+		self.navigationController?.navigationItem.leftBarButtonItem = nil
+		
+	}
+
 	@IBAction @objc func onNewPost() {
         if let _ = SnippetsUser.current() {
             let pickerController = UIImagePickerController()

@@ -9,6 +9,7 @@
 import UIKit
 import Mantis
 import Snippets
+import UUSwift
 
 class ComposeViewController: UIViewController {
 
@@ -25,6 +26,9 @@ class ComposeViewController: UIViewController {
 	var needsInitialFirstResponder = true
 	var sectionToAddMedia = 0
 	var croppingMedia : SunlitMedia? = nil
+	var uploading = false
+	let mediaUpLoader = MediaUploader()
+	var activeUpload : UUHttpRequest? = nil
 
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -163,6 +167,13 @@ class ComposeViewController: UIViewController {
 		// Force the keyboard to go away...
 		self.view.endEditing(true)
 		
+		// In case a double tap got through somehow...
+		if self.uploading == true {
+			return
+		}
+		
+		self.uploading = true
+		
 		UIView.animate(withDuration: 0.15) {
 			self.disabledInterface.alpha = 1.0
 		}
@@ -177,8 +188,17 @@ class ComposeViewController: UIViewController {
 	
 	@objc func onCancel() {
 		self.view.endEditing(true)
+		
+		UIView.animate(withDuration: 0.15) {
+			self.disabledInterface.alpha = 0.0
+		}
 
-		self.navigationController?.dismiss(animated: true, completion: nil)
+		if !self.uploading {
+			self.navigationController?.dismiss(animated: true, completion: nil)
+		}
+		else {
+			self.cancelPosting()
+		}
 	}
 
 	func onRemoveImage(_ sectionData : SunlitComposition, item : Int, section : Int) {
@@ -271,6 +291,12 @@ class ComposeViewController: UIViewController {
 	func uploadComposition() {
 		let title : String = self.titleField.text ?? ""
 		self.uploadMedia { (mediaDictionary : [SunlitMedia : MediaLocation]) in
+			
+			// If we aren't still uploading, it means the user has requested a cancel...
+			if !self.uploading {
+				return
+			}
+			
 			let string = HTMLBuilder.createHTML(sections: self.sections, mediaPathDictionary: mediaDictionary)
 			
 			if Settings.usesExternalBlog() && PublishingConfiguration.current.hasConfigurationForExternal(),
@@ -278,11 +304,11 @@ class ComposeViewController: UIViewController {
 				
 				let request = SnippetsXMLRPCRequest.publishPostRequest(identity: identity, existingPost: false)
 				
-				Snippets.shared.post(title: title, content: string, postFormat: "", postCategory: "", request: request) { (error, identifier) in
+				self.activeUpload = Snippets.shared.post(title: title, content: string, postFormat: "", postCategory: "", request: request) { (error, identifier) in
 					
 					if let postIdentifier = identifier {
 						let request = SnippetsXMLRPCRequest.fetchPostInfoRequest(identity: identity)
-						Snippets.shared.fetchPostURL(postIdentifier: postIdentifier, request: request) { (error, remotePath) in
+						_ = Snippets.shared.fetchPostURL(postIdentifier: postIdentifier, request: request) { (error, remotePath) in
 							DispatchQueue.main.async {
 								self.handleUploadCompletion(error, remotePath)
 							}
@@ -296,7 +322,7 @@ class ComposeViewController: UIViewController {
 				}
 			}
 			else {
-				Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
+				self.activeUpload = Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
 					DispatchQueue.main.async {
 						self.handleUploadCompletion(error, remotePath)
 					}
@@ -313,8 +339,7 @@ class ComposeViewController: UIViewController {
 			}
 		}
 		
-		let mediaUpLoader = MediaUploader()
-		mediaUpLoader.uploadMedia(uploadQueue) { (error, dictionary) in
+		self.mediaUpLoader.uploadMedia(uploadQueue) { (error, dictionary) in
 
 			if let err = error {
 				Dialog(self).information(err.localizedDescription)
@@ -323,6 +348,18 @@ class ComposeViewController: UIViewController {
 				completion(dictionary)
 			}
 		}
+	}
+	
+	func cancelPosting() {
+
+		self.uploading = false
+		self.mediaUpLoader.cancelAll()
+		
+		if let currentUpload = self.activeUpload {
+			currentUpload.cancel()
+		}
+		
+		self.activeUpload = nil
 	}
 	
 	func handleUploadCompletion(_ error : Error?, _ remotePath : String?) {

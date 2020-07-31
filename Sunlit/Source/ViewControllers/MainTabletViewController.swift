@@ -12,6 +12,7 @@ import Snippets
 class MainTabletViewController: UIViewController {
 
 	@IBOutlet var tableView: UITableView!
+	@IBOutlet var versionLabel : UILabel!
 	
 	var menuTitles = [ "Timeline", "Discover", "Profile", "Settings" ]
 	var menuIcons = [ "bubble.left.and.bubble.right", "magnifyingglass.circle", "person.crop.circle", "gear" ]
@@ -23,87 +24,39 @@ class MainTabletViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
-		self.setupButtons()
+		self.setupNotifications()
+		self.setupNavigationController()
+
+		self.updateInterfaceForUserState()
 		self.onTimeLine()
 		
-//		self.versionLabel.text = "Version " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
+		self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
+
+		self.versionLabel.text = "Version " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
 	}
-    
-	func updateInterfaceForLogin() {
-/*
-		if let user = SnippetsUser.current() {
-			
-			// Update the user name...
-			DispatchQueue.main.async {
-				//self.profileButton.setTitle("@" + user.userName, for: .normal)
-//				self.profileButton.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
-//				self.profileButton.setTitle("Profile", for: .normal)
-//				self.profileButton.centerVertically()
-			}
-			
-			// Go ahead and go get the avatar for the logged in user
-			ImageCache.fetch(self, user.avatarURL) { (image) in
-				
-				if let image = image {
-					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 24, height: 24)).withRenderingMode(.alwaysOriginal)
-					DispatchQueue.main.async {
-//						self.profileButton.setImage(profileImage, for: .normal)
-//						self.profileButton.setImage(profileImage, for: .selected)
-//						self.profileButton.imageView?.layer.cornerRadius = 12
-//						self.profileButton.centerVertically()
-					}
-				}
-				else {
-					
-				}
-			}
-		}
-		else {
-//			self.profileButton.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
-//			self.profileButton.setTitle("Profile", for: .normal)
-		}
-*/
+
+	func setupNotifications() {
+		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
+	}
+
+	func setupNavigationController() {
+		self.navigationController?.setNavigationBarHidden(false, animated: true)
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(onCollapseMenu))
 	}
 	
-	func setupButtons() {
-/*
-		var profileImage : UIImage? = UIImage(systemName: "person.crop.circle.fill")
-		var profileUsername = "Profile"
-		if let current = SnippetsUser.current() {
-			//profileUsername = "@" + current.userName
-			profileUsername = "Profile"
-		
-			if let image = ImageCache.prefetch(current.avatarURL) {
-				profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 36.0, height: 36.0)).withRenderingMode(.alwaysOriginal)
-			}
-			else {
-				ImageCache.fetch(self, current.avatarURL) { (image) in
-					if let image = ImageCache.prefetch(current.avatarURL) {
-						let profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 24, height: 24)).withRenderingMode(.alwaysOriginal)
-						DispatchQueue.main.async {
-//							self.profileButton.setImage(profileImage, for: .normal)
-//							self.profileButton.setImage(profileImage, for: .selected)
-//							self.profileButton.imageView?.layer.cornerRadius = 12
-						}
-					}
-				}
-			}
+	func updateInterfaceForUserState() {
+		if SnippetsUser.current() == nil {
+			menuTitles = [ "Login", "Discover" ]
 		}
-//		self.profileButton.setTitle(profileUsername, for: .normal)
-//		self.profileButton.setImage(profileImage, for: .normal)
-//		self.profileButton.setImage(profileImage, for: .selected)
-//		self.profileButton.imageView?.layer.cornerRadius = 12
-//		self.profileButton.titleLabel?.lineBreakMode = .byCharWrapping
-//		self.profileButton.titleLabel?.numberOfLines = 4
-//
-//		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
-//		self.profileButton.addGestureRecognizer(longpressGesture)
-*/
+		else {
+			menuTitles = [ "Timeline", "Discover", "Profile", "Settings" ]
+		}
+		
+		self.tableView.reloadData()
 	}
 	
 	@objc func handleCurrentUserUpdatedNotification() {
-		self.updateInterfaceForLogin()
+		self.updateInterfaceForUserState()
 	}
 	
 	@objc func onSelectBlogConfiguration() {
@@ -181,4 +134,20 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 		}
 	}
 	
+}
+
+extension MainTabletViewController : UISplitViewControllerDelegate {
+	
+
+	@objc func onCollapseMenu() {
+		if let splitView = self.navigationController?.parent as? UISplitViewController {
+			
+			NotificationCenter.default.post(name: .splitViewWillCollapseNotification, object: nil)
+			
+			UIView.animate(withDuration: 0.15) {
+				splitView.preferredDisplayMode = .primaryHidden
+			}
+		}
+	}
+
 }

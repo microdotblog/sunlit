@@ -47,6 +47,7 @@ class ConversationViewController: UIViewController {
 		super.viewWillAppear(animated)
 		self.setupNotifications()
 		self.spinner.isHidden = false
+		self.spinner.startAnimating()
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
