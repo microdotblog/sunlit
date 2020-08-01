@@ -154,15 +154,15 @@ class SunlitPostTableViewCell : UITableViewCell {
 			self.dateLabel.text = ""
 		}
 
-		self.pageViewIndicator.hidesForSinglePage = true
-		self.pageViewIndicator.numberOfPages = self.post.images.count
-
-		self.setupAvatar()
-
 		// Configure the photo sizes...
 		let height = self.setupPhotoAspectRatio(post, parentWidth: parentWidth)
 		self.configureCollectionView(CGSize(width: self.bounds.size.width, height: height))
 		self.collectionView.reloadData() // Needed to force the collection view to reload itself...
+		
+		self.pageViewIndicator.hidesForSinglePage = true
+		self.pageViewIndicator.numberOfPages = self.post.images.count
+
+		self.setupAvatar()
 	}
 	
 	func setupPhotoAspectRatio(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
