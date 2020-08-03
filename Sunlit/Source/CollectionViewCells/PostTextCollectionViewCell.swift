@@ -13,11 +13,11 @@ class PostTextCollectionViewCell: UICollectionViewCell {
 	@IBOutlet var widthConstraint : NSLayoutConstraint!
 
 	static func size(_ collectionViewWidth : CGFloat, _ text : String) -> CGSize {
-		var size = CGSize(width: collectionViewWidth - 16.0, height: 0)
+		var size = CGSize(width: collectionViewWidth - 24.0, height: 0)
 		let rect = text.boundingRect(with: size, options: .usesLineFragmentOrigin , context: nil)
 		size.height = rect.size.height
 		size.height = size.height + 32.0
-		size.width = collectionViewWidth - 8.0
+		size.width = collectionViewWidth
 		if size.height < 60.0 {
 			size.height = 60.0
 		}

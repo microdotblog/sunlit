@@ -422,8 +422,14 @@ extension MainViewController : UIImagePickerControllerDelegate, UINavigationCont
 		if let media = media {
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
 			let postViewController = storyBoard.instantiateViewController(withIdentifier: "ComposeViewController") as! ComposeViewController
+			postViewController.modalPresentationStyle = .fullScreen
 			postViewController.addMedia(media)
-			picker.pushViewController(postViewController, animated: true)
+			
+			picker.dismiss(animated: true) {
+				let navigationController = UINavigationController(rootViewController: postViewController)
+				navigationController.modalPresentationStyle = .fullScreen
+				self.present(navigationController, animated: true, completion: nil)
+			}
 		}
 		else {
 			picker.dismiss(animated: true, completion: nil)

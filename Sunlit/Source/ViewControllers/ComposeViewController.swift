@@ -454,7 +454,10 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		// Special case for the "Add new section" button cell...
 		if indexPath.section >= self.sections.count {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostAddSectionCollectionViewCell", for: indexPath) as! PostAddSectionCollectionViewCell
-			cell.widthConstraint.constant = collectionView.bounds.size.width - 24
+			let size = PostAddSectionCollectionViewCell.size(collectionView.bounds.size.width)
+			cell.widthConstraint.constant = size.width - 32.0
+			cell.layoutIfNeeded()
+			
 			return cell
 		}
 		
@@ -737,8 +740,7 @@ extension ComposeViewController : UIImagePickerControllerDelegate, UINavigationC
 	}
 	
 	func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-		self.navigationController?.dismiss(animated: true, completion: {
-		})
+		picker.dismiss(animated: true, completion: nil)
 	}
 	
 }
