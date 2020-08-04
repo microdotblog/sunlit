@@ -213,6 +213,9 @@
 		C5EC12FA248C34020032B84D /* DialConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC12D4248C34010032B84D /* DialConfig.swift */; };
 		C5EC12FC248D64A50032B84D /* Mantis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC1292248C33E40032B84D /* Mantis.framework */; };
 		C5EC12FD248D64A60032B84D /* Mantis.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC1292248C33E40032B84D /* Mantis.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C5EDE49524D8E75F009ACF2A /* SunlitMentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EDE49424D8E75F009ACF2A /* SunlitMentions.swift */; };
+		C5EDE49924D9C243009ACF2A /* MentionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EDE49824D9C242009ACF2A /* MentionsViewController.swift */; };
+		C5EDE49B24D9C7E6009ACF2A /* Mentions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -493,6 +496,9 @@
 		C5EC12D2248C34010032B84D /* RotationDial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationDial.swift; sourceTree = "<group>"; };
 		C5EC12D3248C34010032B84D /* CGAngle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGAngle.swift; sourceTree = "<group>"; };
 		C5EC12D4248C34010032B84D /* DialConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialConfig.swift; sourceTree = "<group>"; };
+		C5EDE49424D8E75F009ACF2A /* SunlitMentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SunlitMentions.swift; path = Source/Data/SunlitMentions.swift; sourceTree = "<group>"; };
+		C5EDE49824D9C242009ACF2A /* MentionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MentionsViewController.swift; path = Source/ViewControllers/MentionsViewController.swift; sourceTree = "<group>"; };
+		C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Mentions.storyboard; path = Storyboards/Mentions.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -684,6 +690,7 @@
 				C5A1DE3824901D8C00B50B54 /* Conversation.storyboard */,
 				C5A1DE4024901D8C00B50B54 /* ImageViewer.storyboard */,
 				C5A1DE3C24901D8C00B50B54 /* Login.storyboard */,
+				C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */,
 				C5A1DE3924901D8C00B50B54 /* Profile.storyboard */,
 				C5A1DE3D24901D8C00B50B54 /* Settings.storyboard */,
 				C5E26A35249EADE400F9E158 /* Main.storyboard */,
@@ -953,6 +960,7 @@
 				C5A1DE6424901DBC00B50B54 /* SunlitComposition.swift */,
 				C5A1DE6224901DBC00B50B54 /* SunlitMedia.swift */,
 				C5A1DE6324901DBC00B50B54 /* SunlitPost.swift */,
+				C5EDE49424D8E75F009ACF2A /* SunlitMentions.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -970,6 +978,7 @@
 				C5A1DE7024901DCC00B50B54 /* MainViewController.swift */,
 				C5E26A37249EAE6900F9E158 /* MainPhoneViewController.swift */,
 				C5E26A39249EB85100F9E158 /* MainTabletViewController.swift */,
+				C5EDE49824D9C242009ACF2A /* MentionsViewController.swift */,
 				C5A1DE7324901DCC00B50B54 /* MyProfileViewController.swift */,
 				C5A1DE7124901DCC00B50B54 /* ProfileViewController.swift */,
 				C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */,
@@ -1245,6 +1254,7 @@
 				C5A1DE4424901D8C00B50B54 /* About.storyboard in Resources */,
 				C5A1DE4124901D8C00B50B54 /* Conversation.storyboard in Resources */,
 				C5A1DF3224906B9D00B50B54 /* Content.storyboard in Resources */,
+				C5EDE49B24D9C7E6009ACF2A /* Mentions.storyboard in Resources */,
 				C5A1DE9D24901E0B00B50B54 /* Assets.xcassets in Resources */,
 				C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */,
 				C5A1DE4924901D8C00B50B54 /* ImageViewer.storyboard in Resources */,
@@ -1421,9 +1431,11 @@
 				C5A1DE6824901DBC00B50B54 /* SunlitMedia.swift in Sources */,
 				C5A1DE9A24901DF500B50B54 /* AppDelegate+Menus.swift in Sources */,
 				C5A1DE9424901DE600B50B54 /* PhotoEntryCollectionViewCell.swift in Sources */,
+				C5EDE49924D9C243009ACF2A /* MentionsViewController.swift in Sources */,
 				C5A1DE7C24901DCC00B50B54 /* ProfileViewController.swift in Sources */,
 				C5A1DE4F24901D9D00B50B54 /* UIButton+Sunlit.swift in Sources */,
 				C5A1DE6724901DBC00B50B54 /* Settings.swift in Sources */,
+				C5EDE49524D8E75F009ACF2A /* SunlitMentions.swift in Sources */,
 				C5A1DE8124901DCC00B50B54 /* AboutViewController.swift in Sources */,
 				4B729B8224BA4F74001D145B /* TabButton.swift in Sources */,
 				C5A1DE5C24901DAD00B50B54 /* Tagmoji.swift in Sources */,

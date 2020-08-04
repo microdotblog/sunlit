@@ -50,6 +50,9 @@ class MainViewController: UIViewController {
 			let timelineConfig = Snippets.shared.timelineConfiguration
 			timelineConfig.token = token
 			Snippets.shared.timelineConfiguration = timelineConfig
+			
+			SunlitMentions.shared.update {
+			}
 		}
 	}
 
@@ -118,6 +121,7 @@ class MainViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: .notifyReplyPostedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleSplitViewWillCollapseNotification(_:)), name: .splitViewWillCollapseNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleSplitViewWillExpandNotification(_:)), name: .splitViewWillExpandNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleShowNotifications(_:)), name: .showMentionsNotification, object: nil)
 
 	}
 
@@ -151,6 +155,12 @@ class MainViewController: UIViewController {
 			profileViewController.user = owner
 			self.navigationController?.pushViewController(profileViewController, animated: true)
 		}
+	}
+	
+	@objc func handleShowNotifications(_ notification : Notification) {
+		let storyBoard: UIStoryboard = UIStoryboard(name: "Mentions", bundle: nil)
+		let mentionsViewController = storyBoard.instantiateViewController(withIdentifier: "MentionsViewController") as! MentionsViewController
+		self.navigationController?.pushViewController(mentionsViewController, animated: true)
 	}
 
 	@objc func handleReplyResponseNotification(_ notification : Notification) {

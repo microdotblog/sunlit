@@ -105,7 +105,7 @@ class ConversationViewController: UIViewController {
 	@IBAction func onPostReply() {
         
         let replyText = self.buildReplyText()
-		Snippets.shared.reply(originalPost: self.sourcePost!, content: replyText) { (error) in
+		_ = Snippets.shared.reply(originalPost: self.sourcePost!, content: replyText) { (error) in
 			
 			DispatchQueue.main.async {
 				if let err = error {

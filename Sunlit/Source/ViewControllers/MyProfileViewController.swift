@@ -36,6 +36,8 @@ class MyProfileViewController: UIViewController {
 		
 		self.refreshControl.addTarget(self, action: #selector(fetchUserInfo), for: .valueChanged)
 		self.collectionView.addSubview(self.refreshControl)
+
+		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
     }
 		
 	@objc func handleCurrentUserUpdatedNotification() {
@@ -44,6 +46,10 @@ class MyProfileViewController: UIViewController {
 			self.fetchUserInfo()
 			self.navigationItem.title = user.fullName
 		}
+	}
+	
+	@objc func handleUserMentionsUpdated() {
+		self.collectionView.reloadItems(at: [IndexPath(item: 0, section: 0)])
 	}
 	
 	@objc func fetchUserInfo() {
@@ -114,6 +120,10 @@ class MyProfileViewController: UIViewController {
 		NotificationCenter.default.post(name: .showLoginNotification, object: nil)
 	}
 
+	@IBAction func onShowMentions() {
+		
+	}
+	
 }
 
 
@@ -276,6 +286,8 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 		if self.userPosts.count > 0 {
 			cell.postCount.text = "\(self.userPosts.count)"
 		}
+		
+		cell.configureMentions()
 		
 		//cell.widthConstraint.constant = self.collectionView.bounds.size.width
 	}

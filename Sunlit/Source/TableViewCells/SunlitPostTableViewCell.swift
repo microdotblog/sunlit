@@ -184,7 +184,7 @@ class SunlitPostTableViewCell : UITableViewCell {
         }
         
         let replyText = userList + self.replyField.text
-		Snippets.shared.reply(originalPost: self.post, content: replyText) { (error) in
+		_ = Snippets.shared.reply(originalPost: self.post, content: replyText) { (error) in
 			NotificationCenter.default.post(name: .notifyReplyPostedNotification, object: error)
 		}
 		

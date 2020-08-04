@@ -17,6 +17,7 @@ class MainPhoneViewController: UIViewController {
 	@IBOutlet var timelineButton : UIButton!
 	@IBOutlet var discoverButton : UIButton!
 	@IBOutlet var profileButton : UIButton!
+	@IBOutlet var mentionIndicator : UILabel!
 	
 	var discoverViewController : DiscoverViewController!
 	var timelineViewController : TimelineViewController!
@@ -35,8 +36,9 @@ class MainPhoneViewController: UIViewController {
 		self.setupProfileButton()
 		self.loadContentViews()
 		self.updateInterfaceForLogin()
-		
+		self.mentionIndicator.isHidden = true
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
 	}
     
 	override func viewDidLayoutSubviews() {
@@ -177,6 +179,16 @@ class MainPhoneViewController: UIViewController {
 
 	@objc func handleCurrentUserUpdatedNotification() {
 		self.updateInterfaceForLogin()
+	}
+	
+	@objc func handleUserMentionsUpdated() {
+		let mentionCount = SunlitMentions.shared.newMentionCount()
+		
+		self.mentionIndicator.isHidden = true
+		if mentionCount > 0 {
+			self.mentionIndicator.isHidden = false
+			self.mentionIndicator.text = "\(mentionCount)"
+		}
 	}
 
 	@IBAction func onTabBarButtonPressed(_ button : UIButton) {
