@@ -51,5 +51,13 @@ extension MentionsViewController : UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return self.posts.count
 	}
+	
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let post = self.posts[indexPath.row]
+		let storyBoard: UIStoryboard = UIStoryboard(name: "Conversation", bundle: nil)
+		let conversationViewController = storyBoard.instantiateViewController(withIdentifier: "ConversationViewController") as! ConversationViewController
+		conversationViewController.sourcePost = post
+		self.navigationController?.pushViewController(conversationViewController, animated: true)
+	}
 
 }
