@@ -12,7 +12,7 @@ import Snippets
 class SunlitMentions {
 	static let shared = SunlitMentions()
 	private var mentions : [SunlitPost] = []
-	private let cachedMentionDateKey = "Latest-Sunlit-Mention-Date"
+	private let cachedMentionDateKey = "LatestSunlitMentionDate"
 
 	func newMentionCount() -> Int {
 

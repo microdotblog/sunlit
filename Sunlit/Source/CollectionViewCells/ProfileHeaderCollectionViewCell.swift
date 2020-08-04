@@ -39,6 +39,10 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 			self.mentionsContainer.backgroundColor = .black
 			self.mentionsLabel.text = "\(count) mentions"
 		}
+		
+		if UIDevice.current.userInterfaceIdiom != .phone {
+			self.mentionsContainer.isHidden = true
+		}
 	}
 	
 	@IBAction func openBlogAddress() {

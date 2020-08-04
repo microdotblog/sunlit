@@ -14,8 +14,8 @@ class MainTabletViewController: UIViewController {
 	@IBOutlet var tableView: UITableView!
 	@IBOutlet var versionLabel : UILabel!
 	
-	var menuTitles = [ "Timeline", "Discover", "Profile", "Settings" ]
-	var menuIcons = [ "bubble.left.and.bubble.right", "magnifyingglass.circle", "person.crop.circle", "gear" ]
+	var menuTitles = [ "Timeline", "Discover", "Profile", "Mentions", "Settings" ]
+	var menuIcons = [ "bubble.left.and.bubble.right", "magnifyingglass.circle", "person.crop.circle", "bubble.left", "gear" ]
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -36,6 +36,7 @@ class MainTabletViewController: UIViewController {
 	}
 
 	func setupNotifications() {
+		NotificationCenter.default.addObserver(self, selector: #selector(handleMentionsUpdatedNotification), name: .mentionsUpdatedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
 	}
 
@@ -49,7 +50,7 @@ class MainTabletViewController: UIViewController {
 			menuTitles = [ "Timeline", "Discover" ]
 		}
 		else {
-			menuTitles = [ "Timeline", "Discover", "Profile", "Settings" ]
+			menuTitles = [ "Timeline", "Discover", "Profile", "Mentions", "Settings"]
 		}
 		
 		self.tableView.reloadData()
@@ -57,6 +58,12 @@ class MainTabletViewController: UIViewController {
 	
 	@objc func handleCurrentUserUpdatedNotification() {
 		self.updateInterfaceForUserState()
+	}
+	
+	@objc func handleMentionsUpdatedNotification() {
+		let selectedIndexPath = self.tableView.indexPathForSelectedRow
+		self.tableView.reloadRows(at: [IndexPath(row: 3, section: 0)], with: .none)
+		self.tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
 	}
 	
 	@objc func onSelectBlogConfiguration() {
@@ -92,6 +99,10 @@ class MainTabletViewController: UIViewController {
 	@IBAction func onCompose() {
 		NotificationCenter.default.post(name: .showComposeNotification, object: nil)
 	}
+	
+	@IBAction func onMentions() {
+		NotificationCenter.default.post(name: .showMentionsNotification, object: nil)
+	}
 
 }
 
@@ -102,7 +113,7 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "TabletMenuCell", for: indexPath)
+		let cell = tableView.dequeueReusableCell(withIdentifier: "TabletMenuTableViewCell", for: indexPath) as! TabletMenuTableViewCell
 
 		let title = self.menuTitles[indexPath.row]
 		var icon = self.menuIcons[indexPath.row]
@@ -113,18 +124,31 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 			}
 		}
 
-		cell.textLabel?.text = title
+		cell.titleLabel.text = title
 		
 		if icon == "bubble.left.and.bubble.right" {
 			// make this smaller since it is so wide
 			let config = UIImage.SymbolConfiguration(scale: .small)
-			cell.imageView?.image = UIImage(systemName: icon, withConfiguration: config)
+			cell.iconImageView.image = UIImage(systemName: icon, withConfiguration: config)
 		}
 		else {
-			cell.imageView?.image = UIImage(systemName: icon)
+			cell.iconImageView.image = UIImage(systemName: icon)
 		}
 		
-		return cell
+		cell.alertContainer.isHidden = true
+		
+		if indexPath.row == 3 {
+			cell.alertContainer.isHidden = true
+			
+			let newCount = SunlitMentions.shared.newMentionCount()
+			if newCount > 0 {
+				cell.alertContainer.isHidden = false
+				cell.alertContainer.backgroundColor = .red
+				cell.alertLabel.text = "\(newCount)"
+			}
+		}
+		
+			return cell
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -136,6 +160,8 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 		case 2:
 			self.onProfile()
 		case 3:
+			self.onMentions()
+		case 4:
 			self.onSettings()
 		default:
 			self.onTimeLine()

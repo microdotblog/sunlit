@@ -61,3 +61,19 @@ extension MentionsViewController : UITableViewDelegate, UITableViewDataSource {
 	}
 
 }
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: -
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension MentionsViewController : SnippetsScrollContentProtocol {
+	func prepareToDisplay() {
+		self.navigationController?.navigationBar.topItem?.title = "Mentions"
+		self.navigationController?.navigationBar.topItem?.titleView = nil
+	}
+	
+	func prepareToHide() {
+	}
+
+}
