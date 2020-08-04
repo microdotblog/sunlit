@@ -283,8 +283,20 @@
                                                         <constraint firstAttribute="height" constant="0.5" id="nYw-xL-w38"/>
                                                     </constraints>
                                                 </view>
+                                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RS0-sb-COS">
+                                                    <rect key="frame" x="134" y="237.33333333333334" width="146" height="30.000000000000028"/>
+                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.30034110915492956" colorSpace="calibratedRGB"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="uuCornerRadius">
+                                                            <real key="value" value="15"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                                 <pageControl opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="qoY-XT-QeX">
-                                                    <rect key="frame" x="146" y="244.00000000000003" width="122" height="27.333333333333343"/>
+                                                    <rect key="frame" x="146" y="237.33333333333334" width="122" height="30.000000000000028"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="1RV-m0-YGR"/>
+                                                    </constraints>
                                                 </pageControl>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor"/>
@@ -292,18 +304,22 @@
                                                 <constraint firstItem="MUw-MR-MdT" firstAttribute="top" secondItem="cU8-uz-0Gt" secondAttribute="bottom" id="7B7-wh-fYv"/>
                                                 <constraint firstItem="LpI-Hy-DWx" firstAttribute="leading" secondItem="7YE-2b-tTP" secondAttribute="leading" id="D3v-x7-xnF"/>
                                                 <constraint firstAttribute="trailing" secondItem="cU8-uz-0Gt" secondAttribute="trailing" constant="20" id="I3p-Ae-a5m"/>
+                                                <constraint firstItem="qoY-XT-QeX" firstAttribute="bottom" secondItem="RS0-sb-COS" secondAttribute="bottom" id="Ks7-aG-MEY"/>
                                                 <constraint firstAttribute="trailing" secondItem="MUw-MR-MdT" secondAttribute="trailing" constant="20" id="LhF-eB-Ldj"/>
                                                 <constraint firstItem="hdl-ps-h3c" firstAttribute="leading" secondItem="7YE-2b-tTP" secondAttribute="leadingMargin" id="O9T-5T-sde"/>
                                                 <constraint firstAttribute="trailing" secondItem="AYc-cg-8xU" secondAttribute="trailing" id="PMb-t2-6tx"/>
                                                 <constraint firstItem="cU8-uz-0Gt" firstAttribute="top" secondItem="hdl-ps-h3c" secondAttribute="bottom" constant="8" id="a9m-QQ-pDI"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="hdl-ps-h3c" secondAttribute="trailing" constant="8" id="bBg-99-Rbq"/>
                                                 <constraint firstItem="LpI-Hy-DWx" firstAttribute="top" secondItem="AYc-cg-8xU" secondAttribute="bottom" id="dUC-ZL-IdK"/>
+                                                <constraint firstItem="qoY-XT-QeX" firstAttribute="trailing" secondItem="RS0-sb-COS" secondAttribute="trailing" constant="-12" id="dbU-Gc-JHd"/>
                                                 <constraint firstItem="cU8-uz-0Gt" firstAttribute="leadingMargin" secondItem="7YE-2b-tTP" secondAttribute="leading" constant="20" id="dso-Ti-nQ1"/>
                                                 <constraint firstItem="AYc-cg-8xU" firstAttribute="leading" secondItem="7YE-2b-tTP" secondAttribute="leading" id="e1m-Hc-rob"/>
                                                 <constraint firstItem="hdl-ps-h3c" firstAttribute="top" secondItem="LpI-Hy-DWx" secondAttribute="bottom" constant="10" id="eV7-QE-5MR"/>
                                                 <constraint firstAttribute="trailing" secondItem="mY4-fj-2QH" secondAttribute="trailing" id="fAg-KM-mHW"/>
                                                 <constraint firstItem="AYc-cg-8xU" firstAttribute="top" secondItem="7YE-2b-tTP" secondAttribute="top" id="g3Y-Cr-zOw"/>
-                                                <constraint firstItem="qoY-XT-QeX" firstAttribute="bottom" secondItem="LpI-Hy-DWx" secondAttribute="bottom" id="gjI-Te-9PF"/>
+                                                <constraint firstItem="qoY-XT-QeX" firstAttribute="leading" secondItem="RS0-sb-COS" secondAttribute="leading" constant="12" id="gWW-Ht-f6Q"/>
+                                                <constraint firstItem="qoY-XT-QeX" firstAttribute="bottom" secondItem="LpI-Hy-DWx" secondAttribute="bottom" constant="-4" id="gjI-Te-9PF"/>
+                                                <constraint firstItem="qoY-XT-QeX" firstAttribute="top" secondItem="RS0-sb-COS" secondAttribute="top" id="mjC-et-ukr"/>
                                                 <constraint firstItem="qoY-XT-QeX" firstAttribute="centerX" secondItem="LpI-Hy-DWx" secondAttribute="centerX" id="oNQ-pc-bSL"/>
                                                 <constraint firstAttribute="trailing" secondItem="LpI-Hy-DWx" secondAttribute="trailing" id="p7z-Qm-RAy"/>
                                                 <constraint firstItem="mY4-fj-2QH" firstAttribute="leading" secondItem="7YE-2b-tTP" secondAttribute="leading" id="rak-tx-dIq"/>
@@ -320,6 +336,7 @@
                                             <outlet property="conversationButton" destination="Oij-G5-dAP" id="Pkp-ew-pEF"/>
                                             <outlet property="dateLabel" destination="hdl-ps-h3c" id="4AU-j2-5ta"/>
                                             <outlet property="pageViewIndicator" destination="qoY-XT-QeX" id="QsK-M2-KEE"/>
+                                            <outlet property="pageViewIndicatorContainer" destination="RS0-sb-COS" id="BhG-dx-42U"/>
                                             <outlet property="postButton" destination="YgL-XF-c1o" id="k7W-OL-eos"/>
                                             <outlet property="replyButton" destination="SWn-UI-aeq" id="3cV-uv-INM"/>
                                             <outlet property="replyContainer" destination="MUw-MR-MdT" id="spE-zn-Pct"/>
@@ -865,7 +882,7 @@
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="videoButtonOverlay" translatesAutoresizingMaskIntoConstraints="NO" id="9Uv-Ng-Meo">
-                                                                        <rect key="frame" x="197" y="90" width="20" height="20"/>
+                                                                        <rect key="frame" x="192" y="85" width="30" height="30"/>
                                                                     </imageView>
                                                                 </subviews>
                                                                 <constraints>
@@ -892,8 +909,20 @@
                                                         <outlet property="delegate" destination="2ps-xG-txR" id="oJF-A5-mH7"/>
                                                     </connections>
                                                 </collectionView>
+                                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aLY-LS-ZPf">
+                                                    <rect key="frame" x="134" y="245.33333333333337" width="146" height="30"/>
+                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.30034110920000001" colorSpace="calibratedRGB"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="uuCornerRadius">
+                                                            <real key="value" value="15"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                                 <pageControl opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="ygs-gM-EqG">
-                                                    <rect key="frame" x="146" y="252.00000000000003" width="122" height="27.333333333333343"/>
+                                                    <rect key="frame" x="146" y="245.33333333333337" width="122" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="VtR-Xf-S57"/>
+                                                    </constraints>
                                                 </pageControl>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor"/>
@@ -903,8 +932,10 @@
                                                 <constraint firstItem="UkO-Oo-QYX" firstAttribute="leading" secondItem="JG3-yj-Oif" secondAttribute="leading" constant="20" id="9Je-Rf-j15"/>
                                                 <constraint firstAttribute="trailing" secondItem="t4P-Py-MOY" secondAttribute="trailing" id="CpF-Yf-4o5"/>
                                                 <constraint firstAttribute="trailing" secondItem="UkO-Oo-QYX" secondAttribute="trailing" constant="20" id="EF6-EX-lkw"/>
-                                                <constraint firstItem="ygs-gM-EqG" firstAttribute="bottom" secondItem="t4P-Py-MOY" secondAttribute="bottom" id="F0w-Wd-MMy"/>
+                                                <constraint firstItem="ygs-gM-EqG" firstAttribute="bottom" secondItem="t4P-Py-MOY" secondAttribute="bottom" constant="-4" id="F0w-Wd-MMy"/>
+                                                <constraint firstItem="ygs-gM-EqG" firstAttribute="leading" secondItem="aLY-LS-ZPf" secondAttribute="leading" constant="12" id="MXk-Jc-THS"/>
                                                 <constraint firstItem="QhU-W2-8Gc" firstAttribute="top" secondItem="rlf-hh-ngi" secondAttribute="bottom" constant="8" id="RM5-dg-CFM"/>
+                                                <constraint firstItem="ygs-gM-EqG" firstAttribute="top" secondItem="aLY-LS-ZPf" secondAttribute="top" id="VPz-ey-ChZ"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="rlf-hh-ngi" secondAttribute="trailing" constant="8" id="Xfs-68-Kzf"/>
                                                 <constraint firstAttribute="bottom" secondItem="UkO-Oo-QYX" secondAttribute="bottom" constant="16" id="ZaA-rU-5k2"/>
                                                 <constraint firstAttribute="trailing" secondItem="AjN-Ty-m1i" secondAttribute="trailing" id="aIo-b0-6ni"/>
@@ -916,8 +947,10 @@
                                                 <constraint firstItem="rlf-hh-ngi" firstAttribute="leading" secondItem="JG3-yj-Oif" secondAttribute="leadingMargin" id="rRj-En-WIY"/>
                                                 <constraint firstAttribute="bottom" secondItem="om5-IS-tiM" secondAttribute="bottom" id="ufa-oy-Igs"/>
                                                 <constraint firstItem="AjN-Ty-m1i" firstAttribute="leading" secondItem="JG3-yj-Oif" secondAttribute="leading" id="uoM-gI-keI"/>
+                                                <constraint firstItem="ygs-gM-EqG" firstAttribute="trailing" secondItem="aLY-LS-ZPf" secondAttribute="trailing" constant="-12" id="vK6-qw-vxD"/>
                                                 <constraint firstItem="om5-IS-tiM" firstAttribute="leading" secondItem="JG3-yj-Oif" secondAttribute="leading" id="vsG-ga-SHO"/>
                                                 <constraint firstItem="rlf-hh-ngi" firstAttribute="top" secondItem="t4P-Py-MOY" secondAttribute="bottom" constant="10" id="wAT-Ai-t9q"/>
+                                                <constraint firstItem="ygs-gM-EqG" firstAttribute="bottom" secondItem="aLY-LS-ZPf" secondAttribute="bottom" id="wGy-RH-uYx"/>
                                                 <constraint firstAttribute="trailing" secondItem="om5-IS-tiM" secondAttribute="trailing" id="yDk-Nj-pPn"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -929,6 +962,7 @@
                                             <outlet property="conversationButton" destination="xeO-ci-hQY" id="d5Q-KM-f72"/>
                                             <outlet property="dateLabel" destination="rlf-hh-ngi" id="Wtr-6i-qFf"/>
                                             <outlet property="pageViewIndicator" destination="ygs-gM-EqG" id="fd6-wC-v1L"/>
+                                            <outlet property="pageViewIndicatorContainer" destination="aLY-LS-ZPf" id="re1-pQ-l87"/>
                                             <outlet property="postButton" destination="T1a-Qg-tf7" id="s3d-xK-KMW"/>
                                             <outlet property="replyButton" destination="mDr-Kn-5tp" id="ljp-18-axE"/>
                                             <outlet property="replyContainer" destination="UkO-Oo-QYX" id="eHb-dy-OBd"/>

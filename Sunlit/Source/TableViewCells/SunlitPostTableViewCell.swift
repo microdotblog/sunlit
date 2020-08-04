@@ -13,6 +13,7 @@ import Snippets
 
 class SunlitPostTableViewCell : UITableViewCell {
 
+	@IBOutlet var pageViewIndicatorContainer : UIView!
 	@IBOutlet var pageViewIndicator : UIPageControl!
 	@IBOutlet var collectionView : UICollectionView!
 	@IBOutlet var textView : UITextView!
@@ -161,6 +162,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 		
 		self.pageViewIndicator.hidesForSinglePage = true
 		self.pageViewIndicator.numberOfPages = self.post.images.count
+		self.pageViewIndicatorContainer.isHidden = self.post.images.count < 2
 
 		self.setupAvatar()
 	}
