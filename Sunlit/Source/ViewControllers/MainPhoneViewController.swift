@@ -18,7 +18,8 @@ class MainPhoneViewController: UIViewController {
 	@IBOutlet var discoverButton : UIButton!
 	@IBOutlet var profileButton : UIButton!
 	@IBOutlet var mentionIndicator : UILabel!
-	
+	@IBOutlet var mentionContainer : UIView!
+
 	var discoverViewController : DiscoverViewController!
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
@@ -36,7 +37,7 @@ class MainPhoneViewController: UIViewController {
 		self.setupProfileButton()
 		self.loadContentViews()
 		self.updateInterfaceForLogin()
-		self.mentionIndicator.isHidden = true
+		self.mentionContainer.isHidden = true
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
 	}
@@ -184,9 +185,9 @@ class MainPhoneViewController: UIViewController {
 	@objc func handleUserMentionsUpdated() {
 		let mentionCount = SunlitMentions.shared.newMentionCount()
 		
-		self.mentionIndicator.isHidden = true
+		self.mentionContainer.isHidden = true
 		if mentionCount > 0 {
-			self.mentionIndicator.isHidden = false
+			self.mentionContainer.isHidden = false
 			self.mentionIndicator.text = "\(mentionCount)"
 		}
 	}

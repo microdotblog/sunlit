@@ -6,13 +6,13 @@
 //  Copyright © 2020 Micro.blog, LLC. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Snippets
 
 class SunlitMentions {
 	static let shared = SunlitMentions()
 	private var mentions : [SunlitPost] = []
-	private let cachedMentionDateKey = "LatestSunlitMentionDate"
+	private let cachedMentionDateKey = "Latest-Sunlit-Mention-Date"
 
 	func newMentionCount() -> Int {
 
@@ -53,6 +53,9 @@ class SunlitMentions {
 				
 				callback()
 				NotificationCenter.default.post(name: .mentionsUpdatedNotification, object: nil)
+				
+				UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .alert, .sound], categories: nil))
+				UIApplication.shared.applicationIconBadgeNumber = self.newMentionCount()
 			}
 		}
 	}

@@ -18,17 +18,26 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var followingCount : UILabel!
 	@IBOutlet var postCount : UILabel!
     @IBOutlet var busyIndicator : UIActivityIndicatorView!
-	@IBOutlet var mentionsButton : UIButton!
+	@IBOutlet var mentionsLabel : UILabel!
+	@IBOutlet var mentionsContainer : UIView!
 	
 	static func sizeOf(_ owner : SnippetsUser?, collectionViewWidth : CGFloat) -> CGSize {
 		return CGSize(width: collectionViewWidth, height: 120.0)
 	}
 	
 	func configureMentions() {
-		self.mentionsButton.titleLabel?.textColor = .label
-		let count = SunlitMentions.shared.newMentionCount()
-		if count > 0 {
-			self.mentionsButton.titleLabel?.textColor = .red
+		self.mentionsLabel.textColor = .white
+		self.mentionsContainer.isHidden = false
+		
+		let newCount = SunlitMentions.shared.newMentionCount()
+		if newCount > 0 {
+			self.mentionsContainer.backgroundColor = .red
+			self.mentionsLabel.text = "\(newCount) new mentions"
+		}
+		else {
+			let count = SunlitMentions.shared.allMentions().count
+			self.mentionsContainer.backgroundColor = .black
+			self.mentionsLabel.text = "\(count) mentions"
 		}
 	}
 	

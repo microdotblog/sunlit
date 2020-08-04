@@ -107,7 +107,7 @@
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="videoButtonOverlay" translatesAutoresizingMaskIntoConstraints="NO" id="ujN-ZB-1nR">
-                                                                        <rect key="frame" x="192" y="85" width="30" height="30"/>
+                                                                        <rect key="frame" x="197" y="90" width="20" height="20"/>
                                                                     </imageView>
                                                                 </subviews>
                                                                 <constraints>
@@ -468,22 +468,48 @@
                                                         </label>
                                                     </subviews>
                                                 </stackView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khx-V2-077">
-                                                    <rect key="frame" x="335" y="23" width="63" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
-                                                    <state key="normal" title="Mentions">
-                                                        <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="showMentions" destination="ceh-ak-Uo6" eventType="touchUpInside" id="7gb-rL-Ij7"/>
-                                                    </connections>
-                                                </button>
+                                                <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qXI-n7-bgK">
+                                                    <rect key="frame" x="326" y="8" width="72" height="24"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 Mentions" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8o8-ZE-jQG">
+                                                            <rect key="frame" x="8" y="4" width="56" height="16"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="10"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ipJ-ga-l0W">
+                                                            <rect key="frame" x="0.0" y="0.0" width="72" height="24"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <connections>
+                                                                <action selector="showMentions" destination="ceh-ak-Uo6" eventType="touchUpInside" id="0sB-YK-5uD"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstItem="ipJ-ga-l0W" firstAttribute="leading" secondItem="qXI-n7-bgK" secondAttribute="leading" id="NL7-Yz-1AV"/>
+                                                        <constraint firstAttribute="height" constant="24" id="NgG-Oh-aU9"/>
+                                                        <constraint firstAttribute="bottom" secondItem="ipJ-ga-l0W" secondAttribute="bottom" id="RpS-rA-2vw"/>
+                                                        <constraint firstAttribute="bottom" secondItem="8o8-ZE-jQG" secondAttribute="bottom" constant="4" id="dY8-aQ-LLP"/>
+                                                        <constraint firstItem="8o8-ZE-jQG" firstAttribute="top" secondItem="qXI-n7-bgK" secondAttribute="top" constant="4" id="e4Q-On-2aa"/>
+                                                        <constraint firstItem="ipJ-ga-l0W" firstAttribute="top" secondItem="qXI-n7-bgK" secondAttribute="top" id="hhO-rd-qco"/>
+                                                        <constraint firstAttribute="trailing" secondItem="ipJ-ga-l0W" secondAttribute="trailing" id="pjk-LA-wAV"/>
+                                                        <constraint firstAttribute="trailing" secondItem="8o8-ZE-jQG" secondAttribute="trailing" constant="8" id="u18-2K-bxp"/>
+                                                        <constraint firstItem="8o8-ZE-jQG" firstAttribute="leading" secondItem="qXI-n7-bgK" secondAttribute="leading" constant="8" id="xcl-BC-das"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="uuCornerRadius">
+                                                            <real key="value" value="12"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="qXI-n7-bgK" firstAttribute="top" secondItem="twj-PE-Acw" secondAttribute="top" constant="8" id="QlH-6k-UOY"/>
                                                 <constraint firstItem="beh-Dg-rLU" firstAttribute="leading" secondItem="eYA-zL-HuI" secondAttribute="trailing" constant="8" symbolic="YES" id="W3S-12-vnL"/>
                                                 <constraint firstItem="beh-Dg-rLU" firstAttribute="centerY" secondItem="eYA-zL-HuI" secondAttribute="centerY" id="gPB-zT-WQV"/>
-                                                <constraint firstItem="khx-V2-077" firstAttribute="centerY" secondItem="eYA-zL-HuI" secondAttribute="centerY" id="v2m-Po-uwN"/>
-                                                <constraint firstAttribute="trailing" secondItem="khx-V2-077" secondAttribute="trailing" constant="8" id="ygw-vQ-Hl8"/>
+                                                <constraint firstAttribute="trailing" secondItem="qXI-n7-bgK" secondAttribute="trailing" constant="8" id="nbz-gl-E52"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="406" height="125"/>
@@ -492,7 +518,8 @@
                                             <outlet property="blogAddress" destination="h68-jT-Q82" id="7TJ-wl-MI6"/>
                                             <outlet property="followingCount" destination="L94-hx-2rk" id="Gc5-lq-e4p"/>
                                             <outlet property="fullName" destination="1nn-fW-HCQ" id="EyE-QB-5Ll"/>
-                                            <outlet property="mentionsButton" destination="khx-V2-077" id="aWR-uR-Ocx"/>
+                                            <outlet property="mentionsContainer" destination="qXI-n7-bgK" id="5EH-vs-C77"/>
+                                            <outlet property="mentionsLabel" destination="8o8-ZE-jQG" id="LtI-AA-jG9"/>
                                             <outlet property="postCount" destination="YY7-MB-GSw" id="4bw-bM-P4A"/>
                                             <outlet property="userHandle" destination="f75-65-XJH" id="8NH-tb-wLg"/>
                                         </connections>

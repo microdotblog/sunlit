@@ -92,21 +92,40 @@
                                             <constraint firstItem="0Wz-cV-0mQ" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="gBG-dq-S0g"/>
                                         </constraints>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CJP-J9-0I4">
-                                        <rect key="frame" x="333.5" y="8" width="8.5" height="14.5"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                        <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ua9-t7-gcd">
+                                        <rect key="frame" x="339" y="8" width="23" height="16"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CJP-J9-0I4">
+                                                <rect key="frame" x="8" y="4" width="7" height="8"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="10"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="CJP-J9-0I4" secondAttribute="trailing" constant="8" id="2yq-u4-sah"/>
+                                            <constraint firstItem="CJP-J9-0I4" firstAttribute="top" secondItem="ua9-t7-gcd" secondAttribute="top" constant="4" id="8Oq-it-Z0P"/>
+                                            <constraint firstAttribute="bottom" secondItem="CJP-J9-0I4" secondAttribute="bottom" constant="4" id="Kjd-Z6-m0w"/>
+                                            <constraint firstItem="CJP-J9-0I4" firstAttribute="leading" secondItem="ua9-t7-gcd" secondAttribute="leading" constant="8" id="kfx-1w-y0M"/>
+                                            <constraint firstAttribute="height" constant="16" id="qmu-vR-wQ7"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="uuCornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="kuJ-kE-FD1" secondAttribute="trailing" id="8TY-id-BtS"/>
                                     <constraint firstItem="kuJ-kE-FD1" firstAttribute="centerX" secondItem="D6H-Gs-Up4" secondAttribute="centerX" id="Let-HH-ckv"/>
-                                    <constraint firstItem="CJP-J9-0I4" firstAttribute="trailing" secondItem="kuJ-kE-FD1" secondAttribute="trailing" constant="-40" id="Log-4W-UtB"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="96" id="Lpg-u2-R5b"/>
                                     <constraint firstAttribute="bottom" secondItem="kuJ-kE-FD1" secondAttribute="bottom" id="hjN-Vc-7Qm"/>
-                                    <constraint firstItem="CJP-J9-0I4" firstAttribute="top" secondItem="kuJ-kE-FD1" secondAttribute="top" id="prQ-f4-ks7"/>
+                                    <constraint firstItem="ua9-t7-gcd" firstAttribute="top" secondItem="kuJ-kE-FD1" secondAttribute="top" id="mhP-d8-SEA"/>
+                                    <constraint firstItem="ua9-t7-gcd" firstAttribute="trailing" secondItem="kuJ-kE-FD1" secondAttribute="trailing" constant="-20" id="vte-uh-Y9E"/>
                                     <constraint firstItem="kuJ-kE-FD1" firstAttribute="leading" secondItem="D6H-Gs-Up4" secondAttribute="leading" id="wmv-A7-jTa"/>
                                     <constraint firstItem="kuJ-kE-FD1" firstAttribute="top" secondItem="D6H-Gs-Up4" secondAttribute="top" constant="8" id="zGk-si-zF7"/>
                                 </constraints>
@@ -127,6 +146,7 @@
                     <connections>
                         <outlet property="contentView" destination="Ois-MX-ace" id="CVS-Up-K5l"/>
                         <outlet property="discoverButton" destination="e1L-Lm-SBr" id="iOf-Q5-VBa"/>
+                        <outlet property="mentionContainer" destination="ua9-t7-gcd" id="uac-pU-9ur"/>
                         <outlet property="mentionIndicator" destination="CJP-J9-0I4" id="K4G-0o-Faa"/>
                         <outlet property="profileButton" destination="0Wz-cV-0mQ" id="nYp-yI-ztu"/>
                         <outlet property="scrollView" destination="D4j-cD-DQP" id="pY9-XT-j4v"/>
