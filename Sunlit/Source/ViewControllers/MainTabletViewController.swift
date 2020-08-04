@@ -14,8 +14,8 @@ class MainTabletViewController: UIViewController {
 	@IBOutlet var tableView: UITableView!
 	@IBOutlet var versionLabel : UILabel!
 	
-	var menuTitles = [ "Timeline", "Discover", "Profile", "Mentions", "Settings" ]
-	var menuIcons = [ "bubble.left.and.bubble.right", "magnifyingglass.circle", "person.crop.circle", "bubble.left", "gear" ]
+	var menuTitles = [ "Timeline", "Mentions", "Discover", "Profile", "Settings" ]
+	var menuIcons = [ "bubble.left.and.bubble.right", "bubble.left", "magnifyingglass.circle", "person.crop.circle",  "gear" ]
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -50,7 +50,7 @@ class MainTabletViewController: UIViewController {
 			menuTitles = [ "Timeline", "Discover" ]
 		}
 		else {
-			menuTitles = [ "Timeline", "Discover", "Profile", "Mentions", "Settings"]
+			menuTitles = [ "Timeline", "Mentions", "Discover", "Profile", "Settings"]
 		}
 		
 		self.tableView.reloadData()
@@ -137,7 +137,8 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 		
 		cell.alertContainer.isHidden = true
 		
-		if indexPath.row == 3 {
+		// Special case code for mentions...
+		if indexPath.row == 1 {
 			cell.alertContainer.isHidden = true
 			
 			let newCount = SunlitMentions.shared.newMentionCount()
@@ -156,11 +157,11 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 		case 0:
 			self.onTimeLine()
 		case 1:
-			self.onDiscover()
-		case 2:
-			self.onProfile()
-		case 3:
 			self.onMentions()
+		case 2:
+			self.onDiscover()
+		case 3:
+			self.onProfile()
 		case 4:
 			self.onSettings()
 		default:
