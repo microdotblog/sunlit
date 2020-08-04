@@ -298,7 +298,12 @@ class MainViewController: UIViewController {
 	}
 	
 	@objc func handleShowMentionsNotification() {
-		self.onTabletShowMentions()
+		if UIDevice.current.userInterfaceIdiom == .phone {
+			self.navigationController?.pushViewController(self.mentionsViewController, animated: true)
+		}
+		else {
+			self.onTabletShowMentions()
+		}
 	}
 
 	@objc func onExpandSplitViewController() {
