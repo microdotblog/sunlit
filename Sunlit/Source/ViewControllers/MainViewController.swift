@@ -126,7 +126,7 @@ class MainViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: .notifyReplyPostedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleSplitViewWillCollapseNotification(_:)), name: .splitViewWillCollapseNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleSplitViewWillExpandNotification(_:)), name: .splitViewWillExpandNotification, object: nil)
-
+		NotificationCenter.default.addObserver(self, selector: #selector(handleShowFollowingNotification(_:)), name: .showFollowingNotification, object: nil)
 	}
 
 	@objc func handleViewPostNotification(_ notification : Notification) {
@@ -159,6 +159,17 @@ class MainViewController: UIViewController {
 			profileViewController.user = owner
 			self.navigationController?.pushViewController(profileViewController, animated: true)
 		}
+	}
+	
+	@objc func handleShowFollowingNotification(_ notification : Notification) {
+		let storyBoard: UIStoryboard = UIStoryboard(name: "Following", bundle: nil)
+		let followingViewController = storyBoard.instantiateViewController(withIdentifier: "FollowingViewController") as! FollowingViewController
+		
+		if let following = notification.object as? [SnippetsUser] {
+			followingViewController.following = following
+		}
+		
+		self.navigationController?.pushViewController(followingViewController, animated: true)
 	}
 	
 	@objc func handleReplyResponseNotification(_ notification : Notification) {

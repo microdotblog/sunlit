@@ -15,11 +15,12 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var fullName : UILabel!
 	@IBOutlet var userHandle : UILabel!
 	@IBOutlet var blogAddress : UIButton!
-	@IBOutlet var followingCount : UILabel!
-	@IBOutlet var postCount : UILabel!
     @IBOutlet var busyIndicator : UIActivityIndicatorView!
+
 	@IBOutlet var mentionsLabel : UILabel!
 	@IBOutlet var mentionsContainer : UIView!
+	@IBOutlet var followingLabel : UILabel!
+	@IBOutlet var followingContainer : UIView!
 	
 	static func sizeOf(_ owner : SnippetsUser?, collectionViewWidth : CGFloat) -> CGSize {
 		return CGSize(width: collectionViewWidth, height: 120.0)
@@ -45,6 +46,14 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 		}
 	}
 	
+	func configureFollowing(count : Int, complete : Bool) {
+		self.followingContainer.isHidden = false
+		self.followingLabel.text = "Following \(count)"
+		if !complete {
+			self.followingLabel.text = "Updating..."
+		}
+	}
+	
 	@IBAction func openBlogAddress() {
 		if let s = blogAddress.title(for: .normal) {
 			if let url = URL(string: s) {
@@ -55,5 +64,9 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 	
 	@IBAction func showMentions() {
 		NotificationCenter.default.post(name: .showMentionsNotification, object: nil, userInfo: nil)
+	}
+	
+	@IBAction func showFollowing() {
+		NotificationCenter.default.post(name: .followingButtonClickedNotification, object: nil, userInfo: nil)
 	}
 }

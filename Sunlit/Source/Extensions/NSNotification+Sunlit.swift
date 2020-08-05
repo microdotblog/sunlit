@@ -32,4 +32,6 @@ extension NSNotification.Name {
 	static let splitViewWillExpandNotification = NSNotification.Name("Splitview Will Expand Notification")
 	static let mentionsUpdatedNotification = NSNotification.Name("Sunlit Mentions Updated Notification")
 	static let showMentionsNotification = NSNotification.Name("Show Mentions Notification")
+	static let followingButtonClickedNotification = NSNotification.Name("Following Button Clicked Notification")
+	static let showFollowingNotification = NSNotification.Name("Show Following Notification")
 }

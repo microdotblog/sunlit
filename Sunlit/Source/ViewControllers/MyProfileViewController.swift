@@ -17,6 +17,7 @@ class MyProfileViewController: UIViewController {
 	var userPosts : [SunlitPost] = []
 	var followingUsers : [SnippetsUser] = []
 	var loadInProgress = false
+	var followersLoaded = false
 	var refreshControl = UIRefreshControl()
 	
 	@IBOutlet var collectionView : UICollectionView!
@@ -38,6 +39,7 @@ class MyProfileViewController: UIViewController {
 		self.collectionView.addSubview(self.refreshControl)
 
 		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleViewFollowingButtonClickedNotification), name: .followingButtonClickedNotification, object: nil)
     }
 		
 	@objc func handleCurrentUserUpdatedNotification() {
@@ -46,6 +48,10 @@ class MyProfileViewController: UIViewController {
 			self.fetchUserInfo()
 			self.navigationItem.title = user.fullName
 		}
+	}
+	
+	@objc func handleViewFollowingButtonClickedNotification() {
+		NotificationCenter.default.post(name: .showFollowingNotification, object: self.followingUsers)
 	}
 	
 	@objc func handleUserMentionsUpdated() {
@@ -86,6 +92,7 @@ class MyProfileViewController: UIViewController {
 				
 				Snippets.shared.listFollowers(user: self.user, completeList: true) { (error, users) in
 					self.followingUsers = users
+					self.followersLoaded = true
 					self.user.followingCount = users.count
 					self.user = SnippetsUser.saveAsCurrent(self.user)
 					
@@ -277,19 +284,8 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 			self.loadPhoto(user.avatarURL, indexPath)
 		}
 		
-		cell.followingCount.text = "-"
-		cell.postCount.text = "-"
-		
-		if self.user.followingCount > 0 {
-			cell.followingCount.text = "\(self.user.followingCount)"
-		}
-		if self.userPosts.count > 0 {
-			cell.postCount.text = "\(self.userPosts.count)"
-		}
-		
 		cell.configureMentions()
-		
-		//cell.widthConstraint.constant = self.collectionView.bounds.size.width
+		cell.configureFollowing(count: self.followingUsers.count, complete: self.followersLoaded)
 	}
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
@@ -311,14 +307,7 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 			}
 		}
 
-//		cell.photo.layer.borderColor = UIColor.lightGray.cgColor
-//		cell.photo.layer.borderWidth = 0.5
-		
-//		cell.contentView.layer.cornerRadius = 8.0
 		cell.contentView.clipsToBounds = true
-//		cell.contentView.layer.borderWidth = 0.5
-//		cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
-		//cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 	}
 	
 }

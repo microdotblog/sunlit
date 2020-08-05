@@ -55,8 +55,9 @@ class ProfileViewController: UIViewController {
 				self.updatedUserInfo = self.user
 			
 				DispatchQueue.main.async {
+					_ = self.user.attributedTextBio()
 					self.collectionView.reloadData()
-					
+
 					if self.userPosts.count <= 0 {
 						self.fetchUserPosts()
 					}
@@ -291,6 +292,7 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
 		cell.bio.attributedText = user.attributedTextBio()
+		cell.widthConstraint.constant = ProfileBioCollectionViewCell.sizeOf(self.user, collectionViewWidth: self.collectionView.frame.size.width).width - 16.0
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
