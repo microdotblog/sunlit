@@ -21,8 +21,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="2xJ-Ay-lTa">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <inset key="scrollIndicatorInsets" minX="2" minY="0.0" maxX="2" maxY="0.0"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="4" minimumInteritemSpacing="0.0" id="pfw-6j-aoj">
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="8" minimumInteritemSpacing="0.0" id="pfw-6j-aoj">
                                     <size key="itemSize" width="200" height="240"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -101,47 +100,33 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProfileBioCollectionViewCell" id="rI4-7c-nTM" customClass="ProfileBioCollectionViewCell" customModule="Sunlit" customModuleProvider="target">
-                                        <rect key="frame" x="4" y="244" width="406" height="240"/>
+                                        <rect key="frame" x="4" y="248" width="406" height="240"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="sCA-ck-I77">
                                             <rect key="frame" x="0.0" y="0.0" width="406" height="240"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="justified" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IU1-Me-ecW">
-                                                    <rect key="frame" x="8" y="0.0" width="390" height="224"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="390" id="Rtx-c0-6oz"/>
-                                                    </constraints>
+                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="justified" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IU1-Me-ecW">
+                                                    <rect key="frame" x="7" y="-1" width="391" height="225"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j6l-fl-nwc">
-                                                    <rect key="frame" x="0.0" y="239" width="406" height="1"/>
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j6l-fl-nwc">
+                                                    <rect key="frame" x="0.0" y="231" width="618" height="1"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                     <color key="backgroundColor" systemColor="separatorColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="1" id="mDr-Qa-lxy"/>
-                                                    </constraints>
                                                 </view>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="IU1-Me-ecW" secondAttribute="trailing" constant="8" id="0TD-JB-O2R"/>
-                                                <constraint firstAttribute="trailing" secondItem="j6l-fl-nwc" secondAttribute="trailing" id="3d9-JG-h8E"/>
-                                                <constraint firstAttribute="bottom" secondItem="IU1-Me-ecW" secondAttribute="bottom" constant="16" id="NWg-N1-nyX"/>
-                                                <constraint firstItem="IU1-Me-ecW" firstAttribute="leading" secondItem="sCA-ck-I77" secondAttribute="leading" constant="8" id="Spr-UZ-Nlc"/>
-                                                <constraint firstItem="j6l-fl-nwc" firstAttribute="leading" secondItem="sCA-ck-I77" secondAttribute="leading" id="VkC-kj-J8c"/>
-                                                <constraint firstItem="IU1-Me-ecW" firstAttribute="top" secondItem="sCA-ck-I77" secondAttribute="top" id="ppt-g0-H4b"/>
-                                                <constraint firstAttribute="bottom" secondItem="j6l-fl-nwc" secondAttribute="bottom" id="vYx-Vy-3Hf"/>
-                                            </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="406" height="240"/>
                                         <connections>
                                             <outlet property="bio" destination="IU1-Me-ecW" id="6tj-Ek-8iT"/>
-                                            <outlet property="widthConstraint" destination="Rtx-c0-6oz" id="2jj-AQ-MmK"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="PhotoEntryCollectionViewCell" id="f1k-Zl-2RT" customClass="PhotoEntryCollectionViewCell" customModule="Sunlit" customModuleProvider="target">
-                                        <rect key="frame" x="107" y="488" width="200" height="240"/>
+                                        <rect key="frame" x="107" y="496" width="200" height="240"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Jxc-BX-Rd7">
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="240"/>

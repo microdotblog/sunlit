@@ -62,13 +62,14 @@ class ProfileViewController: UIViewController {
 	func fetchUserPosts() {
 		Snippets.shared.fetchUserMediaPosts(user: self.user) { (error, snippets: [SnippetsPost]) in
 
-			var posts : [SunlitPost] = []
-			for snippet in snippets {
-				let post = SunlitPost.create(snippet)
-				posts.append(post)
-			}
+			DispatchQueue.main.async {
 
-			DispatchQueue.main.async {	
+				var posts : [SunlitPost] = []
+				for snippet in snippets {
+					let post = SunlitPost.create(snippet)
+					posts.append(post)
+				}
+
 				self.userPosts = posts
 				self.collectionView.reloadData()
 				
@@ -147,12 +148,12 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
 		
-		return 3
+		return 2
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		
-		if section == 0 || section == 1 {
+		if section == 0 {//|| section == 1 {
 			return 1
 		}
 
@@ -166,11 +167,11 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 			self.configureHeaderCell(cell, indexPath)
 			return cell
 		}
-		else if indexPath.section == 1 {
+		/*else if indexPath.section == 1 {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBioCollectionViewCell", for: indexPath) as! ProfileBioCollectionViewCell
 			self.configureBioCell(cell)
 			return cell
-		}
+		}*/
 		else {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoEntryCollectionViewCell", for: indexPath) as! PhotoEntryCollectionViewCell
 			self.configurePhotoCell(cell, indexPath)
@@ -183,7 +184,7 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
-		if indexPath.section == 2 {
+		if indexPath.section == 1 { //2 {
 			let post = self.userPosts[indexPath.item]
 			let imagePath = post.images[0]
 			var dictionary : [String : Any] = [:]
@@ -210,24 +211,26 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		if indexPath.section == 0 {
 			return ProfileHeaderCollectionViewCell.sizeOf(self.user, collectionViewWidth: collectionViewWidth)
 		}
-		else if indexPath.section == 1 {
+		/*else if indexPath.section == 1 {
 			return ProfileBioCollectionViewCell.sizeOf(self.user, collectionViewWidth:collectionViewWidth)
-		}
+		}*/
 		else {
 			return PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: collectionViewWidth)
 		}
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		if indexPath.section == 2 {
-			let post = self.userPosts[indexPath.item]
-			self.loadPhoto(post.images.first ?? "", indexPath)
+		if indexPath.section == 1 { //2 {
+			if indexPath.item < self.userPosts.count {
+				let post = self.userPosts[indexPath.item]
+				self.loadPhoto(post.images.first ?? "", indexPath)
+			}
 		}
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
 		for indexPath in indexPaths {
-			if indexPath.section == 2 {
+			if indexPath.section == 1 {
 				let post = self.userPosts[indexPath.item]
 				self.loadPhoto(post.images.first ?? "", indexPath)
 			}
@@ -283,28 +286,24 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
 		//cell.bio.attributedText = user.attributedTextBio()
 		cell.bio.text = user.bio
-		cell.widthConstraint.constant = ProfileBioCollectionViewCell.sizeOf(self.user, collectionViewWidth: self.collectionView.frame.size.width).width - 24.0
+		//cell.widthConstraint.constant = ProfileBioCollectionViewCell.sizeOf(self.user, collectionViewWidth: self.collectionView.frame.size.width).width - 24.0
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
-		let post = self.userPosts[indexPath.item]
-		cell.date.text = ""
-		if let date = post.publishedDate {
-			cell.date.text = date.friendlyFormat()
+		if indexPath.item < self.userPosts.count {
+			let post = self.userPosts[indexPath.item]
+			cell.date.text = ""
+			if let date = post.publishedDate {
+				cell.date.text = date.friendlyFormat()
+			}
+
+			cell.photo.image = nil
+			if let image = ImageCache.prefetch(post.images.first ?? "") {
+				cell.photo.image = image
+			}
 		}
 
-		cell.photo.image = nil
-		if let image = ImageCache.prefetch(post.images.first ?? "") {
-			cell.photo.image = image
-		}
-		
-//		cell.photo.layer.borderColor = UIColor.lightGray.cgColor
-//		cell.photo.layer.borderWidth = 0.5
-		
-//		cell.contentView.layer.cornerRadius = 8.0
 		cell.contentView.clipsToBounds = true
-//		cell.contentView.layer.borderWidth = 0.5
-//		cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
 	}
 	
 }

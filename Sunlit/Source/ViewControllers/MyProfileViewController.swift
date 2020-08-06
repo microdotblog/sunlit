@@ -164,10 +164,6 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 			return 0
 		}
 		
-		if self.userPosts.count == 0 {
-			return 2
-		}
-		
 		return 3
 	}
 	
