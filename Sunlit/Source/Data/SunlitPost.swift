@@ -36,8 +36,6 @@ class SunlitPost : SnippetsPost {
 	
 	static func create(_ snippet : SnippetsPost, font : UIFont = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body), textColor : UIColor = UIColor.label) -> SunlitPost {
 
-		assert(Thread.current.isMainThread)
-		
 		let html = addTextStyle(string: snippet.htmlText, font: font, textColor: textColor)
 		
 		var string = html

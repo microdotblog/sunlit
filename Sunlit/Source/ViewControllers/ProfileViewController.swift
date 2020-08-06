@@ -62,14 +62,13 @@ class ProfileViewController: UIViewController {
 	func fetchUserPosts() {
 		Snippets.shared.fetchUserMediaPosts(user: self.user) { (error, snippets: [SnippetsPost]) in
 
-			DispatchQueue.main.async {
+			var posts : [SunlitPost] = []
+			for snippet in snippets {
+				let post = SunlitPost.create(snippet)
+				posts.append(post)
+			}
 
-				var posts : [SunlitPost] = []
-				for snippet in snippets {
-					let post = SunlitPost.create(snippet)
-					posts.append(post)
-				}
-				
+			DispatchQueue.main.async {	
 				self.userPosts = posts
 				self.collectionView.reloadData()
 				
@@ -147,9 +146,6 @@ MARK: -
 extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
 	
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
-		if self.userPosts.count == 0 {
-			return 2
-		}
 		
 		return 3
 	}

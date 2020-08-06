@@ -343,7 +343,7 @@ public class UUHttpSession: NSObject
 {
     private var urlSession : URLSession? = nil
     private var sessionConfiguration : URLSessionConfiguration? = nil
-    private var activeTasks : [URLSessionTask] = []
+    private var activeTasks : UUThreadSafeArray<URLSessionTask> = UUThreadSafeArray()
     private var responseHandlers : [String:UUHttpResponseHandler] = [:]
     
     public static let shared = UUHttpSession()

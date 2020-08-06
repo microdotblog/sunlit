@@ -30,22 +30,11 @@ class ProfileTableViewCell: UITableViewCell {
 		self.userName.text = user.fullName
 		self.userHandle.text = "@" + user.userName
 		//self.bio.attributedText = user.attributedTextBio()
-		self.loadPhotos(user, indexPath)
-	}
-  
-	func loadPhotos(_ owner : SnippetsUser, _ indexPath : IndexPath) {
-		let avatarSource = owner.avatarURL
-		if let avatar = ImageCache.prefetch(avatarSource) {
+		
+		self.avatar.image = nil
+		
+		if let avatar = ImageCache.prefetch(user.avatarURL) {
 			self.avatar.image = avatar
-		}
-		else {
-			ImageCache.fetch(self, avatarSource) { (image) in
-				if let _ = image {
-					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
-					}
-				}
-			}
 		}
 	}
 

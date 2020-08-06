@@ -60,7 +60,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
 			let identity = SnippetsXMLRPCIdentity.create(username: username, password: password, endpoint: xmlrpcEndpoint!, blogId: blogId!, wordPress: true)
 			let request = SnippetsXMLRPCRequest(identity: identity, method: methodName)
 			
-			Snippets.shared.executeRPC(request: request, params: params) { (error, responseData) in
+			_ = Snippets.shared.executeRPC(request: request, params: params) { (error, responseData) in
 				
 				if let data = responseData {
 					SnippetsXMLRPCParser.parsedResponseFromData(data) { (responseFault, responseParams) in
