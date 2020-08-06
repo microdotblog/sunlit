@@ -368,6 +368,7 @@ class MainViewController: UIViewController {
 
 	func activateContentViewController(_ viewController : SnippetsScrollContentProtocol) {
 
+		self.navigationController?.popToRootViewController(animated: false)
 		self.deactivateContentViewController(self.currentContentViewController)
 
 		if let currentViewController = viewController as? UIViewController {
