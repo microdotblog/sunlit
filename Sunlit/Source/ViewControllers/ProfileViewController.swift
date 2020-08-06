@@ -35,15 +35,9 @@ class ProfileViewController: UIViewController {
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(dismissViewController))
     }
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-//		self.navigationController?.setNavigationBarHidden(false, animated: true)
-	}
 	
 	@objc func dismissViewController() {
 		self.navigationController?.popViewController(animated: true)
-//		self.navigationController?.setNavigationBarHidden(true, animated: true)
 	}
 	
 	func fetchUserInfo(_ user : SnippetsUser) {
@@ -55,7 +49,6 @@ class ProfileViewController: UIViewController {
 				self.updatedUserInfo = self.user
 			
 				DispatchQueue.main.async {
-					_ = self.user.attributedTextBio()
 					self.collectionView.reloadData()
 
 					if self.userPosts.count <= 0 {
@@ -69,13 +62,14 @@ class ProfileViewController: UIViewController {
 	func fetchUserPosts() {
 		Snippets.shared.fetchUserMediaPosts(user: self.user) { (error, snippets: [SnippetsPost]) in
 
-			var posts : [SunlitPost] = []
-			for snippet in snippets {
-				let post = SunlitPost.create(snippet)
-				posts.append(post)
-			}
-			
 			DispatchQueue.main.async {
+
+				var posts : [SunlitPost] = []
+				for snippet in snippets {
+					let post = SunlitPost.create(snippet)
+					posts.append(post)
+				}
+				
 				self.userPosts = posts
 				self.collectionView.reloadData()
 				
@@ -291,8 +285,9 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	}
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
-		cell.bio.attributedText = user.attributedTextBio()
-		cell.widthConstraint.constant = ProfileBioCollectionViewCell.sizeOf(self.user, collectionViewWidth: self.collectionView.frame.size.width).width - 16.0
+		//cell.bio.attributedText = user.attributedTextBio()
+		cell.bio.text = user.bio
+		cell.widthConstraint.constant = ProfileBioCollectionViewCell.sizeOf(self.user, collectionViewWidth: self.collectionView.frame.size.width).width - 24.0
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {

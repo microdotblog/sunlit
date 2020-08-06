@@ -32,7 +32,7 @@ class ConversationTableViewCell : UITableViewCell {
 	func setup(_ post : SunlitPost, _ indexPath : IndexPath) {
 		self.post = post
 		
-		self.replyText.attributedText = post.text
+		self.replyText.attributedText = post.attributedText
 		self.replyText.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 		self.userName.text = post.owner.fullName
 		self.userHandle.text = "@" + post.owner.userName

@@ -18,8 +18,13 @@ class SunlitPost : SnippetsPost {
 	var altText : [String] = []
 	var images : [String] = []
 	var videos : [String] = []
-	var text : NSAttributedString = NSAttributedString(string: "")
+	var htmlString : String = ""
 
+	var attributedText : NSAttributedString {
+		get {
+			return NSAttributedString(string: self.htmlString).html()
+		}
+	}
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -31,6 +36,8 @@ class SunlitPost : SnippetsPost {
 	
 	static func create(_ snippet : SnippetsPost, font : UIFont = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body), textColor : UIColor = UIColor.label) -> SunlitPost {
 
+		assert(Thread.current.isMainThread)
+		
 		let html = addTextStyle(string: snippet.htmlText, font: font, textColor: textColor)
 		
 		var string = html
@@ -69,15 +76,7 @@ class SunlitPost : SnippetsPost {
 			let images = findImageElements(document)
 			let videos = findVideoElements(document)
 			let text = stripImagesAndVideos(document, images, videos)
-
-			let htmlData = text.data(using: .utf16)!
-			if let attributedString = try? NSAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
-				parsedEntry.text = attributedString
-			}
-			else {
-				parsedEntry.text = NSAttributedString(string: text)
-			}
-
+			parsedEntry.htmlString = text
 			
 			var aspectRatio : Float = 0.0
 

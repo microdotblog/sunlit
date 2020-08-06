@@ -39,7 +39,6 @@ class MyProfileViewController: UIViewController {
 		self.collectionView.addSubview(self.refreshControl)
 
 		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleViewFollowingButtonClickedNotification), name: .followingButtonClickedNotification, object: nil)
     }
 		
 	@objc func handleCurrentUserUpdatedNotification() {
@@ -76,13 +75,14 @@ class MyProfileViewController: UIViewController {
 
 				Snippets.shared.fetchUserMediaPosts(user: updatedUser) { (error, snippets : [SnippetsPost]) in
 	
-					var posts : [SunlitPost] = []
-					for snippet in snippets {
-						let sunlitPost = SunlitPost.create(snippet)
-						posts.append(sunlitPost)
-					}
-					
 					DispatchQueue.main.async {
+
+						var posts : [SunlitPost] = []
+						for snippet in snippets {
+							let sunlitPost = SunlitPost.create(snippet)
+							posts.append(sunlitPost)
+						}
+
 						self.loadInProgress = false
 						self.userPosts = posts
 						self.collectionView.reloadData()
@@ -289,7 +289,8 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 	}
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
-		cell.bio.attributedText = user.attributedTextBio()
+		cell.bio.text = user.bio
+		//cell.bio.attributedText = user.attributedTextBio()
 		//cell.widthConstraint.constant = self.view.bounds.size.width
 	}
 	
@@ -330,6 +331,8 @@ extension MyProfileViewController : SnippetsScrollContentProtocol {
 		self.collectionView.reloadData()
 
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleViewFollowingButtonClickedNotification), name: .followingButtonClickedNotification, object: nil)
 
 		self.fetchUserInfo()
 	}
