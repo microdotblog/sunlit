@@ -203,22 +203,25 @@ class MainPhoneViewController: UIViewController {
 	}
 
 	@IBAction func onTabBarButtonPressed(_ button : UIButton) {
-		if button == self.profileButton {
-			if let _ = SnippetsUser.current() {
-				self.onShowProfile()
-			}
-			else {
-				NotificationCenter.default.post(name: .showLoginNotification, object: nil)
-			}
+
+        // If not logged in, show the login screen...
+        if button != self.discoverButton {
+            if SnippetsUser.current() == nil {
+                NotificationCenter.default.post(name: .showLoginNotification, object: nil)
+                self.onShowTimeline()
+                return
+            }
+        }
+        
+        if button == self.profileButton {
+            self.onShowProfile()
 		}
 		if button == self.timelineButton {
 			self.onShowTimeline()
 		}
-
 		if button == self.discoverButton {
 			self.onShowDiscover()
 		}
-		
 		if button == self.mentionsButton {
 			self.onShowMentions()
 		}

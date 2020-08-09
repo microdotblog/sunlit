@@ -34,14 +34,23 @@ class SunlitMentions {
 	}
 
 	func allMentionsViewed() {
-		UserDefaults.standard.setValue(Date(), forKey: self.cachedMentionDateKey)
-		NotificationCenter.default.post(name: .mentionsUpdatedNotification, object: nil)
-		UIApplication.shared.applicationIconBadgeNumber = self.newMentionCount()
+
+        // This only matters if the user is logged in...
+        if SnippetsUser.current() != nil {
+            UserDefaults.standard.setValue(Date(), forKey: self.cachedMentionDateKey)
+            NotificationCenter.default.post(name: .mentionsUpdatedNotification, object: nil)
+            UIApplication.shared.applicationIconBadgeNumber = self.newMentionCount()
+        }
 	}
 
 	func update(_ callback : @escaping () -> () ) {
 		Snippets.shared.fetchCurrentUserMentions { (error, posts) in
 		
+            // We don't want to do anything if there is an error
+            if error != nil {
+                return
+            }
+            
 			DispatchQueue.main.async {
 				self.mentions = []
 				
