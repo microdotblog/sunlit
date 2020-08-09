@@ -157,37 +157,26 @@ class SunlitPost : SnippetsPost {
 		var elements : [Element] = []
 		
 		if let srcs : Elements = try? document.select("img[src]") {
-			let emojiImages = ["mini_thumbnail", "wp-smiley"]
 			for image in srcs.array() {
 				
 				var exclude = false
-				
-				// Skip emoji images...
-				if let className = try? image.className(), emojiImages.contains(className) {
-					exclude = true
-				}
 
-				if let width = try? image.attr("width") as NSString {
-					if width.floatValue > 0.0 && width.floatValue < SunlitPost.minimumResolution {
-						exclude = true
-					}
-				}
-			
-				if let height = try? image.attr("height") as NSString {
-					if height.floatValue > 0.0 && height.floatValue < SunlitPost.minimumResolution {
-						exclude = true
-					}
-				}
-
-				
 				for excludedPattern in SunlitPost.exclusionPatterns {
 					
-					if let text = try? image.attr("src") {
-						if text.contains(excludedPattern) {
-							exclude = true
-						}
+                    if let text = try? image.attr("src"),
+                        text.contains(excludedPattern)
+                    {
+                        exclude = true
+
+                        let alt : String = (try? image.attr("alt")) ?? ""
+                        let replacementTag = Element(Tag("b"), "")
+
+                        _ = try? replacementTag.appendText(alt)
+                        
+                        try? image.parent()?.replaceChild(image, replacementTag)
 					}
 				}
+
 
 				if !exclude {
 					elements.append(image)
@@ -210,7 +199,7 @@ class SunlitPost : SnippetsPost {
 	static func stripImagesAndVideos(_ document : Document, _ images : [Element], _ videos : [Element]) -> String {
 		
 		for image in images {
-			try? image.remove()
+            try? image.remove()
 		}
 		
 		for video in videos {
