@@ -23,8 +23,6 @@ class MentionsViewController: UIViewController {
     
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
-		SunlitMentions.shared.allMentionsViewed()
 	}
 	
 	@objc func handleAvatarLoadedNotification(_ notification: Notification) {
@@ -77,6 +75,8 @@ extension MentionsViewController : SnippetsScrollContentProtocol {
 		self.navigationController?.navigationBar.topItem?.title = "Mentions"
 		self.navigationController?.navigationBar.topItem?.titleView = nil
 		
+		SunlitMentions.shared.allMentionsViewed()
+
 		self.posts = SunlitMentions.shared.allMentions()
 		self.tableView.reloadData()
 		
