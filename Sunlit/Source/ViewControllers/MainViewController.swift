@@ -420,6 +420,7 @@ class MainViewController: UIViewController {
 			phoneViewController.timelineViewController = self.timelineViewController
 			phoneViewController.discoverViewController = self.discoverViewController
 			phoneViewController.profileViewController = self.profileViewController
+			phoneViewController.mentionsViewController = self.mentionsViewController
 
 			self.addChild(phoneViewController)
 			self.view.addSubview(phoneViewController.view)

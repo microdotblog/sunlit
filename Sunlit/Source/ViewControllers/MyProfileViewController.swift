@@ -111,7 +111,7 @@ class MyProfileViewController: UIViewController {
 			return
 		}
 		
-		ImageCache.fetch(self, path) { (image) in
+		ImageCache.fetch(path) { (image) in
 			if let _ = image {
 				DispatchQueue.main.async {
 					self.collectionView.performBatchUpdates({
@@ -280,7 +280,6 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 			self.loadPhoto(user.avatarURL, indexPath)
 		}
 		
-		cell.configureMentions()
 		cell.configureFollowing(count: self.followingUsers.count, complete: self.followersLoaded)
 	}
 	

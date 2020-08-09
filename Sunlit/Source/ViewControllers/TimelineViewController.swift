@@ -254,7 +254,7 @@ class TimelineViewController: UIViewController {
 		
 		for imageSource in post.images {
 			if ImageCache.prefetch(imageSource) == nil {
-				ImageCache.fetch(self, imageSource) { (image) in
+				ImageCache.fetch(imageSource) { (image) in
 					if let _ = image {
 						DispatchQueue.main.async {
 							NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
@@ -266,7 +266,7 @@ class TimelineViewController: UIViewController {
 		
 		let avatarSource = post.owner.avatarURL
 		if ImageCache.prefetch(avatarSource) == nil {
-			ImageCache.fetch(self, avatarSource) { (image) in
+			ImageCache.fetch(avatarSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
 						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)

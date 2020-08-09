@@ -66,7 +66,7 @@ public let UUHttpSessionHttpErrorCodeKey      = "UUHttpSessionHttpErrorCodeKey"
 public let UUHttpSessionHttpErrorMessageKey   = "UUHttpSessionHttpErrorMessageKey"
 public let UUHttpSessionAppResponseKey        = "UUHttpSessionAppResponseKey"
 
-public let kUUHttpDefaultTimeout : TimeInterval = 60.0
+public var kUUHttpDefaultTimeout : TimeInterval = 60.0
 
 public struct UUContentType
 {

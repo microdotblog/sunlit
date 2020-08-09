@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17140" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zzu-uT-cxA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17147" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zzu-uT-cxA">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17115"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17120"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -46,7 +46,7 @@
                                         <rect key="frame" x="0.0" y="8" width="382" height="88"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rpx-zo-iR9" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="122" height="88"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="89.5" height="88"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
@@ -59,8 +59,19 @@
                                                     <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="XVD-o9-rUI"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nCm-9g-zzG" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
+                                                <rect key="frame" x="97.5" y="0.0" width="89.5" height="88"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <color key="tintColor" systemColor="labelColor"/>
+                                                <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Mentions" image="quote.bubble" catalog="system"/>
+                                                <connections>
+                                                    <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="8bK-f1-NEw"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1L-Lm-SBr" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
-                                                <rect key="frame" x="130" y="0.0" width="122" height="88"/>
+                                                <rect key="frame" x="195" y="0.0" width="89.5" height="88"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
@@ -71,12 +82,12 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Wz-cV-0mQ" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
-                                                <rect key="frame" x="260" y="0.0" width="122" height="88"/>
+                                                <rect key="frame" x="292.5" y="0.0" width="89.5" height="88"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="@cheesemaker">
+                                                <state key="normal" title="Profile">
                                                     <imageReference key="image" image="person.crop.circle" catalog="system" renderingMode="original"/>
                                                 </state>
                                                 <state key="selected">
@@ -88,35 +99,11 @@
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="e1L-Lm-SBr" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="EBf-DT-i0Q"/>
-                                            <constraint firstItem="0Wz-cV-0mQ" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="gBG-dq-S0g"/>
+                                            <constraint firstItem="e1L-Lm-SBr" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="0Lf-VV-FxI"/>
+                                            <constraint firstItem="0Wz-cV-0mQ" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="KzU-iO-DjX"/>
+                                            <constraint firstItem="nCm-9g-zzG" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="T6p-DQ-rDK"/>
                                         </constraints>
                                     </stackView>
-                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ua9-t7-gcd">
-                                        <rect key="frame" x="339" y="8" width="23" height="16"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CJP-J9-0I4">
-                                                <rect key="frame" x="8" y="4" width="7" height="8"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="10"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="CJP-J9-0I4" secondAttribute="trailing" constant="8" id="2yq-u4-sah"/>
-                                            <constraint firstItem="CJP-J9-0I4" firstAttribute="top" secondItem="ua9-t7-gcd" secondAttribute="top" constant="4" id="8Oq-it-Z0P"/>
-                                            <constraint firstAttribute="bottom" secondItem="CJP-J9-0I4" secondAttribute="bottom" constant="4" id="Kjd-Z6-m0w"/>
-                                            <constraint firstItem="CJP-J9-0I4" firstAttribute="leading" secondItem="ua9-t7-gcd" secondAttribute="leading" constant="8" id="kfx-1w-y0M"/>
-                                            <constraint firstAttribute="height" constant="16" id="qmu-vR-wQ7"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="uuCornerRadius">
-                                                <real key="value" value="8"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -124,8 +111,6 @@
                                     <constraint firstItem="kuJ-kE-FD1" firstAttribute="centerX" secondItem="D6H-Gs-Up4" secondAttribute="centerX" id="Let-HH-ckv"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="96" id="Lpg-u2-R5b"/>
                                     <constraint firstAttribute="bottom" secondItem="kuJ-kE-FD1" secondAttribute="bottom" id="hjN-Vc-7Qm"/>
-                                    <constraint firstItem="ua9-t7-gcd" firstAttribute="top" secondItem="kuJ-kE-FD1" secondAttribute="top" id="mhP-d8-SEA"/>
-                                    <constraint firstItem="ua9-t7-gcd" firstAttribute="trailing" secondItem="kuJ-kE-FD1" secondAttribute="trailing" constant="-20" id="vte-uh-Y9E"/>
                                     <constraint firstItem="kuJ-kE-FD1" firstAttribute="leading" secondItem="D6H-Gs-Up4" secondAttribute="leading" id="wmv-A7-jTa"/>
                                     <constraint firstItem="kuJ-kE-FD1" firstAttribute="top" secondItem="D6H-Gs-Up4" secondAttribute="top" constant="8" id="zGk-si-zF7"/>
                                 </constraints>
@@ -146,8 +131,7 @@
                     <connections>
                         <outlet property="contentView" destination="Ois-MX-ace" id="CVS-Up-K5l"/>
                         <outlet property="discoverButton" destination="e1L-Lm-SBr" id="iOf-Q5-VBa"/>
-                        <outlet property="mentionContainer" destination="ua9-t7-gcd" id="uac-pU-9ur"/>
-                        <outlet property="mentionIndicator" destination="CJP-J9-0I4" id="K4G-0o-Faa"/>
+                        <outlet property="mentionsButton" destination="nCm-9g-zzG" id="dE8-Pn-7Vj"/>
                         <outlet property="profileButton" destination="0Wz-cV-0mQ" id="nYp-yI-ztu"/>
                         <outlet property="scrollView" destination="D4j-cD-DQP" id="pY9-XT-j4v"/>
                         <outlet property="tabBar" destination="D6H-Gs-Up4" id="VJC-pk-lPT"/>
@@ -164,6 +148,7 @@
         <image name="magnifyingglass.circle" catalog="system" width="128" height="121"/>
         <image name="person.circle.fill" catalog="system" width="128" height="121"/>
         <image name="person.crop.circle" catalog="system" width="128" height="121"/>
+        <image name="quote.bubble" catalog="system" width="128" height="110"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

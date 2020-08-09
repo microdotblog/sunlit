@@ -19,9 +19,6 @@ class MentionsViewController: UIViewController {
 
 	override func viewDidLoad() {
         super.viewDidLoad()
-		self.posts = SunlitMentions.shared.allMentions()
-		
-		NotificationCenter.default.addObserver(self, selector: #selector(handleAvatarLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
     }
     
 	override func viewWillAppear(_ animated: Bool) {
@@ -34,6 +31,14 @@ class MentionsViewController: UIViewController {
 		DispatchQueue.main.async {
 			self.tableView.reloadData()
 		}
+	}
+	
+	@objc func handleUserMentionsUpdated() {
+		DispatchQueue.main.async {
+			self.posts = SunlitMentions.shared.allMentions()
+			self.tableView.reloadData()
+		}
+		
 	}
 
 }
@@ -71,9 +76,19 @@ extension MentionsViewController : SnippetsScrollContentProtocol {
 	func prepareToDisplay() {
 		self.navigationController?.navigationBar.topItem?.title = "Mentions"
 		self.navigationController?.navigationBar.topItem?.titleView = nil
+		
+		self.posts = SunlitMentions.shared.allMentions()
+		self.tableView.reloadData()
+		
+		SunlitMentions.shared.update {
+		}
+
+		NotificationCenter.default.addObserver(self, selector: #selector(handleAvatarLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
 	}
 	
 	func prepareToHide() {
+		NotificationCenter.default.removeObserver(self)
 	}
 
 }

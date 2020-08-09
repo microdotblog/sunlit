@@ -11,8 +11,6 @@ import UUSwift
 
 class ImageCache {
 	
-    static var requestorLookup : [ String : [NSObject] ] = [:]
-    
 	static let systemCache = NSCache<NSString, UIImage>()
 	
 	static func prefetch(_ path: String) -> UIImage? {
@@ -34,31 +32,25 @@ class ImageCache {
 	}
 	
 	
-    static func fetch(_ requestor : NSObject, _ path: String, completion: @escaping ((UIImage?) -> Void)) {
+    static func fetch(_ path: String, completion: @escaping ((UIImage?) -> Void)) {
 		
 		if let image = ImageCache.prefetch(path) {
 			completion(image)
 			return
 		}
         
-        if var requestorArray = requestorLookup[path] {
-            for object in requestorArray {
-                if object == requestor {
-                    return
-                }
-            }
-            
-            requestorArray.append(requestor)
-        }
-        else {
-            requestorLookup[path] = [requestor]
-        }
-        
 		_ = UURemoteData.shared.data(for: path) { (data, error) in
 			if let imageData = data {
 				if let image = UIImage(data: imageData) {
 					ImageCache.systemCache.setObject(image, forKey: path as NSString)
 					completion(image)
+					return
+				}
+			}
+			else if let err = error as NSError? {
+				// Special case the timeout error to try again...
+				if err.code == NSURLErrorTimedOut {
+					fetch(path, completion: completion)
 					return
 				}
 			}
