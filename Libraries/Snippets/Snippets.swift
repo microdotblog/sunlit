@@ -135,26 +135,56 @@ public class Snippets : NSObject {
 	
 	@objc public func fetchCurrentUserTimeline(parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
+        // Pre-flight check to see if we are even configured...
+        if self.timelineConfiguration.token.count == 0 {
+            completion(SnippetsError.invalidOrMissingToken, [])
+            return
+        }
+
 		self.fetchTimeline(self.pathForTimelineRoute("posts/all"), arguments:parameters, completion: completion)
 	}
 	
 	@objc public func fetchCurrentUserPhotoTimeline(parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
+        // Pre-flight check to see if we are even configured...
+        if self.timelineConfiguration.token.count == 0 {
+            completion(SnippetsError.invalidOrMissingToken, [])
+            return
+        }
+
 		self.fetchTimeline(self.pathForTimelineRoute("posts/photos"), arguments:parameters, completion: completion)
 	}
 
 	@objc public func fetchCurrentUserMediaTimeline(parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
+        // Pre-flight check to see if we are even configured...
+        if self.timelineConfiguration.token.count == 0 {
+            completion(SnippetsError.invalidOrMissingToken, [])
+            return
+        }
+
 		self.fetchTimeline(self.pathForTimelineRoute("posts/media"), arguments: parameters, completion: completion)
 	}
 
 	@objc public func fetchCurrentUserMentions(parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
+        // Pre-flight check to see if we are even configured...
+        if self.timelineConfiguration.token.count == 0 {
+            completion(SnippetsError.invalidOrMissingToken, [])
+            return
+        }
+
 		self.fetchTimeline(self.pathForTimelineRoute("posts/mentions"), arguments: parameters, completion: completion)
 	}
 
 	@objc public func fetchCurrentUserFavorites(parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
+        // Pre-flight check to see if we are even configured...
+        if self.timelineConfiguration.token.count == 0 {
+            completion(SnippetsError.invalidOrMissingToken, [])
+            return
+        }
+
 		self.fetchTimeline(self.pathForTimelineRoute("posts/favorites"), arguments: parameters, completion: completion)
 	}
 	
