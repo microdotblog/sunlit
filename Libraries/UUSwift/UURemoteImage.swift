@@ -57,7 +57,7 @@ public class UURemoteImage: NSObject
         {
             return true
         }
-        if UUDataCache.shared.doesDataExist(for: path)
+        if UUDataCache.shared.dataExists(for: path)
         {
             return true
         }
