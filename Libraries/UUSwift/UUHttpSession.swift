@@ -66,8 +66,6 @@ public let UUHttpSessionHttpErrorCodeKey      = "UUHttpSessionHttpErrorCodeKey"
 public let UUHttpSessionHttpErrorMessageKey   = "UUHttpSessionHttpErrorMessageKey"
 public let UUHttpSessionAppResponseKey        = "UUHttpSessionAppResponseKey"
 
-public var kUUHttpDefaultTimeout : TimeInterval = 60.0
-
 public struct UUContentType
 {
     public static let applicationJson  = "application/json"
@@ -88,13 +86,16 @@ public struct UUHeader
 
 public class UUHttpRequest: NSObject
 {
+	public static var defaultTimeout : TimeInterval = 60.0
+	public static var defaultCachePolicy : URLRequest.CachePolicy = .useProtocolCachePolicy
+	
     public var url : String = ""
     public var httpMethod : UUHttpMethod = .get
     public var queryArguments : UUQueryStringArgs = [:]
     public var headerFields : UUHttpHeaders = [:]
     public var body : Data? = nil
     public var bodyContentType : String? = nil
-    public var timeout : TimeInterval = kUUHttpDefaultTimeout
+	public var timeout : TimeInterval = UUHttpRequest.defaultTimeout
     public var credentials : URLCredential? = nil
     public var processMimeTypes : Bool = true
     public var startTime : TimeInterval = 0
@@ -353,7 +354,7 @@ public class UUHttpSession: NSObject
         super.init()
         
         sessionConfiguration = URLSessionConfiguration.default
-        sessionConfiguration?.timeoutIntervalForRequest = kUUHttpDefaultTimeout
+		sessionConfiguration?.timeoutIntervalForRequest = UUHttpRequest.defaultTimeout
         
         urlSession = URLSession.init(configuration: sessionConfiguration!)
         
@@ -440,6 +441,7 @@ public class UUHttpSession: NSObject
         var req : URLRequest = URLRequest(url: url)
         req.httpMethod = request.httpMethod.rawValue
         req.timeoutInterval = request.timeout
+		req.cachePolicy = UUHttpRequest.defaultCachePolicy
         
         for key in request.headerFields.keys
         {
