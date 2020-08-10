@@ -57,7 +57,7 @@ extension AppDelegate {
 					builder.insertChild(view_menu, atStartOfMenu: .view)
 					
 					if profile_image == nil {
-						ImageCache.fetch(current.avatarURL) { (image) in
+						ImageCache.fetch(self, current.avatarURL) { (image) in
 							if let profile_image = image {
 								DispatchQueue.main.async {
 									profile_item.image = profile_image.withRenderingMode(.alwaysOriginal)

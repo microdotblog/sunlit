@@ -87,13 +87,13 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		self.userHandle.text = "@" + self.post.owner.userName
 		self.fullUserName.text = self.post.owner.fullName
 		
-		ImageCache.fetch(self.post.owner.avatarURL) { (image) in
+		ImageCache.fetch(self, self.post.owner.avatarURL) { (image) in
 			DispatchQueue.main.async {
 				self.userAvatar.image = image
 			}
 		}
 
-		ImageCache.fetch(self.pathToImage) { (image) in
+		ImageCache.fetch(self, self.pathToImage) { (image) in
 			DispatchQueue.main.async {
 				self.image.image = image
 			}

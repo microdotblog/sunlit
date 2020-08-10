@@ -249,7 +249,6 @@ class DiscoverViewController: UIViewController {
 				
 			for tagmoji in tagmojiArray {
 				if let name = Tagmoji.shared.tileFor(tagmoji: tagmoji) {
-					self.collection = name
 					
 					let button = UIButton(type: .custom)
 					button.frame = CGRect(x: buttonOffset.x, y: buttonOffset.y, width: 36, height: 36)
@@ -287,7 +286,7 @@ class DiscoverViewController: UIViewController {
 		let imageSource = post.images[0]
 		
 		if ImageCache.prefetch(imageSource) == nil {
-			ImageCache.fetch(imageSource) { (image) in
+			ImageCache.fetch(self, imageSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
 						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
@@ -298,7 +297,7 @@ class DiscoverViewController: UIViewController {
 		
 		let avatarSource = post.owner.avatarURL
 		if ImageCache.prefetch(avatarSource) == nil {
-			ImageCache.fetch(avatarSource) { (image) in
+			ImageCache.fetch(self, avatarSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
 						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)

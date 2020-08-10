@@ -85,7 +85,7 @@ class ProfileViewController: UIViewController {
 			return
 		}
 		
-		ImageCache.fetch(path) { (image) in
+		ImageCache.fetch(self, path) { (image) in
 			if let _ = image {
 				DispatchQueue.main.async {
 					self.collectionView.reloadItems(at: [ index ])
