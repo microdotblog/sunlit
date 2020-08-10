@@ -25,7 +25,7 @@ public protocol UUDataCacheProtocol
     func metaData(for key: String) -> [String:Any]
     func set(metaData: [String:Any], for key: String)
     
-    func doesDataExist(for key: String) -> Bool
+    func dataExists(for key: String) -> Bool
     func isDataExpired(for key: String) -> Bool
     
     func removeData(for key: String)
@@ -91,15 +91,18 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
     {
         removeIfExpired(for: key)
         
-        let cached = loadFromCache(for: key)
+        var cached = loadFromCache(for: key)
         if (cached != nil)
         {
             return cached
         }
         
-        let data = loadFromDisk(for: key)
+        if let data = loadFromDisk(for: key) {
+            saveToCache(data: data, for: key)
+            cached = data
+        }
         
-        return data
+        return cached
     }
     
     public func set(data: Data, for key: String)
@@ -141,10 +144,9 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         UUDataCacheDb.shared.setMetaData(metaData, for: key)
     }
     
-    public func doesDataExist(for key: String) -> Bool
+    public func dataExists(for key: String) -> Bool
     {
-        let pathUrl = diskCacheURL(for: key)
-        return FileManager.default.fileExists(atPath:pathUrl.path)
+        return dataExistsInCache(key: key) || dataExistsOnDisk(key: key)
     }
     
     public func isDataExpired(for key: String) -> Bool
@@ -322,6 +324,15 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
     private func saveToCache(data: Data, for key: String)
     {
         dataCache.setObject(data as NSData, forKey: key as NSString)
+    }
+    
+    private func dataExistsOnDisk(key: String) -> Bool {
+        let pathUrl = diskCacheURL(for: key)
+        return FileManager.default.fileExists(atPath:pathUrl.path)
+    }
+    
+    private func dataExistsInCache(key: String) -> Bool {
+        return dataCache.object(forKey: key as NSString) != nil
     }
 }
 
