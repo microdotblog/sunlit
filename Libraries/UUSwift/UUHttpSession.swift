@@ -96,6 +96,7 @@ public class UUHttpRequest: NSObject
     public var body : Data? = nil
     public var bodyContentType : String? = nil
 	public var timeout : TimeInterval = UUHttpRequest.defaultTimeout
+	public var cachePolicy : URLRequest.CachePolicy = UUHttpRequest.defaultCachePolicy
     public var credentials : URLCredential? = nil
     public var processMimeTypes : Bool = true
     public var startTime : TimeInterval = 0
@@ -441,7 +442,7 @@ public class UUHttpSession: NSObject
         var req : URLRequest = URLRequest(url: url)
         req.httpMethod = request.httpMethod.rawValue
         req.timeoutInterval = request.timeout
-		req.cachePolicy = UUHttpRequest.defaultCachePolicy
+		req.cachePolicy = request.cachePolicy
         
         for key in request.headerFields.keys
         {
