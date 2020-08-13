@@ -243,16 +243,16 @@ public class Snippets : NSObject {
         }
     }
 
-	@objc public func fetchUserPosts(user : SnippetsUser, completion: @escaping(Error?, [SnippetsPost]) -> ())
+	@objc public func fetchUserPosts(user : SnippetsUser, parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
 		let route = "posts/\(user.userName)"
-		self.fetchTimeline(self.pathForTimelineRoute(route), completion: completion)
+		self.fetchTimeline(self.pathForTimelineRoute(route), arguments: parameters, completion: completion)
 	}
 	
-	@objc public func fetchUserMediaPosts(user : SnippetsUser, completion: @escaping(Error?, [SnippetsPost]) -> ())
+	@objc public func fetchUserMediaPosts(user : SnippetsUser, parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
 	{
 		let route = "/posts/\(user.userName)/photos"
-		self.fetchTimeline(self.pathForTimelineRoute(route), completion: completion)
+		self.fetchTimeline(self.pathForTimelineRoute(route), arguments: parameters, completion: completion)
 	}
 	
 	@objc public func fetchConversation(post : SnippetsPost, completion: @escaping(Error?, [SnippetsPost]) -> ())
