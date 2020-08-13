@@ -157,7 +157,12 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 		case 0:
 			self.onTimeLine()
 		case 1:
-			self.onMentions()
+			if SnippetsUser.current() != nil {
+				self.onMentions()
+			}
+			else {
+				self.onDiscover()
+			}
 		case 2:
 			self.onDiscover()
 		case 3:
