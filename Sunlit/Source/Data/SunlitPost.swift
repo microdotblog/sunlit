@@ -19,13 +19,8 @@ class SunlitPost : SnippetsPost {
 	var images : [String] = []
 	var videos : [String] = []
 	var htmlString : String = ""
+	var attributedText : NSAttributedString = NSAttributedString(string: "")
 
-	var attributedText : NSAttributedString {
-		get {
-			return NSAttributedString(string: self.htmlString).html()
-		}
-	}
-	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -123,6 +118,8 @@ class SunlitPost : SnippetsPost {
 			parsedEntry.aspectRatio = aspectRatio
 		}
 		
+		parsedEntry.attributedText = NSAttributedString(string: parsedEntry.htmlString).html()
+		
 		return parsedEntry
 	}
 	
@@ -131,13 +128,15 @@ class SunlitPost : SnippetsPost {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	static func addTextStyle(string : String, font : UIFont, textColor : UIColor) -> String {
+		
 		let cssString = "<style>" +
 		"html *" +
 		"{" +
-		"color: \(textColor.uuHexString) !important;" +
-		"font: -apple-system-body !important;" +
+			"color: \(textColor.uuHexString) !important; " +
+			"font-size: \(font.pointSize)pt !important; " +
+			//"font-family: San Francisco !important; " +
 		"}</style>"
-
+		
 		return cssString + string
 	}
 	
