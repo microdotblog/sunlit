@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17147" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zzu-uT-cxA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17140" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zzu-uT-cxA">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17120"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17115"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -47,13 +47,13 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rpx-zo-iR9" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="89.5" height="88"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
                                                 <state key="normal" title="Timeline">
                                                     <imageReference key="image" image="bubble.left.and.bubble.right" catalog="system" symbolScale="small"/>
-                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="18" scale="default" weight="regular"/>
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17" scale="default" weight="regular"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="XVD-o9-rUI"/>
@@ -61,7 +61,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nCm-9g-zzG" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
                                                 <rect key="frame" x="97.5" y="0.0" width="89.5" height="88"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
@@ -72,7 +72,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1L-Lm-SBr" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
                                                 <rect key="frame" x="195" y="0.0" width="89.5" height="88"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
@@ -83,7 +83,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Wz-cV-0mQ" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
                                                 <rect key="frame" x="292.5" y="0.0" width="89.5" height="88"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
