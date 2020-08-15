@@ -66,8 +66,6 @@ public let UUHttpSessionHttpErrorCodeKey      = "UUHttpSessionHttpErrorCodeKey"
 public let UUHttpSessionHttpErrorMessageKey   = "UUHttpSessionHttpErrorMessageKey"
 public let UUHttpSessionAppResponseKey        = "UUHttpSessionAppResponseKey"
 
-public let kUUHttpDefaultTimeout : TimeInterval = 60.0
-
 public struct UUContentType
 {
     public static let applicationJson  = "application/json"
@@ -88,13 +86,17 @@ public struct UUHeader
 
 public class UUHttpRequest: NSObject
 {
+	public static var defaultTimeout : TimeInterval = 60.0
+	public static var defaultCachePolicy : URLRequest.CachePolicy = .useProtocolCachePolicy
+	
     public var url : String = ""
     public var httpMethod : UUHttpMethod = .get
     public var queryArguments : UUQueryStringArgs = [:]
     public var headerFields : UUHttpHeaders = [:]
     public var body : Data? = nil
     public var bodyContentType : String? = nil
-    public var timeout : TimeInterval = kUUHttpDefaultTimeout
+	public var timeout : TimeInterval = UUHttpRequest.defaultTimeout
+	public var cachePolicy : URLRequest.CachePolicy = UUHttpRequest.defaultCachePolicy
     public var credentials : URLCredential? = nil
     public var processMimeTypes : Bool = true
     public var startTime : TimeInterval = 0
@@ -343,7 +345,7 @@ public class UUHttpSession: NSObject
 {
     private var urlSession : URLSession? = nil
     private var sessionConfiguration : URLSessionConfiguration? = nil
-    private var activeTasks : [URLSessionTask] = []
+    private var activeTasks : UUThreadSafeArray<URLSessionTask> = UUThreadSafeArray()
     private var responseHandlers : [String:UUHttpResponseHandler] = [:]
     
     public static let shared = UUHttpSession()
@@ -353,7 +355,7 @@ public class UUHttpSession: NSObject
         super.init()
         
         sessionConfiguration = URLSessionConfiguration.default
-        sessionConfiguration?.timeoutIntervalForRequest = kUUHttpDefaultTimeout
+		sessionConfiguration?.timeoutIntervalForRequest = UUHttpRequest.defaultTimeout
         
         urlSession = URLSession.init(configuration: sessionConfiguration!)
         
@@ -440,6 +442,7 @@ public class UUHttpSession: NSObject
         var req : URLRequest = URLRequest(url: url)
         req.httpMethod = request.httpMethod.rawValue
         req.timeoutInterval = request.timeout
+		req.cachePolicy = request.cachePolicy
         
         for key in request.headerFields.keys
         {

@@ -17,6 +17,7 @@ class MyProfileViewController: UIViewController {
 	var userPosts : [SunlitPost] = []
 	var followingUsers : [SnippetsUser] = []
 	var loadInProgress = false
+	var followersLoaded = false
 	var refreshControl = UIRefreshControl()
 	
 	@IBOutlet var collectionView : UICollectionView!
@@ -36,6 +37,8 @@ class MyProfileViewController: UIViewController {
 		
 		self.refreshControl.addTarget(self, action: #selector(fetchUserInfo), for: .valueChanged)
 		self.collectionView.addSubview(self.refreshControl)
+
+		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
     }
 		
 	@objc func handleCurrentUserUpdatedNotification() {
@@ -44,6 +47,14 @@ class MyProfileViewController: UIViewController {
 			self.fetchUserInfo()
 			self.navigationItem.title = user.fullName
 		}
+	}
+	
+	@objc func handleViewFollowingButtonClickedNotification() {
+		NotificationCenter.default.post(name: .showFollowingNotification, object: self.followingUsers)
+	}
+	
+	@objc func handleUserMentionsUpdated() {
+		self.collectionView.reloadItems(at: [IndexPath(item: 0, section: 0)])
 	}
 	
 	@objc func fetchUserInfo() {
@@ -64,13 +75,14 @@ class MyProfileViewController: UIViewController {
 
 				Snippets.shared.fetchUserMediaPosts(user: updatedUser) { (error, snippets : [SnippetsPost]) in
 	
-					var posts : [SunlitPost] = []
-					for snippet in snippets {
-						let sunlitPost = SunlitPost.create(snippet)
-						posts.append(sunlitPost)
-					}
-					
 					DispatchQueue.main.async {
+
+						var posts : [SunlitPost] = []
+						for snippet in snippets {
+							let sunlitPost = SunlitPost.create(snippet)
+							posts.append(sunlitPost)
+						}
+
 						self.loadInProgress = false
 						self.userPosts = posts
 						self.collectionView.reloadData()
@@ -80,6 +92,7 @@ class MyProfileViewController: UIViewController {
 				
 				Snippets.shared.listFollowers(user: self.user, completeList: true) { (error, users) in
 					self.followingUsers = users
+					self.followersLoaded = true
 					self.user.followingCount = users.count
 					self.user = SnippetsUser.saveAsCurrent(self.user)
 					
@@ -114,6 +127,10 @@ class MyProfileViewController: UIViewController {
 		NotificationCenter.default.post(name: .showLoginNotification, object: nil)
 	}
 
+	@IBAction func onShowMentions() {
+		
+	}
+	
 }
 
 
@@ -145,10 +162,6 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 		// Check for the logged out state...
 		if Settings.snippetsToken() == nil {
 			return 0
-		}
-		
-		if self.userPosts.count == 0 {
-			return 2
 		}
 		
 		return 3
@@ -267,21 +280,12 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 			self.loadPhoto(user.avatarURL, indexPath)
 		}
 		
-		cell.followingCount.text = "-"
-		cell.postCount.text = "-"
-		
-		if self.user.followingCount > 0 {
-			cell.followingCount.text = "\(self.user.followingCount)"
-		}
-		if self.userPosts.count > 0 {
-			cell.postCount.text = "\(self.userPosts.count)"
-		}
-		
-		//cell.widthConstraint.constant = self.collectionView.bounds.size.width
+		cell.configureFollowing(count: self.followingUsers.count, complete: self.followersLoaded)
 	}
 	
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
-		cell.bio.attributedText = user.attributedTextBio()
+		cell.bio.text = user.bio
+		//cell.bio.attributedText = user.attributedTextBio()
 		//cell.widthConstraint.constant = self.view.bounds.size.width
 	}
 	
@@ -299,14 +303,7 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 			}
 		}
 
-//		cell.photo.layer.borderColor = UIColor.lightGray.cgColor
-//		cell.photo.layer.borderWidth = 0.5
-		
-//		cell.contentView.layer.cornerRadius = 8.0
 		cell.contentView.clipsToBounds = true
-//		cell.contentView.layer.borderWidth = 0.5
-//		cell.contentView.layer.borderColor = UIColor.lightGray.cgColor
-		//cell.widthConstraint.constant = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: self.collectionView.bounds.size.width).width
 	}
 	
 }
@@ -329,6 +326,8 @@ extension MyProfileViewController : SnippetsScrollContentProtocol {
 		self.collectionView.reloadData()
 
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleViewFollowingButtonClickedNotification), name: .followingButtonClickedNotification, object: nil)
 
 		self.fetchUserInfo()
 	}

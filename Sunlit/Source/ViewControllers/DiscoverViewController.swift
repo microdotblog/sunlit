@@ -249,7 +249,6 @@ class DiscoverViewController: UIViewController {
 				
 			for tagmoji in tagmojiArray {
 				if let name = Tagmoji.shared.tileFor(tagmoji: tagmoji) {
-					self.collection = name
 					
 					let button = UIButton(type: .custom)
 					button.frame = CGRect(x: buttonOffset.x, y: buttonOffset.y, width: 36, height: 36)

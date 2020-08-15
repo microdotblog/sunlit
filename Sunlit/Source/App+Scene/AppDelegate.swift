@@ -24,7 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		UUDataCache.shared.purgeExpiredData()
 		
 		// We might want to change this in the future but for now, it covers basically a single view in one of the collection views
-		UURemoteData.shared.maxActiveRequests = 6
+		UURemoteData.shared.maxActiveRequests = 8
+		UUHttpRequest.defaultTimeout = 30.0
+		UUHttpRequest.defaultCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
 
 		return true
 	}

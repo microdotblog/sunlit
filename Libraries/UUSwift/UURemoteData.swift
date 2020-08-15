@@ -82,7 +82,7 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
             return nil
         }
         
-		if UUDataCache.shared.doesDataExist(for: key) {
+		if UUDataCache.shared.dataExists(for: key) {
 			let data = UUDataCache.shared.data(for: key)
 			if (data != nil)
 			{

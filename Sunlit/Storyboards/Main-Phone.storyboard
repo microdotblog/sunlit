@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17132" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zzu-uT-cxA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17140" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="zzu-uT-cxA">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17105"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17115"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -46,22 +46,33 @@
                                         <rect key="frame" x="0.0" y="8" width="382" height="88"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rpx-zo-iR9" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="122" height="88"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="89.5" height="88"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
                                                 <state key="normal" title="Timeline">
                                                     <imageReference key="image" image="bubble.left.and.bubble.right" catalog="system" symbolScale="small"/>
-                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="18" scale="default" weight="regular"/>
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17" scale="default" weight="regular"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="XVD-o9-rUI"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nCm-9g-zzG" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
+                                                <rect key="frame" x="97.5" y="0.0" width="89.5" height="88"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="tintColor" systemColor="labelColor"/>
+                                                <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Mentions" image="quote.bubble" catalog="system"/>
+                                                <connections>
+                                                    <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="8bK-f1-NEw"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1L-Lm-SBr" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
-                                                <rect key="frame" x="130" y="0.0" width="122" height="88"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <rect key="frame" x="195" y="0.0" width="89.5" height="88"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
@@ -71,12 +82,12 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Wz-cV-0mQ" customClass="TabButton" customModule="Sunlit" customModuleProvider="target">
-                                                <rect key="frame" x="260" y="0.0" width="122" height="88"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <rect key="frame" x="292.5" y="0.0" width="89.5" height="88"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="@cheesemaker">
+                                                <state key="normal" title="Profile">
                                                     <imageReference key="image" image="person.crop.circle" catalog="system" renderingMode="original"/>
                                                 </state>
                                                 <state key="selected">
@@ -88,8 +99,9 @@
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="e1L-Lm-SBr" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="EBf-DT-i0Q"/>
-                                            <constraint firstItem="0Wz-cV-0mQ" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="gBG-dq-S0g"/>
+                                            <constraint firstItem="e1L-Lm-SBr" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="0Lf-VV-FxI"/>
+                                            <constraint firstItem="0Wz-cV-0mQ" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="KzU-iO-DjX"/>
+                                            <constraint firstItem="nCm-9g-zzG" firstAttribute="height" secondItem="Rpx-zo-iR9" secondAttribute="height" id="T6p-DQ-rDK"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
@@ -119,6 +131,7 @@
                     <connections>
                         <outlet property="contentView" destination="Ois-MX-ace" id="CVS-Up-K5l"/>
                         <outlet property="discoverButton" destination="e1L-Lm-SBr" id="iOf-Q5-VBa"/>
+                        <outlet property="mentionsButton" destination="nCm-9g-zzG" id="dE8-Pn-7Vj"/>
                         <outlet property="profileButton" destination="0Wz-cV-0mQ" id="nYp-yI-ztu"/>
                         <outlet property="scrollView" destination="D4j-cD-DQP" id="pY9-XT-j4v"/>
                         <outlet property="tabBar" destination="D6H-Gs-Up4" id="VJC-pk-lPT"/>
@@ -135,6 +148,7 @@
         <image name="magnifyingglass.circle" catalog="system" width="128" height="121"/>
         <image name="person.circle.fill" catalog="system" width="128" height="121"/>
         <image name="person.crop.circle" catalog="system" width="128" height="121"/>
+        <image name="quote.bubble" catalog="system" width="128" height="110"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

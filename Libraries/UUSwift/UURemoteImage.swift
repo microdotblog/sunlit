@@ -48,69 +48,70 @@ public class UURemoteImage: NSObject
     
     public func clearCache()
     {
-        systemImageCache.removeAllObjects()
+        self.systemImageCache.removeAllObjects()
     }
     
-    public func local(_ path : String) -> Bool
+    public func isDownloaded( for key: String) -> Bool
     {
-        if let _ = self.systemImageCache.object(forKey: path as NSString)
-        {
-            return true
-        }
-        if UUDataCache.shared.doesDataExist(for: path)
-        {
+        if self.systemImageCache.object(forKey: key as NSString) != nil {
             return true
         }
         
-        return false
+        return UUDataCache.shared.dataExists(for: key)
+    }
+    
+    public func image(for key: String) -> UUImage?
+    {
+        return image(for: key, remoteLoadCompletion: nil)
+    }
+    
+    public func image(for key: String, remoteLoadCompletion: UUImageLoadedCompletionBlock? = nil) -> UUImage?
+    {
+        if let image = self.systemImageCache.object(forKey: key as NSString)
+        {
+            return image
+        }
+        else {
+            let data = UURemoteData.shared.data(for: key, remoteLoadCompletion:
+            { (data, error) in
+                let image = self.processImageData(for: key, data: data)
+                
+                if let completion = remoteLoadCompletion {
+                    completion(image, error)
+                }
+            })
+            
+            if let imageData = data
+            {
+                let image = self.processImageData(for: key, data: imageData)
+                return image
+            }
+        }
+        
+        return nil
     }
 
-    public func image(for path : String, remoteLoadCompletion : UUImageLoadedCompletionBlock? = nil) -> UUImage?
+    private func processImageData(for key: String, data : Data?) -> UUImage?
     {
-        // Check the local cache...
-        if let image = self.systemImageCache.object(forKey: path as NSString) as? UUImage
+        if let imageData = data, let image = UUImage(data: imageData)
         {
-            return image
-        }
-        else
-        {
-            let data = UURemoteData.shared.data(for: path)
-            { (data, error) in
-                
-                let image = self.processData(path, data: data)
-                remoteLoadCompletion?(image, error)
-            }
+            self.systemImageCache.setObject(image, forKey: key as NSString)
             
-            let image = processData(path, data: data)
+            var md = UUDataCache.shared.metaData(for: key)
+            md[MetaData.ImageWidth] = NSNumber(value: Float(image.size.width))
+            md[MetaData.ImageHeight] = NSNumber(value: Float(image.size.height))
+            UUDataCache.shared.set(metaData: md, for: key)
+
+            var metaData : [String:Any] = [:]
+            metaData[UURemoteData.NotificationKeys.RemotePath] = key
+            self.notifyImageDownloaded(metaData: metaData)
+            
             return image
         }
-    }
-    
-    private func processData(_ path: String, data: Data?) -> UUImage?
-    {
-        var image : UUImage? = nil
         
-        if let imageData = data
-        {
-            image = UUImage(data: imageData)
-            if let img = image
-            {
-                self.systemImageCache.setObject(img, forKey: path as NSString)
-                
-                var md = UUDataCache.shared.metaData(for: path)
-                md[MetaData.ImageWidth] = NSNumber(value: Float(img.size.width))
-                md[MetaData.ImageHeight] = NSNumber(value: Float(img.size.height))
-                UUDataCache.shared.set(metaData: md, for: path)
-                
-                var metaData : [String:Any] = [:]
-                metaData[UURemoteData.NotificationKeys.RemotePath] = path
-                notifyImageDownloaded(metaData: metaData)
-            }
-        }
-        
-        return image
+        return nil
     }
-    
+        
     private func notifyImageDownloaded(metaData: [String:Any])
     {
         DispatchQueue.main.async
@@ -122,7 +123,7 @@ public class UURemoteImage: NSObject
     ////////////////////////////////////////////////////////////////////////////
     // Private implementation
     ////////////////////////////////////////////////////////////////////////////
-    private let systemImageCache = NSCache<AnyObject, AnyObject>()
+    private let systemImageCache = NSCache<NSString, UUImage>()
     
     private struct MetaData
     {

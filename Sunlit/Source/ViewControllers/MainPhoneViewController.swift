@@ -16,11 +16,13 @@ class MainPhoneViewController: UIViewController {
 	@IBOutlet var tabBar : UIView!
 	@IBOutlet var timelineButton : UIButton!
 	@IBOutlet var discoverButton : UIButton!
+	@IBOutlet var mentionsButton : UIButton!
 	@IBOutlet var profileButton : UIButton!
-	
+
 	var discoverViewController : DiscoverViewController!
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
+	var mentionsViewController : MentionsViewController!
 	var currentViewController : SnippetsScrollContentProtocol? = nil
 	var reloadTimer: Timer?
 
@@ -35,8 +37,8 @@ class MainPhoneViewController: UIViewController {
 		self.setupProfileButton()
 		self.loadContentViews()
 		self.updateInterfaceForLogin()
-		
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
 	}
     
 	override func viewDidLayoutSubviews() {
@@ -46,17 +48,21 @@ class MainPhoneViewController: UIViewController {
 		self.profileButton.centerVertically()
 		self.discoverButton.centerVertically()
 		self.timelineButton.centerVertically()
+		self.mentionsButton.centerVertically()
 		
 		var frame = self.scrollView.frame
 		self.timelineViewController.view.frame = frame
 		
 		frame.origin.x += frame.size.width
+		self.mentionsViewController.view.frame = frame
+
+		frame.origin.x += frame.size.width
 		self.discoverViewController.view.frame = frame
-		
+				
 		frame.origin.x += frame.size.width
 		self.profileViewController.view.frame = frame
 		
-		let contentSize = CGSize(width: frame.size.width * 3.0, height: 0.0)
+		let contentSize = CGSize(width: frame.size.width * 4.0, height: 0.0)
 		self.scrollView.contentSize = contentSize
 
 		if let timer = self.reloadTimer {
@@ -71,6 +77,7 @@ class MainPhoneViewController: UIViewController {
 				self.discoverViewController.tableView.reloadData()
 				self.discoverViewController.collectionView.reloadData()
 				self.profileViewController.collectionView.reloadData()
+				self.mentionsViewController.tableView.reloadData()
 			}
 		}
 	}
@@ -84,6 +91,7 @@ class MainPhoneViewController: UIViewController {
 	func loadContentViews() {
 		
 		self.addChild(self.timelineViewController)
+		self.addChild(self.mentionsViewController)
 		self.addChild(self.discoverViewController)
 		self.addChild(self.profileViewController)
 
@@ -92,10 +100,14 @@ class MainPhoneViewController: UIViewController {
 		self.timelineViewController.view.frame = frame
 		frame.origin.x += frame.size.width
 
+		self.scrollView.addSubview(self.mentionsViewController.view)
+		self.mentionsViewController.view.frame = frame
+		frame.origin.x += frame.size.width
+
 		self.scrollView.addSubview(self.discoverViewController.view)
 		self.discoverViewController.view.frame = frame
 		frame.origin.x += frame.size.width
-
+		
 		self.scrollView.addSubview(self.profileViewController.view)
 		self.profileViewController.view.frame = frame
 		frame.origin.x += frame.size.width
@@ -178,22 +190,40 @@ class MainPhoneViewController: UIViewController {
 	@objc func handleCurrentUserUpdatedNotification() {
 		self.updateInterfaceForLogin()
 	}
+	
+	@objc func handleUserMentionsUpdated() {
+		/*let mentionCount = SunlitMentions.shared.newMentionCount()
+		
+		self.mentionContainer.isHidden = true
+		if mentionCount > 0 {
+			self.mentionContainer.isHidden = false
+			self.mentionIndicator.text = "\(mentionCount)"
+		}
+		*/
+	}
 
 	@IBAction func onTabBarButtonPressed(_ button : UIButton) {
-		if button == self.profileButton {
-			if let _ = SnippetsUser.current() {
-				self.onShowProfile()
-			}
-			else {
-				NotificationCenter.default.post(name: .showLoginNotification, object: nil)
-			}
+
+        // If not logged in, show the login screen...
+        if button != self.discoverButton {
+            if SnippetsUser.current() == nil {
+                NotificationCenter.default.post(name: .showLoginNotification, object: nil)
+                self.onShowTimeline()
+                return
+            }
+        }
+        
+        if button == self.profileButton {
+            self.onShowProfile()
 		}
 		if button == self.timelineButton {
 			self.onShowTimeline()
 		}
-
 		if button == self.discoverButton {
 			self.onShowDiscover()
+		}
+		if button == self.mentionsButton {
+			self.onShowMentions()
 		}
 		
 	}
@@ -202,25 +232,31 @@ class MainPhoneViewController: UIViewController {
 		Dialog(self).selectBlog()
 	}
 				
-	func onShowProfile() {
-		var offset =  self.scrollView.contentOffset
-		offset.x = self.scrollView.bounds.size.width * 2.0
-		self.scrollView.setContentOffset(offset, animated: true)
-	}
-	
 	func onShowTimeline() {
 		var offset =  self.scrollView.contentOffset
 		offset.x = 0.0
 		self.scrollView.setContentOffset(offset, animated: true)
 		self.timelineViewController.loadTimeline()
 	}
-	
-	func onShowDiscover() {
+
+	func onShowMentions() {
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 1.0
 		self.scrollView.setContentOffset(offset, animated: true)
 	}
+
+	func onShowDiscover() {
+		var offset =  self.scrollView.contentOffset
+		offset.x = self.scrollView.bounds.size.width * 2.0
+		self.scrollView.setContentOffset(offset, animated: true)
+	}
 	
+	func onShowProfile() {
+		var offset =  self.scrollView.contentOffset
+		offset.x = self.scrollView.bounds.size.width * 3.0
+		self.scrollView.setContentOffset(offset, animated: true)
+	}
+
 }
 
 
@@ -237,9 +273,11 @@ extension MainPhoneViewController : UIScrollViewDelegate {
 		self.timelineButton.isEnabled = true
 		self.profileButton.isEnabled = true
 		self.discoverButton.isEnabled = true
+		self.mentionsButton.isEnabled = true
 		self.timelineButton.isSelected = false
 		self.profileButton.isSelected = false
 		self.discoverButton.isSelected = false
+		self.mentionsButton.isSelected = false
 		
 		let previousViewController = self.currentViewController
 		if offset < (frameSize / 2.0) {
@@ -248,6 +286,11 @@ extension MainPhoneViewController : UIScrollViewDelegate {
 			self.currentViewController = self.timelineViewController
 		}
 		else if offset < (frameSize + (frameSize / 2.0)) {
+			self.mentionsButton.isSelected = true
+			self.mentionsButton.isEnabled = false
+			self.currentViewController = self.mentionsViewController
+		}
+		else if offset < (frameSize * 2.0 + (frameSize / 2.0)) {
 			self.discoverButton.isSelected = true
 			self.discoverButton.isEnabled = false
 			self.currentViewController = self.discoverViewController

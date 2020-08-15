@@ -13,6 +13,7 @@ import Snippets
 
 class SunlitPostTableViewCell : UITableViewCell {
 
+	@IBOutlet var pageViewIndicatorContainer : UIView!
 	@IBOutlet var pageViewIndicator : UIPageControl!
 	@IBOutlet var collectionView : UICollectionView!
 	@IBOutlet var textView : UITextView!
@@ -77,7 +78,7 @@ class SunlitPostTableViewCell : UITableViewCell {
     
     static func textHeight(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
         let size = CGSize(width: parentWidth - 34.0, height: .greatestFiniteMagnitude)
-        let text = post.text
+        let text = post.attributedText
         let rect = text.boundingRect(with: size, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics] , context: nil)
         return ceil(rect.size.height)
     }
@@ -143,7 +144,7 @@ class SunlitPostTableViewCell : UITableViewCell {
         self.replyField.text = ""
         
 		// Update the text objects
-		self.textView.attributedText = post.text
+		self.textView.attributedText = post.attributedText
 		self.userHandle.text = "@" + post.owner.userName
 		self.userName.text = post.owner.fullName
 		
@@ -161,6 +162,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 		
 		self.pageViewIndicator.hidesForSinglePage = true
 		self.pageViewIndicator.numberOfPages = self.post.images.count
+		self.pageViewIndicatorContainer.isHidden = self.post.images.count < 2
 
 		self.setupAvatar()
 	}
@@ -184,7 +186,7 @@ class SunlitPostTableViewCell : UITableViewCell {
         }
         
         let replyText = userList + self.replyField.text
-		Snippets.shared.reply(originalPost: self.post, content: replyText) { (error) in
+		_ = Snippets.shared.reply(originalPost: self.post, content: replyText) { (error) in
 			NotificationCenter.default.post(name: .notifyReplyPostedNotification, object: error)
 		}
 		

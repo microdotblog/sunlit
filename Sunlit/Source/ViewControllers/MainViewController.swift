@@ -23,6 +23,7 @@ class MainViewController: UIViewController {
 	var discoverViewController : DiscoverViewController!
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
+	var mentionsViewController : MentionsViewController!
 	var currentContentViewController : SnippetsScrollContentProtocol? = nil
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,6 +51,9 @@ class MainViewController: UIViewController {
 			let timelineConfig = Snippets.shared.timelineConfiguration
 			timelineConfig.token = token
 			Snippets.shared.timelineConfiguration = timelineConfig
+			
+			SunlitMentions.shared.update {
+			}
 		}
 	}
 
@@ -100,6 +104,9 @@ class MainViewController: UIViewController {
 		self.timelineViewController = storyboard.instantiateViewController(identifier: "TimelineViewController")
 		self.profileViewController = storyboard.instantiateViewController(identifier: "MyProfileViewController")
 		self.discoverViewController = storyboard.instantiateViewController(identifier: "DiscoverViewController")
+		
+		let mentionsStoryBoard: UIStoryboard = UIStoryboard(name: "Mentions", bundle: nil)
+		self.mentionsViewController = mentionsStoryBoard.instantiateViewController(identifier: "MentionsViewController")
 	}
 	
 	func setupNotifications() {
@@ -112,13 +119,14 @@ class MainViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowTimelineNotification), name: .showTimelineNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowDiscoverNotification), name: .showDiscoverNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowComposeNotification), name: .showComposeNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleShowMentionsNotification), name: .showMentionsNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowSettingsNotification), name: .showSettingsNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewPostNotification(_:)), name: .viewPostNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewUserProfileNotification(_:)), name: .viewUserProfileNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: .notifyReplyPostedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleSplitViewWillCollapseNotification(_:)), name: .splitViewWillCollapseNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleSplitViewWillExpandNotification(_:)), name: .splitViewWillExpandNotification, object: nil)
-
+		NotificationCenter.default.addObserver(self, selector: #selector(handleShowFollowingNotification(_:)), name: .showFollowingNotification, object: nil)
 	}
 
 	@objc func handleViewPostNotification(_ notification : Notification) {
@@ -152,7 +160,18 @@ class MainViewController: UIViewController {
 			self.navigationController?.pushViewController(profileViewController, animated: true)
 		}
 	}
-
+	
+	@objc func handleShowFollowingNotification(_ notification : Notification) {
+		let storyBoard: UIStoryboard = UIStoryboard(name: "Following", bundle: nil)
+		let followingViewController = storyBoard.instantiateViewController(withIdentifier: "FollowingViewController") as! FollowingViewController
+		
+		if let following = notification.object as? [SnippetsUser] {
+			followingViewController.following = following
+		}
+		
+		self.navigationController?.pushViewController(followingViewController, animated: true)
+	}
+	
 	@objc func handleReplyResponseNotification(_ notification : Notification) {
 		var message = "Reply posted!"
 		
@@ -288,6 +307,15 @@ class MainViewController: UIViewController {
 	@objc func handleShowSettingsNotification() {
 		self.onSettings()
 	}
+	
+	@objc func handleShowMentionsNotification() {
+		if UIDevice.current.userInterfaceIdiom == .phone {
+			self.navigationController?.pushViewController(self.mentionsViewController, animated: true)
+		}
+		else {
+			self.onTabletShowMentions()
+		}
+	}
 
 	@objc func onExpandSplitViewController() {
 		if let splitViewController = self.splitViewController {
@@ -333,7 +361,6 @@ class MainViewController: UIViewController {
 		self.present(navigationController, animated: true, completion: nil)
 	}
 	
-
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -341,6 +368,7 @@ class MainViewController: UIViewController {
 
 	func activateContentViewController(_ viewController : SnippetsScrollContentProtocol) {
 
+		self.navigationController?.popToRootViewController(animated: false)
 		self.deactivateContentViewController(self.currentContentViewController)
 
 		if let currentViewController = viewController as? UIViewController {
@@ -376,6 +404,9 @@ class MainViewController: UIViewController {
 		self.activateContentViewController(self.profileViewController)
 	}
 
+	func onTabletShowMentions() {
+		self.activateContentViewController(self.mentionsViewController)
+	}
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -389,6 +420,7 @@ class MainViewController: UIViewController {
 			phoneViewController.timelineViewController = self.timelineViewController
 			phoneViewController.discoverViewController = self.discoverViewController
 			phoneViewController.profileViewController = self.profileViewController
+			phoneViewController.mentionsViewController = self.mentionsViewController
 
 			self.addChild(phoneViewController)
 			self.view.addSubview(phoneViewController.view)

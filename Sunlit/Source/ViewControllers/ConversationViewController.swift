@@ -82,14 +82,15 @@ class ConversationViewController: UIViewController {
 	@objc func loadConversation() {
 		if let post = sourcePost {
 			Snippets.shared.fetchConversation(post: post) { (error, posts : [SnippetsPost]) in
-				self.posts = [ ]
-				
-				for post in posts {
-					let sunlitPost = SunlitPost.create(post)
-					self.posts.insert(sunlitPost, at: 0)
-				}
 				
 				DispatchQueue.main.async {
+					self.posts = [ ]
+					
+					for post in posts {
+						let sunlitPost = SunlitPost.create(post)
+						self.posts.insert(sunlitPost, at: 0)
+					}
+
 					self.tableView.reloadData()
 					self.spinner.isHidden = true
 					self.tableViewRefreshControl.endRefreshing()
@@ -105,7 +106,7 @@ class ConversationViewController: UIViewController {
 	@IBAction func onPostReply() {
         
         let replyText = self.buildReplyText()
-		Snippets.shared.reply(originalPost: self.sourcePost!, content: replyText) { (error) in
+		_ = Snippets.shared.reply(originalPost: self.sourcePost!, content: replyText) { (error) in
 			
 			DispatchQueue.main.async {
 				if let err = error {

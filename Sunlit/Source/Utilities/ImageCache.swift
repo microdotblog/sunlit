@@ -11,59 +11,38 @@ import UUSwift
 
 class ImageCache {
 	
-    static var requestorLookup : [ String : [NSObject] ] = [:]
-    
-	static let systemCache = NSCache<NSString, UIImage>()
+	static var requestorLookup : [ String : [NSObject] ] = [:]
 	
 	static func prefetch(_ path: String) -> UIImage? {
-		
-		if let image = ImageCache.systemCache.object(forKey: path as NSString) {
-			return image
-		}
-		
-		if UUDataCache.shared.doesDataExist(for: path) {
-			if let imageData = UUDataCache.shared.data(for: path) {
-				if let image = UIImage(data: imageData) {
-					ImageCache.systemCache.setObject(image, forKey: path as NSString)
-					return image
-				}
-			}
-		}
+        if UURemoteImage.shared.isDownloaded(for: path) {
+            return UURemoteImage.shared.image(for: path)
+        }
 		
 		return nil
 	}
 	
 	
-    static func fetch(_ requestor : NSObject, _ path: String, completion: @escaping ((UIImage?) -> Void)) {
-		
-		if let image = ImageCache.prefetch(path) {
-			completion(image)
-			return
-		}
-        
-        if var requestorArray = requestorLookup[path] {
-            for object in requestorArray {
-                if object == requestor {
-                    return
-                }
-            }
-            
-            requestorArray.append(requestor)
-        }
-        else {
-            requestorLookup[path] = [requestor]
-        }
-        
-		_ = UURemoteData.shared.data(for: path) { (data, error) in
-			if let imageData = data {
-				if let image = UIImage(data: imageData) {
-					ImageCache.systemCache.setObject(image, forKey: path as NSString)
-					completion(image)
+	static func fetch(_ requestor : NSObject, _ path: String, completion: @escaping ((UIImage?) -> Void)) {
+
+		if var requestorArray = ImageCache.requestorLookup[path] {
+			for object in requestorArray {
+				if object == requestor {
 					return
 				}
 			}
-			
-			completion(nil)
+					
+			requestorArray.append(requestor)
 		}
+		else {
+			ImageCache.requestorLookup[path] = [requestor]
+		}
+	
+        let image = UURemoteImage.shared.image(for: path, remoteLoadCompletion: { (image, error) in
+            completion(image)
+        })
+        
+        if let img = image {
+            completion(img)
+        }
 	}
 }

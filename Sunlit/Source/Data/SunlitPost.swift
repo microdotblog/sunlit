@@ -18,9 +18,9 @@ class SunlitPost : SnippetsPost {
 	var altText : [String] = []
 	var images : [String] = []
 	var videos : [String] = []
-	var text : NSAttributedString = NSAttributedString(string: "")
+	var htmlString : String = ""
+	var attributedText : NSAttributedString = NSAttributedString(string: "")
 
-	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -69,15 +69,7 @@ class SunlitPost : SnippetsPost {
 			let images = findImageElements(document)
 			let videos = findVideoElements(document)
 			let text = stripImagesAndVideos(document, images, videos)
-
-			let htmlData = text.data(using: .utf16)!
-			if let attributedString = try? NSAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
-				parsedEntry.text = attributedString
-			}
-			else {
-				parsedEntry.text = NSAttributedString(string: text)
-			}
-
+			parsedEntry.htmlString = text
 			
 			var aspectRatio : Float = 0.0
 
@@ -126,6 +118,8 @@ class SunlitPost : SnippetsPost {
 			parsedEntry.aspectRatio = aspectRatio
 		}
 		
+		parsedEntry.attributedText = NSAttributedString(string: parsedEntry.htmlString).html()
+		
 		return parsedEntry
 	}
 	
@@ -134,13 +128,15 @@ class SunlitPost : SnippetsPost {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	static func addTextStyle(string : String, font : UIFont, textColor : UIColor) -> String {
+		
 		let cssString = "<style>" +
 		"html *" +
 		"{" +
-		"color: \(textColor.uuHexString) !important;" +
-		"font: -apple-system-body !important;" +
+			"color: \(textColor.uuHexString) !important; " +
+			"font-size: \(font.pointSize)pt !important; " +
+			//"font-family: San Francisco !important; " +
 		"}</style>"
-
+		
 		return cssString + string
 	}
 	
@@ -160,37 +156,26 @@ class SunlitPost : SnippetsPost {
 		var elements : [Element] = []
 		
 		if let srcs : Elements = try? document.select("img[src]") {
-			let emojiImages = ["mini_thumbnail", "wp-smiley"]
 			for image in srcs.array() {
 				
 				var exclude = false
-				
-				// Skip emoji images...
-				if let className = try? image.className(), emojiImages.contains(className) {
-					exclude = true
-				}
 
-				if let width = try? image.attr("width") as NSString {
-					if width.floatValue > 0.0 && width.floatValue < SunlitPost.minimumResolution {
-						exclude = true
-					}
-				}
-			
-				if let height = try? image.attr("height") as NSString {
-					if height.floatValue > 0.0 && height.floatValue < SunlitPost.minimumResolution {
-						exclude = true
-					}
-				}
-
-				
 				for excludedPattern in SunlitPost.exclusionPatterns {
 					
-					if let text = try? image.attr("src") {
-						if text.contains(excludedPattern) {
-							exclude = true
-						}
+                    if let text = try? image.attr("src"),
+                        text.contains(excludedPattern)
+                    {
+                        exclude = true
+
+                        let alt : String = (try? image.attr("alt")) ?? ""
+                        let replacementTag = Element(Tag("b"), "")
+
+                        _ = try? replacementTag.appendText(alt)
+                        
+                        try? image.parent()?.replaceChild(image, replacementTag)
 					}
 				}
+
 
 				if !exclude {
 					elements.append(image)
@@ -213,7 +198,7 @@ class SunlitPost : SnippetsPost {
 	static func stripImagesAndVideos(_ document : Document, _ images : [Element], _ videos : [Element]) -> String {
 		
 		for image in images {
-			try? image.remove()
+            try? image.remove()
 		}
 		
 		for video in videos {

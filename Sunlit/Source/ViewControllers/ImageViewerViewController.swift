@@ -83,7 +83,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		// Recreate the post with white text...
 		self.post = SunlitPost.create(self.post, textColor: .white)
 		
-		self.postText.attributedText = self.post.text
+		self.postText.attributedText = self.post.attributedText
 		self.userHandle.text = "@" + self.post.owner.userName
 		self.fullUserName.text = self.post.owner.fullName
 		

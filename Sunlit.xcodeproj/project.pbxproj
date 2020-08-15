@@ -10,6 +10,7 @@
 		4B729B8224BA4F74001D145B /* TabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B729B8124BA4F74001D145B /* TabButton.swift */; };
 		4B9D143624C889BA004E7EAF /* SectionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9D143524C889BA004E7EAF /* SectionTextView.swift */; };
 		C5309CB724AEABE700551AC7 /* NSAttributedString+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */; };
+		C5482F2C24D9E56400A335DF /* TabletMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5482F2B24D9E56400A335DF /* TabletMenuTableViewCell.swift */; };
 		C55DC3132489D37600C1F8A5 /* UUSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC2BA2489D2F700C1F8A5 /* UUSwift.framework */; };
 		C55DC495248A152A00C1F8A5 /* Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3012489D33300C1F8A5 /* Snippets.framework */; };
 		C55DC496248A152A00C1F8A5 /* Snippets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3012489D33300C1F8A5 /* Snippets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -132,6 +133,9 @@
 		C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF38249144E800B50B54 /* olive.jpg */; };
 		C5A1DF3C2491948B00B50B54 /* PublishingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3B2491948B00B50B54 /* PublishingConfiguration.swift */; };
 		C5A1DF3E2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */; };
+		C5BEDF4D24DA302F0068CBF1 /* Following.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5BEDF4C24DA302F0068CBF1 /* Following.storyboard */; };
+		C5BEDF4F24DA305F0068CBF1 /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BEDF4E24DA305F0068CBF1 /* FollowingViewController.swift */; };
+		C5BEDF5124DA30DA0068CBF1 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BEDF5024DA30DA0068CBF1 /* ProfileTableViewCell.swift */; };
 		C5E26A34249EAA0900F9E158 /* Main-Phone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5E26A33249EAA0900F9E158 /* Main-Phone.storyboard */; };
 		C5E26A36249EADE400F9E158 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5E26A35249EADE400F9E158 /* Main.storyboard */; };
 		C5E26A38249EAE6900F9E158 /* MainPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E26A37249EAE6900F9E158 /* MainPhoneViewController.swift */; };
@@ -213,6 +217,9 @@
 		C5EC12FA248C34020032B84D /* DialConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC12D4248C34010032B84D /* DialConfig.swift */; };
 		C5EC12FC248D64A50032B84D /* Mantis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC1292248C33E40032B84D /* Mantis.framework */; };
 		C5EC12FD248D64A60032B84D /* Mantis.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC1292248C33E40032B84D /* Mantis.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C5EDE49524D8E75F009ACF2A /* SunlitMentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EDE49424D8E75F009ACF2A /* SunlitMentions.swift */; };
+		C5EDE49924D9C243009ACF2A /* MentionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EDE49824D9C242009ACF2A /* MentionsViewController.swift */; };
+		C5EDE49B24D9C7E6009ACF2A /* Mentions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -275,6 +282,7 @@
 		4B729B8124BA4F74001D145B /* TabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabButton.swift; path = Source/Views/TabButton.swift; sourceTree = "<group>"; };
 		4B9D143524C889BA004E7EAF /* SectionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SectionTextView.swift; path = Source/Views/SectionTextView.swift; sourceTree = "<group>"; };
 		C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+Sunlit.swift"; path = "Source/Extensions/NSAttributedString+Sunlit.swift"; sourceTree = "<group>"; };
+		C5482F2B24D9E56400A335DF /* TabletMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabletMenuTableViewCell.swift; path = Source/TableViewCells/TabletMenuTableViewCell.swift; sourceTree = "<group>"; };
 		C55DC2BA2489D2F700C1F8A5 /* UUSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UUSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55DC3012489D33300C1F8A5 /* Snippets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Snippets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55DC3992489D5CB00C1F8A5 /* NextLevelSessionExporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NextLevelSessionExporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -396,6 +404,9 @@
 		C5A1DF3B2491948B00B50B54 /* PublishingConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PublishingConfiguration.swift; path = Source/Data/PublishingConfiguration.swift; sourceTree = "<group>"; };
 		C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExternalBlogConfigurationViewController.swift; path = Source/ViewControllers/ExternalBlogConfigurationViewController.swift; sourceTree = "<group>"; };
 		C5B9A71724563E66003EF82B /* Sunlit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sunlit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5BEDF4C24DA302F0068CBF1 /* Following.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Following.storyboard; path = Storyboards/Following.storyboard; sourceTree = "<group>"; };
+		C5BEDF4E24DA305F0068CBF1 /* FollowingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FollowingViewController.swift; path = Source/ViewControllers/FollowingViewController.swift; sourceTree = "<group>"; };
+		C5BEDF5024DA30DA0068CBF1 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileTableViewCell.swift; path = Source/TableViewCells/ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		C5E26A33249EAA0900F9E158 /* Main-Phone.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Main-Phone.storyboard"; path = "Storyboards/Main-Phone.storyboard"; sourceTree = "<group>"; };
 		C5E26A35249EADE400F9E158 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Storyboards/Main.storyboard; sourceTree = "<group>"; };
 		C5E26A37249EAE6900F9E158 /* MainPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainPhoneViewController.swift; path = Source/ViewControllers/MainPhoneViewController.swift; sourceTree = "<group>"; };
@@ -493,6 +504,9 @@
 		C5EC12D2248C34010032B84D /* RotationDial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationDial.swift; sourceTree = "<group>"; };
 		C5EC12D3248C34010032B84D /* CGAngle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGAngle.swift; sourceTree = "<group>"; };
 		C5EC12D4248C34010032B84D /* DialConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialConfig.swift; sourceTree = "<group>"; };
+		C5EDE49424D8E75F009ACF2A /* SunlitMentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SunlitMentions.swift; path = Source/Data/SunlitMentions.swift; sourceTree = "<group>"; };
+		C5EDE49824D9C242009ACF2A /* MentionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MentionsViewController.swift; path = Source/ViewControllers/MentionsViewController.swift; sourceTree = "<group>"; };
+		C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Mentions.storyboard; path = Storyboards/Mentions.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -682,8 +696,10 @@
 				C5A1DE3B24901D8C00B50B54 /* About.storyboard */,
 				C5A1DE3F24901D8C00B50B54 /* Compose.storyboard */,
 				C5A1DE3824901D8C00B50B54 /* Conversation.storyboard */,
+				C5BEDF4C24DA302F0068CBF1 /* Following.storyboard */,
 				C5A1DE4024901D8C00B50B54 /* ImageViewer.storyboard */,
 				C5A1DE3C24901D8C00B50B54 /* Login.storyboard */,
+				C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */,
 				C5A1DE3924901D8C00B50B54 /* Profile.storyboard */,
 				C5A1DE3D24901D8C00B50B54 /* Settings.storyboard */,
 				C5E26A35249EADE400F9E158 /* Main.storyboard */,
@@ -923,7 +939,9 @@
 			isa = PBXGroup;
 			children = (
 				C5A1DE8224901DD800B50B54 /* ConversationTableViewCell.swift */,
+				C5BEDF5024DA30DA0068CBF1 /* ProfileTableViewCell.swift */,
 				C5A1DE8324901DD800B50B54 /* SunlitPostTableViewCell.swift */,
+				C5482F2B24D9E56400A335DF /* TabletMenuTableViewCell.swift */,
 			);
 			name = TableViewCells;
 			sourceTree = "<group>";
@@ -953,6 +971,7 @@
 				C5A1DE6424901DBC00B50B54 /* SunlitComposition.swift */,
 				C5A1DE6224901DBC00B50B54 /* SunlitMedia.swift */,
 				C5A1DE6324901DBC00B50B54 /* SunlitPost.swift */,
+				C5EDE49424D8E75F009ACF2A /* SunlitMentions.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -965,11 +984,13 @@
 				C5A1DE6F24901DCC00B50B54 /* ConversationViewController.swift */,
 				C5A1DE6E24901DCC00B50B54 /* DiscoverViewController.swift */,
 				C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */,
+				C5BEDF4E24DA305F0068CBF1 /* FollowingViewController.swift */,
 				C5A1DE7424901DCC00B50B54 /* ImageViewerViewController.swift */,
 				C5A1DE6D24901DCC00B50B54 /* LoginViewController.swift */,
 				C5A1DE7024901DCC00B50B54 /* MainViewController.swift */,
 				C5E26A37249EAE6900F9E158 /* MainPhoneViewController.swift */,
 				C5E26A39249EB85100F9E158 /* MainTabletViewController.swift */,
+				C5EDE49824D9C242009ACF2A /* MentionsViewController.swift */,
 				C5A1DE7324901DCC00B50B54 /* MyProfileViewController.swift */,
 				C5A1DE7124901DCC00B50B54 /* ProfileViewController.swift */,
 				C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */,
@@ -1245,12 +1266,14 @@
 				C5A1DE4424901D8C00B50B54 /* About.storyboard in Resources */,
 				C5A1DE4124901D8C00B50B54 /* Conversation.storyboard in Resources */,
 				C5A1DF3224906B9D00B50B54 /* Content.storyboard in Resources */,
+				C5EDE49B24D9C7E6009ACF2A /* Mentions.storyboard in Resources */,
 				C5A1DE9D24901E0B00B50B54 /* Assets.xcassets in Resources */,
 				C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */,
 				C5A1DE4924901D8C00B50B54 /* ImageViewer.storyboard in Resources */,
 				C5A1DF39249144E800B50B54 /* credits.html in Resources */,
 				C5A1DE4224901D8C00B50B54 /* Profile.storyboard in Resources */,
 				C5E26A36249EADE400F9E158 /* Main.storyboard in Resources */,
+				C5BEDF4D24DA302F0068CBF1 /* Following.storyboard in Resources */,
 				C5A1DF3324906B9D00B50B54 /* LaunchScreen.storyboard in Resources */,
 				C5E26A34249EAA0900F9E158 /* Main-Phone.storyboard in Resources */,
 				C5A1DE4624901D8C00B50B54 /* Settings.storyboard in Resources */,
@@ -1393,6 +1416,7 @@
 				C5A1DE7D24901DCC00B50B54 /* SnippetsScrollContentProtocol.swift in Sources */,
 				C5A1DE5E24901DAD00B50B54 /* ImageCache.swift in Sources */,
 				C5A1DF3C2491948B00B50B54 /* PublishingConfiguration.swift in Sources */,
+				C5BEDF5124DA30DA0068CBF1 /* ProfileTableViewCell.swift in Sources */,
 				C5A1DE8F24901DE600B50B54 /* ProfileBioCollectionViewCell.swift in Sources */,
 				C5A1DE5F24901DAD00B50B54 /* VideoTranscoder.swift in Sources */,
 				C5A1DE6A24901DBC00B50B54 /* SunlitComposition.swift in Sources */,
@@ -1421,9 +1445,11 @@
 				C5A1DE6824901DBC00B50B54 /* SunlitMedia.swift in Sources */,
 				C5A1DE9A24901DF500B50B54 /* AppDelegate+Menus.swift in Sources */,
 				C5A1DE9424901DE600B50B54 /* PhotoEntryCollectionViewCell.swift in Sources */,
+				C5EDE49924D9C243009ACF2A /* MentionsViewController.swift in Sources */,
 				C5A1DE7C24901DCC00B50B54 /* ProfileViewController.swift in Sources */,
 				C5A1DE4F24901D9D00B50B54 /* UIButton+Sunlit.swift in Sources */,
 				C5A1DE6724901DBC00B50B54 /* Settings.swift in Sources */,
+				C5EDE49524D8E75F009ACF2A /* SunlitMentions.swift in Sources */,
 				C5A1DE8124901DCC00B50B54 /* AboutViewController.swift in Sources */,
 				4B729B8224BA4F74001D145B /* TabButton.swift in Sources */,
 				C5A1DE5C24901DAD00B50B54 /* Tagmoji.swift in Sources */,
@@ -1436,9 +1462,11 @@
 				C5A1DE5A24901DAD00B50B54 /* HTMLBuilder.swift in Sources */,
 				C5E26A38249EAE6900F9E158 /* MainPhoneViewController.swift in Sources */,
 				C5A1DE6924901DBC00B50B54 /* SunlitPost.swift in Sources */,
+				C5482F2C24D9E56400A335DF /* TabletMenuTableViewCell.swift in Sources */,
 				C5A1DE9524901DE600B50B54 /* ProfileHeaderCollectionViewCell.swift in Sources */,
 				C5E26A4024A061AB00F9E158 /* NSNotification+Sunlit.swift in Sources */,
 				C5A1DF3E2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift in Sources */,
+				C5BEDF4F24DA305F0068CBF1 /* FollowingViewController.swift in Sources */,
 				C5A1DE5324901D9D00B50B54 /* URL+Sunlit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1900,7 +1928,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sunlit/Sunlit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 315;
+				CURRENT_PROJECT_VERSION = 322;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1928,7 +1956,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sunlit/Sunlit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 315;
+				CURRENT_PROJECT_VERSION = 322;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
