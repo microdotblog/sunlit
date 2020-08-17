@@ -139,14 +139,14 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 		
 		// Special case code for mentions...
 		if indexPath.row == 1 {
-			cell.alertContainer.isHidden = true
-			
-			let newCount = SunlitMentions.shared.newMentionCount()
-			if newCount > 0 {
-				cell.alertContainer.isHidden = false
-				cell.alertContainer.backgroundColor = .red
-				cell.alertLabel.text = "\(newCount)"
-			}
+//			cell.alertContainer.isHidden = true
+//
+//			let newCount = SunlitMentions.shared.newMentionCount()
+//			if newCount > 0 {
+//				cell.alertContainer.isHidden = false
+//				cell.alertContainer.backgroundColor = .red
+//				cell.alertLabel.text = "\(newCount)"
+//			}
 		}
 		
 			return cell
