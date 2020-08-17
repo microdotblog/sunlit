@@ -133,7 +133,7 @@ class SunlitPost : SnippetsPost {
 		"html *" +
 		"{" +
 			"color: \(textColor.uuHexString) !important; " +
-			"font-size: \(font.pointSize)pt !important; " +
+			"font-size: \(font.pointSize)px !important; " +
 			"font-family: system-ui !important; " +
 		"}</style>"
 		
