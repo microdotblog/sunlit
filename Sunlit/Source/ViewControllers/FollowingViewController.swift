@@ -20,8 +20,12 @@ class FollowingViewController: UIViewController {
         super.viewDidLoad()
 
 		self.navigationItem.title = "Following"
-        // Do any additional setup after loading the view.
-    }
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(dismissViewController))
+	}	
+	
+	@objc func dismissViewController() {
+		self.navigationController?.popViewController(animated: true)
+	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
