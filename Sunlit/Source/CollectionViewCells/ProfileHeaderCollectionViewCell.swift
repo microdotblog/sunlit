@@ -28,7 +28,7 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 		self.followingContainer.isHidden = false
 		self.followingLabel.text = "Following \(count)"
 		if !complete {
-			self.followingLabel.text = "Updating..."
+			self.followingLabel.text = "Loading..."
 		}
 	}
 	

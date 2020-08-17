@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17147" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17140" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17120"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17115"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -447,30 +447,29 @@
                                                     </subviews>
                                                 </stackView>
                                                 <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="BhO-xx-mUX">
-                                                    <rect key="frame" x="304.33333333333331" y="8" width="93.666666666666686" height="32"/>
+                                                    <rect key="frame" x="285" y="18" width="113" height="40"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Following 144" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aa7-Ps-zEB">
-                                                            <rect key="frame" x="12" y="4" width="69.666666666666671" height="24"/>
+                                                            <rect key="frame" x="12" y="4" width="89" height="32"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="10"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB9-G1-S6k">
-                                                            <rect key="frame" x="0.0" y="0.0" width="93.666666666666671" height="32"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="113" height="40"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <connections>
                                                                 <action selector="showFollowing" destination="ceh-ak-Uo6" eventType="touchUpInside" id="IWx-gK-2mO"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="Aa7-Ps-zEB" secondAttribute="bottom" constant="4" id="BCS-1B-opv"/>
                                                         <constraint firstItem="sB9-G1-S6k" firstAttribute="leading" secondItem="BhO-xx-mUX" secondAttribute="leading" id="E9U-Dm-VWE"/>
                                                         <constraint firstItem="sB9-G1-S6k" firstAttribute="top" secondItem="BhO-xx-mUX" secondAttribute="top" id="Hgl-gQ-DWu"/>
                                                         <constraint firstAttribute="trailing" secondItem="sB9-G1-S6k" secondAttribute="trailing" id="I9H-1F-r5q"/>
-                                                        <constraint firstAttribute="height" constant="32" id="Nmj-tE-xOw"/>
+                                                        <constraint firstAttribute="height" constant="40" id="Nmj-tE-xOw"/>
                                                         <constraint firstAttribute="bottom" secondItem="sB9-G1-S6k" secondAttribute="bottom" id="PnZ-k0-mJy"/>
                                                         <constraint firstItem="Aa7-Ps-zEB" firstAttribute="top" secondItem="BhO-xx-mUX" secondAttribute="top" constant="4" id="Tb5-K2-KnI"/>
                                                         <constraint firstItem="Aa7-Ps-zEB" firstAttribute="leading" secondItem="BhO-xx-mUX" secondAttribute="leading" constant="12" id="stR-Ba-zv8"/>
@@ -478,13 +477,13 @@
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="uuCornerRadius">
-                                                            <real key="value" value="16"/>
+                                                            <real key="value" value="20"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="BhO-xx-mUX" firstAttribute="top" secondItem="eYA-zL-HuI" secondAttribute="top" id="Fyv-DD-CaX"/>
+                                                <constraint firstItem="BhO-xx-mUX" firstAttribute="centerY" secondItem="beh-Dg-rLU" secondAttribute="centerY" id="IDE-UI-5jL"/>
                                                 <constraint firstItem="beh-Dg-rLU" firstAttribute="leading" secondItem="eYA-zL-HuI" secondAttribute="trailing" constant="8" symbolic="YES" id="W3S-12-vnL"/>
                                                 <constraint firstAttribute="trailing" secondItem="BhO-xx-mUX" secondAttribute="trailing" constant="8" id="dEP-KX-bkr"/>
                                                 <constraint firstItem="beh-Dg-rLU" firstAttribute="centerY" secondItem="eYA-zL-HuI" secondAttribute="centerY" id="gPB-zT-WQV"/>
