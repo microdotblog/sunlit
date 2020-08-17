@@ -134,7 +134,7 @@ class SunlitPost : SnippetsPost {
 		"{" +
 			"color: \(textColor.uuHexString) !important; " +
 			"font-size: \(font.pointSize)pt !important; " +
-			//"font-family: San Francisco !important; " +
+			"font-family: system-ui !important; " +
 		"}</style>"
 		
 		return cssString + string
