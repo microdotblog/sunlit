@@ -416,7 +416,10 @@ public class UUHttpSession: NSObject
         */
         let task = urlSession!.dataTask(with: request.httpRequest!)
         { (data : Data?, response: URLResponse?, error : Error?) in
-            
+			
+			if let httpTask = request.httpTask {
+				self.activeTasks.remove(httpTask)
+			}
             self.handleResponse(request, data, response, error, completion)
         }
 		request.httpTask = task
