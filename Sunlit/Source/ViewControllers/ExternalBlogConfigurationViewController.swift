@@ -56,8 +56,13 @@ class ExternalBlogConfigurationViewController: UIViewController {
 			let methodName = "blogger.getUsersBlogs"
 			let appKey = ""
 			let params : [String] = [appKey, username, password]
+			var is_wordpress = false
 			
-			let identity = SnippetsXMLRPCIdentity.create(username: username, password: password, endpoint: xmlrpcEndpoint!, blogId: blogId!, wordPress: true)
+			if let endpoint = xmlrpcEndpoint {
+				is_wordpress = endpoint.contains("/xmlrpc.php")
+			}
+			
+			let identity = SnippetsXMLRPCIdentity.create(username: username, password: password, endpoint: xmlrpcEndpoint!, blogId: blogId!, wordPress: is_wordpress)
 			let request = SnippetsXMLRPCRequest(identity: identity, method: methodName)
 			
 			_ = Snippets.shared.executeRPC(request: request, params: params) { (error, responseData) in
