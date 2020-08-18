@@ -886,16 +886,16 @@ extension Snippets {
     public class Configuration : NSObject {
         
 		public var token = ""
-		public var endpoint = "http://micro.blog/"
-		public var micropubEndpoint = "http://micro.blog/micropub"
-		public var mediaEndpoint = "http://micro.blog/micropub/media"
+		public var endpoint = "https://micro.blog/"
+		public var micropubEndpoint = "https://micro.blog/micropub"
+		public var mediaEndpoint = "https://micro.blog/micropub/media"
 		public var uid : String? = nil
         
         public static func reset() {
             Snippets.shared.timelineConfiguration.token = ""
-            Snippets.shared.timelineConfiguration.endpoint = "http://micro.blog/"
-            Snippets.shared.timelineConfiguration.micropubEndpoint = "http://micro.blog/micropub"
-            Snippets.shared.timelineConfiguration.mediaEndpoint = "http://micro.blog/micropub/media"
+            Snippets.shared.timelineConfiguration.endpoint = "https://micro.blog/"
+            Snippets.shared.timelineConfiguration.micropubEndpoint = "https://micro.blog/micropub"
+            Snippets.shared.timelineConfiguration.mediaEndpoint = "https://micro.blog/micropub/media"
             Snippets.shared.timelineConfiguration.uid = nil
             
             Snippets.shared.internalPublishingConfiguration = nil
