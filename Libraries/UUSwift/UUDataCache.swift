@@ -308,162 +308,67 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
 }
 
 
-private class UUDataCacheDb : NSObject
+private class UUDataCacheDb
 {
+	private static let cacheKeyName = "UUDataCacheDb"
     static let shared = UUDataCacheDb()
-    
-    private var coreDataStack : UUCoreData!
-    private let storeUrl : URL = URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("Library").appendingPathComponent("UUDataCacheMetaDataDb.sqlite")
-    private let storeModel : NSManagedObjectModel = UUDataCacheDb.objectModel()
-    
-    required public override init()
-    {
-        super.init()
-        
-        coreDataStack = UUCoreData(url: storeUrl, model: storeModel)
-    }
-    
-    private class func objectModel() -> NSManagedObjectModel
-    {
-        let model = NSManagedObjectModel()
-        
-        let entity = NSEntityDescription()
-        entity.name = "UUDataCacheMetaData"
-        entity.managedObjectClassName = "UUDataCacheMetaData"
-        
-        var properties : [NSAttributeDescription] = []
-        
-        var attr = NSAttributeDescription()
-        attr.name = "name"
-        attr.attributeType = .stringAttributeType
-        attr.isOptional = false
-        properties.append(attr)
-        
-        attr = NSAttributeDescription()
-        attr.name = "fileName"
-        attr.attributeType = .stringAttributeType
-        attr.isOptional = false
-        properties.append(attr)
-        
-        attr = NSAttributeDescription()
-        attr.name = "timestamp"
-        attr.attributeType = .dateAttributeType
-        attr.isOptional = false
-        properties.append(attr)
-        
-        attr = NSAttributeDescription()
-        attr.name = "metaData"
-        attr.attributeType = .transformableAttributeType
-        attr.valueTransformerName = "NSSecureUnarchiveFromData"
-        attr.isOptional = false
-        properties.append(attr)
-        
-        entity.properties = properties
-        
-        model.entities = [entity]
-     
-        return model
-    }
+	
+	var metaData : [String : Any] = [:]
+	
+	init() {
+		if let data = UserDefaults.standard.object(forKey: UUDataCacheDb.cacheKeyName) as? [String : Any] {
+			self.metaData = data
+		}
+	}
     
     public func metaData(for key: String) -> [String:Any]
     {
-        var md : [String:Any]? = nil
-        
-        let ctx = coreDataStack.mainThreadContext!
-        ctx.performAndWait
-        {
-            let obj = self.underlyingMetaData(for: key)
-            md = obj.metaData as? [String:Any]
-        }
-        
-        if (md == nil)
-        {
-            md = [:]
-        }
-        
-        return md!
+		if let metaData = self.metaData[key] as? [String:Any] {
+			return metaData
+		}
+		else {
+			var metaData : [String : Any] = [:]
+			metaData["fileName"] = UUID().uuidString
+			metaData["timestamp"] = Date()
+			self.metaData[key] = metaData
+			
+			self.saveCurrentMetaData()
+			
+			return metaData
+		}
     }
     
     public func fileName(for key: String) -> String
     {
-        var result: String? = nil
-        
-        let ctx = coreDataStack.mainThreadContext!
-        ctx.performAndWait
-        {
-            let obj = self.underlyingMetaData(for: key)
-            result = obj.fileName
-        }
-        
-        assert(result != nil, "Expect that fileName is always non nil")
-        return result ?? ""
+		let metaData = self.metaData(for: key)
+		return metaData["fileName"] as! String
     }
     
     public func setMetaData(_ metaData: [String:Any], for key: String)
     {
-        let ctx = coreDataStack.mainThreadContext!
-        ctx.performAndWait
-        {
-            let obj = self.underlyingMetaData(for: key)
-            obj.timestamp = Date()
-            
-            let d = NSDictionary(dictionary: metaData)
-            
-            obj.metaData = d
-            
-            _ = ctx.uuSubmitChanges()
-        }
+		self.metaData[key] = metaData
+		self.saveCurrentMetaData()
     }
     
     public func clearMetaData(for key: String)
     {
-        let ctx = coreDataStack.mainThreadContext!
-        ctx.performAndWait
-        {
-            let predicate = NSPredicate(format: "name = %@", key)
-            UUDataCacheMetaData.uuDeleteObjects(predicate: predicate, context: ctx)
-        }
+		self.metaData.removeValue(forKey: key)
+		self.saveCurrentMetaData()
     }
     
     public func clearAllMetaData()
     {
-        let ctx = coreDataStack.mainThreadContext!
-        ctx.performAndWait
-        {
-            ctx.uuDeleteAllObjects()
-            _ = ctx.uuSubmitChanges()
-        }
+		UserDefaults.standard.removeObject(forKey: UUDataCacheDb.cacheKeyName)
+		UserDefaults.standard.synchronize()
+		
+		self.metaData = [:]
     }
-    
-    private func underlyingMetaData(for key: String) -> UUDataCacheMetaData
-    {
-        var obj : UUDataCacheMetaData? = nil
-        
-        let ctx = coreDataStack.mainThreadContext!
-        ctx.performAndWait
-        {
-            let predicate = NSPredicate(format: "name = %@", key)
-            obj = UUDataCacheMetaData.uuFetchSingleObject(predicate: predicate, context: ctx)
-            if (obj == nil)
-            {
-                obj = UUDataCacheMetaData.uuCreate(context: ctx)
-                obj!.name = key
-                obj!.fileName = UUID().uuidString
-                obj!.timestamp = Date()
-                obj!.metaData = NSDictionary()
-                _ = ctx.uuSubmitChanges()
-            }
-        }
-        
-        return obj!
-    }
+
+	private func saveCurrentMetaData() {
+		UserDefaults.standard.setValue(self.metaData, forKey: UUDataCacheDb.cacheKeyName)
+		UserDefaults.standard.synchronize()
+	}
 }
 
-@objc(UUDataCacheMetaData)
-public class UUDataCacheMetaData : NSManagedObject
-{
-    @NSManaged var name : String?
-    @NSManaged var fileName : String?
-    @NSManaged var timestamp : Date?
-    @NSManaged var metaData : NSDictionary?
-}
+
+
