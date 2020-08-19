@@ -419,12 +419,13 @@ class DiscoverViewController: UIViewController {
                     
                     let visibleIndexPaths = self.collectionView.indexPathsForVisibleItems
                     if visibleIndexPaths.contains(indexPath) {
-                        self.collectionView.performBatchUpdates {
-                            self.collectionView.reloadItems(at: [indexPath])
-                        }
-                        completion: { (complete) in
-                
-                        }
+						self.collectionView.reloadData()
+                        //self.collectionView.performBatchUpdates {
+                        //    self.collectionView.reloadItems(at: [indexPath])
+                        //}
+                        //completion: { (complete) in
+						//
+                        //}
                     }
                 }
             }
