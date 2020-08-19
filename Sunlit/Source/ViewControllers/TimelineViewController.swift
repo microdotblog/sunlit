@@ -48,8 +48,8 @@ class TimelineViewController: UIViewController {
 		NotificationCenter.default.removeObserver(self)
 
 		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: .scrollTableViewNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
@@ -76,14 +76,14 @@ class TimelineViewController: UIViewController {
 		}
 	}
 	
-	@objc func keyboardOnScreenNotification(_ notification : Notification) {
+	@objc func keyboardWillShowNotification(_ notification : Notification) {
 		if let info : [AnyHashable : Any] = notification.userInfo {
 			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
 				// run later outside of animation context
 				DispatchQueue.main.async {
 					// start at bottom of screen
 					var start_r = self.view.bounds
-					start_r.origin.y = start_r.size.height
+					start_r.origin.y = start_r.size.height + self.keyboardAccessoryView.bounds.size.height
 					start_r.size.height = self.keyboardAccessoryView.bounds.size.height
 					self.keyboardAccessoryView.frame = start_r
 					self.view.addSubview(self.keyboardAccessoryView)
@@ -98,16 +98,20 @@ class TimelineViewController: UIViewController {
 					let safeArea : CGFloat = self.view.safeAreaInsets.bottom
 					let offset = frame.origin.y - height + safeArea
 
-					// TODO: this would be better using the UIKeyboard curve
-					UIView.animate(withDuration: 0.3, delay: 0.05, options: [ .curveEaseInOut ], animations: {
-						self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: height)
-					})
+					if let duration = info[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double {
+						let curve_default = 7
+						let curve_value = (info[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.intValue ?? curve_default
+						let options = UIView.AnimationOptions(rawValue: UInt(curve_value << 16))
+						UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
+							self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: height)
+						})
+					}
 				}
 			}
 		}
 	}
 
-	@objc func keyboardOffScreenNotification(_ notification : Notification) {
+	@objc func keyboardWillHideNotification(_ notification : Notification) {
 		self.keyboardAccessoryView.removeFromSuperview()
 		self.keyboardAccessoryView.alpha = 0.0
 	}
