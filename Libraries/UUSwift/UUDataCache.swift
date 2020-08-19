@@ -332,7 +332,7 @@ private class UUDataCacheDb
 			metaData["timestamp"] = Date()
 			self.metaData[key] = metaData
 			
-			self.saveCurrentMetaData()
+//			self.saveCurrentMetaData()
 			
 			return metaData
 		}

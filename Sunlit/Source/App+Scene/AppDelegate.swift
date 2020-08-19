@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Override point for customization after application launch.
 		
 		// Uncomment this to test a fresh install scenario...
-		//UUDataCache.shared.clearCache()
+		UUDataCache.shared.clearCache()
 		
 		// Content should only hang around for a day...
 		UUDataCache.shared.contentExpirationLength = 24.0 * 60.0 * 60.0
