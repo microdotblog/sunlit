@@ -41,13 +41,20 @@ public class UUThreadSafeArray<T:Equatable>: NSObject
             })
         }
     }
+	
+	public func contains(_ element: T) -> Bool
+	{
+		uuSynchronized({
+			return self.nativeObject.firstIndex(of: element) != nil
+		})
+	}
     
     public func remove(_ element: T)
     {
         uuSynchronized({
-            self.nativeObject.removeAll { (object) -> Bool in
-                object == element
-            }
+			while let index = self.nativeObject.firstIndex(of: element) {
+				self.nativeObject.remove(at: index)
+			}
         })
     }
     
