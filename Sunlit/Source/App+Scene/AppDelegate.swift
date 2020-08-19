@@ -15,9 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		
-		// Uncomment this to test a fresh install scenario...
 		let clearCacheKey = "CacheClearKey-" +  (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") + "-" + (Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "")
-		let shouldClearCache = UserDefaults.standard.bool(forKey: clearCacheKey) != true
+		var shouldClearCache = true
+		// Comment this out to test a fresh install scenario...
+		shouldClearCache = UserDefaults.standard.bool(forKey: clearCacheKey) != true
+
 		if shouldClearCache {
 			UUDataCache.shared.clearCache()
 		}
