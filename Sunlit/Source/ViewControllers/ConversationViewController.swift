@@ -37,21 +37,23 @@ class ConversationViewController: UIViewController {
 		self.tableViewRefreshControl.addTarget(self, action: #selector(loadConversation), for: .valueChanged)
 		self.tableView.addSubview(self.tableViewRefreshControl)
 
-		self.loadConversation()
-
 		self.navigationItem.title = "Conversation"
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back))
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+
+		self.loadConversation()
+
 		self.setupNotifications()
-		self.spinner.isHidden = false
 		self.spinner.startAnimating()
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
+
+		self.spinner.stopAnimating()
 		NotificationCenter.default.removeObserver(self)
 	}
 
@@ -92,7 +94,7 @@ class ConversationViewController: UIViewController {
 					}
 
 					self.tableView.reloadData()
-					self.spinner.isHidden = true
+					self.spinner.stopAnimating()
 					self.tableViewRefreshControl.endRefreshing()
 				}
 			}
