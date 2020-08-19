@@ -90,7 +90,7 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
 			}
         }
         
-        if (self.isDownloadPending(for: key))
+		if (self.pendingDownloads.contains(key))
         {
             // An active UUHttpSession means a request is currently fetching the resource, so
             // no need to re-fetch
