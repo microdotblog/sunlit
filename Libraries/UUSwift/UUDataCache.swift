@@ -359,14 +359,12 @@ private class UUDataCacheDb
     public func clearAllMetaData()
     {
 		UserDefaults.standard.removeObject(forKey: UUDataCacheDb.cacheKeyName)
-		UserDefaults.standard.synchronize()
 		
 		self.metaData = [:]
     }
 
 	private func saveCurrentMetaData() {
 		UserDefaults.standard.setValue(self.metaData, forKey: UUDataCacheDb.cacheKeyName)
-		UserDefaults.standard.synchronize()
 	}
 }
 

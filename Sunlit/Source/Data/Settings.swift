@@ -19,12 +19,10 @@ class Settings {
 	
 	static func setInsecureString(_ value : String, forKey : String) {
 		UserDefaults.standard.set(value, forKey: forKey)
-		UserDefaults.standard.synchronize()
 	}
 	
 	static func deleteInsecureString(forKey : String) {
 		UserDefaults.standard.removeObject(forKey: forKey)
-		UserDefaults.standard.synchronize()
 	}
 	
 	static func getInsecureDictionary(forKey : String) -> [String : Any]? {
@@ -34,7 +32,6 @@ class Settings {
 	
 	static func setInsecureDictionary(_ dictionary : [String : Any], forKey : String) {
 		UserDefaults.standard.set(dictionary, forKey: forKey)
-		UserDefaults.standard.synchronize()
 	}
 	
 	static func setSecureString(_ value : String, forKey : String) {
