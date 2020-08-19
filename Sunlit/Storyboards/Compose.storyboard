@@ -38,7 +38,7 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="60"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="a9n-oW-kej">
-                                        <rect key="frame" x="12" y="8.5" width="390" height="43"/>
+                                        <rect key="frame" x="16" y="8.5" width="382" height="43"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="43" id="4F3-vn-IPq"/>
                                         </constraints>
@@ -49,20 +49,20 @@
                                         </connections>
                                     </textField>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KNt-4X-uMH">
-                                        <rect key="frame" x="0.0" y="59" width="414" height="1"/>
-                                        <color key="backgroundColor" systemColor="systemGray3Color"/>
+                                        <rect key="frame" x="0.0" y="59.5" width="414" height="0.5"/>
+                                        <color key="backgroundColor" systemColor="separatorColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="3Bp-wg-PbN"/>
+                                            <constraint firstAttribute="height" constant="0.5" id="3Bp-wg-PbN"/>
                                         </constraints>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="a9n-oW-kej" firstAttribute="leading" secondItem="KSH-VH-Uxb" secondAttribute="leading" constant="12" id="7be-g6-rhJ"/>
+                                    <constraint firstItem="a9n-oW-kej" firstAttribute="leading" secondItem="KSH-VH-Uxb" secondAttribute="leading" constant="16" id="7be-g6-rhJ"/>
                                     <constraint firstAttribute="height" constant="60" id="TlM-Xh-g7s"/>
                                     <constraint firstAttribute="bottom" secondItem="KNt-4X-uMH" secondAttribute="bottom" id="Wqa-jL-PID"/>
                                     <constraint firstItem="KNt-4X-uMH" firstAttribute="leading" secondItem="KSH-VH-Uxb" secondAttribute="leading" id="cRh-ej-orf"/>
-                                    <constraint firstAttribute="trailing" secondItem="a9n-oW-kej" secondAttribute="trailing" constant="12" id="cZi-9e-coa"/>
+                                    <constraint firstAttribute="trailing" secondItem="a9n-oW-kej" secondAttribute="trailing" constant="16" id="cZi-9e-coa"/>
                                     <constraint firstItem="a9n-oW-kej" firstAttribute="centerY" secondItem="KSH-VH-Uxb" secondAttribute="centerY" id="r6X-U8-jv3"/>
                                     <constraint firstAttribute="trailing" secondItem="KNt-4X-uMH" secondAttribute="trailing" id="yki-y2-MBe"/>
                                 </constraints>
@@ -179,7 +179,7 @@
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jk2-ua-Mpd">
                                                     <rect key="frame" x="16" y="16" width="382" height="96"/>
-                                                    <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                                    <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="382" id="sZg-yR-dOY"/>
                                                     </constraints>
@@ -298,14 +298,11 @@
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
+        <systemColor name="separatorColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray3Color">
-            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
