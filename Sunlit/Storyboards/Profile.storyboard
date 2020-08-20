@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17147" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ief-kE-dcT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17140" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ief-kE-dcT">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17120"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17115"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -70,7 +70,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="XTF-dL-VWv">
                                                     <rect key="frame" x="76" y="26.000000000000004" width="118" height="38.333333333333343"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" verticalCompressionResistancePriority="751" text="Jonathan Hays" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nDe-kP-FFY">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" text="Jonathan Hays" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nDe-kP-FFY">
                                                             <rect key="frame" x="0.0" y="0.0" width="118" height="20.333333333333332"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <nil key="textColor"/>
@@ -156,24 +156,18 @@
                                     <outlet property="prefetchDataSource" destination="Ief-kE-dcT" id="TaZ-01-HwW"/>
                                 </connections>
                             </collectionView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="MRF-BK-fWI">
-                                <rect key="frame" x="188.66666666666666" y="429.66666666666669" width="37" height="37"/>
-                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="w4e-T2-UN6"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="MRF-BK-fWI" firstAttribute="centerX" secondItem="wAD-hj-4PJ" secondAttribute="centerX" id="C1c-za-c2k"/>
                             <constraint firstItem="2xJ-Ay-lTa" firstAttribute="trailing" secondItem="w4e-T2-UN6" secondAttribute="trailing" id="ND4-pb-NKa"/>
                             <constraint firstItem="2xJ-Ay-lTa" firstAttribute="top" secondItem="wAD-hj-4PJ" secondAttribute="top" id="OK0-3f-EEi"/>
-                            <constraint firstItem="MRF-BK-fWI" firstAttribute="centerY" secondItem="wAD-hj-4PJ" secondAttribute="centerY" id="fP6-k3-g5n"/>
                             <constraint firstAttribute="bottom" secondItem="2xJ-Ay-lTa" secondAttribute="bottom" id="iV2-ta-Ugh"/>
                             <constraint firstItem="2xJ-Ay-lTa" firstAttribute="leading" secondItem="w4e-T2-UN6" secondAttribute="leading" id="ibQ-x7-prQ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="bP8-fs-ZAf"/>
                     <connections>
-                        <outlet property="busyIndicator" destination="MRF-BK-fWI" id="ac5-f8-Wf9"/>
                         <outlet property="collectionView" destination="2xJ-Ay-lTa" id="Fv1-O8-SAd"/>
                     </connections>
                 </viewController>
