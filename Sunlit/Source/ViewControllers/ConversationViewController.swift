@@ -148,7 +148,9 @@ class ConversationViewController: UIViewController {
 				let frame = value.cgRectValue
 				
 				UIView.animate(withDuration: 0.25) {
-					self.tableBottomConstraint.constant = frame.size.height + 44
+					let pane_height: CGFloat = 54
+					self.tableBottomConstraint.constant = frame.size.height + pane_height - self.view.safeAreaInsets.bottom
+
 					self.postButton.alpha = 1.0
 					self.view.layoutIfNeeded()
 					self.replyFieldPlaceholder.alpha = 0.0
