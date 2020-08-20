@@ -40,15 +40,17 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		self.navigationController?.setNavigationBarHidden(true, animated: true)
 	}
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // This is needed to "lock" the image into place so it won't bounce-scroll when it initially appears
-        self.scrollView.zoomScale = 1.0
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+		// This is needed to "lock" the image into place so it won't bounce-scroll when it initially appears
+		// Also start slightly zoomed in
+        self.scrollView.zoomScale = 1.5
     }
     
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-		self.image.frame = self.scrollView.bounds
+//		self.image.frame = self.scrollView.bounds
 	}
 	
 	func setupNavigationBar() {
@@ -124,7 +126,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		UIView.animate(withDuration: 0.15, delay: 0.35, options: .curveLinear, animations: {
 			self.topInfoView.alpha = alpha
 			self.bottomInfoView.alpha = alpha
-			self.scrollView.zoomScale = 1.0
+//			self.scrollView.zoomScale = 1.0
 		}) { (complete) in
 			
 		}
