@@ -86,7 +86,9 @@ class ConversationViewController: UIViewController {
         var userList = ""
         var users = Set<String>()
         for reply in self.posts {
-            users.insert(reply.owner.userName)
+			if reply.owner.userName != SnippetsUser.current()?.userName {
+				users.insert(reply.owner.userName)
+			}
         }
 
         for user in users {
