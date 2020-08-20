@@ -107,7 +107,7 @@
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="videoButtonOverlay" translatesAutoresizingMaskIntoConstraints="NO" id="ujN-ZB-1nR">
-                                                                        <rect key="frame" x="197" y="90" width="20" height="20"/>
+                                                                        <rect key="frame" x="192" y="85" width="30" height="30"/>
                                                                     </imageView>
                                                                 </subviews>
                                                                 <constraints>
@@ -449,6 +449,13 @@
                                                         </label>
                                                     </subviews>
                                                 </stackView>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="ep7-mL-cHw">
+                                                    <rect key="frame" x="285" y="18.666666666666671" width="113" height="39"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="39" id="Lhm-31-lbf"/>
+                                                        <constraint firstAttribute="width" constant="113" id="a3a-UT-Mm2"/>
+                                                    </constraints>
+                                                </activityIndicatorView>
                                                 <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="BhO-xx-mUX">
                                                     <rect key="frame" x="285" y="18" width="113" height="40"/>
                                                     <subviews>
@@ -488,14 +495,17 @@
                                             <constraints>
                                                 <constraint firstItem="BhO-xx-mUX" firstAttribute="centerY" secondItem="beh-Dg-rLU" secondAttribute="centerY" id="IDE-UI-5jL"/>
                                                 <constraint firstItem="beh-Dg-rLU" firstAttribute="leading" secondItem="eYA-zL-HuI" secondAttribute="trailing" constant="8" symbolic="YES" id="W3S-12-vnL"/>
+                                                <constraint firstItem="ep7-mL-cHw" firstAttribute="centerY" secondItem="eYA-zL-HuI" secondAttribute="centerY" id="Z5G-Ta-A2D"/>
                                                 <constraint firstAttribute="trailing" secondItem="BhO-xx-mUX" secondAttribute="trailing" constant="8" id="dEP-KX-bkr"/>
                                                 <constraint firstItem="beh-Dg-rLU" firstAttribute="centerY" secondItem="eYA-zL-HuI" secondAttribute="centerY" id="gPB-zT-WQV"/>
+                                                <constraint firstAttribute="trailing" secondItem="ep7-mL-cHw" secondAttribute="trailing" constant="8" id="ty2-GI-MQS"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="406" height="125"/>
                                         <connections>
                                             <outlet property="avatar" destination="eYA-zL-HuI" id="Nod-hn-ORg"/>
                                             <outlet property="blogAddress" destination="h68-jT-Q82" id="7TJ-wl-MI6"/>
+                                            <outlet property="busyIndicator" destination="ep7-mL-cHw" id="kd9-v4-4Ec"/>
                                             <outlet property="followingContainer" destination="BhO-xx-mUX" id="u7c-tn-1CT"/>
                                             <outlet property="followingLabel" destination="Aa7-Ps-zEB" id="AeU-2S-oo5"/>
                                             <outlet property="fullName" destination="1nn-fW-HCQ" id="EyE-QB-5Ll"/>
