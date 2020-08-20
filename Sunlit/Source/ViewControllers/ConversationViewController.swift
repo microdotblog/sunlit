@@ -34,11 +34,10 @@ class ConversationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-		self.tableViewRefreshControl.addTarget(self, action: #selector(loadConversation), for: .valueChanged)
-		self.tableView.addSubview(self.tableViewRefreshControl)
+		self.setupTable()
+		self.setupNavigation()
+		self.setupGesture()
 
-		self.navigationItem.title = "Conversation"
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back))
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -65,6 +64,22 @@ class ConversationViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleAvatarLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+	}
+	
+	func setupTable() {
+		self.tableViewRefreshControl.addTarget(self, action: #selector(loadConversation), for: .valueChanged)
+		self.tableView.addSubview(self.tableViewRefreshControl)
+	}
+	
+	func setupNavigation() {
+		self.navigationItem.title = "Conversation"
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back))
+	}
+	
+	func setupGesture() {
+		let gesture = UISwipeGestureRecognizer(target: self, action: #selector(back))
+		gesture.direction = .right
+		self.view.addGestureRecognizer(gesture)
 	}
 	
     func buildReplyText() -> String {
