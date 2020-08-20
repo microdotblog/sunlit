@@ -189,6 +189,7 @@ class TimelineViewController: UIViewController {
 		scrollView.addSubview(contentView)
 		scrollView.contentSize = CGSize(width: buttonOffset.x, height: buttonOffset.y)
 		scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44)
+		scrollView.showsHorizontalScrollIndicator = false
 		self.keyboardAccessoryView = scrollView
 		self.keyboardAccessoryView.alpha = 0.0
 	}
