@@ -13,8 +13,8 @@ import Snippets
 
 class SunlitPostTableViewCell : UITableViewCell {
 
-	@IBOutlet var pageViewIndicatorContainer : UIView!
 	@IBOutlet var pageViewIndicator : UIPageControl!
+	@IBOutlet var pageViewIndicatorContainer : UIView!
 	@IBOutlet var collectionView : UICollectionView!
 	@IBOutlet var textView : UITextView!
 	@IBOutlet var dateLabel : UILabel!
