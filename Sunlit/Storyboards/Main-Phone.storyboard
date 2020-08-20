@@ -65,7 +65,7 @@
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <inset key="titleEdgeInsets" minX="-40" minY="20" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="20" minY="-60" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="Mentions" image="mentions.bubble"/>
+                                                <state key="normal" title="Mentions" image="at" catalog="system"/>
                                                 <connections>
                                                     <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="8bK-f1-NEw"/>
                                                 </connections>
@@ -144,9 +144,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="at" catalog="system" width="128" height="124"/>
         <image name="bubble.left.and.bubble.right" catalog="system" width="128" height="96"/>
         <image name="magnifyingglass.circle" catalog="system" width="128" height="121"/>
-        <image name="mentions.bubble" width="14" height="14"/>
         <image name="person.circle.fill" catalog="system" width="128" height="121"/>
         <image name="person.crop.circle" catalog="system" width="128" height="121"/>
         <systemColor name="labelColor">
