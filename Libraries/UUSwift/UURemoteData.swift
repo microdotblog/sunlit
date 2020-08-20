@@ -29,7 +29,7 @@
 public protocol UURemoteDataProtocol
 {
     func data(for key: String) -> Data?
-    func isDownloadPending(for key: String) -> Bool
+    func isDownloadActive(for key: String) -> Bool
     
     func metaData(for key: String) -> [String:Any]
     func set(metaData: [String:Any], for key: String)
@@ -90,15 +90,13 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
 			}
         }
         
-		if (self.pendingDownloads.contains(key))
+        if (self.isDownloadActive(for: key))
         {
             // An active UUHttpSession means a request is currently fetching the resource, so
             // no need to re-fetch
             //UUDebugLog("Download pending for \(key)")
             self.appendRemoteHandler(for: key, handler: remoteLoadCompletion)
-            
-            self.pendingDownloads.remove(key)
-            self.pendingDownloads.prepend(key)
+
             return nil
         }
         
@@ -153,7 +151,11 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
     
     private func queuePendingRequest(for key: String, remoteLoadCompletion: UUDataLoadedCompletionBlock?)
     {
-        pendingDownloads.append(key)
+        if (self.pendingDownloads.contains(key)) {
+            self.pendingDownloads.remove(key)
+        }
+        self.pendingDownloads.prepend(key)
+
         appendRemoteHandler(for: key, handler: remoteLoadCompletion)
     }
     
@@ -175,7 +177,7 @@ public class UURemoteData : NSObject, UURemoteDataProtocol
         }
     }
     
-    public func isDownloadPending(for key: String) -> Bool
+    public func isDownloadActive(for key: String) -> Bool
     {
         return (activeDownloads[key] != nil)
     }
