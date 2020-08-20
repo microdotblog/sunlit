@@ -18,15 +18,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" maximumZoomScale="4" translatesAutoresizingMaskIntoConstraints="NO" id="40L-Qi-E5N">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="4" translatesAutoresizingMaskIntoConstraints="NO" id="40L-Qi-E5N">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EhT-yW-dWa">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EhT-yW-dWa">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="EhT-yW-dWa" firstAttribute="bottom" secondItem="BPq-m9-8F8" secondAttribute="bottom" id="7oD-of-kht"/>
+                                    <constraint firstItem="EhT-yW-dWa" firstAttribute="height" secondItem="Hdj-tC-ZQg" secondAttribute="height" id="Hro-1I-Rve"/>
+                                    <constraint firstItem="EhT-yW-dWa" firstAttribute="leading" secondItem="BPq-m9-8F8" secondAttribute="leading" id="N3s-Ed-qY0"/>
+                                    <constraint firstItem="EhT-yW-dWa" firstAttribute="trailing" secondItem="BPq-m9-8F8" secondAttribute="trailing" id="TrD-7p-Blj"/>
+                                    <constraint firstItem="EhT-yW-dWa" firstAttribute="top" secondItem="BPq-m9-8F8" secondAttribute="top" id="hS9-AY-Bxu"/>
+                                    <constraint firstItem="EhT-yW-dWa" firstAttribute="width" secondItem="Hdj-tC-ZQg" secondAttribute="width" id="skH-hZ-6Wh"/>
+                                </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="BPq-m9-8F8"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="Hdj-tC-ZQg"/>
                                 <connections>
@@ -40,16 +47,16 @@
                                         <rect key="frame" x="57" y="13" width="170" height="44"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="AWe-2L-xq8">
-                                                <rect key="frame" x="52" y="2" width="118" height="39.5"/>
+                                                <rect key="frame" x="52" y="2" width="118" height="40.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Jonathan Hays" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kyn-kF-Ioz">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jonathan Hays" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kyn-kF-Ioz">
                                                         <rect key="frame" x="0.0" y="0.0" width="118" height="20.5"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="@cheesemaker" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qw6-s8-CAq">
-                                                        <rect key="frame" x="0.0" y="22.5" width="118" height="17"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@cheesemaker" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qw6-s8-CAq">
+                                                        <rect key="frame" x="0.0" y="22.5" width="118" height="18"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
@@ -65,8 +72,7 @@
                                             </imageView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="AWe-2L-xq8" secondAttribute="bottom" constant="2.5" id="1Er-tt-W4m"/>
-                                            <constraint firstItem="AWe-2L-xq8" firstAttribute="top" secondItem="LCc-rb-zmg" secondAttribute="top" constant="2" id="3G6-G2-RUZ"/>
+                                            <constraint firstItem="AWe-2L-xq8" firstAttribute="centerY" secondItem="LCc-rb-zmg" secondAttribute="centerY" id="K3M-Yg-tVu"/>
                                             <constraint firstItem="qYa-yJ-szY" firstAttribute="leading" secondItem="LCc-rb-zmg" secondAttribute="leading" id="Xfy-Le-dOh"/>
                                             <constraint firstAttribute="height" constant="44" id="cgV-HH-18R"/>
                                             <constraint firstItem="AWe-2L-xq8" firstAttribute="leading" secondItem="qYa-yJ-szY" secondAttribute="trailing" constant="8" symbolic="YES" id="ed4-um-vu1"/>

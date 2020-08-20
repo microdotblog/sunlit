@@ -44,8 +44,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
         super.viewWillAppear(animated)
 
 		// This is needed to "lock" the image into place so it won't bounce-scroll when it initially appears
-		// Also start slightly zoomed in
-        self.scrollView.zoomScale = 1.5
+        self.scrollView.zoomScale = 1.0
     }
     
 	override func viewDidLayoutSubviews() {
