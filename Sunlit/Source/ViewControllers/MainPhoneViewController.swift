@@ -24,7 +24,6 @@ class MainPhoneViewController: UIViewController {
 	var profileViewController : MyProfileViewController!
 	var mentionsViewController : MentionsViewController!
 	var currentViewController : SnippetsScrollContentProtocol? = nil
-	var reloadTimer: Timer?
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -64,29 +63,14 @@ class MainPhoneViewController: UIViewController {
 		
 		let contentSize = CGSize(width: frame.size.width * 4.0, height: 0.0)
 		self.scrollView.contentSize = contentSize
-
-		if let timer = self.reloadTimer {
-			timer.invalidate()
-			self.reloadTimer = nil
-		}
-		
-		if self.reloadTimer == nil {
-			// TODO: remove this and make sure we're updating the cells on rotation and font change
-			self.reloadTimer = Timer(timeInterval: 0.5, repeats: false) { timer in
-				self.timelineViewController.tableView.reloadData()
-				self.discoverViewController.tableView.reloadData()
-				self.discoverViewController.collectionView.reloadData()
-				self.profileViewController.collectionView.reloadData()
-				self.mentionsViewController.tableView.reloadData()
-			}
-		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
+		self.reloadTabs()
 	}
-	
 	
 	func loadContentViews() {
 		
@@ -119,6 +103,14 @@ class MainPhoneViewController: UIViewController {
 		self.timelineButton.isEnabled = false
 		self.currentViewController = self.timelineViewController
 		self.timelineViewController.prepareToDisplay()
+	}
+	
+	func reloadTabs() {
+		self.timelineViewController.tableView.reloadData()
+		self.discoverViewController.tableView.reloadData()
+		self.discoverViewController.collectionView.reloadData()
+		self.profileViewController.collectionView.reloadData()
+		self.mentionsViewController.tableView.reloadData()
 	}
 	
 	func setupProfileButton() {
