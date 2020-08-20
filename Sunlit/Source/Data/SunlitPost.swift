@@ -136,9 +136,6 @@ class SunlitPost : SnippetsPost {
 			font-size: \(font.pointSize)px !important;
 			font-family: system-ui !important;
 		}
-		a {
-			color: \(textColor.uuHexString) !important;
-		}
 		</style>
 		"""
 		
