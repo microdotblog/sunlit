@@ -25,10 +25,15 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 	}
 		
 	func configureFollowing(count : Int, complete : Bool) {
-		self.followingContainer.isHidden = false
-		self.followingLabel.text = "Following \(count)"
-		if !complete {
-			self.followingLabel.text = "Loading..."
+		if complete {
+			self.followingLabel.text = "Following \(count)"
+			self.followingContainer.isHidden = false
+			self.busyIndicator.stopAnimating()
+		}
+		else {
+			self.followingLabel.text = ""
+			self.followingContainer.isHidden = true
+			self.busyIndicator.startAnimating()
 		}
 	}
 	
