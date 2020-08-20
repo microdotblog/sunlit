@@ -15,6 +15,7 @@ class ProfileViewController: UIViewController {
 	var user : SnippetsUser!
 	var updatedUserInfo : SnippetsUser? = nil
 	var userPosts : [SunlitPost] = []
+	var isFetchingData = true
 	
 	@IBOutlet var collectionView : UICollectionView!
 	
@@ -71,6 +72,7 @@ class ProfileViewController: UIViewController {
 				}
 
 				self.userPosts = posts
+				self.isFetchingData = false
 				self.collectionView.reloadData()
 				
 				self.fetchUserInfo(self.user)
@@ -242,8 +244,15 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		cell.followButton.layer.cornerRadius = (cell.followButton.bounds.size.height - 1) / 2.0
 		cell.followButton.setTitle("Unfollow", for: .normal)
 		cell.followButton.isHidden = true
-        cell.busyIndicator.isHidden = false
-        cell.busyIndicator.startAnimating()
+        
+		if self.isFetchingData {
+			cell.busyIndicator.startAnimating()
+			cell.followButton.isHidden = true
+		}
+		else {
+			cell.busyIndicator.stopAnimating()
+			cell.followButton.isHidden = false
+		}
         
 		cell.followButton.addTarget(self, action: #selector(onFollowUser), for: .touchUpInside)
 		
@@ -255,12 +264,7 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 			cell.followButton.isHidden = false
 			cell.followButton.setTitle("Follow", for: .normal)
 		}
-        
-        if SnippetsUser.current() == nil {
-            cell.followButton.isHidden = true
-            cell.busyIndicator.isHidden = true
-        }
-			
+        			
 		cell.avatar.clipsToBounds = true
 		cell.avatar.layer.cornerRadius = (cell.avatar.bounds.size.height - 1) / 2.0
 			
