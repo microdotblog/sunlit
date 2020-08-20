@@ -16,8 +16,10 @@ class ProfileViewController: UIViewController {
 	var updatedUserInfo : SnippetsUser? = nil
 	var userPosts : [SunlitPost] = []
 	var isFetchingData = true
+	var isFetchingFollowData = true
 	
 	@IBOutlet var collectionView : UICollectionView!
+	@IBOutlet var busyIndicator : UIActivityIndicatorView!
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +35,9 @@ class ProfileViewController: UIViewController {
 			self.fetchUserInfo(user)
 		}
 		
+		self.busyIndicator.isHidden = false
+		self.busyIndicator.startAnimating()
+
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(dismissViewController))
     }
 	
@@ -42,19 +47,22 @@ class ProfileViewController: UIViewController {
 	}
 	
 	func fetchUserInfo(_ user : SnippetsUser) {
+		
 		Snippets.shared.fetchUserDetails(user: user) { (error, updatedUser, posts : [SnippetsPost]) in
+			
+			self.isFetchingFollowData = false
 			
 			if let snippetsUser = updatedUser {
 				self.user = SnippetsUser.save(snippetsUser)
 				
 				self.updatedUserInfo = self.user
+			}
 			
-				DispatchQueue.main.async {
-					self.collectionView.reloadData()
+			DispatchQueue.main.async {
+				self.collectionView.reloadData()
 
-					if self.userPosts.count <= 0 {
-						self.fetchUserPosts()
-					}
+				if self.userPosts.count <= 0 {
+					self.fetchUserPosts()
 				}
 			}
 		}
@@ -65,6 +73,7 @@ class ProfileViewController: UIViewController {
 
 			DispatchQueue.main.async {
 
+				
 				var posts : [SunlitPost] = []
 				for snippet in snippets {
 					let post = SunlitPost.create(snippet)
@@ -73,6 +82,7 @@ class ProfileViewController: UIViewController {
 
 				self.userPosts = posts
 				self.isFetchingData = false
+				self.busyIndicator.isHidden = true
 				self.collectionView.reloadData()
 				
 				self.fetchUserInfo(self.user)
@@ -97,6 +107,9 @@ class ProfileViewController: UIViewController {
 	}
 	
 	@objc func onFollowUser() {
+		self.isFetchingFollowData = true
+		self.collectionView.reloadData()
+		
 		if self.user.isFollowing {
 			Snippets.shared.unfollow(user: self.user) { (error) in
 				if error == nil {
@@ -104,6 +117,7 @@ class ProfileViewController: UIViewController {
 					self.user = SnippetsUser.save(self.user)
 					
 					DispatchQueue.main.async {
+						self.isFetchingFollowData = false
 						self.collectionView.reloadData()
 					}
 				}
@@ -116,6 +130,7 @@ class ProfileViewController: UIViewController {
 					self.user = SnippetsUser.save(self.user)
 					
 					DispatchQueue.main.async {
+						self.isFetchingFollowData = false
 						self.collectionView.reloadData()
 					}
 				}
@@ -245,7 +260,8 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		cell.followButton.setTitle("Unfollow", for: .normal)
 		cell.followButton.isHidden = true
         
-		if self.isFetchingData {
+		if self.isFetchingFollowData {
+			cell.busyIndicator.isHidden = false
 			cell.busyIndicator.startAnimating()
 			cell.followButton.isHidden = true
 		}
@@ -258,10 +274,8 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		
 		if self.user.isFollowing {
 			cell.followButton.setTitle("Unfollow", for: .normal)
-			cell.followButton.isHidden = false
 		}
 		else if self.updatedUserInfo != nil {
-			cell.followButton.isHidden = false
 			cell.followButton.setTitle("Follow", for: .normal)
 		}
         			
