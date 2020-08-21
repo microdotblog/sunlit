@@ -131,11 +131,5 @@ extension SnippetsUser {
 		if let site = authorDictionary["url"] as? String {
 			self.siteURL = site
 		}
-		
-		if self.siteURL.count <=  0 {
-			if let site = authorDictionary["default_site"] as? String{
-				self.siteURL = site
-			}
-		}
 	}
 }
