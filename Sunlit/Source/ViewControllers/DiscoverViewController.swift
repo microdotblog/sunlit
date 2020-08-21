@@ -283,6 +283,12 @@ class DiscoverViewController: UIViewController {
 	}
 		
 	func prefetchImages(_ indexPath : IndexPath) {
+		
+		// Saftey code in case the posts get changed out in the middle of a collection view refresh...
+		if indexPath.row >= self.posts.count {
+			return
+		}
+		
 		let post = self.posts[indexPath.row]
 		let imageSource = post.images[0]
 		
