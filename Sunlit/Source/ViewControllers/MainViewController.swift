@@ -367,7 +367,11 @@ class MainViewController: UIViewController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 	func activateContentViewController(_ viewController : SnippetsScrollContentProtocol) {
-
+		// TODO: handle narrow width in iPad split view, e.g. something like:
+		// if splitview.isCollapsed {
+		//     self.navigationController.pushViewController(...)
+		// }
+		
 		self.navigationController?.popToRootViewController(animated: false)
 		self.deactivateContentViewController(self.currentContentViewController)
 
