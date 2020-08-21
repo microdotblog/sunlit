@@ -15,7 +15,7 @@ class MainTabletViewController: UIViewController {
 	@IBOutlet var versionLabel : UILabel!
 	
 	var menuTitles = [ "Timeline", "Mentions", "Discover", "Profile", "Settings" ]
-	var menuIcons = [ "bubble.left.and.bubble.right", "bubble.left", "magnifyingglass.circle", "person.crop.circle",  "gear" ]
+	var menuIcons = [ "bubble.left.and.bubble.right", "at", "magnifyingglass.circle", "person.crop.circle",  "gear" ]
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
