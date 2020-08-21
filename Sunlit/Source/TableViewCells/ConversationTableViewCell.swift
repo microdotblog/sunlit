@@ -14,7 +14,8 @@ class ConversationTableViewCell : UITableViewCell {
 	@IBOutlet var userName : UILabel!
 	@IBOutlet var userHandle : UILabel!
 	@IBOutlet var replyText : UITextView!
-	
+	@IBOutlet var dateLabel : UILabel!
+
 	var post : SunlitPost? = nil
 	
 	override func awakeFromNib() {
@@ -37,6 +38,13 @@ class ConversationTableViewCell : UITableViewCell {
 		self.userName.text = post.owner.fullName
 		self.userHandle.text = "@" + post.owner.userName
 		self.loadPhotos(post.owner, indexPath)
+
+		if let date = post.publishedDate {
+			self.dateLabel.text = date.friendlyFormat()
+		}
+		else {
+			self.dateLabel.text = ""
+		}
 	}
 	
 	func addUserProfileTapGesture(_ view : UIView) {

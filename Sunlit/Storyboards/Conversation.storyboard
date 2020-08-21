@@ -54,7 +54,7 @@
                                                     </subviews>
                                                 </stackView>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="mDf-tb-KWm">
-                                                    <rect key="frame" x="64" y="61" width="330" height="108"/>
+                                                    <rect key="frame" x="64" y="61" width="330" height="79.5"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <color key="tintColor" systemColor="labelColor"/>
                                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -72,24 +72,36 @@
                                                         <constraint firstAttribute="height" constant="0.5" id="yuh-G1-OYr"/>
                                                     </constraints>
                                                 </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 day ago" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iGg-xo-oLb">
+                                                    <rect key="frame" x="68" y="148.5" width="54" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="Co4-NR-6C7"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" systemColor="systemGrayColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="mDf-tb-KWm" firstAttribute="trailing" secondItem="0t6-uq-Ar9" secondAttribute="trailing" constant="-4" id="3pB-1S-P8n"/>
                                                 <constraint firstAttribute="bottom" secondItem="PkF-Aa-cXb" secondAttribute="bottom" id="Akc-TX-SPL"/>
+                                                <constraint firstItem="PkF-Aa-cXb" firstAttribute="top" secondItem="iGg-xo-oLb" secondAttribute="bottom" constant="16" id="Awc-xR-efq"/>
                                                 <constraint firstAttribute="trailing" secondItem="PkF-Aa-cXb" secondAttribute="trailing" id="GVM-ru-37j"/>
+                                                <constraint firstItem="iGg-xo-oLb" firstAttribute="top" secondItem="mDf-tb-KWm" secondAttribute="bottom" constant="8" id="QJt-Ey-4tc"/>
                                                 <constraint firstItem="PkF-Aa-cXb" firstAttribute="leading" secondItem="QbO-MG-Zhx" secondAttribute="leading" id="QTr-S8-6v0"/>
                                                 <constraint firstItem="uwQ-dM-qm3" firstAttribute="top" secondItem="QbO-MG-Zhx" secondAttribute="top" constant="16" id="S6O-jl-XGQ"/>
                                                 <constraint firstItem="mDf-tb-KWm" firstAttribute="leading" secondItem="0t6-uq-Ar9" secondAttribute="leading" constant="-4" id="T9Q-Zl-LlH"/>
                                                 <constraint firstItem="mDf-tb-KWm" firstAttribute="top" secondItem="0t6-uq-Ar9" secondAttribute="bottom" constant="8" id="aAS-XG-neE"/>
                                                 <constraint firstAttribute="trailing" secondItem="0t6-uq-Ar9" secondAttribute="trailing" constant="16" id="bex-W9-nhm"/>
                                                 <constraint firstItem="0t6-uq-Ar9" firstAttribute="centerY" secondItem="uwQ-dM-qm3" secondAttribute="centerY" id="cFl-sf-U1D"/>
+                                                <constraint firstItem="iGg-xo-oLb" firstAttribute="leading" secondItem="0t6-uq-Ar9" secondAttribute="leading" id="kSH-Xb-iCN"/>
                                                 <constraint firstItem="uwQ-dM-qm3" firstAttribute="leading" secondItem="QbO-MG-Zhx" secondAttribute="leading" constant="16" id="mBx-iJ-fHi"/>
-                                                <constraint firstAttribute="bottom" secondItem="mDf-tb-KWm" secondAttribute="bottom" constant="16" id="n0D-Ur-Ygv"/>
                                                 <constraint firstItem="0t6-uq-Ar9" firstAttribute="leading" secondItem="uwQ-dM-qm3" secondAttribute="trailing" constant="16" id="qAU-gz-ld0"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="avatar" destination="uwQ-dM-qm3" id="Zvq-xU-nz0"/>
+                                            <outlet property="dateLabel" destination="iGg-xo-oLb" id="ZIN-TD-wMb"/>
                                             <outlet property="replyText" destination="mDf-tb-KWm" id="G0Y-Fh-yY4"/>
                                             <outlet property="userHandle" destination="RFd-gd-CeU" id="Wdn-Mw-2rn"/>
                                             <outlet property="userName" destination="ulo-5H-Ojt" id="Zvf-eX-Faz"/>
@@ -223,6 +235,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGrayColor">
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
