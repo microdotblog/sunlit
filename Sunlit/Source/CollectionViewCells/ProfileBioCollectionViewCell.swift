@@ -21,9 +21,9 @@ class ProfileBioCollectionViewCell : UICollectionViewCell {
 		}
 		
 		if owner.bio.count > 0 {
-			//let text = owner.attributedTextBio()
 			let text = owner.bio
-			let rect = text.boundingRect(with: size, options: .usesLineFragmentOrigin , context: nil)
+			let bio_font = UIFont.preferredFont(forTextStyle: .body)
+			let rect = text.boundingRect(with: size, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics], attributes: [NSAttributedString.Key.font: bio_font], context: nil)
 			size.height = rect.size.height
 			size.height = size.height + 16.0
 		}

@@ -16,9 +16,7 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var userHandle : UILabel!
 	@IBOutlet var blogAddress : UIButton!
     @IBOutlet var busyIndicator : UIActivityIndicatorView!
-
-	@IBOutlet var followingLabel : UILabel!
-	@IBOutlet var followingContainer : UIView!
+	@IBOutlet var followingButton: UIButton!
 	
 	static func sizeOf(_ owner : SnippetsUser?, collectionViewWidth : CGFloat) -> CGSize {
 		return CGSize(width: collectionViewWidth, height: 120.0)
@@ -26,13 +24,13 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 		
 	func configureFollowing(count : Int, complete : Bool) {
 		if complete {
-			self.followingLabel.text = "Following \(count)"
-			self.followingContainer.isHidden = false
+			self.followingButton.setTitle("Following \(count)", for: .normal)
+			self.followingButton.isHidden = false
 			self.busyIndicator.stopAnimating()
 		}
 		else {
-			self.followingLabel.text = ""
-			self.followingContainer.isHidden = true
+			self.followingButton.setTitle("", for: .normal)
+			self.followingButton.isHidden = true
 			self.busyIndicator.startAnimating()
 		}
 	}
