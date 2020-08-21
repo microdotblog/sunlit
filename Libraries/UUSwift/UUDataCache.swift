@@ -323,8 +323,8 @@ private class UUDataCacheDb
     
     public func metaData(for key: String) -> [String:Any]
     {
-		if let metaData = self.metaData[key] as? [String:Any] {
-			return metaData
+		if let dictionary = self.metaData[key] as? [String:Any] {
+			return dictionary
 		}
 		else {
 			var metaData : [String : Any] = [:]
