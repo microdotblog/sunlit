@@ -24,6 +24,7 @@ class DiscoverViewController: UIViewController {
 	
 	var tableViewRefreshControl = UIRefreshControl()
 	var collectionViewRefreshControl = UIRefreshControl()
+	var searchController: SearchViewController? = nil
 	
 	var posts : [SunlitPost] = []
 	var tagmojiDictionary : [String : String] = [:]
@@ -31,7 +32,8 @@ class DiscoverViewController: UIViewController {
 	var collectionTitle = "photos"
 	var loadingData = false
 	var isShowingCollectionView = true
-	
+	var isShowingSearch = false
+
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -52,9 +54,15 @@ class DiscoverViewController: UIViewController {
 		if let list_image = UIImage(systemName: "rectangle.grid.1x2") {
 			items.append(list_image)
 		}
+		if let search_image = UIImage(systemName: "magnifyingglass") {
+			items.append(search_image)
+		}
 		let segmented_control = UISegmentedControl(items: items)
 		
-		if self.isShowingCollectionView {
+		if self.isShowingSearch {
+			segmented_control.selectedSegmentIndex = 2
+		}
+		else if self.isShowingCollectionView {
 			segmented_control.selectedSegmentIndex = 0
 		}
 		else {
@@ -66,29 +74,60 @@ class DiscoverViewController: UIViewController {
 	}
 	
 	@IBAction func segmentChanged(_ sender: UISegmentedControl) {
-		if sender.selectedSegmentIndex == 0 {
+		if sender.selectedSegmentIndex == 2 {
+			self.isShowingCollectionView = false
+			self.isShowingSearch = true
+		}
+		else if sender.selectedSegmentIndex == 0 {
 			self.isShowingCollectionView = true
+			self.isShowingSearch = false
 		}
 		else {
 			self.isShowingCollectionView = false
+			self.isShowingSearch = false
 		}
 		
 		self.refresh(self.posts)
 
-		if self.isShowingCollectionView {
+		if self.isShowingSearch {
+			self.collectionView.isHidden = true
+			self.tableView.isHidden = true
+			self.showSearch()
+		}
+		else if self.isShowingCollectionView {
 			self.collectionView.isHidden = false
 			self.tableView.isHidden = true
+			self.hideSearch()
 		}
 		else {
 			self.collectionView.isHidden = true
 			self.tableView.isHidden = false
+			self.hideSearch()
 		}
 	}
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         self.loadTimeline()
     }
-
+	
+	func showSearch() {
+		if self.searchController == nil {
+			let storyBoard: UIStoryboard = UIStoryboard(name: "Search", bundle: nil)
+			if let search_controller = storyBoard.instantiateInitialViewController() as? SearchViewController {
+				let r = self.view.bounds
+				search_controller.view.frame = r
+				self.view.addSubview(search_controller.view)
+				self.searchController = search_controller
+			}
+		}
+	}
+	
+	func hideSearch() {
+		if let search_controller = self.searchController {
+			search_controller.view.removeFromSuperview()
+			self.searchController = nil
+		}
+	}
 		
 	func setupTableViewAndCollectionView() {
 		self.tableViewRefreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
@@ -354,6 +393,10 @@ class DiscoverViewController: UIViewController {
 	}
 	
 	@objc func keyboardWillShowNotification(_ notification : Notification) {
+		if self.isShowingSearch {
+			return
+		}
+		
 		if let info : [AnyHashable : Any] = notification.userInfo {
 			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
 				// run later outside of animation context

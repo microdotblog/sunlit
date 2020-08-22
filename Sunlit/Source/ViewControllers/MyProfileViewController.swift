@@ -90,7 +90,7 @@ class MyProfileViewController: UIViewController {
 					}
 				}
 				
-				Snippets.shared.listFollowers(user: self.user, completeList: true) { (error, users) in
+				Snippets.shared.listFollowing(user: self.user, completeList: true) { (error, users) in
 					self.followingUsers = users
 					self.followersLoaded = true
 					self.user.followingCount = users.count
