@@ -31,6 +31,8 @@ class MainTabletViewController: UIViewController {
 
 		self.updateInterfaceForUserState()
         
+        self.splitViewController!.delegate = self
+        
         if !self.splitViewController!.isCollapsed {
             self.onTimeLine()
         }
@@ -47,7 +49,9 @@ class MainTabletViewController: UIViewController {
 
 	func setupNavigationController() {
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(onCollapseMenu))
+        if !self.splitViewController!.isCollapsed {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(onCollapseMenu))
+        }
 	}
 	
 	func updateInterfaceForUserState() {
@@ -197,7 +201,29 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MainTabletViewController : UISplitViewControllerDelegate {
 	
+    func updateNavigationControls() {
 
+        var barButtonItem : UIBarButtonItem? = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(onCollapseMenu))
+
+        if self.splitViewController!.isCollapsed {
+            barButtonItem = nil
+        }
+        
+        self.navigationItem.leftBarButtonItem = barButtonItem
+        self.contentViewController.navigationItem.leftBarButtonItem = barButtonItem
+        self.contentViewController.navigationController?.navigationItem.leftBarButtonItem = barButtonItem
+        self.navigationController?.navigationItem.leftBarButtonItem = barButtonItem
+    }
+    
+    func splitViewControllerDidCollapse(_ svc: UISplitViewController) {
+        self.updateNavigationControls()
+    }
+
+    func splitViewControllerDidExpand(_ svc: UISplitViewController) {
+        self.updateNavigationControls()
+        svc.preferredDisplayMode = .allVisible
+    }
+    
 	@objc func onCollapseMenu() {
 		if let splitView = self.navigationController?.parent as? UISplitViewController {
 			
