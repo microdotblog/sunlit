@@ -14,6 +14,8 @@ class MainTabletViewController: UIViewController {
 	@IBOutlet var tableView: UITableView!
 	@IBOutlet var versionLabel : UILabel!
 	
+    var contentViewController : UIViewController!
+    
 	var menuTitles = [ "Timeline", "Mentions", "Discover", "Profile", "Settings" ]
 	var menuIcons = [ "bubble.left.and.bubble.right", "at", "magnifyingglass.circle", "person.crop.circle",  "gear" ]
 
@@ -28,8 +30,11 @@ class MainTabletViewController: UIViewController {
 		self.setupNavigationController()
 
 		self.updateInterfaceForUserState()
-		self.onTimeLine()
-		
+        
+        if !self.splitViewController!.isCollapsed {
+            self.onTimeLine()
+        }
+        
 		self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
 
 		self.versionLabel.text = "Version " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
@@ -61,9 +66,9 @@ class MainTabletViewController: UIViewController {
 	}
 	
 	@objc func handleMentionsUpdatedNotification() {
-		let selectedIndexPath = self.tableView.indexPathForSelectedRow
-		self.tableView.reloadRows(at: [IndexPath(row: 3, section: 0)], with: .none)
-		self.tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
+		//let selectedIndexPath = self.tableView.indexPathForSelectedRow
+		//self.tableView.reloadRows(at: [IndexPath(row: 3, section: 0)], with: .none)
+		//self.tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
 	}
 	
 	@objc func onSelectBlogConfiguration() {
@@ -75,15 +80,33 @@ class MainTabletViewController: UIViewController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	@IBAction func onTimeLine() {
+        if self.splitViewController!.isCollapsed {
+            self.navigationController?.pushViewController(self.contentViewController, animated: true)
+        }
 		NotificationCenter.default.post(name: .showTimelineNotification, object: nil)
 	}
-	
+
+    @IBAction func onMentions() {
+        if self.splitViewController!.isCollapsed {
+            self.navigationController?.pushViewController(self.contentViewController, animated: true)
+        }
+
+        NotificationCenter.default.post(name: .showMentionsNotification, object: nil)
+    }
+
 	@IBAction func onDiscover() {
+        if self.splitViewController!.isCollapsed {
+            self.navigationController?.pushViewController(self.contentViewController, animated: true)
+        }
 		NotificationCenter.default.post(name: .showDiscoverNotification, object: nil)
 	}
 	
 	@IBAction func onProfile() {
-		if let _ = SnippetsUser.current() {
+        if self.splitViewController!.isCollapsed {
+            self.navigationController?.pushViewController(self.contentViewController, animated: true)
+        }
+
+        if let _ = SnippetsUser.current() {
 			NotificationCenter.default.post(name: .showCurrentUserProfileNotification, object: nil)
 		}
 		else {
@@ -93,17 +116,13 @@ class MainTabletViewController: UIViewController {
 	}
 
 	@IBAction func onSettings() {
-		NotificationCenter.default.post(name: .showSettingsNotification, object: nil)
+        NotificationCenter.default.post(name: .showSettingsNotification, object: nil)
 	}
 
 	@IBAction func onCompose() {
 		NotificationCenter.default.post(name: .showComposeNotification, object: nil)
 	}
 	
-	@IBAction func onMentions() {
-		NotificationCenter.default.post(name: .showMentionsNotification, object: nil)
-	}
-
 }
 
 extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {

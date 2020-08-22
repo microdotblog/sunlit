@@ -22,17 +22,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		  fatalError("Missing SplitViewController")
 		}
 		
-		guard let navigationController = splitViewController.viewControllers.last as? UINavigationController
+		guard let contentNavigationController = splitViewController.viewControllers.last as? UINavigationController,
+              let menuNavigationController = splitViewController.viewControllers.first as? UINavigationController
 			//let mainViewController = navigationController.topViewController as? MainViewController
 			else {
 				fatalError("Missing Main View Controller")
 			}
-		
+
+        guard //let contentViewController = contentNavigationController.visibleViewController as? MainViewController,
+              let menuViewController = menuNavigationController.visibleViewController as? MainTabletViewController else {
+            fatalError("Storyboard corrupted")
+        }
+
+        menuViewController.contentViewController = contentNavigationController
+        
 		splitViewController.preferredDisplayMode = .allVisible
 		splitViewController.presentsWithGesture = false
 		
 		if UIDevice.current.userInterfaceIdiom == .phone {
-			splitViewController.viewControllers = [navigationController, navigationController]
+			splitViewController.viewControllers = [contentNavigationController, contentNavigationController]
 		}
 	}
 	
