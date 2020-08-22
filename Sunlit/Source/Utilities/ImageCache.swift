@@ -11,7 +11,7 @@ import UUSwift
 
 class ImageCache {
 	
-	static var requestorLookup : [ String : [NSObject] ] = [:]
+	//static var requestorLookup : [ String : [NSObject] ] = [:]
 	
 	static func prefetch(_ path: String) -> UIImage? {
         if UURemoteImage.shared.isDownloaded(for: path) {
@@ -24,7 +24,7 @@ class ImageCache {
 	
 	static func fetch(_ requestor : NSObject, _ path: String, completion: @escaping ((UIImage?) -> Void)) {
 
-		if var requestorArray = ImageCache.requestorLookup[path] {
+		/*if var requestorArray = ImageCache.requestorLookup[path] {
 			for object in requestorArray {
 				if object == requestor {
 					return
@@ -35,7 +35,7 @@ class ImageCache {
 		}
 		else {
 			ImageCache.requestorLookup[path] = [requestor]
-		}
+		}*/
 	
         let image = UURemoteImage.shared.image(for: path, remoteLoadCompletion: { (image, error) in
             completion(image)
