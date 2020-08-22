@@ -39,6 +39,10 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
 		}
 	}
 
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+		self.searchBar.resignFirstResponder()
+	}
+	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return results.count
 	}
