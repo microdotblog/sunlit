@@ -104,7 +104,9 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
     
     public func moveIntoCache(localData: URL, for key: String)
     {
-        let pathUrl = diskCacheURL(for: key)
+        guard let pathUrl = diskCacheURL(for: key) else {
+            return
+        }
         
         do
         {
@@ -238,12 +240,15 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         }
     }
     
-    public func diskCacheURL(for key: String) -> URL
+    public func diskCacheURL(for key: String) -> URL?
     {
-        let fileName = UUDataCacheDb.shared.fileName(for: key)
-        let path = (cacheFolder as NSString).appendingPathComponent(fileName)
-        let pathUrl = URL(fileURLWithPath: path)
-        return pathUrl
+        if let fileName = UUDataCacheDb.shared.fileName(for: key) {
+            let path = (cacheFolder as NSString).appendingPathComponent(fileName)
+            let pathUrl = URL(fileURLWithPath: path)
+            return pathUrl
+        }
+        
+        return nil
     }
     
     private func removeIfExpired(for key: String)
@@ -258,7 +263,9 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
     {
         var data : Data? = nil
         
-        let pathUrl = diskCacheURL(for: key)
+        guard let pathUrl = diskCacheURL(for: key) else {
+            return nil
+        }
         
         do
         {
@@ -274,7 +281,9 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         
     private func removeFile(for key: String)
     {
-        let pathUrl = diskCacheURL(for: key)
+        guard let pathUrl = diskCacheURL(for: key) else {
+            return
+        }
         
         do
         {
@@ -288,7 +297,9 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
     
     private func saveToDisk(data: Data, for key: String)
     {
-        let pathUrl = diskCacheURL(for: key)
+        guard let pathUrl = diskCacheURL(for: key) else {
+            return
+        }
         
         do
         {
@@ -301,70 +312,89 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
     }
         
     private func dataExistsOnDisk(key: String) -> Bool {
-        let pathUrl = diskCacheURL(for: key)
+        guard let pathUrl = diskCacheURL(for: key) else {
+            return false
+        }
+        
         return FileManager.default.fileExists(atPath:pathUrl.path)
     }
     
 }
 
 
-private class UUDataCacheDb
+private class UUDataCacheDb : NSObject
 {
 	private static let cacheKeyName = "UUDataCacheDb"
     static let shared = UUDataCacheDb()
 	
 	var metaData : [String : Any] = [:]
 	
-	init() {
+	override init() {
+        super.init()
+        
 		if let data = UserDefaults.standard.object(forKey: UUDataCacheDb.cacheKeyName) as? [String : Any] {
-			self.metaData = data
+            uuSynchronized({
+                self.metaData = data
+            })
 		}
 	}
     
     public func metaData(for key: String) -> [String:Any]
     {
-		if let dictionary = self.metaData[key] as? [String:Any] {
-			return dictionary
-		}
-		else {
-			var metaData : [String : Any] = [:]
-			metaData["fileName"] = UUID().uuidString
-			metaData["timestamp"] = Date()
-			self.metaData[key] = metaData
-			
-//			self.saveCurrentMetaData()
-			
-			return metaData
-		}
+        uuSynchronized({
+            if let dictionary = self.metaData[key] as? [String:Any] {
+                let copy = dictionary
+                return copy
+            }
+            else {
+                var metaData : [String : Any] = [:]
+                metaData["fileName"] = UUID().uuidString
+                metaData["timestamp"] = Date()
+                self.metaData[key] = metaData
+                
+                let copy = self.metaData
+                return copy
+            }
+        })
     }
     
-    public func fileName(for key: String) -> String
+    public func fileName(for key: String) -> String?
     {
-		let metaData = self.metaData(for: key)
-		return metaData["fileName"] as! String
+        uuSynchronized({
+            let metaData = self.metaData(for: key)
+            return metaData["fileName"] as? String
+        })
     }
     
     public func setMetaData(_ metaData: [String:Any], for key: String)
     {
-		self.metaData[key] = metaData
-		self.saveCurrentMetaData()
+        uuSynchronized({
+            self.metaData[key] = metaData
+            self.saveCurrentMetaData()
+        })
     }
     
     public func clearMetaData(for key: String)
     {
-		self.metaData.removeValue(forKey: key)
-		self.saveCurrentMetaData()
+        uuSynchronized({
+            self.metaData.removeValue(forKey: key)
+            self.saveCurrentMetaData()
+        })
     }
     
     public func clearAllMetaData()
     {
 		UserDefaults.standard.removeObject(forKey: UUDataCacheDb.cacheKeyName)
 		
-		self.metaData = [:]
+        uuSynchronized({
+            self.metaData = [:]
+        })
     }
 
 	private func saveCurrentMetaData() {
-		UserDefaults.standard.setValue(self.metaData, forKey: UUDataCacheDb.cacheKeyName)
+        uuSynchronized({
+            UserDefaults.standard.setValue(self.metaData, forKey: UUDataCacheDb.cacheKeyName)
+        })
 	}
 }
 
