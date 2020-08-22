@@ -150,12 +150,12 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
 		
-		return 2
+		return 3
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		
-		if section == 0 {//|| section == 1 {
+		if section == 0 || section == 1 {
 			return 1
 		}
 
@@ -169,11 +169,11 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 			self.configureHeaderCell(cell, indexPath)
 			return cell
 		}
-		/*else if indexPath.section == 1 {
+		else if indexPath.section == 1 {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBioCollectionViewCell", for: indexPath) as! ProfileBioCollectionViewCell
 			self.configureBioCell(cell)
 			return cell
-		}*/
+		}
 		else {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoEntryCollectionViewCell", for: indexPath) as! PhotoEntryCollectionViewCell
 			self.configurePhotoCell(cell, indexPath)
@@ -186,7 +186,7 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
-		if indexPath.section == 1 { //2 {
+		if indexPath.section == 2 {
 			let post = self.userPosts[indexPath.item]
 			let imagePath = post.images[0]
 			var dictionary : [String : Any] = [:]
@@ -213,16 +213,16 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		if indexPath.section == 0 {
 			return ProfileHeaderCollectionViewCell.sizeOf(self.user, collectionViewWidth: collectionViewWidth)
 		}
-		/*else if indexPath.section == 1 {
+		else if indexPath.section == 1 {
 			return ProfileBioCollectionViewCell.sizeOf(self.user, collectionViewWidth:collectionViewWidth)
-		}*/
+		}
 		else {
 			return PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: collectionViewWidth)
 		}
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		if indexPath.section == 1 { //2 {
+		if indexPath.section == 2 {
 			if indexPath.item < self.userPosts.count {
 				let post = self.userPosts[indexPath.item]
 				self.loadPhoto(post.images.first ?? "", indexPath)
@@ -232,7 +232,7 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	
 	func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
 		for indexPath in indexPaths {
-			if indexPath.section == 1 {
+			if indexPath.section == 2 {
 				let post = self.userPosts[indexPath.item]
 				self.loadPhoto(post.images.first ?? "", indexPath)
 			}
