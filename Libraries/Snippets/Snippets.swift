@@ -383,7 +383,7 @@ public class Snippets : NSObject {
 		})
 	}
 	
-	@objc public func listFollowers(user : SnippetsUser, completeList : Bool, completion: @escaping(Error?, [SnippetsUser]) -> ())
+	@objc public func listFollowing(user : SnippetsUser, completeList : Bool, completion: @escaping(Error?, [SnippetsUser]) -> ())
 	{
 		// Pre-flight check to see if we are even configured...
         if self.timelineConfiguration.token.count == 0 {
@@ -419,6 +419,38 @@ public class Snippets : NSObject {
 		})
 	}
 
+	@objc public func searchUsers(_ q: String, completion: @escaping(Error?, [SnippetsUser]) -> ())
+	{
+		// Pre-flight check to see if we are even configured...
+		if self.timelineConfiguration.token.count == 0 {
+			completion(SnippetsError.invalidOrMissingToken, [])
+			return
+		}
+		
+		let route = "users/search"
+		let args: [ String: String ] = [ "q": q ]
+		
+		let request = self.secureGet(self.timelineConfiguration, path: self.pathForTimelineRoute(route), arguments: args)
+		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
+			
+			if let userDictionaryList = parsedServerResponse.parsedResponse as? [[String : Any]]
+			{
+				var userList : [SnippetsUser] = []
+					
+				for userDictionary : [String : Any] in userDictionaryList
+				{
+					let user = SnippetsUser(userDictionary)
+					userList.append(user)
+				}
+					
+				completion(parsedServerResponse.httpError, userList)
+			}
+			else
+			{
+				completion(parsedServerResponse.httpError, [])
+			}
+		})
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// MARK: - Favorite Interface
