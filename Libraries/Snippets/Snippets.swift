@@ -481,9 +481,8 @@ public class Snippets : NSObject {
 			return
 		}
 		
-		let arguments : [ String : String ] = [ "id" : post.identifier ]
 		let route = "favorites/\(post.identifier)"
-        let request = self.secureDelete(self.timelineConfiguration, path: self.pathForTimelineRoute(route), arguments: arguments)
+		let request = self.secureDelete(self.timelineConfiguration, path: self.pathForTimelineRoute(route), arguments: [:])
 		
 		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 			completion(parsedServerResponse.httpError)
@@ -608,10 +607,9 @@ public class Snippets : NSObject {
 	
 	private func deletePostByIdentifier(identifier : String, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
 	{
-		let arguments : [ String : String ] = [ "id" : identifier ]
 		let route = "posts/\(identifier)"
 
-        let request = self.secureDelete(self.publishingConfiguration, path: self.pathForPublishingRoute(route), arguments: arguments)
+		let request = self.secureDelete(self.timelineConfiguration, path: self.pathForTimelineRoute(route), arguments: [:])
 		
 		return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 			completion(parsedServerResponse.httpError)

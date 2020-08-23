@@ -149,7 +149,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func onDelete() {
-        Dialog(self).question(title: nil, question: "Are you sure you want to delete this post? It cannot be undone.", accept: "Delete", cancel: "Cancel") {
+        Dialog(self).warning(title: nil, question: "Are you sure you want to delete this post? It cannot be undone.", action: "Delete", cancel: "Cancel") {
             _ = Snippets.shared.deletePost(post: self.post) { (error) in
                 DispatchQueue.main.async {
                     if let err = error {
