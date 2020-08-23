@@ -20,6 +20,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 	@IBOutlet var fullUserName : UILabel!
 	@IBOutlet var userHandle : UILabel!
 	@IBOutlet var postText : UITextView!
+    @IBOutlet var deleteButton : UIButton!
 	
 	var pathToImage = ""
 	var post : SunlitPost!
@@ -36,6 +37,8 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		self.setupScrollView()
 		self.setupGestures()
 		self.setupPostInfo()
+        
+        self.deleteButton.isHidden = self.post.owner.userName != SnippetsUser.current()?.userName
 		
 		self.navigationController?.setNavigationBarHidden(true, animated: true)
 	}
@@ -142,6 +145,21 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
         
         self.dismiss(animated: true) {
             NotificationCenter.default.post(name: .viewUserProfileNotification, object: self.post.owner)
+        }
+    }
+    
+    @IBAction func onDelete() {
+        Dialog(self).question(title: nil, question: "Are you sure you want to delete this post? It cannot be undone.", accept: "Delete", cancel: "Cancel") {
+            _ = Snippets.shared.deletePost(post: self.post) { (error) in
+                DispatchQueue.main.async {
+                    if let err = error {
+                        Dialog(self).information("There was an error trying to delete this post: " + err.localizedDescription)
+                    }
+                    else {
+                        self.dismissViewController()
+                    }
+                }
+            }
         }
     }
 	

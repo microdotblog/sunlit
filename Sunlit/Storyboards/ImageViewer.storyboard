@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17140" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PHD-An-Ibq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PHD-An-Ibq">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17115"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17124"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -88,10 +88,24 @@
                                             <action selector="dismissViewController" destination="PHD-An-Ibq" eventType="touchUpInside" id="7k6-Wo-TGu"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tyB-TI-uGy">
+                                        <rect key="frame" x="366" y="19" width="32" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="6YR-ba-06p"/>
+                                            <constraint firstAttribute="width" constant="32" id="TGn-L1-5fT"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="trash.circle.fill" catalog="system"/>
+                                        <connections>
+                                            <action selector="onDelete" destination="PHD-An-Ibq" eventType="touchUpInside" id="UGQ-C7-Fz2"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.25217319539999999" alpha="0.79891065139999995" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="tyB-TI-uGy" firstAttribute="centerY" secondItem="UUj-d0-Xt5" secondAttribute="centerY" id="0af-ZD-LqJ"/>
                                     <constraint firstItem="LCc-rb-zmg" firstAttribute="centerY" secondItem="FVq-VH-8Ql" secondAttribute="centerY" id="1g0-v3-zeX"/>
+                                    <constraint firstAttribute="trailing" secondItem="tyB-TI-uGy" secondAttribute="trailing" constant="16" id="SAM-Q4-hwd"/>
                                     <constraint firstItem="LCc-rb-zmg" firstAttribute="leading" secondItem="UUj-d0-Xt5" secondAttribute="trailing" constant="20" id="Y6T-5V-JVS"/>
                                     <constraint firstItem="UUj-d0-Xt5" firstAttribute="leading" secondItem="FVq-VH-8Ql" secondAttribute="leading" constant="16" id="cmi-6J-qjp"/>
                                     <constraint firstAttribute="height" constant="70" id="oZf-td-Lkk"/>
@@ -99,10 +113,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h4w-xl-KHa">
-                                <rect key="frame" x="0.0" y="638.5" width="414" height="257.5"/>
+                                <rect key="frame" x="0.0" y="655.5" width="414" height="240.5"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="IkF-my-QPK">
-                                        <rect key="frame" x="8" y="4" width="398" height="183.5"/>
+                                        <rect key="frame" x="8" y="4" width="398" height="166.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -111,7 +125,7 @@
                                         <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" calendarEvent="YES"/>
                                     </textView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GA5-FZ-zm6">
-                                        <rect key="frame" x="368" y="202.5" width="30" height="30"/>
+                                        <rect key="frame" x="368" y="185.5" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="ib8-l8-GmB"/>
                                             <constraint firstAttribute="width" constant="30" id="oN7-uz-pYA"/>
@@ -125,7 +139,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ygh-do-vOV">
-                                        <rect key="frame" x="16" y="202.5" width="30" height="30"/>
+                                        <rect key="frame" x="16" y="185.5" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="1jj-UI-WW1"/>
                                             <constraint firstAttribute="height" constant="30" id="TaU-dX-7He"/>
@@ -139,7 +153,7 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5I1-9N-8r7">
-                                        <rect key="frame" x="0.0" y="193.5" width="414" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="176.5" width="414" height="0.5"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14810051489128637" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="0.5" id="1Cx-2W-z6C"/>
@@ -179,6 +193,7 @@
                     </view>
                     <connections>
                         <outlet property="bottomInfoView" destination="h4w-xl-KHa" id="kkl-DR-GGd"/>
+                        <outlet property="deleteButton" destination="tyB-TI-uGy" id="jyn-Xg-oDz"/>
                         <outlet property="fullUserName" destination="kyn-kF-Ioz" id="RyJ-kx-Eqg"/>
                         <outlet property="image" destination="EhT-yW-dWa" id="ul1-ak-Yjc"/>
                         <outlet property="postText" destination="IkF-my-QPK" id="chy-Rp-2Ug"/>
@@ -196,6 +211,7 @@
     <resources>
         <image name="safari" catalog="system" width="128" height="121"/>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
+        <image name="trash.circle.fill" catalog="system" width="128" height="121"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
