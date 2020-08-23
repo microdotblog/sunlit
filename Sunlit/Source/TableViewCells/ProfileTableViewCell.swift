@@ -21,6 +21,7 @@ class ProfileTableViewCell: UITableViewCell {
 
 		self.avatar.clipsToBounds = true
 		self.avatar.layer.cornerRadius = (self.avatar.bounds.size.height - 1) / 2.0
+		self.avatar.backgroundColor = UIColor.uuColorFromHex("D9D9D9")
 
 		self.userName.font = UIFont.preferredFont(forTextStyle: .headline)
 		self.userHandle.font = UIFont.preferredFont(forTextStyle: .subheadline)
