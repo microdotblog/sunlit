@@ -322,79 +322,100 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
 }
 
 
-private class UUDataCacheDb : NSObject
+private class UUDataCacheDb
 {
 	private static let cacheKeyName = "UUDataCacheDb"
     static let shared = UUDataCacheDb()
 	
+    let mutex = NSRecursiveLock()
 	var metaData : [String : Any] = [:]
 	
-	override init() {
-        super.init()
-        
+	init() {
 		if let data = UserDefaults.standard.object(forKey: UUDataCacheDb.cacheKeyName) as? [String : Any] {
-            uuSynchronized({
-                self.metaData = data
-            })
+            mutex.lock()
+            defer {
+                mutex.unlock()
+            }
+
+            self.metaData = data
 		}
 	}
     
     public func metaData(for key: String) -> [String:Any]
     {
-        uuSynchronized({
-            if let dictionary = self.metaData[key] as? [String:Any] {
-                let copy = dictionary
-                return copy
-            }
-            else {
-                var metaData : [String : Any] = [:]
-                metaData["fileName"] = UUID().uuidString
-                metaData["timestamp"] = Date()
-                self.metaData[key] = metaData
+        mutex.lock()
+        defer {
+            mutex.unlock()
+        }
+
+        if let dictionary = self.metaData[key] as? [String:Any] {
+            let copy = dictionary
+            return copy
+        }
+        else {
+            var metaData : [String : Any] = [:]
+            metaData["fileName"] = UUID().uuidString
+            metaData["timestamp"] = Date()
+            self.metaData[key] = metaData
                 
-                let copy = self.metaData
-                return copy
-            }
-        })
+            let copy = self.metaData
+            return copy
+        }
+        
     }
     
     public func fileName(for key: String) -> String?
     {
-        uuSynchronized({
-            let metaData = self.metaData(for: key)
-            return metaData["fileName"] as? String
-        })
+        mutex.lock()
+        defer {
+            mutex.unlock()
+        }
+
+        let metaData = self.metaData(for: key)
+        return metaData["fileName"] as? String
     }
     
     public func setMetaData(_ metaData: [String:Any], for key: String)
     {
-        uuSynchronized({
-            self.metaData[key] = metaData
-            self.saveCurrentMetaData()
-        })
+        mutex.lock()
+        defer {
+            mutex.unlock()
+        }
+
+        
+        self.metaData[key] = metaData
+        self.saveCurrentMetaData()
     }
     
     public func clearMetaData(for key: String)
     {
-        uuSynchronized({
-            self.metaData.removeValue(forKey: key)
-            self.saveCurrentMetaData()
-        })
+        mutex.lock()
+        defer {
+            mutex.unlock()
+        }
+
+        self.metaData.removeValue(forKey: key)
+        self.saveCurrentMetaData()
     }
     
     public func clearAllMetaData()
     {
+        mutex.lock()
+        defer {
+            mutex.unlock()
+        }
+
 		UserDefaults.standard.removeObject(forKey: UUDataCacheDb.cacheKeyName)
-		
-        uuSynchronized({
-            self.metaData = [:]
-        })
+        self.metaData = [:]
     }
 
 	private func saveCurrentMetaData() {
-        uuSynchronized({
-            UserDefaults.standard.setValue(self.metaData, forKey: UUDataCacheDb.cacheKeyName)
-        })
+        mutex.lock()
+        defer {
+            mutex.unlock()
+        }
+
+        UserDefaults.standard.setValue(self.metaData, forKey: UUDataCacheDb.cacheKeyName)
 	}
 }
 
