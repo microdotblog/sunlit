@@ -10,6 +10,9 @@
 		4B556FF624F1C4C10012C6C7 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FF524F1C4C10012C6C7 /* SearchViewController.swift */; };
 		4B556FF824F1C4F40012C6C7 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B556FF724F1C4F40012C6C7 /* Search.storyboard */; };
 		4B556FFA24F1CDF30012C6C7 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FF924F1CDF30012C6C7 /* SearchResultTableViewCell.swift */; };
+		4B556FFC24F31ABC0012C6C7 /* Usernames.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B556FFB24F31ABC0012C6C7 /* Usernames.storyboard */; };
+		4B556FFE24F31AE30012C6C7 /* UsernamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FFD24F31AE30012C6C7 /* UsernamesViewController.swift */; };
+		4B55700024F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FFF24F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift */; };
 		4B729B8224BA4F74001D145B /* TabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B729B8124BA4F74001D145B /* TabButton.swift */; };
 		4B9D143624C889BA004E7EAF /* SectionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9D143524C889BA004E7EAF /* SectionTextView.swift */; };
 		C5309CB724AEABE700551AC7 /* NSAttributedString+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */; };
@@ -285,6 +288,9 @@
 		4B556FF524F1C4C10012C6C7 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = Source/ViewControllers/SearchViewController.swift; sourceTree = "<group>"; };
 		4B556FF724F1C4F40012C6C7 /* Search.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Search.storyboard; path = Storyboards/Search.storyboard; sourceTree = "<group>"; };
 		4B556FF924F1CDF30012C6C7 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchResultTableViewCell.swift; path = Source/TableViewCells/SearchResultTableViewCell.swift; sourceTree = "<group>"; };
+		4B556FFB24F31ABC0012C6C7 /* Usernames.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Usernames.storyboard; path = Storyboards/Usernames.storyboard; sourceTree = "<group>"; };
+		4B556FFD24F31AE30012C6C7 /* UsernamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsernamesViewController.swift; path = Source/ViewControllers/UsernamesViewController.swift; sourceTree = "<group>"; };
+		4B556FFF24F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsernameCheckmarkTableViewCell.swift; path = Source/TableViewCells/UsernameCheckmarkTableViewCell.swift; sourceTree = "<group>"; };
 		4B729B8124BA4F74001D145B /* TabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabButton.swift; path = Source/Views/TabButton.swift; sourceTree = "<group>"; };
 		4B9D143524C889BA004E7EAF /* SectionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SectionTextView.swift; path = Source/Views/SectionTextView.swift; sourceTree = "<group>"; };
 		C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+Sunlit.swift"; path = "Source/Extensions/NSAttributedString+Sunlit.swift"; sourceTree = "<group>"; };
@@ -702,6 +708,7 @@
 				C5A1DE3B24901D8C00B50B54 /* About.storyboard */,
 				C5A1DE3F24901D8C00B50B54 /* Compose.storyboard */,
 				C5A1DE3824901D8C00B50B54 /* Conversation.storyboard */,
+				4B556FFB24F31ABC0012C6C7 /* Usernames.storyboard */,
 				C5BEDF4C24DA302F0068CBF1 /* Following.storyboard */,
 				C5A1DE4024901D8C00B50B54 /* ImageViewer.storyboard */,
 				C5A1DE3C24901D8C00B50B54 /* Login.storyboard */,
@@ -950,6 +957,7 @@
 				4B556FF924F1CDF30012C6C7 /* SearchResultTableViewCell.swift */,
 				C5A1DE8324901DD800B50B54 /* SunlitPostTableViewCell.swift */,
 				C5482F2B24D9E56400A335DF /* TabletMenuTableViewCell.swift */,
+				4B556FFF24F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift */,
 			);
 			name = TableViewCells;
 			sourceTree = "<group>";
@@ -990,6 +998,7 @@
 				C5A1DE7624901DCC00B50B54 /* AboutViewController.swift */,
 				C5A1DE7524901DCC00B50B54 /* ComposeViewController.swift */,
 				C5A1DE6F24901DCC00B50B54 /* ConversationViewController.swift */,
+				4B556FFD24F31AE30012C6C7 /* UsernamesViewController.swift */,
 				C5A1DE6E24901DCC00B50B54 /* DiscoverViewController.swift */,
 				C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */,
 				C5BEDF4E24DA305F0068CBF1 /* FollowingViewController.swift */,
@@ -1278,6 +1287,7 @@
 				4B556FF824F1C4F40012C6C7 /* Search.storyboard in Resources */,
 				C5EDE49B24D9C7E6009ACF2A /* Mentions.storyboard in Resources */,
 				C5A1DE9D24901E0B00B50B54 /* Assets.xcassets in Resources */,
+				4B556FFC24F31ABC0012C6C7 /* Usernames.storyboard in Resources */,
 				C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */,
 				C5A1DE4924901D8C00B50B54 /* ImageViewer.storyboard in Resources */,
 				C5A1DF39249144E800B50B54 /* credits.html in Resources */,
@@ -1437,6 +1447,7 @@
 				C5A1DE6B24901DBC00B50B54 /* SnippetsUser+Sunlit.swift in Sources */,
 				4B9D143624C889BA004E7EAF /* SectionTextView.swift in Sources */,
 				C5A1DE6624901DBC00B50B54 /* SnippetsPost+Sunlit.swift in Sources */,
+				4B55700024F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift in Sources */,
 				C5A1DE9024901DE600B50B54 /* PostAddPhotoCollectionViewCell.swift in Sources */,
 				C5A1DE8424901DD800B50B54 /* ConversationTableViewCell.swift in Sources */,
 				C5A1DE7B24901DCC00B50B54 /* MainViewController.swift in Sources */,
@@ -1453,6 +1464,7 @@
 				C5A1DF3524913BDC00B50B54 /* SettingsViewController.swift in Sources */,
 				C5A1DE5B24901DAD00B50B54 /* MediaUploader.swift in Sources */,
 				4B556FFA24F1CDF30012C6C7 /* SearchResultTableViewCell.swift in Sources */,
+				4B556FFE24F31AE30012C6C7 /* UsernamesViewController.swift in Sources */,
 				C5A1DE6824901DBC00B50B54 /* SunlitMedia.swift in Sources */,
 				C5A1DE9A24901DF500B50B54 /* AppDelegate+Menus.swift in Sources */,
 				C5A1DE9424901DE600B50B54 /* PhotoEntryCollectionViewCell.swift in Sources */,
