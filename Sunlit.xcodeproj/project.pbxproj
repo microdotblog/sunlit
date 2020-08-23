@@ -699,7 +699,6 @@
 			children = (
 				C5A1DF3124906B9D00B50B54 /* LaunchScreen.storyboard */,
 				C5A1DF3024906B9D00B50B54 /* Content.storyboard */,
-				4B556FF724F1C4F40012C6C7 /* Search.storyboard */,
 				C5A1DE3B24901D8C00B50B54 /* About.storyboard */,
 				C5A1DE3F24901D8C00B50B54 /* Compose.storyboard */,
 				C5A1DE3824901D8C00B50B54 /* Conversation.storyboard */,
@@ -708,6 +707,7 @@
 				C5A1DE3C24901D8C00B50B54 /* Login.storyboard */,
 				C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */,
 				C5A1DE3924901D8C00B50B54 /* Profile.storyboard */,
+				4B556FF724F1C4F40012C6C7 /* Search.storyboard */,
 				C5A1DE3D24901D8C00B50B54 /* Settings.storyboard */,
 				C5E26A35249EADE400F9E158 /* Main.storyboard */,
 				C5E26A33249EAA0900F9E158 /* Main-Phone.storyboard */,
@@ -1001,10 +1001,10 @@
 				C5EDE49824D9C242009ACF2A /* MentionsViewController.swift */,
 				C5A1DE7324901DCC00B50B54 /* MyProfileViewController.swift */,
 				C5A1DE7124901DCC00B50B54 /* ProfileViewController.swift */,
+				4B556FF524F1C4C10012C6C7 /* SearchViewController.swift */,
 				C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */,
 				C5A1DE7224901DCC00B50B54 /* SnippetsScrollContentProtocol.swift */,
 				C5A1DE6C24901DCC00B50B54 /* TimelineViewController.swift */,
-				4B556FF524F1C4C10012C6C7 /* SearchViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
