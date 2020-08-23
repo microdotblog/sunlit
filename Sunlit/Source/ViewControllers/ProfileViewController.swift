@@ -258,27 +258,24 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	func configureHeaderCell(_ cell : ProfileHeaderCollectionViewCell, _ indexPath : IndexPath) {
 		cell.followButton.clipsToBounds = true
 		cell.followButton.layer.cornerRadius = (cell.followButton.bounds.size.height - 1) / 2.0
-		cell.followButton.setTitle("Unfollow", for: .normal)
 		cell.followButton.isHidden = true
-        
+                		
+		cell.followButton.addTarget(self, action: #selector(onFollowUser), for: .touchUpInside)
+		
 		if self.isFetchingData {
 			cell.busyIndicator.startAnimating()
-			cell.followButton.isHidden = true
 		}
 		else {
 			cell.busyIndicator.stopAnimating()
-			cell.followButton.isHidden = false
-		}
-        		
-		cell.followButton.addTarget(self, action: #selector(onFollowUser), for: .touchUpInside)
-		
-		if self.user.isFollowing {
-			cell.followButton.setTitle("Unfollow", for: .normal)
-			cell.followButton.isHidden = false
-		}
-		else if self.updatedUserInfo != nil {
-			cell.followButton.isHidden = false
-			cell.followButton.setTitle("Follow", for: .normal)
+
+			if self.user.isFollowing {
+				cell.followButton.setTitle("Unfollow", for: .normal)
+				cell.followButton.isHidden = false
+			}
+			else if self.updatedUserInfo != nil {
+				cell.followButton.isHidden = false
+				cell.followButton.setTitle("Follow", for: .normal)
+			}
 		}
 
 		if self.user.userName == SnippetsUser.current()?.userName {
