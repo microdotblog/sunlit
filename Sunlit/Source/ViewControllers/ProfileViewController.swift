@@ -17,7 +17,7 @@ class ProfileViewController: UIViewController {
     static let bioSection = 1
     static let photoSection = 2
     static let sectionCount = 3
-    */
+     */
     
     /* Don't include bios */
     static let headerSection = 0
