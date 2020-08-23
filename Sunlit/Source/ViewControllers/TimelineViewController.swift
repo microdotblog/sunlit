@@ -14,6 +14,7 @@ class TimelineViewController: UIViewController {
 
 	@IBOutlet var tableView : UITableView!
 	@IBOutlet var loggedOutView : UIView!
+	@IBOutlet var spinner: UIActivityIndicatorView!
 		
 	var refreshControl = UIRefreshControl()
 	var keyboardAccessoryView : UIView!
@@ -210,6 +211,7 @@ class TimelineViewController: UIViewController {
 			DispatchQueue.main.async {
 				self.refreshTableView(postObjects)
 				self.loadingData = false
+				self.spinner.stopAnimating()
 			}
 		}
 	}

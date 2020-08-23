@@ -51,7 +51,7 @@
                                     <constraint firstItem="tDn-E1-D7h" firstAttribute="centerX" secondItem="Uch-gN-0yd" secondAttribute="centerX" id="jo9-b8-3r4"/>
                                 </constraints>
                             </view>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Gt9-JL-4Vx">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Gt9-JL-4Vx">
                                 <rect key="frame" x="188.66666666666666" y="462.66666666666669" width="37" height="37"/>
                             </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qN6-tU-u9w">
@@ -376,6 +376,7 @@
                     <navigationItem key="navigationItem" id="MZv-iV-UaD"/>
                     <connections>
                         <outlet property="loggedOutView" destination="Uch-gN-0yd" id="o2U-Gm-80P"/>
+                        <outlet property="spinner" destination="Gt9-JL-4Vx" id="MQP-Iy-PxU"/>
                         <outlet property="tableView" destination="qN6-tU-u9w" id="VZ9-ZX-Ar4"/>
                     </connections>
                 </viewController>
@@ -837,7 +838,7 @@
                                                                         </userDefinedRuntimeAttributes>
                                                                     </label>
                                                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="videoButtonOverlay" translatesAutoresizingMaskIntoConstraints="NO" id="9Uv-Ng-Meo">
-                                                                        <rect key="frame" x="192" y="85" width="30" height="30"/>
+                                                                        <rect key="frame" x="197" y="90" width="20" height="20"/>
                                                                     </imageView>
                                                                 </subviews>
                                                                 <constraints>
