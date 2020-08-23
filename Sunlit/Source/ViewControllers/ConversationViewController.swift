@@ -19,8 +19,12 @@ class ConversationViewController: UIViewController {
 	@IBOutlet var postButton : UIButton!
 	@IBOutlet var replyFieldPlaceholder : UILabel!
 	@IBOutlet var tableBottomConstraint : NSLayoutConstraint!
+	@IBOutlet var replyingToContainer : UIView!
+	@IBOutlet var replyingToButton : UIButton!
 
 	var posts : [SunlitPost] = []
+	var allUsers : Set<String> = []
+	var selectedUsers : Set<String> = []
 	var sourcePost : SunlitPost? = nil
 
 	var tableViewRefreshControl = UIRefreshControl()
@@ -54,6 +58,9 @@ class ConversationViewController: UIViewController {
 
 		self.spinner.stopAnimating()
 		NotificationCenter.default.removeObserver(self)
+
+		// need to keep listening for this one
+		NotificationCenter.default.addObserver(self, selector: #selector(handleUsernamesChangedNotification(_:)), name: .selectedUsernamesChangedNotification, object: nil)
 	}
 
 	@IBAction func back() {
@@ -82,22 +89,40 @@ class ConversationViewController: UIViewController {
 		self.view.addGestureRecognizer(gesture)
 	}
 	
-    func buildReplyText() -> String {
-        var userList = ""
-        var users = Set<String>()
-        for reply in self.posts {
-			if reply.owner.userName != SnippetsUser.current()?.userName {
-				users.insert(reply.owner.userName)
+	func setupUsernames() {
+		if self.allUsers.count == 0 {
+			// default to all users in the conversation
+			for reply in self.posts {
+				if reply.owner.userName != SnippetsUser.current()?.userName {
+					self.allUsers.insert(reply.owner.userName)
+					self.selectedUsers.insert(reply.owner.userName)
+				}
 			}
-        }
-
-        for user in users {
+			
+			// if no other users, reply to current user
+			if self.allUsers.count == 0 {
+				if let username = SnippetsUser.current()?.userName {
+					self.allUsers.insert(username)
+					self.selectedUsers.insert(username)
+				}
+			}
+		}
+	}
+	
+    func buildUsernamesText() -> String {
+        var userList = ""
+		
+		for user in self.selectedUsers {
             userList = userList + "@" + user + " "
         }
 
-        return userList + self.replyField.text
+        return userList
     }
-    
+
+	func buildReplyText() -> String {
+		return self.buildUsernamesText() + self.replyField.text
+	}
+
 	@objc func loadConversation() {
 		if let post = sourcePost {
 			Snippets.shared.fetchConversation(post: post) { (error, posts : [SnippetsPost]) in
@@ -110,6 +135,7 @@ class ConversationViewController: UIViewController {
 						self.posts.insert(sunlitPost, at: 0)
 					}
 
+					self.setupUsernames()
 					self.tableView.reloadData()
 					self.spinner.stopAnimating()
 					self.tableViewRefreshControl.endRefreshing()
@@ -146,7 +172,14 @@ class ConversationViewController: UIViewController {
 		if let info : [AnyHashable : Any] = notification.userInfo {
 			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
 				let frame = value.cgRectValue
-				
+
+				if self.replyingToContainer.isHidden {
+					self.replyingToContainer.alpha = 0.0
+					self.replyingToContainer.isHidden = false
+					let s = "Replying to " + self.buildUsernamesText()
+					self.replyingToButton.setTitle(s, for: .normal)
+				}
+
 				UIView.animate(withDuration: 0.25) {
 					let pane_height: CGFloat = 54
 					self.tableBottomConstraint.constant = frame.size.height + pane_height - self.view.safeAreaInsets.bottom
@@ -154,6 +187,7 @@ class ConversationViewController: UIViewController {
 					self.postButton.alpha = 1.0
 					self.view.layoutIfNeeded()
 					self.replyFieldPlaceholder.alpha = 0.0
+					self.replyingToContainer.alpha = 1.0
 				}
 			}
 		}
@@ -171,6 +205,8 @@ class ConversationViewController: UIViewController {
 				if self.replyField.text.count <= 0 {
 					self.replyFieldPlaceholder.alpha = 1.0
 				}
+
+				self.replyingToContainer.alpha = 0.0
 			}
 	}
 	
@@ -178,6 +214,32 @@ class ConversationViewController: UIViewController {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
+	}
+	
+	@objc func handleUsernamesChangedNotification(_ notification: Notification) {
+		if let usernames_controller = notification.object as? UsernamesViewController {
+			self.selectedUsers = usernames_controller.selectedUsers
+			
+			if self.selectedUsers.count == 0 {
+				// if cleared all users, still reply to current user
+				if let username = SnippetsUser.current()?.userName {
+					self.allUsers.insert(username)
+					self.selectedUsers.insert(username)
+				}
+			}
+			
+			let s = "Replying to " + self.buildUsernamesText()
+			self.replyingToButton.setTitle(s, for: .normal)
+		}
+	}
+	
+	@IBAction func changeReplyingTo(sender: UIButton) {
+		let storyboard: UIStoryboard = UIStoryboard(name: "Usernames", bundle: nil)
+		if let usernames_controller = storyboard.instantiateInitialViewController() as? UsernamesViewController {
+			usernames_controller.allUsers = Array(self.allUsers)
+			usernames_controller.selectedUsers = self.selectedUsers
+			self.navigationController?.pushViewController(usernames_controller, animated: true)
+		}
 	}
 }
 

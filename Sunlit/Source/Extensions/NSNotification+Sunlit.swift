@@ -34,4 +34,5 @@ extension NSNotification.Name {
 	static let showMentionsNotification = NSNotification.Name("Show Mentions Notification")
 	static let followingButtonClickedNotification = NSNotification.Name("Following Button Clicked Notification")
 	static let showFollowingNotification = NSNotification.Name("Show Following Notification")
+	static let selectedUsernamesChangedNotification = NSNotification.Name("SelectedUsernamesChangedNotification")
 }
