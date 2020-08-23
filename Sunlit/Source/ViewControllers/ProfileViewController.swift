@@ -11,7 +11,22 @@ import SafariServices
 import Snippets
 
 class ProfileViewController: UIViewController {
-		
+
+    /* Include bios
+    static let headerSection = 0
+    static let bioSection = 1
+    static let photoSection = 2
+    static let sectionCount = 3
+    */
+    
+    /* Don't include bios */
+    static let headerSection = 0
+    static let bioSection = -1
+    static let photoSection = 1
+    static let sectionCount = 2
+    /* */
+    
+    
 	var user : SnippetsUser!
 	var updatedUserInfo : SnippetsUser? = nil
 	var userPosts : [SunlitPost] = []
@@ -150,12 +165,13 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
 		
-		return 2
+        return ProfileViewController.sectionCount
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		
-        if section == 0 {//}|| section == 1 {
+        if section == ProfileViewController.headerSection ||
+            section == ProfileViewController.bioSection {
 			return 1
 		}
 
@@ -164,16 +180,16 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		
-		if indexPath.section == 0 {
+        if indexPath.section == ProfileViewController.headerSection {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileHeaderCollectionViewCell", for: indexPath) as! ProfileHeaderCollectionViewCell
 			self.configureHeaderCell(cell, indexPath)
 			return cell
 		}
-		/*else if indexPath.section == 1 {
+        else if indexPath.section == ProfileViewController.bioSection {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBioCollectionViewCell", for: indexPath) as! ProfileBioCollectionViewCell
 			self.configureBioCell(cell)
 			return cell
-		}*/
+		}
 		else {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoEntryCollectionViewCell", for: indexPath) as! PhotoEntryCollectionViewCell
 			self.configurePhotoCell(cell, indexPath)
@@ -186,7 +202,7 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
-        if indexPath.section == 1 { //2 {
+        if indexPath.section == ProfileViewController.photoSection {
 			let post = self.userPosts[indexPath.item]
 			let imagePath = post.images[0]
 			var dictionary : [String : Any] = [:]
@@ -210,19 +226,19 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 			collectionViewWidth = collectionViewWidth - collectionView.contentInset.right
 		}
 		
-		if indexPath.section == 0 {
+        if indexPath.section == ProfileViewController.headerSection {
 			return ProfileHeaderCollectionViewCell.sizeOf(self.user, collectionViewWidth: collectionViewWidth)
 		}
-		/*else if indexPath.section == 1 {
+        else if indexPath.section == ProfileViewController.bioSection {
 			return ProfileBioCollectionViewCell.sizeOf(self.user, collectionViewWidth:collectionViewWidth)
-		}*/
+		}
 		else {
 			return PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: collectionViewWidth)
 		}
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.section == 1 { //2 {
+        if indexPath.section == ProfileViewController.photoSection {
 			if indexPath.item < self.userPosts.count {
 				let post = self.userPosts[indexPath.item]
 				self.loadPhoto(post.images.first ?? "", indexPath)
@@ -232,7 +248,7 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	
 	func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
 		for indexPath in indexPaths {
-            if indexPath.section == 1 { //2 {
+            if indexPath.section == ProfileViewController.photoSection {
 				let post = self.userPosts[indexPath.item]
 				self.loadPhoto(post.images.first ?? "", indexPath)
 			}
