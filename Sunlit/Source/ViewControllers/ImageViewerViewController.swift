@@ -164,13 +164,11 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
     }
 	
 	@IBAction @objc func onShare() {
-		
-		if let image = ImageCache.prefetch(self.pathToImage) {
-			let items : [Any] = [image]
-			let activities : [UIActivity]? = nil
-			let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: activities)
-			self.present(activityViewController, animated: true, completion: nil)
-		}
+		let url = URL(string: self.post.path)!
+		let items : [Any] = [url]
+		let activities : [UIActivity]? = nil
+		let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: activities)
+		self.present(activityViewController, animated: true, completion: nil)
 	}
 	
 	@IBAction @objc func dismissViewController() {
