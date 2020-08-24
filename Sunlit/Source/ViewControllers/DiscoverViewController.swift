@@ -570,12 +570,14 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 		
 		let post = self.posts[indexPath.row]
 		
-		let imagePath = post.images[indexPath.item]
-		var dictionary : [String : Any] = [:]
-		dictionary["imagePath"] = imagePath
-		dictionary["post"] = post
-		
-		NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
+		if indexPath.item < post.images.count {
+			let imagePath = post.images[indexPath.item]
+			var dictionary : [String : Any] = [:]
+			dictionary["imagePath"] = imagePath
+			dictionary["post"] = post
+			
+			NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
+		}
 	}
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
