@@ -35,26 +35,35 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	func attemptLogin(_ emailAddress : String?) {
 		
 		if let email = emailAddress {
-			
-			if !email.uuIsValidEmail() {
-				Dialog(self).information("Please enter a valid email address.")
-				return
-			}
-			
 			self.lockUserInterface()
 
-			Snippets.shared.requestUserLoginEmail(email: email, appName: "Sunlit", redirect: "https://sunlit.io/microblog/redirect/")
-			{ (error) in
-				
-				self.unlockUserInterface()
+			if email.uuIsValidEmail() {
+				Snippets.shared.requestUserLoginEmail(email: email, appName: "Sunlit", redirect: "https://sunlit.io/microblog/redirect/")
+				{ error in
+					self.unlockUserInterface()
 
-				if let err = error {
-					Dialog(self).information(err.localizedDescription)
+					if let err = error {
+						Dialog(self).information(err.localizedDescription)
+					}
+					else {
+						Dialog(self).information("Check your email on this device and tap the \"Open with Sunlit\" button.", completion: {
+							self.dismiss(animated: true, completion: nil)
+						})
+					}
 				}
-				else {
-					Dialog(self).information("Check your email on this device and tap the \"Open with Sunlit\" button.", completion: {
-						self.dismiss(animated: true, completion: nil)
-					})
+			}
+			else {
+				Snippets.shared.requestPermanentTokenFromTemporaryToken(token: email) { error, token in
+					self.unlockUserInterface()
+					if let err = error {
+						Dialog(self).information(err.localizedDescription)
+					}
+					else if token?.count == 0 {
+						Dialog(self).information("The token was not valid.")
+					}
+					else {
+						NotificationCenter.default.post(name: .temporaryTokenReceivedNotification, object: token)
+					}
 				}
 			}
 		}
