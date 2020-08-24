@@ -116,9 +116,9 @@ class ComposeViewController: UIViewController {
 
 		let sectionData = self.sections[section]
 
-		var editTextTitle = "Add Alt Text"
+		var editTextTitle = "Add Description"
 		if sectionData.media[item].altText.count > 0 {
-			editTextTitle = "Edit Alt Text"
+			editTextTitle = "Edit Description"
 		}
 		
 		let altTextAction = UIAlertAction(title: editTextTitle, style: .default) { (action) in
