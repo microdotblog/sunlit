@@ -27,6 +27,10 @@ class ProfileBioCollectionViewCell : UICollectionViewCell {
 			size.height = rect.size.height
 			size.height = size.height + 16.0
 		}
+		else {
+			// blank bio, just give it some height
+			size.height = 10
+		}
 		
 		size.width = collectionViewWidth
 		return size
