@@ -170,7 +170,13 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: activities)
 		self.present(activityViewController, animated: true, completion: nil)
 	}
-	
+
+	@IBAction @objc func onConversation() {
+		self.dismiss(animated: true) {
+			NotificationCenter.default.post(name: .viewConversationNotification, object: self.post)
+		}
+	}
+
 	@IBAction @objc func dismissViewController() {
 		self.dismiss(animated: true, completion: nil)
 	}
