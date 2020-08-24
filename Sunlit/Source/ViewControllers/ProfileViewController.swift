@@ -12,26 +12,26 @@ import Snippets
 
 class ProfileViewController: UIViewController {
 
-    /* Include bios
+    /* Include bios */
     static let headerSection = 0
     static let bioSection = 1
     static let photoSection = 2
     static let sectionCount = 3
-     */
+    /* */
     
-    /* Don't include bios */
+    /* Don't include bios
     static let headerSection = 0
     static let bioSection = -1
     static let photoSection = 1
     static let sectionCount = 2
-    /* */
+     */
     
     
 	var user : SnippetsUser!
-	var updatedUserInfo : SnippetsUser? = nil
 	var userPosts : [SunlitPost] = []
-	var isFetchingData = true
-	
+	var loadInProgress = false
+    var refreshControl = UIRefreshControl()
+
 	@IBOutlet var collectionView : UICollectionView!
 	
     override func viewDidLoad() {
@@ -40,13 +40,10 @@ class ProfileViewController: UIViewController {
 		// Merge if we can/need to from the user cache...
 		self.user = SnippetsUser.save(self.user)
 		self.navigationItem.title = self.user.fullName
-		
-		if self.user.bio.count > 0 {
-			self.fetchUserPosts()
-		}
-		else {
-			self.fetchUserInfo(user)
-		}
+        self.fetchUserInfo()
+
+        self.refreshControl.addTarget(self, action: #selector(fetchUserInfo), for: .valueChanged)
+        self.collectionView.addSubview(self.refreshControl)
 
 		self.setupNavigation()
 		self.setupGesture()
@@ -66,44 +63,43 @@ class ProfileViewController: UIViewController {
 		self.navigationController?.popViewController(animated: true)
 	}
 	
-	func fetchUserInfo(_ user : SnippetsUser) {
-		Snippets.shared.fetchUserDetails(user: user) { (error, updatedUser, posts : [SnippetsPost]) in
+	@objc func fetchUserInfo() {
+        
+        if self.loadInProgress == true {
+            return
+        }
+        
+        self.loadInProgress = true
+        
+        Snippets.shared.fetchUserDetails(user: self.user) { (error, updatedUser, posts : [SnippetsPost]) in
 			
 			if let snippetsUser = updatedUser {
 				self.user = SnippetsUser.save(snippetsUser)
 				
-				self.updatedUserInfo = self.user
-			
 				DispatchQueue.main.async {
 					self.collectionView.reloadData()
-
-					if self.userPosts.count <= 0 {
-						self.fetchUserPosts()
-					}
 				}
+                
+                Snippets.shared.fetchUserMediaPosts(user: self.user) { (error, snippets: [SnippetsPost]) in
+
+                    DispatchQueue.main.async {
+
+                        var posts : [SunlitPost] = []
+                        for snippet in snippets {
+                            let post = SunlitPost.create(snippet)
+                            posts.append(post)
+                        }
+
+                        self.loadInProgress = false
+                        self.userPosts = posts
+                        self.collectionView.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
+                }
 			}
 		}
 	}
 	
-	func fetchUserPosts() {
-		Snippets.shared.fetchUserMediaPosts(user: self.user) { (error, snippets: [SnippetsPost]) in
-
-			DispatchQueue.main.async {
-
-				var posts : [SunlitPost] = []
-				for snippet in snippets {
-					let post = SunlitPost.create(snippet)
-					posts.append(post)
-				}
-
-				self.userPosts = posts
-				self.isFetchingData = false
-				self.collectionView.reloadData()
-				
-				self.fetchUserInfo(self.user)
-			}
-		}
-	}
 	
 	func loadPhoto(_ path : String,  _ index : IndexPath) {
 		
@@ -122,16 +118,22 @@ class ProfileViewController: UIViewController {
 	}
 	
 	@objc func onFollowUser() {
-		if self.user.isFollowing {
+
+        self.loadInProgress = true
+        self.collectionView.reloadData()
+
+        if self.user.isFollowing {
+            
 			Snippets.shared.unfollow(user: self.user) { (error) in
 				if error == nil {
 					self.user.isFollowing = false
 					self.user = SnippetsUser.save(self.user)
-					
-					DispatchQueue.main.async {
-						self.collectionView.reloadData()
-					}
 				}
+                
+                DispatchQueue.main.async {
+                    self.loadInProgress = false
+                    self.collectionView.reloadData()
+                }
 			}
 		}
 		else {
@@ -139,11 +141,12 @@ class ProfileViewController: UIViewController {
 				if error == nil {
 					self.user.isFollowing = true
 					self.user = SnippetsUser.save(self.user)
-					
-					DispatchQueue.main.async {
-						self.collectionView.reloadData()
-					}
 				}
+                
+                DispatchQueue.main.async {
+                    self.loadInProgress = false
+                    self.collectionView.reloadData()
+                }
 			}
 
 		}
@@ -180,11 +183,14 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		
-        if section == ProfileViewController.headerSection ||
-            section == ProfileViewController.bioSection {
-			return 1
-		}
-
+        if section == ProfileViewController.headerSection {
+            return 1
+        }
+        
+        if section == ProfileViewController.bioSection {
+            return 1
+        }
+        
 		return self.userPosts.count
 	}
 		
@@ -200,16 +206,15 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 			self.configureBioCell(cell)
 			return cell
 		}
-		else {
-			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoEntryCollectionViewCell", for: indexPath) as! PhotoEntryCollectionViewCell
-			self.configurePhotoCell(cell, indexPath)
-			return cell
-		}
+
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoEntryCollectionViewCell", for: indexPath) as! PhotoEntryCollectionViewCell
+        self.configurePhotoCell(cell, indexPath)
+        return cell
 	}
 	
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
-		
+	
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
         if indexPath.section == ProfileViewController.photoSection {
@@ -272,20 +277,19 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
                 		
 		cell.followButton.addTarget(self, action: #selector(onFollowUser), for: .touchUpInside)
 		
-		if self.isFetchingData {
+		if self.loadInProgress {
 			cell.busyIndicator.startAnimating()
 		}
 		else {
 			cell.busyIndicator.stopAnimating()
+            cell.followButton.isHidden = false
 
 			if self.user.isFollowing {
 				cell.followButton.setTitle("Unfollow", for: .normal)
-				cell.followButton.isHidden = false
 			}
-			else if self.updatedUserInfo != nil {
-				cell.followButton.isHidden = false
-				cell.followButton.setTitle("Follow", for: .normal)
-			}
+            else {
+                cell.followButton.setTitle("Follow", for: .normal)
+            }
 		}
 
 		if self.user.userName == SnippetsUser.current()?.userName {

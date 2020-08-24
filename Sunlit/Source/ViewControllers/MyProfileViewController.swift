@@ -66,7 +66,8 @@ class MyProfileViewController: UIViewController {
 		self.loadInProgress = true
 		
 		Snippets.shared.fetchCurrentUserInfo { (error, snippetsUser) in
-			if let updatedUser = snippetsUser {
+			
+            if let updatedUser = snippetsUser {
 				self.user = SnippetsUser.save(updatedUser)
 
 				DispatchQueue.main.async {
