@@ -257,47 +257,76 @@ MARK: -
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 extension MainPhoneViewController : UIScrollViewDelegate {
-	
-	func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		let offset = scrollView.contentOffset.x
-		let frameSize = scrollView.bounds.size.width
 
-		self.timelineButton.isEnabled = true
-		self.profileButton.isEnabled = true
-		self.discoverButton.isEnabled = true
-		self.mentionsButton.isEnabled = true
-		self.timelineButton.isSelected = false
-		self.profileButton.isSelected = false
-		self.discoverButton.isSelected = false
-		self.mentionsButton.isSelected = false
-		
-		let previousViewController = self.currentViewController
-		if offset < (frameSize / 2.0) {
-			self.timelineButton.isSelected = true
-			self.timelineButton.isEnabled = false
-			self.currentViewController = self.timelineViewController
-		}
-		else if offset < (frameSize + (frameSize / 2.0)) {
-			self.mentionsButton.isSelected = true
-			self.mentionsButton.isEnabled = false
-			self.currentViewController = self.mentionsViewController
-		}
-		else if offset < (frameSize * 2.0 + (frameSize / 2.0)) {
-			self.discoverButton.isSelected = true
-			self.discoverButton.isEnabled = false
-			self.currentViewController = self.discoverViewController
-		}
-		else {
-			self.profileButton.isSelected = true
-			self.profileButton.isEnabled = false
-			self.currentViewController = self.profileViewController
-		}
-		
-		if !(previousViewController === self.currentViewController) {
-			previousViewController?.prepareToHide()
-			self.currentViewController?.prepareToDisplay()
-		}
-		
+    func updateTabBar(_ scrollView: UIScrollView) {
+        let offset = scrollView.contentOffset.x
+        let frameSize = scrollView.bounds.size.width
+
+        self.timelineButton.isEnabled = true
+        self.profileButton.isEnabled = true
+        self.discoverButton.isEnabled = true
+        self.mentionsButton.isEnabled = true
+        self.timelineButton.isSelected = false
+        self.profileButton.isSelected = false
+        self.discoverButton.isSelected = false
+        self.mentionsButton.isSelected = false
+        
+        if offset < (frameSize / 2.0) {
+            self.timelineButton.isSelected = true
+            self.timelineButton.isEnabled = false
+        }
+        else if offset < (frameSize + (frameSize / 2.0)) {
+            self.mentionsButton.isSelected = true
+            self.mentionsButton.isEnabled = false
+        }
+        else if offset < (frameSize * 2.0 + (frameSize / 2.0)) {
+            self.discoverButton.isSelected = true
+            self.discoverButton.isEnabled = false
+        }
+        else {
+            self.profileButton.isSelected = true
+            self.profileButton.isEnabled = false
+        }
+    }
+
+    
+    func updateCurrentViewController(_ scrollView: UIScrollView) {
+        print("Updating view controller")
+        let offset = scrollView.contentOffset.x
+        let frameSize = scrollView.bounds.size.width
+
+        let previousViewController = self.currentViewController
+        if offset < (frameSize / 2.0) {
+            self.currentViewController = self.timelineViewController
+        }
+        else if offset < (frameSize + (frameSize / 2.0)) {
+            self.currentViewController = self.mentionsViewController
+        }
+        else if offset < (frameSize * 2.0 + (frameSize / 2.0)) {
+            self.currentViewController = self.discoverViewController
+        }
+        else {
+            self.currentViewController = self.profileViewController
+        }
+        
+        if !(previousViewController === self.currentViewController) {
+            previousViewController?.prepareToHide()
+            self.currentViewController?.prepareToDisplay()
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            self.updateCurrentViewController(scrollView)
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.updateCurrentViewController(scrollView)
+    }
+    
+	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.updateTabBar(scrollView)
 	}
 }
 
