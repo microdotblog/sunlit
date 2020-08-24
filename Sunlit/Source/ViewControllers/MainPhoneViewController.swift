@@ -291,7 +291,6 @@ extension MainPhoneViewController : UIScrollViewDelegate {
 
     
     func updateCurrentViewController(_ scrollView: UIScrollView) {
-        print("Updating view controller")
         let offset = scrollView.contentOffset.x
         let frameSize = scrollView.bounds.size.width
 
