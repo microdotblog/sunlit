@@ -19,10 +19,21 @@ class FollowingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+		self.setupNavigation()
+		self.setupGesture()
+	}
+
+	func setupNavigation() {
 		self.navigationItem.title = "Following"
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(dismissViewController))
-	}	
+	}
 	
+	func setupGesture() {
+		let gesture = UISwipeGestureRecognizer(target: self, action: #selector(dismissViewController))
+		gesture.direction = .right
+		self.view.addGestureRecognizer(gesture)
+	}
+
 	@objc func dismissViewController() {
 		self.navigationController?.popViewController(animated: true)
 	}

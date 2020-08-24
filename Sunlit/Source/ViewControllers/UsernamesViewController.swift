@@ -19,11 +19,18 @@ class UsernamesViewController: UIViewController, UITableViewDataSource, UITableV
 		super.viewDidLoad()
 		
 		self.setupNavigation()
+		self.setupGesture()
 	}
 	
 	func setupNavigation() {
 		self.navigationItem.title = "Usernames"
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back))
+	}
+
+	func setupGesture() {
+		let gesture = UISwipeGestureRecognizer(target: self, action: #selector(back))
+		gesture.direction = .right
+		self.view.addGestureRecognizer(gesture)
 	}
 
 	@IBAction func back() {
