@@ -667,6 +667,8 @@ extension DiscoverViewController : SnippetsScrollContentProtocol {
 		self.setupNavigation()
 		self.setupNotifications()
 		self.loadTagmoji()
+        self.collectionView.reloadData()
+        self.tableView.reloadData()
 	}
 	
 	func prepareToHide() {
