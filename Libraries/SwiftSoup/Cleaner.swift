@@ -9,18 +9,18 @@
 import Foundation
 
 open class Cleaner {
-    fileprivate let whitelist: Whitelist
+    fileprivate let allowedList: AllowedList
 
     /**
-     Create a new cleaner, that sanitizes documents using the supplied whitelist.
-     @param whitelist white-list to clean with
+     Create a new cleaner, that sanitizes documents using the supplied AllowedList.
+     @param AllowedList white-list to clean with
      */
-    public init(_ whitelist: Whitelist) {
-        self.whitelist = whitelist
+    public init(_ allowedList: AllowedList) {
+        self.allowedList = allowedList
     }
 
 	/**
-	Creates a new, clean document, from the original dirty document, containing only elements allowed by the whitelist.
+	Creates a new, clean document, from the original dirty document, containing only elements allowed by the AllowedList.
 	The original document is not modified. Only elements from the dirt document's <code>body</code> are used.
 	@param dirtyDocument Untrusted base document to clean.
 	@return cleaned document.
@@ -36,8 +36,8 @@ open class Cleaner {
 	}
 
 	/**
-	Determines if the input document is valid, against the whitelist. It is considered valid if all the tags and attributes
-	in the input HTML are allowed by the whitelist.
+	Determines if the input document is valid, against the allowedList. It is considered valid if all the tags and attributes
+	in the input HTML are allowed by the allowedList.
 	<p>
 	This method can be used as a validator for user input forms. An invalid document will still be cleaned successfully
 	using the {@link #clean(Document)} document. If using as a validator, it is recommended to still clean the document
@@ -69,14 +69,14 @@ open class Cleaner {
 
 		if let sourceAttrs = sourceEl.getAttributes() {
 			for sourceAttr: Attribute in sourceAttrs {
-				if (try whitelist.isSafeAttribute(sourceTag, sourceEl, sourceAttr)) {
+				if (try allowedList.isSafeAttribute(sourceTag, sourceEl, sourceAttr)) {
 					destAttrs.put(attribute: sourceAttr)
 				} else {
 					numDiscarded+=1
 				}
 			}
 		}
-		let enforcedAttrs: Attributes = try whitelist.getEnforcedAttributes(sourceTag)
+		let enforcedAttrs: Attributes = try allowedList.getEnforcedAttributes(sourceTag)
 		destAttrs.addAll(incoming: enforcedAttrs)
 
 		return ElementMeta(dest, numDiscarded)
@@ -100,7 +100,7 @@ extension Cleaner {
 
 		public func head(_ source: Node, _ depth: Int)throws {
 			if let sourceEl = (source as? Element) {
-				if (cleaner.whitelist.isSafeTag(sourceEl.tagName())) { // safe, clone and copy safe attrs
+				if (cleaner.allowedList.isSafeTag(sourceEl.tagName())) { // safe, clone and copy safe attrs
 					let meta: Cleaner.ElementMeta = try cleaner.createSafeElement(sourceEl)
 					let destChild: Element = meta.el
 					try destination?.appendChild(destChild)
@@ -114,7 +114,7 @@ extension Cleaner {
 				let destText: TextNode = TextNode(sourceText.getWholeText(), source.getBaseUri())
 				try destination?.appendChild(destText)
 			} else if let sourceData = (source as? DataNode) {
-				if  sourceData.parent() != nil && cleaner.whitelist.isSafeTag(sourceData.parent()!.nodeName()) {
+				if  sourceData.parent() != nil && cleaner.allowedList.isSafeTag(sourceData.parent()!.nodeName()) {
 					//let sourceData: DataNode = (DataNode) source
 					let destData: DataNode =  DataNode(sourceData.getWholeData(), source.getBaseUri())
 					try destination?.appendChild(destData)
@@ -128,7 +128,7 @@ extension Cleaner {
 
 		public func tail(_ source: Node, _ depth: Int)throws {
 			if let x = (source as? Element) {
-				if cleaner.whitelist.isSafeTag(x.nodeName()) {
+				if cleaner.allowedList.isSafeTag(x.nodeName()) {
 					// would have descended, so pop destination stack
 					destination = destination?.parent()
 				}

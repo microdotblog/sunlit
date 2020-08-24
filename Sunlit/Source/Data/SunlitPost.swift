@@ -35,12 +35,12 @@ class SunlitPost : SnippetsPost {
 		
 		var string = html
 		
-		// We whitelist most of the html elements as well as strip out the image tags
-		if let whitelist = try? Whitelist.basicWithImages() {
-			_ = try? whitelist.removeTags("p")
-			_ = try? whitelist.addTags("style")
-			_ = try? whitelist.addTags("video").addAttributes("video", "src", "width", "height", "alt", "poster")
-			if let cleanString = try? SwiftSoup.clean(html, whitelist) {
+		// We create an allowedList for most of the html elements as well as strip out the image tags
+		if let allowedList = try? AllowedList.basicWithImages() {
+			_ = try? allowedList.removeTags("p")
+			_ = try? allowedList.addTags("style")
+			_ = try? allowedList.addTags("video").addAttributes("video", "src", "width", "height", "alt", "poster")
+			if let cleanString = try? SwiftSoup.clean(html, allowedList) {
 				string = cleanString
 			}
 		}

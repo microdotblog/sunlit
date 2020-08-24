@@ -1,5 +1,5 @@
 //
-//  Whitelist.swift
+//  AllowedList.swift
 //  SwiftSoup
 //
 //  Created by Nabil Chatbi on 14/10/16.
@@ -8,11 +8,11 @@
 
 /*
  Thank you to Ryan Grove (wonko.com) for the Ruby HTML cleaner http://github.com/rgrove/sanitize/, which inspired
- this whitelist configuration, and the initial defaults.
+ this AllowedList configuration, and the initial defaults.
  */
 
 /**
- Whitelists define what HTML (elements and attributes) to allow through the cleaner. Everything else is removed.
+ AllowedList define what HTML (elements and attributes) to allow through the cleaner. Everything else is removed.
  <p>
  Start with one of the defaults:
  </p>
@@ -24,7 +24,7 @@
  <li>{@link #relaxed}
  </ul>
  <p>
- If you need to allow more through (please be careful!), tweak a base whitelist with:
+ If you need to allow more through (please be careful!), tweak a base AllowedList with:
  </p>
  <ul>
  <li>{@link #addTags}
@@ -33,7 +33,7 @@
  <li>{@link #addProtocols}
  </ul>
  <p>
- You can remove any setting from an existing whitelist with:
+ You can remove any setting from an existing AllowedList with:
  </p>
  <ul>
  <li>{@link #removeTags}
@@ -43,13 +43,13 @@
  </ul>
  
  <p>
- The cleaner and these whitelists assume that you want to clean a <code>body</code> fragment of HTML (to add user
+ The cleaner and these AllowedLists assume that you want to clean a <code>body</code> fragment of HTML (to add user
  supplied HTML into a templated page), and not to clean a full HTML document. If the latter is the case, either wrap the
- document HTML around the cleaned body HTML, or create a whitelist that allows <code>html</code> and <code>head</code>
+ document HTML around the cleaned body HTML, or create a AllowedList that allows <code>html</code> and <code>head</code>
  elements as appropriate.
  </p>
  <p>
- If you are going to extend a whitelist, please be very careful. Make sure you understand what attributes may lead to
+ If you are going to extend a AllowedList, please be very careful. Make sure you understand what attributes may lead to
  XSS attack vectors. URL attributes are particularly vulnerable and require careful validation. See
  http://ha.ckers.org/xss.html for some XSS attack examples.
  </p>
@@ -57,7 +57,7 @@
 
 import Foundation
 
-public class Whitelist {
+public class AllowedList {
     private var tagNames: Set<TagName> // tags allowed, lower case. e.g. [p, br, span]
     private var attributes: Dictionary<TagName, Set<AttributeKey>> // tag -> attribute[]. allowed attributes [href] for a tag.
     private var enforcedAttributes: Dictionary<TagName, Dictionary<AttributeKey, AttributeValue>> // always set these attribute values
@@ -65,27 +65,27 @@ public class Whitelist {
     private var preserveRelativeLinks: Bool  // option to preserve relative links
 
     /**
-     This whitelist allows only text nodes: all HTML will be stripped.
+     This AllowedList allows only text nodes: all HTML will be stripped.
      
-     @return whitelist
+     @return AllowedList
      */
-    public static func none() -> Whitelist {
-        return Whitelist()
+    public static func none() -> AllowedList {
+        return AllowedList()
     }
 
     /**
-     This whitelist allows only simple text formatting: <code>b, em, i, strong, u</code>. All other HTML (tags and
+     This AllowedList allows only simple text formatting: <code>b, em, i, strong, u</code>. All other HTML (tags and
      attributes) will be removed.
      
-     @return whitelist
+     @return AllowedList
      */
-    public static func simpleText()throws ->Whitelist {
-        return try Whitelist().addTags("b", "em", "i", "strong", "u")
+    public static func simpleText()throws ->AllowedList {
+        return try AllowedList().addTags("b", "em", "i", "strong", "u")
     }
 
     /**
      <p>
-     This whitelist allows a fuller range of text nodes: <code>a, b, blockquote, br, cite, code, dd, dl, dt, em, i, li,
+     This AllowedList allows a fuller range of text nodes: <code>a, b, blockquote, br, cite, code, dd, dl, dt, em, i, li,
      ol, p, pre, q, small, span, strike, strong, sub, sup, u, ul</code>, and appropriate attributes.
      </p>
      <p>
@@ -96,10 +96,10 @@ public class Whitelist {
      Does not allow images.
      </p>
      
-     @return whitelist
+     @return AllowedList
      */
-    public static func basic()throws->Whitelist {
-        return try Whitelist()
+    public static func basic()throws->AllowedList {
+        return try AllowedList()
             .addTags(
                 "a", "b", "blockquote", "br", "cite", "code", "dd", "dl", "dt", "em",
                 "i", "li", "ol", "p", "pre", "q", "small", "span", "strike", "strong", "sub",
@@ -117,12 +117,12 @@ public class Whitelist {
     }
 
     /**
-     This whitelist allows the same text tags as {@link #basic}, and also allows <code>img</code> tags, with appropriate
+     This AllowedList allows the same text tags as {@link #basic}, and also allows <code>img</code> tags, with appropriate
      attributes, with <code>src</code> pointing to <code>http</code> or <code>https</code>.
      
-     @return whitelist
+     @return AllowedList
      */
-    public static func basicWithImages()throws->Whitelist {
+    public static func basicWithImages()throws->AllowedList {
         return try basic()
             .addTags("img")
             .addAttributes("img", "align", "alt", "height", "src", "title", "width")
@@ -131,17 +131,17 @@ public class Whitelist {
     }
 
     /**
-     This whitelist allows a full range of text and structural body HTML: <code>a, b, blockquote, br, caption, cite,
+     This AllowedList allows a full range of text and structural body HTML: <code>a, b, blockquote, br, caption, cite,
      code, col, colgroup, dd, div, dl, dt, em, h1, h2, h3, h4, h5, h6, i, img, li, ol, p, pre, q, small, span, strike, strong, sub,
      sup, table, tbody, td, tfoot, th, thead, tr, u, ul</code>
      <p>
      Links do not have an enforced <code>rel=nofollow</code> attribute, but you can add that if desired.
      </p>
      
-     @return whitelist
+     @return AllowedList
      */
-    public static func relaxed()throws->Whitelist {
-        return try Whitelist()
+    public static func relaxed()throws->AllowedList {
+        return try AllowedList()
             .addTags(
                 "a", "b", "blockquote", "br", "caption", "cite", "code", "col",
                 "colgroup", "dd", "div", "dl", "dt", "em", "h1", "h2", "h3", "h4", "h5", "h6",
@@ -171,7 +171,7 @@ public class Whitelist {
     }
 
     /**
-     Create a new, empty whitelist. Generally it will be better to start with a default prepared whitelist instead.
+     Create a new, empty AllowedList. Generally it will be better to start with a default prepared AllowedList instead.
      
      @see #basic()
      @see #basicWithImages()
@@ -187,13 +187,13 @@ public class Whitelist {
     }
 
     /**
-     Add a list of allowed elements to a whitelist. (If a tag is not allowed, it will be removed from the HTML.)
+     Add a list of allowed elements to a AllowedList. (If a tag is not allowed, it will be removed from the HTML.)
      
      @param tags tag names to allow
      @return this (for chaining)
      */
     @discardableResult
-    open func addTags(_ tags: String...)throws ->Whitelist {
+    open func addTags(_ tags: String...)throws ->AllowedList {
         for tagName in tags {
             try Validate.notEmpty(string: tagName)
             tagNames.insert(TagName.valueOf(tagName))
@@ -202,13 +202,13 @@ public class Whitelist {
     }
 
     /**
-     Remove a list of allowed elements from a whitelist. (If a tag is not allowed, it will be removed from the HTML.)
+     Remove a list of allowed elements from a AllowedList. (If a tag is not allowed, it will be removed from the HTML.)
      
      @param tags tag names to disallow
      @return this (for chaining)
      */
     @discardableResult
-    open func removeTags(_ tags: String...)throws ->Whitelist {
+    open func removeTags(_ tags: String...)throws ->AllowedList {
         try Validate.notNull(obj: tags)
 
         for tag in tags {
@@ -241,7 +241,7 @@ public class Whitelist {
      @return this (for chaining)
      */
     @discardableResult
-    open func addAttributes(_ tag: String, _ keys: String...)throws->Whitelist {
+    open func addAttributes(_ tag: String, _ keys: String...)throws->AllowedList {
         try Validate.notEmpty(string: tag)
         try Validate.isTrue(val: keys.count > 0, msg: "No attributes supplied.")
 
@@ -283,7 +283,7 @@ public class Whitelist {
      @return this (for chaining)
      */
     @discardableResult
-    open func removeAttributes(_ tag: String, _ keys: String...)throws->Whitelist {
+    open func removeAttributes(_ tag: String, _ keys: String...)throws->AllowedList {
         try Validate.notEmpty(string: tag)
         try Validate.isTrue(val: keys.count > 0, msg: "No attributes supplied.")
 
@@ -336,7 +336,7 @@ public class Whitelist {
      @return this (for chaining)
      */
     @discardableResult
-    open func addEnforcedAttribute(_ tag: String, _ key: String, _ value: String)throws->Whitelist {
+    open func addEnforcedAttribute(_ tag: String, _ key: String, _ value: String)throws->AllowedList {
         try Validate.notEmpty(string: tag)
         try Validate.notEmpty(string: key)
         try Validate.notEmpty(string: value)
@@ -366,7 +366,7 @@ public class Whitelist {
      @return this (for chaining)
      */
     @discardableResult
-    open func removeEnforcedAttribute(_ tag: String, _ key: String)throws->Whitelist {
+    open func removeEnforcedAttribute(_ tag: String, _ key: String)throws->AllowedList {
         try Validate.notEmpty(string: tag)
         try Validate.notEmpty(string: key)
 
@@ -385,7 +385,7 @@ public class Whitelist {
     }
 
     /**
-     * Configure this Whitelist to preserve relative links in an element's URL attribute, or convert them to absolute
+     * Configure this AllowedList to preserve relative links in an element's URL attribute, or convert them to absolute
      * links. By default, this is <b>false</b>: URLs will be  made absolute (e.g. start with an allowed protocol, like
      * e.g. {@code http://}.
      * <p>
@@ -396,11 +396,11 @@ public class Whitelist {
      * </p>
      *
      * @param preserve {@code true} to allow relative links, {@code false} (default) to deny
-     * @return this Whitelist, for chaining.
+     * @return this AllowedList, for chaining.
      * @see #addProtocols
      */
     @discardableResult
-    open func preserveRelativeLinks(_ preserve: Bool) -> Whitelist {
+    open func preserveRelativeLinks(_ preserve: Bool) -> AllowedList {
         preserveRelativeLinks = preserve
         return self
     }
@@ -422,7 +422,7 @@ public class Whitelist {
      @return this, for chaining
      */
     @discardableResult
-    open func addProtocols(_ tag: String, _ key: String, _ protocols: String...)throws->Whitelist {
+    open func addProtocols(_ tag: String, _ key: String, _ protocols: String...)throws->AllowedList {
         try Validate.notEmpty(string: tag)
         try Validate.notEmpty(string: key)
 
@@ -468,7 +468,7 @@ public class Whitelist {
      @return this, for chaining
      */
     @discardableResult
-    open func removeProtocols(_ tag: String, _ key: String, _ protocols: String...)throws->Whitelist {
+    open func removeProtocols(_ tag: String, _ key: String, _ protocols: String...)throws->AllowedList {
         try Validate.notEmpty(string: tag)
         try Validate.notEmpty(string: key)
 
@@ -500,7 +500,7 @@ public class Whitelist {
     }
 
     /**
-     * Test if the supplied tag is allowed by this whitelist
+     * Test if the supplied tag is allowed by this AllowedList
      * @param tag test tag
      * @return true if allowed
      */
@@ -509,7 +509,7 @@ public class Whitelist {
     }
 
     /**
-     * Test if the supplied attribute is allowed by this whitelist for this tag
+     * Test if the supplied attribute is allowed by this AllowedList for this tag
      * @param tagName tag to consider allowing the attribute in
      * @param el element under test, to confirm protocol
      * @param attr attribute under test

@@ -182,14 +182,14 @@ import Foundation
 	
 	@param bodyHtml  input untrusted HTML (body fragment)
 	@param baseUri   URL to resolve relative URLs against
-	@param whitelist white-list of permitted HTML elements
+	@param AllowedList white-list of permitted HTML elements
 	@return safe HTML (body fragment)
 	
 	@see Cleaner#clean(Document)
 	*/
-	public func clean(_ bodyHtml: String, _ baseUri: String, _ whitelist: Whitelist)throws->String? {
+	public func clean(_ bodyHtml: String, _ baseUri: String, _ allowedList: AllowedList)throws->String? {
 		let dirty: Document = try parseBodyFragment(bodyHtml, baseUri)
-		let cleaner: Cleaner = Cleaner(whitelist)
+		let cleaner: Cleaner = Cleaner(allowedList)
 		let clean: Document = try cleaner.clean(dirty)
 		return try clean.body()?.html()
 	}
@@ -199,13 +199,13 @@ import Foundation
 	tags and attributes.
 	
 	@param bodyHtml  input untrusted HTML (body fragment)
-	@param whitelist white-list of permitted HTML elements
+	@param allowedList list of permitted HTML elements
 	@return safe HTML (body fragment)
 	
 	@see Cleaner#clean(Document)
 	*/
-	public func clean(_ bodyHtml: String, _ whitelist: Whitelist)throws->String? {
-		return try clean(bodyHtml, "", whitelist)
+	public func clean(_ bodyHtml: String, _ allowedList: AllowedList)throws->String? {
+		return try clean(bodyHtml, "", allowedList)
 	}
 
 	/**
@@ -215,30 +215,30 @@ import Foundation
 	*
 	* @param bodyHtml input untrusted HTML (body fragment)
 	* @param baseUri URL to resolve relative URLs against
-	* @param whitelist white-list of permitted HTML elements
+	* @param AllowedList white-list of permitted HTML elements
 	* @param outputSettings document output settings; use to control pretty-printing and entity escape modes
 	* @return safe HTML (body fragment)
 	* @see Cleaner#clean(Document)
 	*/
-	public func clean(_ bodyHtml: String, _ baseUri: String, _ whitelist: Whitelist, _ outputSettings: OutputSettings)throws->String? {
+	public func clean(_ bodyHtml: String, _ baseUri: String, _ allowedList: AllowedList, _ outputSettings: OutputSettings)throws->String? {
 		let dirty: Document = try SwiftSoup.parseBodyFragment(bodyHtml, baseUri)
-		let cleaner: Cleaner = Cleaner(whitelist)
+		let cleaner: Cleaner = Cleaner(allowedList)
 		let clean: Document = try cleaner.clean(dirty)
 		clean.outputSettings(outputSettings)
 		return try clean.body()?.html()
 	}
 
     /**
-     Test if the input HTML has only tags and attributes allowed by the Whitelist. Useful for form validation. The input HTML should
+     Test if the input HTML has only tags and attributes allowed by the AllowedList. Useful for form validation. The input HTML should
      still be run through the cleaner to set up enforced attributes, and to tidy the output.
      @param bodyHtml HTML to test
-     @param whitelist whitelist to test against
+     @param allowedList AllowedList to test against
      @return true if no tags or attributes were removed; false otherwise
-     @see #clean(String, Whitelist)
+     @see #clean(String, AllowedList)
      */
-    public func isValid(_ bodyHtml: String, _ whitelist: Whitelist)throws->Bool {
+    public func isValid(_ bodyHtml: String, _ allowedList: AllowedList)throws->Bool {
         let dirty = try parseBodyFragment(bodyHtml, "")
-        let cleaner  = Cleaner(whitelist)
+        let cleaner  = Cleaner(allowedList)
         return try cleaner.isValid(dirty)
     }
 //}
