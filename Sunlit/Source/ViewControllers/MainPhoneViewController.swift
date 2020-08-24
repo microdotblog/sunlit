@@ -229,24 +229,32 @@ class MainPhoneViewController: UIViewController {
 		offset.x = 0.0
 		self.scrollView.setContentOffset(offset, animated: false)
 		self.timelineViewController.loadTimeline()
+        self.updateTabBar(self.scrollView)
+        self.updateCurrentViewController(self.scrollView)
 	}
 
 	func onShowMentions() {
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 1.0
 		self.scrollView.setContentOffset(offset, animated: false)
+        self.updateTabBar(self.scrollView)
+        self.updateCurrentViewController(self.scrollView)
 	}
 
 	func onShowDiscover() {
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 2.0
 		self.scrollView.setContentOffset(offset, animated: false)
+        self.updateTabBar(self.scrollView)
+        self.updateCurrentViewController(self.scrollView)
 	}
 	
 	func onShowProfile() {
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 3.0
 		self.scrollView.setContentOffset(offset, animated: false)
+        self.updateTabBar(self.scrollView)
+        self.updateCurrentViewController(self.scrollView)
 	}
 
 }
