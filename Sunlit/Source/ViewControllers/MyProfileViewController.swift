@@ -54,7 +54,7 @@ class MyProfileViewController: UIViewController {
 	}
 	
 	@objc func handleUserMentionsUpdated() {
-		self.collectionView.reloadItems(at: [IndexPath(item: 0, section: 0)])
+//		self.collectionView.reloadItems(at: [IndexPath(item: 0, section: 0)])
 	}
 	
 	@objc func fetchUserInfo() {
