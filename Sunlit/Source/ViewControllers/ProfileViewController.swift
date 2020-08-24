@@ -47,11 +47,21 @@ class ProfileViewController: UIViewController {
 		else {
 			self.fetchUserInfo(user)
 		}
-		
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(dismissViewController))
+
+		self.setupNavigation()
+		self.setupGesture()
     }
 	
+	func setupNavigation() {
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(dismissViewController))
+	}
 	
+	func setupGesture() {
+		let gesture = UISwipeGestureRecognizer(target: self, action: #selector(dismissViewController))
+		gesture.direction = .right
+		self.view.addGestureRecognizer(gesture)
+	}
+
 	@objc func dismissViewController() {
 		self.navigationController?.popViewController(animated: true)
 	}
