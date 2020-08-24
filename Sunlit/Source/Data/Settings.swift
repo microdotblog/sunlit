@@ -55,6 +55,10 @@ class Settings {
 		Settings.deleteSnippetsToken()
 		SnippetsUser.deleteCurrentUser()
         Snippets.Configuration.reset()
+
+		Settings.useExternalBlog(false)
+		PublishingConfiguration.deleteXMLRPCBlogSettings()
+		PublishingConfiguration.deleteMicropubSettings()
 	}
 	
 	static func saveSnippetsToken(_ token : String) {
