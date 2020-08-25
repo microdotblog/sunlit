@@ -194,7 +194,10 @@ class DiscoverViewController: UIViewController {
 					self.collectionView.isHidden = false
 				}
 
-				self.refresh(postObjects)
+                if error == nil && postObjects.count > 0 {
+                    self.refresh(postObjects)
+                }
+                
 				self.loadingData = false
                 
 				if let tagmojiData = tagmoji {
