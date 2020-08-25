@@ -209,7 +209,9 @@ class TimelineViewController: UIViewController {
 		self.loadingData = true
 		Snippets.shared.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
 			DispatchQueue.main.async {
-				self.refreshTableView(postObjects)
+                if error == nil && postObjects.count > 0 {
+                    self.refreshTableView(postObjects)
+                }
 				self.loadingData = false
 				self.spinner.stopAnimating()
 			}
