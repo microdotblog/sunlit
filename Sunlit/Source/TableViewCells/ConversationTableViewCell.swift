@@ -128,5 +128,17 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 			self.loadPostPhotos(cell, indexPath)
 		}
 	}
+	
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		if let post = self.post {
+			let url = post.images[indexPath.item]
+
+			var dictionary : [String : Any] = [:]
+			dictionary["imagePath"] = url
+			dictionary["post"] = post
+		
+			NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
+		}
+	}
 }
 
