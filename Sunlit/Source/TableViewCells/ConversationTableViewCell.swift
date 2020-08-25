@@ -9,11 +9,14 @@
 import UIKit
 import Snippets
 
-class ConversationTableViewCell : UITableViewCell {
+class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
+	
 	@IBOutlet var avatar : UIImageView!
 	@IBOutlet var userName : UILabel!
 	@IBOutlet var userHandle : UILabel!
 	@IBOutlet var replyText : UITextView!
+	@IBOutlet var photosCollectionView : UICollectionView?
+	@IBOutlet var photosCollectionHeightConstraint : NSLayoutConstraint?
 	@IBOutlet var dateLabel : UILabel!
 
 	var post : SunlitPost? = nil
@@ -37,13 +40,23 @@ class ConversationTableViewCell : UITableViewCell {
 		self.replyText.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 		self.userName.text = post.owner.fullName
 		self.userHandle.text = "@" + post.owner.userName
-		self.loadPhotos(post.owner, indexPath)
+		self.loadProfilePhoto(post.owner, indexPath)
 
 		if let date = post.publishedDate {
 			self.dateLabel.text = date.friendlyFormat()
 		}
 		else {
 			self.dateLabel.text = ""
+		}
+		
+		if let collection_height_constraint = self.photosCollectionHeightConstraint {
+			if post.images.count == 0 {
+				collection_height_constraint.constant = 0
+			}
+			else {
+				// 40x40 cells with 4pt padding + 4pt margins around collection view
+				collection_height_constraint.constant = 48
+			}
 		}
 	}
 	
@@ -62,7 +75,7 @@ class ConversationTableViewCell : UITableViewCell {
 		NotificationCenter.default.post(name: .viewUserProfileNotification, object: self.post?.owner)
 	}
 	
-	func loadPhotos(_ owner : SnippetsUser, _ indexPath : IndexPath) {
+	func loadProfilePhoto(_ owner: SnippetsUser, _ indexPath: IndexPath) {
 		let avatarSource = owner.avatarURL
 		if let avatar = ImageCache.prefetch(avatarSource) {
 			self.avatar.image = avatar
@@ -75,6 +88,44 @@ class ConversationTableViewCell : UITableViewCell {
 					}
 				}
 			}
+		}
+	}
+	
+	func loadPostPhotos(_ cell: ConversationPhotoCollectionViewCell, _ indexPath: IndexPath) {
+		if let post = self.post {
+			let url = post.images[indexPath.item]
+			if let image = ImageCache.prefetch(url) {
+				cell.imageView.image = image
+			}
+			else {
+				ImageCache.fetch(self, url) { image in
+					if let _ = image {
+						DispatchQueue.main.async {
+							self.photosCollectionView?.reloadItems(at: [ indexPath ])
+						}
+					}
+				}
+			}
+		}
+	}
+
+	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+		if let post = self.post {
+			return post.images.count
+		}
+		else {
+			return 0
+		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ConversationPhotoCollectionViewCell", for: indexPath) as! ConversationPhotoCollectionViewCell
+		return cell
+	}
+		
+	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		if let cell = cell as? ConversationPhotoCollectionViewCell {
+			self.loadPostPhotos(cell, indexPath)
 		}
 	}
 }

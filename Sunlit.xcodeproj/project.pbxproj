@@ -13,6 +13,7 @@
 		4B556FFC24F31ABC0012C6C7 /* Usernames.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B556FFB24F31ABC0012C6C7 /* Usernames.storyboard */; };
 		4B556FFE24F31AE30012C6C7 /* UsernamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FFD24F31AE30012C6C7 /* UsernamesViewController.swift */; };
 		4B55700024F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FFF24F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift */; };
+		4B55700224F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B55700124F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift */; };
 		4B729B8224BA4F74001D145B /* TabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B729B8124BA4F74001D145B /* TabButton.swift */; };
 		4B9D143624C889BA004E7EAF /* SectionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9D143524C889BA004E7EAF /* SectionTextView.swift */; };
 		C5309CB724AEABE700551AC7 /* NSAttributedString+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */; };
@@ -291,6 +292,7 @@
 		4B556FFB24F31ABC0012C6C7 /* Usernames.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Usernames.storyboard; path = Storyboards/Usernames.storyboard; sourceTree = "<group>"; };
 		4B556FFD24F31AE30012C6C7 /* UsernamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsernamesViewController.swift; path = Source/ViewControllers/UsernamesViewController.swift; sourceTree = "<group>"; };
 		4B556FFF24F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsernameCheckmarkTableViewCell.swift; path = Source/TableViewCells/UsernameCheckmarkTableViewCell.swift; sourceTree = "<group>"; };
+		4B55700124F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationPhotoCollectionViewCell.swift; path = Source/CollectionViewCells/ConversationPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		4B729B8124BA4F74001D145B /* TabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabButton.swift; path = Source/Views/TabButton.swift; sourceTree = "<group>"; };
 		4B9D143524C889BA004E7EAF /* SectionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SectionTextView.swift; path = Source/Views/SectionTextView.swift; sourceTree = "<group>"; };
 		C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+Sunlit.swift"; path = "Source/Extensions/NSAttributedString+Sunlit.swift"; sourceTree = "<group>"; };
@@ -973,6 +975,7 @@
 				C5A1DE8724901DE600B50B54 /* ProfileBioCollectionViewCell.swift */,
 				C5A1DE8D24901DE600B50B54 /* ProfileHeaderCollectionViewCell.swift */,
 				C5A1DE8924901DE600B50B54 /* SunlitPostCollectionViewCell.swift */,
+				4B55700124F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift */,
 			);
 			name = CollectionViewCells;
 			sourceTree = "<group>";
@@ -1489,6 +1492,7 @@
 				C5482F2C24D9E56400A335DF /* TabletMenuTableViewCell.swift in Sources */,
 				C5A1DE9524901DE600B50B54 /* ProfileHeaderCollectionViewCell.swift in Sources */,
 				C5E26A4024A061AB00F9E158 /* NSNotification+Sunlit.swift in Sources */,
+				4B55700224F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift in Sources */,
 				C5A1DF3E2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift in Sources */,
 				C5BEDF4F24DA305F0068CBF1 /* FollowingViewController.swift in Sources */,
 				C5A1DE5324901D9D00B50B54 /* URL+Sunlit.swift in Sources */,
