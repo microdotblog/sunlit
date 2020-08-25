@@ -86,11 +86,10 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
                     if let visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
                      
                         if visibleIndexPaths.contains(indexPath) {
-                            self.tableView.performBatchUpdates {
-                                self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                            }
-                            completion: { (complete) in
-                            }
+							self.tableView.performBatchUpdates({
+								self.tableView.reloadRows(at: [indexPath], with: .automatic)
+							}) { complete in
+							}
                         }
                     }
                 }

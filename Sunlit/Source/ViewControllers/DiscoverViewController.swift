@@ -466,12 +466,10 @@ class DiscoverViewController: UIViewController {
                    let visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
                     
                     if visibleIndexPaths.contains(indexPath) {
-                        self.tableView.performBatchUpdates {
+                        self.tableView.performBatchUpdates({
                             self.tableView.reloadRows(at: [indexPath], with: .fade)
-                        }
-                        completion: { (complete) in
-                            
-                        }
+						}) { complete in
+						}
                     }
                 }
             }
