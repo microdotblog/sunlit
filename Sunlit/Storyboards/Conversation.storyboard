@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17147" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0np-If-1rf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0np-If-1rf">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17120"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17124"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -174,7 +174,7 @@
                                         <rect key="frame" x="12" y="8" width="390" height="38"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="1000" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fge-xx-GRZ">
-                                                <rect key="frame" x="0.0" y="0.0" width="330" height="38"/>
+                                                <rect key="frame" x="12" y="0.0" width="318" height="38"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -194,7 +194,7 @@
                                             <constraint firstItem="fge-xx-GRZ" firstAttribute="top" secondItem="vpU-s5-4V2" secondAttribute="top" id="57t-Jp-wg9"/>
                                             <constraint firstItem="jHc-xR-l5T" firstAttribute="centerY" secondItem="vpU-s5-4V2" secondAttribute="centerY" id="Lrx-WE-ssH"/>
                                             <constraint firstItem="jHc-xR-l5T" firstAttribute="centerX" secondItem="vpU-s5-4V2" secondAttribute="centerX" id="WRs-Gq-ckr"/>
-                                            <constraint firstItem="fge-xx-GRZ" firstAttribute="leading" secondItem="vpU-s5-4V2" secondAttribute="leading" id="puJ-hY-zjt"/>
+                                            <constraint firstItem="fge-xx-GRZ" firstAttribute="leading" secondItem="vpU-s5-4V2" secondAttribute="leading" constant="12" id="puJ-hY-zjt"/>
                                             <constraint firstAttribute="bottom" secondItem="fge-xx-GRZ" secondAttribute="bottom" id="rc4-hl-zyX"/>
                                             <constraint firstAttribute="trailing" secondItem="fge-xx-GRZ" secondAttribute="trailing" constant="60" id="tXe-WX-26i"/>
                                         </constraints>
