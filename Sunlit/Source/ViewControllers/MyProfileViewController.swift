@@ -56,7 +56,16 @@ class MyProfileViewController: UIViewController {
 	@objc func handleUserMentionsUpdated() {
 //		self.collectionView.reloadItems(at: [IndexPath(item: 0, section: 0)])
 	}
-	
+
+	@objc func handleViewConversationNotification(_ notification : Notification) {
+		if let post = notification.object as? SunlitPost {
+			let storyBoard: UIStoryboard = UIStoryboard(name: "Conversation", bundle: nil)
+			let conversationViewController = storyBoard.instantiateViewController(withIdentifier: "ConversationViewController") as! ConversationViewController
+			conversationViewController.sourcePost = post
+			self.navigationController?.pushViewController(conversationViewController, animated: true)
+		}
+	}
+
 	@objc func fetchUserInfo() {
 		
 		if self.loadInProgress == true {
@@ -329,6 +338,7 @@ extension MyProfileViewController : SnippetsScrollContentProtocol {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewFollowingButtonClickedNotification), name: .followingButtonClickedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
 
 		self.fetchUserInfo()
 	}
