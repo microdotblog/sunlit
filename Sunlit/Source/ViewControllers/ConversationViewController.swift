@@ -18,10 +18,11 @@ class ConversationViewController: UIViewController {
 	@IBOutlet var replyField : UITextView!
 	@IBOutlet var postButton : UIButton!
 	@IBOutlet var replyFieldPlaceholder : UILabel!
-	@IBOutlet var tableBottomConstraint : NSLayoutConstraint!
 	@IBOutlet var replyingToContainer : UIView!
 	@IBOutlet var replyingToButton : UIButton!
 
+	@IBOutlet var replyContainerBottomConstraint : NSLayoutConstraint!
+	
 	var posts : [SunlitPost] = []
 	var allUsers : Set<String> = []
 	var selectedUsers : Set<String> = []
@@ -181,9 +182,7 @@ class ConversationViewController: UIViewController {
 				}
 
 				UIView.animate(withDuration: 0.25) {
-					let pane_height: CGFloat = 54
-					self.tableBottomConstraint.constant = frame.size.height + pane_height - self.view.safeAreaInsets.bottom
-
+					self.replyContainerBottomConstraint.constant = frame.size.height  - 20.0//+ self.view.safeAreaInsets.bottom
 					self.postButton.alpha = 1.0
 					self.view.layoutIfNeeded()
 					self.replyFieldPlaceholder.alpha = 0.0
@@ -196,7 +195,8 @@ class ConversationViewController: UIViewController {
 	@objc func keyboardOffScreenNotification(_ notification : Notification) {
 				
 			UIView.animate(withDuration: 0.25) {
-				self.tableBottomConstraint.constant = 44
+				self.replyContainerBottomConstraint.constant = 0
+				//self.tableBottomConstraint.constant = 44
 				self.postButton.alpha = 0.0
 				self.view.layoutIfNeeded()
 				
