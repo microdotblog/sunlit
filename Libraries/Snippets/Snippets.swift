@@ -694,14 +694,13 @@ public class Snippets : NSObject {
 			return nil
 		}
 		
-		let resizedImage = image
-		//var resizedImage = image
-		//if image.size.width > 1800.0
-		//{
-		//	resizedImage = resizedImage.uuScaleToWidth(targetWidth: 1800.0 )
-		//}
+		var resizedImage = image
+		if image.size.width > 1800.0
+		{
+			resizedImage = resizedImage.uuScaleToWidth(targetWidth: 1800.0 )
+		}
 
-		let imageData = resizedImage.uuJpegData(0.8)!
+		let imageData = resizedImage.uuJpegData(0.9)!
 		var formData : Data = Data()
 		let imageName = "file"
 		let boundary = ProcessInfo.processInfo.globallyUniqueString

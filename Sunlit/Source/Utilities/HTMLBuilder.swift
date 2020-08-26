@@ -60,8 +60,15 @@ class HTMLBuilder {
 		let thumbnailPath = location.thumbnailPath
 		
 		let image = media.getImage()
-		let imageWidth = "\(Int(image.size.width))"
-		let imageHeight = "\(Int(image.size.height))"
+		
+		var imageSize = image.size
+		if image.size.width > 600 {
+			imageSize.height = 600.0 * imageSize.height / imageSize.width
+			imageSize.width = 600
+		}
+		
+		let imageWidth = "\(Int(imageSize.width))"
+		let imageHeight = "\(Int(imageSize.height))"
 		let imageAlt = media.altText
 		var imageText = ""
 		
