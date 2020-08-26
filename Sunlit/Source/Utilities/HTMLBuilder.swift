@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class HTMLBuilder {
 
@@ -59,8 +60,8 @@ class HTMLBuilder {
 		let thumbnailPath = location.thumbnailPath
 		
 		let image = media.getImage()
-		let imageWidth = "\(image.size.width)"
-		let imageHeight = "\(image.size.height)"
+		let imageWidth = "\(Int(image.size.width))"
+		let imageHeight = "\(Int(image.size.height))"
 		let imageAlt = media.altText
 		var imageText = ""
 		
@@ -85,9 +86,10 @@ class HTMLBuilder {
 		let imagePath = location.path
 		let thumbnailPath = location.thumbnailPath
 		
-		let image = media.getImage()
-		let imageWidth = "\(image.size.width)"
-		let imageHeight = "\(image.size.height)"
+		let asset = AVAsset(url: media.videoURL)
+		let imageSize = VideoTranscoder.calculateSizeForAsset(asset)
+		let imageWidth = "\(Int(imageSize.width))"
+		let imageHeight = "\(Int(imageSize.height))"
 		let imageAlt = media.altText
 
 		var imageText = "<video controls=\"controls\" playsinline=\"playsinline\" src=\"{{url}}\" width=\"{{width}}\" height=\"{{height}}\" alt=\"{{alt}}\" poster=\"{{thumbnail}}\" preload=\"none\" />"

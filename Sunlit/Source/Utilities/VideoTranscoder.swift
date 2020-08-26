@@ -69,7 +69,7 @@ class VideoTranscoder {
 		}
 	}
 	
-	private static func calculateSizeForAsset(_ asset : AVAsset) -> CGSize {
+	static func calculateSizeForAsset(_ asset : AVAsset) -> CGSize {
 		
 		let videoTracks = asset.tracks(withMediaType: .video)
 		var size = CGSize(width: 640.0, height: 480.0)
@@ -79,7 +79,6 @@ class VideoTranscoder {
 			size.width = abs(size.width);
 			size.height = abs(size.height);
 		}
-
 		
 		if (size.width == 0) || (size.height == 0) {
 			size.width = 640;
