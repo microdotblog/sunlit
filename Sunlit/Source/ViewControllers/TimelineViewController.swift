@@ -97,7 +97,11 @@ class TimelineViewController: UIViewController {
 					let frame = value.cgRectValue
 					let height = self.keyboardAccessoryView.frame.size.height
 					let safeArea : CGFloat = self.view.safeAreaInsets.bottom
-					let offset = frame.origin.y - height + safeArea
+					var offset = frame.origin.y - height
+					
+					if UIDevice.current.userInterfaceIdiom == .phone {
+						offset = offset + safeArea
+					}
 
 					if let duration = info[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double {
 						let curve_default = 7
