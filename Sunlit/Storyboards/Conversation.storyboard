@@ -82,7 +82,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cvy-wN-bKx">
-                                                    <rect key="frame" x="68" y="196.5" width="306" height="48"/>
+                                                    <rect key="frame" x="70" y="196.5" width="304" height="48"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="48" id="zhV-ys-olr"/>
@@ -130,7 +130,6 @@
                                                 <constraint firstItem="PkF-Aa-cXb" firstAttribute="top" secondItem="iGg-xo-oLb" secondAttribute="bottom" constant="16" id="Awc-xR-efq"/>
                                                 <constraint firstAttribute="trailing" secondItem="PkF-Aa-cXb" secondAttribute="trailing" id="GVM-ru-37j"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="cvy-wN-bKx" secondAttribute="trailing" constant="20" id="H88-7U-dCG"/>
-                                                <constraint firstItem="cvy-wN-bKx" firstAttribute="leading" secondItem="QbO-MG-Zhx" secondAttribute="leadingMargin" constant="48" id="HJy-zt-oaY"/>
                                                 <constraint firstItem="PkF-Aa-cXb" firstAttribute="leading" secondItem="QbO-MG-Zhx" secondAttribute="leading" id="QTr-S8-6v0"/>
                                                 <constraint firstItem="uwQ-dM-qm3" firstAttribute="top" secondItem="QbO-MG-Zhx" secondAttribute="top" constant="16" id="S6O-jl-XGQ"/>
                                                 <constraint firstItem="mDf-tb-KWm" firstAttribute="leading" secondItem="0t6-uq-Ar9" secondAttribute="leading" constant="-4" id="T9Q-Zl-LlH"/>
@@ -142,6 +141,7 @@
                                                 <constraint firstItem="uwQ-dM-qm3" firstAttribute="leading" secondItem="QbO-MG-Zhx" secondAttribute="leading" constant="16" id="mBx-iJ-fHi"/>
                                                 <constraint firstItem="0t6-uq-Ar9" firstAttribute="leading" secondItem="uwQ-dM-qm3" secondAttribute="trailing" constant="16" id="qAU-gz-ld0"/>
                                                 <constraint firstItem="cvy-wN-bKx" firstAttribute="top" secondItem="mDf-tb-KWm" secondAttribute="bottom" constant="4" id="wvF-8n-Yru"/>
+                                                <constraint firstItem="cvy-wN-bKx" firstAttribute="leading" secondItem="0t6-uq-Ar9" secondAttribute="leading" constant="2" id="y1S-TC-1KX"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
