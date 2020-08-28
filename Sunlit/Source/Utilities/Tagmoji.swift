@@ -23,10 +23,13 @@ class Tagmoji {
 	
 	func updateFromServerResponse(_ tagmoji : [[String : Any]]) -> Bool {
 		var newDictionary : [String : Any] = [:]
+		var newEmoji : [String] = []
 		var changed = false
+		
 		for d in tagmoji {
 			if let symbol = d["emoji"] as? String {
 				newDictionary[symbol] = d
+				newEmoji.append(symbol)
 			}
 		}
 		
@@ -43,6 +46,8 @@ class Tagmoji {
 		}
 		
 		self.dictionary = newDictionary
+		self.emoji = newEmoji
+		
 		return changed
 	}
 	
@@ -51,12 +56,7 @@ class Tagmoji {
 	}
 	
 	func all() -> [String] {
-		var tagmoji : [String] = []
-		for key in self.dictionary.keys {
-			tagmoji.append(key)
-		}
-		
-		return tagmoji
+		return self.emoji
 	}
 	
 	func routeFor(tagmoji : String) -> String? {
@@ -73,11 +73,11 @@ class Tagmoji {
 		}
 	}
 	
-	
 	private func dictionaryFor(_ emoji : String) -> [String : Any] {
 		return self.dictionary[emoji] as? [String : Any] ?? [:]
 	}
 
 	private var dictionary : [String : Any] = [:]
+	private var emoji : [String] = []
 
 }

@@ -27,7 +27,6 @@ class DiscoverViewController: UIViewController {
 	var searchController: SearchViewController? = nil
 	
 	var posts : [SunlitPost] = []
-	var tagmojiDictionary : [String : String] = [:]
 	var collection = "photos"
 	var collectionTitle = "photos"
 	var loadingData = false
