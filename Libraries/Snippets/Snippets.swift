@@ -127,10 +127,12 @@ public class Snippets : NSObject {
 		
 		var arguments = [ "q" : "source" ]
 		if let blogUid = self.publishingConfiguration.uid {
-			arguments["mp-destination"] = blogUid
+			if blogUid.count > 0 {
+				arguments["mp-destination"] = blogUid
+			}
 		}
 		
-		self.fetchTimeline(self.pathForTimelineRoute("micropub"), arguments:arguments, completion: completion)
+		self.fetchTimeline(self.pathForPublishingRoute(), arguments:arguments, completion: completion)
 	}
 	
 	@objc public func fetchCurrentUserTimeline(parameters : [String : String] = [:], completion: @escaping(Error?, [SnippetsPost]) -> ())
@@ -508,7 +510,9 @@ public class Snippets : NSObject {
 		bodyText = self.appendParameter(body: bodyText, name: "h", content: "entry")
 
 		if let blogUid = self.publishingConfiguration.uid {
-			bodyText = self.appendParameter(body: bodyText, name: "mp-destination", content: blogUid)
+			if blogUid.count > 0 {
+				bodyText = self.appendParameter(body: bodyText, name: "mp-destination", content: blogUid)
+			}
 		}
 
 		for photoPath in photos {
@@ -551,25 +555,25 @@ public class Snippets : NSObject {
 		}
 
 		
-		let properties : [ String : Any ] = [ "name" 	: [ title ],
-											  "content" : [ [ "html" : content ] ],
-											  "photo" 	: [ ]
+		var properties : [ String : Any ] = [ "name" 	: [ title ],
+											  "content" : [ [ "html" : content ] ]
 											]
-		
-		var arguments : [ String : Any ] = 	[	"type" : ["h-entry"],
+
+		if isDraft {
+			properties["post-status"] = [ "draft" ]
+		}
+		else {
+			properties["post-status"] = [ "published" ]
+		}
+
+		var arguments : [ String : Any ] = 	[	"type" : [ "h-entry" ],
 												"properties" : properties
 											]
 		
-		if isDraft {
-			arguments["post-status"] = "draft"
-		}
-		else {
-			arguments["post-status"] = "published"
-		}
-
-		
 		if let blogUid = self.publishingConfiguration.uid {
-			arguments["mp-destination"] = blogUid
+			if blogUid.count > 0 {
+				arguments["mp-destination"] = blogUid
+			}
 		}
 		
 		do {
@@ -595,7 +599,9 @@ public class Snippets : NSObject {
 		bodyText = self.appendParameter(body: bodyText, name: "action", content: "delete")
 		bodyText = self.appendParameter(body: bodyText, name: "url", content: path)
 		if let blogUid = self.publishingConfiguration.uid {
-			bodyText = self.appendParameter(body: bodyText, name: "mp-destination", content: blogUid)
+			if blogUid.count > 0 {
+				bodyText = self.appendParameter(body: bodyText, name: "mp-destination", content: blogUid)
+			}
 		}
 
 		let body : Data = bodyText.data(using: .utf8)!
@@ -642,7 +648,9 @@ public class Snippets : NSObject {
 		bodyText = self.appendParameter(body: bodyText, name: "action", content: "update")
 		bodyText = self.appendParameter(body: bodyText, name: "url", content: path)
 		if let blogUid = self.publishingConfiguration.uid {
-			bodyText = self.appendParameter(body: bodyText, name: "mp-destination", content: blogUid)
+			if blogUid.count > 0 {
+				bodyText = self.appendParameter(body: bodyText, name: "mp-destination", content: blogUid)
+			}
 		}
 
 		let body : Data = bodyText.data(using: .utf8)!
@@ -674,10 +682,6 @@ public class Snippets : NSObject {
 		var arguments : [ String : String ] = [ "id" : originalPost.identifier,
 											    "text" : content ]
 		
-		if let blogUid = self.publishingConfiguration.uid {
-			arguments["mp-destination"] = blogUid
-		}
-		
         let request = self.securePost(self.timelineConfiguration, path: self.pathForTimelineRoute("posts/reply"), arguments: arguments)
 		
 		return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
@@ -704,15 +708,13 @@ public class Snippets : NSObject {
 		var formData : Data = Data()
 		let imageName = "file"
 		let boundary = ProcessInfo.processInfo.globallyUniqueString
-		
-		var arguments : [ String : String ] = [:]
 
 		if let blogUid = self.publishingConfiguration.uid {
-			arguments["mp-destination"] = blogUid
-			
-			formData.append(String("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-			formData.append(String("Content-Disposition: form-data; name=\"mp-destination\"\r\n\r\n").data(using: String.Encoding.utf8)!)
-			formData.append(String("\(blogUid)\r\n").data(using:String.Encoding.utf8)!)
+			if blogUid.count > 0 {
+				formData.append(String("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+				formData.append(String("Content-Disposition: form-data; name=\"mp-destination\"\r\n\r\n").data(using: String.Encoding.utf8)!)
+				formData.append(String("\(blogUid)\r\n").data(using:String.Encoding.utf8)!)
+			}
 		}
 		
 		formData.append(String("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
@@ -722,7 +724,7 @@ public class Snippets : NSObject {
 		formData.append(String("\r\n").data(using: String.Encoding.utf8)!)
 		formData.append(String("--\(boundary)--\r\n").data(using: String.Encoding.utf8)!)
 		
-        let request = self.securePost(self.publishingConfiguration, path: self.publishingConfiguration.mediaEndpoint, arguments: arguments, body: formData)
+        let request = self.securePost(self.publishingConfiguration, path: self.publishingConfiguration.mediaEndpoint, arguments: [:], body: formData)
 		request.headerFields["Content-Type"] = "multipart/form-data; boundary=\(boundary)"
 
 		return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
@@ -744,15 +746,13 @@ public class Snippets : NSObject {
 		var formData : Data = Data()
 		let imageName = "file"
 		let boundary = ProcessInfo.processInfo.globallyUniqueString
-		
-		var arguments : [ String : String ] = [:]
-		
+				
 		if let blogUid = self.publishingConfiguration.uid {
-			arguments["mp-destination"] = blogUid
-			
-			formData.append(String("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-			formData.append(String("Content-Disposition: form-data; name=\"mp-destination\"\r\n\r\n").data(using: String.Encoding.utf8)!)
-			formData.append(String("\(blogUid)\r\n").data(using:String.Encoding.utf8)!)
+			if blogUid.count > 0 {
+				formData.append(String("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+				formData.append(String("Content-Disposition: form-data; name=\"mp-destination\"\r\n\r\n").data(using: String.Encoding.utf8)!)
+				formData.append(String("\(blogUid)\r\n").data(using:String.Encoding.utf8)!)
+			}
 		}
 		
 		formData.append(String("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
@@ -762,7 +762,7 @@ public class Snippets : NSObject {
 		formData.append(String("\r\n").data(using: String.Encoding.utf8)!)
 		formData.append(String("--\(boundary)--\r\n").data(using: String.Encoding.utf8)!)
 		
-        let request = self.securePost(self.publishingConfiguration, path: self.publishingConfiguration.mediaEndpoint, arguments: arguments, body: formData)
+		let request = self.securePost(self.publishingConfiguration, path: self.publishingConfiguration.mediaEndpoint, arguments: [:], body: formData)
 		request.headerFields["Content-Type"] = "multipart/form-data; boundary=\(boundary)"
 		
 		return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
