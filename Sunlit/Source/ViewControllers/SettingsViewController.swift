@@ -163,6 +163,8 @@ class SettingsViewController: UIViewController {
 		}
 		else {
 			Settings.useExternalBlog(false)
+			PublishingConfiguration.deleteXMLRPCBlogSettings()
+			PublishingConfiguration.deleteMicropubSettings()
 		}
 		
 		self.updateWordpressSettings()
