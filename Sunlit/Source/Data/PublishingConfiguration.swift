@@ -132,7 +132,16 @@ class PublishingConfiguration {
 	}
 	
 	func getBlogAddress() -> String {
-		return self.address
+		var s = self.address
+		if s.contains("http") {
+			if let url = URL(string: s) {
+				if let host = url.host {
+					s = host
+				}
+			}
+		}
+		
+		return s
 	}
 	
 	func getMediaEndpoint() -> String {

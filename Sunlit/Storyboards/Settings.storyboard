@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17140" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="kWB-by-1xh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="kWB-by-1xh">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17115"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17124"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -24,6 +24,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="anV-E6-LW0">
                                         <rect key="frame" x="20" y="28" width="374" height="24"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <color key="tintColor" systemColor="labelColor"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Micro.blog hosted blog">
@@ -42,6 +43,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ru-Iw-kwn">
                                         <rect key="frame" x="20" y="76" width="374" height="24"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <color key="tintColor" systemColor="labelColor"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="WordPress or Micropub blog">
@@ -72,54 +74,44 @@
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When writing a new post, publish to:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="20l-ij-qN6">
                                 <rect key="frame" x="20" y="64" width="276" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4B6-eC-GMc">
-                                <rect key="frame" x="0.0" y="252.5" width="414" height="128"/>
+                                <rect key="frame" x="0.0" y="252.5" width="414" height="100"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4kp-F1-h5l">
-                                        <rect key="frame" x="328" y="14.5" width="66" height="33"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="328" y="14" width="66" height="33"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <state key="normal" title="Sign Out"/>
                                         <connections>
                                             <action selector="onSignoutWordPress" destination="kWB-by-1xh" eventType="touchUpInside" id="FA2-Zv-fBJ"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="External Blog" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VBp-6a-vPW">
-                                        <rect key="frame" x="20" y="20" width="109" height="21.5"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                        <rect key="frame" x="20" y="20" width="105.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="H8A-Jn-lgz">
-                                        <rect key="frame" x="20" y="61.5" width="129.5" height="49"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="jonathanhays" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z3B-vC-dth">
-                                                <rect key="frame" x="0.0" y="0.0" width="129.5" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="jonathanhays.me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WBv-j1-xbI">
-                                                <rect key="frame" x="0.0" y="28.5" width="129.5" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="jonathanhays.me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WBv-j1-xbI">
+                                        <rect key="frame" x="20" y="54" width="374" height="21"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" name="color_signin_bar"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="4kp-F1-h5l" secondAttribute="trailing" constant="20" id="1jj-Ek-4DT"/>
                                     <constraint firstItem="VBp-6a-vPW" firstAttribute="leading" secondItem="4B6-eC-GMc" secondAttribute="leading" constant="20" id="2aB-lo-LUN"/>
+                                    <constraint firstItem="WBv-j1-xbI" firstAttribute="leading" secondItem="4B6-eC-GMc" secondAttribute="leading" constant="20" symbolic="YES" id="HHz-me-Ton"/>
                                     <constraint firstItem="VBp-6a-vPW" firstAttribute="top" secondItem="4B6-eC-GMc" secondAttribute="top" constant="20" id="Jp5-38-XaX"/>
-                                    <constraint firstItem="H8A-Jn-lgz" firstAttribute="top" secondItem="VBp-6a-vPW" secondAttribute="bottom" constant="20" id="Kva-wk-tsb"/>
+                                    <constraint firstAttribute="trailing" secondItem="WBv-j1-xbI" secondAttribute="trailing" constant="20" symbolic="YES" id="K2p-yE-gqW"/>
+                                    <constraint firstItem="WBv-j1-xbI" firstAttribute="top" secondItem="4kp-F1-h5l" secondAttribute="bottom" constant="7" id="KXP-HM-CmT"/>
                                     <constraint firstItem="4kp-F1-h5l" firstAttribute="centerY" secondItem="VBp-6a-vPW" secondAttribute="centerY" id="LwU-HM-rof"/>
-                                    <constraint firstAttribute="height" constant="128" id="Yvg-m7-SvW"/>
-                                    <constraint firstItem="H8A-Jn-lgz" firstAttribute="leading" secondItem="4B6-eC-GMc" secondAttribute="leading" constant="20" id="ncd-AX-RAl"/>
+                                    <constraint firstAttribute="height" constant="100" id="Yvg-m7-SvW"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="uuCornerRadius">
@@ -128,8 +120,8 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rQs-dT-iWL">
-                                <rect key="frame" x="121.5" y="444.5" width="171" height="33"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="121.5" y="416.5" width="171" height="33"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <state key="normal" title="Sign Out of Micro.blog"/>
                                 <connections>
                                     <action selector="onSignout" destination="kWB-by-1xh" eventType="touchUpInside" id="P2j-Sk-G83"/>
@@ -160,7 +152,6 @@
                         <outlet property="wordPressSettingsViewHeightConstraint" destination="Yvg-m7-SvW" id="Toq-61-LtQ"/>
                         <outlet property="wordPressSignoutButton" destination="4kp-F1-h5l" id="vpu-GV-hGP"/>
                         <outlet property="wordPressSite" destination="WBv-j1-xbI" id="CJb-86-E5y"/>
-                        <outlet property="wordPressUserName" destination="Z3B-vC-dth" id="qk9-JP-Xwm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gHR-DL-5aH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

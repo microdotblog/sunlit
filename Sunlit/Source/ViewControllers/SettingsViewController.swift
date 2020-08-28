@@ -16,7 +16,6 @@ class SettingsViewController: UIViewController {
 	
 	@IBOutlet var wordPressSettingsView :UIView!
 	@IBOutlet var wordPressSettingsViewHeightConstraint : NSLayoutConstraint!
-	@IBOutlet var wordPressUserName : UILabel!
 	@IBOutlet var wordPressSite : UILabel!
 	@IBOutlet var wordPressSignoutButton : UIButton!
 	@IBOutlet var wordPressAppTitle : UILabel!
@@ -59,26 +58,24 @@ class SettingsViewController: UIViewController {
 		self.microBlogButton.isSelected = !Settings.usesExternalBlog()
 		
 		self.updateWordpressSettings()
-		let settingsHeight : CGFloat = self.wordPressButton.isSelected ? 128.0 : 0.0
+		let settingsHeight : CGFloat = self.wordPressButton.isSelected ? 100.0 : 0.0
 		self.wordPressSettingsViewHeightConstraint.constant = settingsHeight
 	}
 
 	func updateWordpressSettings() {
 		let blog_name = PublishingConfiguration.current.getBlogName()
 		let blog_address = PublishingConfiguration.current.getBlogAddress()
-		self.wordPressUserName.text = blog_name
-		if blog_address != blog_name {
-			self.wordPressSite.text = blog_address
-		}
-		else {
-			self.wordPressSite.text = ""
-		}
 			
 		if PublishingConfiguration.current.hasConfigurationForExternal() {
+			if PublishingConfiguration.current.hasConfigurationForXMLRPC() {
+				self.wordPressSite.text = "\(blog_address) (\(blog_name))"
+			}
+			else {
+				self.wordPressSite.text = blog_address
+			}
 			self.wordPressSignoutButton.setTitle("Sign Out", for: .normal)
 		}
 		else {
-			self.wordPressUserName.text = ""
 			self.wordPressSite.text = ""
 			self.wordPressSignoutButton.setTitle("Sign In", for: .normal)
 		}
@@ -92,13 +89,11 @@ class SettingsViewController: UIViewController {
 		if self.wordPressButton.isSelected {
 			self.wordPressAppTitle.isHidden = false
 			self.wordPressSignoutButton.isHidden = false
-			self.wordPressUserName.isHidden = false
 			self.wordPressSite.isHidden = false
 		}
 		else {
 			self.wordPressAppTitle.isHidden = true
 			self.wordPressSignoutButton.isHidden = true
-			self.wordPressUserName.isHidden = true
 			self.wordPressSite.isHidden = true
 		}
 	}
@@ -149,7 +144,15 @@ class SettingsViewController: UIViewController {
 		self.wordPressButton.isSelected = false
 		button.isSelected = true
 		
-		let settingsHeight : CGFloat = self.wordPressButton.isSelected ? 128.0 : 0.0
+		var settingsHeight : CGFloat = 0
+		if self.wordPressButton.isSelected {
+			if PublishingConfiguration.current.hasConfigurationForExternal() {
+				settingsHeight = 100
+			}
+			else {
+				settingsHeight = 60
+			}
+		}
 
 		// Three configurations here to manage...
 		if self.wordPressButton.isSelected && !PublishingConfiguration.current.hasConfigurationForExternal() {

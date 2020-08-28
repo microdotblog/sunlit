@@ -38,6 +38,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
     }
 
 	func setupNavigation() {
+		self.navigationItem.title = "External Blog"
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back))
 	}
 		
