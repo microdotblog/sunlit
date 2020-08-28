@@ -36,6 +36,12 @@ class ExternalBlogConfigurationViewController: UIViewController {
 
 		self.setupNavigation()
     }
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		self.blogAddress.becomeFirstResponder()
+	}
 
 	func setupNavigation() {
 		self.navigationItem.title = "External Blog"
