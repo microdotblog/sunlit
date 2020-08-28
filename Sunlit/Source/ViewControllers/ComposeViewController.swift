@@ -81,7 +81,7 @@ class ComposeViewController: UIViewController {
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		.darkContent
 	}
-    
+    	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -289,6 +289,9 @@ class ComposeViewController: UIViewController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func uploadComposition() {
+		// make sure Snippets has the latest config
+		PublishingConfiguration.updateSnippetsConfig()
+
 		let title : String = self.titleField.text ?? ""
 		self.uploadMedia { (mediaDictionary : [SunlitMedia : MediaLocation]) in
 			
@@ -299,7 +302,7 @@ class ComposeViewController: UIViewController {
 			
 			let string = HTMLBuilder.createHTML(sections: self.sections, mediaPathDictionary: mediaDictionary)
 			
-			if Settings.usesExternalBlog() && PublishingConfiguration.current.hasConfigurationForExternal(),
+			if Settings.usesExternalBlog() && PublishingConfiguration.current.hasConfigurationForXMLRPC(),
 				let identity = PublishingConfiguration.current.xmlRPCIdentity() {
 				
 				let request = SnippetsXMLRPCRequest.publishPostRequest(identity: identity, existingPost: false)

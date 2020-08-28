@@ -177,6 +177,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
 				}
 				else {
 					self.interrogateMicropubURL(path: fullURL, rawResponse)
+					return
 				}
 			}
 			

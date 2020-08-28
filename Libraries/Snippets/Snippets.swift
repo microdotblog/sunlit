@@ -90,12 +90,12 @@ public class Snippets : NSObject {
 	@objc public func fetchCurrentUserConfiguration(completion: @escaping(Error?, [String : Any])-> ())
 	{
 		// Pre-flight check to see if we are even configured...
-        if self.timelineConfiguration.token.count == 0 {
+        if self.publishingConfiguration.token.count == 0 {
 			completion(SnippetsError.invalidOrMissingToken, [:])
 			return
 		}
 
-		let request = self.secureGet(self.timelineConfiguration, path: self.pathForTimelineRoute("micropub?q=config"), arguments: [:])
+		let request = self.secureGet(self.publishingConfiguration, path: self.pathForPublishingRoute(), arguments: [ "q": "config" ])
 		
 		_ = UUHttpSession.executeRequest(request) { (parsedServerResponse) in
 			

@@ -30,6 +30,7 @@ class PublishingConfiguration {
 		
 		if let mediaEndpoint = mediaEndpoint {
 			PublishingConfiguration.configureMicropubMediaEndpoint(mediaEndpoint)
+			self.updateSnippetsConfig()
 		}
 	}
 	
@@ -40,6 +41,8 @@ class PublishingConfiguration {
 		Settings.setInsecureString(blogId, forKey: PublishingConfiguration.xmlRPCBlogIDKey)
 		Settings.setInsecureString(app, forKey: PublishingConfiguration.xmlRPCBlogAppKey)
 		Settings.setSecureString(password, forKey: PublishingConfiguration.xmlRPCBlogUsernameKey)
+
+		self.updateSnippetsConfig()
 	}
 	
 	static func configureMicropubBlog(username : String, postingEndpoint : String, authEndpoint : String, tokenEndpoint : String, stateKey : String, mediaEndpoint : String? = nil) {
@@ -55,14 +58,18 @@ class PublishingConfiguration {
 		else {
 			Settings.setInsecureString(postingEndpoint, forKey: PublishingConfiguration.micropubMediaEndpointKey)
 		}
+
+		self.updateSnippetsConfig()
 	}
 
 	static func configureMicropubBlog(accessToken: String) {
 		Settings.setSecureString(accessToken, forKey: PublishingConfiguration.micropubAccessTokenKey)
+		self.updateSnippetsConfig()
 	}
 	
 	static func configureMicropubMediaEndpoint(_ mediaEndpoint : String) {
 		Settings.setInsecureString(mediaEndpoint, forKey: PublishingConfiguration.micropubMediaEndpointKey)
+		self.updateSnippetsConfig()
 	}
 	
 	static func deleteXMLRPCBlogSettings() {
@@ -72,10 +79,13 @@ class PublishingConfiguration {
 		Settings.deleteInsecureString(forKey: PublishingConfiguration.xmlRPCBlogIDKey)
 		Settings.deleteInsecureString(forKey: PublishingConfiguration.xmlRPCBlogAppKey)
 		Settings.deleteSecureString(forKey: PublishingConfiguration.xmlRPCBlogUsernameKey)
+
+		self.updateSnippetsConfig()
 	}
 
 	static func deleteMicropubSettings() {
 		Settings.deleteSecureString(forKey: PublishingConfiguration.micropubAccessTokenKey)
+		self.updateSnippetsConfig()
 	}
 	
 	static func fetchMicropubStateKey() -> String {
@@ -87,17 +97,34 @@ class PublishingConfiguration {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func hasConfigurationForExternal() -> Bool {
-		if Settings.getSecureString(forKey: PublishingConfiguration.micropubAccessTokenKey) != nil {
+		if self.hasConfigurationForMicropub() {
 			return true
 		}
 		
-		if Settings.getSecureString(forKey: PublishingConfiguration.xmlRPCBlogUsernameKey) != nil &&
-			Settings.getInsecureString(forKey: PublishingConfiguration.xmlRPCBlogUsernameKey).count > 0 &&
-			Settings.getInsecureString(forKey: PublishingConfiguration.xmlRPCBlogEndpointKey).count > 0 {
+		if self.hasConfigurationForXMLRPC() {
 			return true
 		}
 		
 		return false
+	}
+	
+	func hasConfigurationForMicropub() -> Bool {
+		return Settings.getSecureString(forKey: PublishingConfiguration.micropubAccessTokenKey) != nil
+	}
+	
+	func hasConfigurationForXMLRPC() -> Bool {
+		return Settings.getSecureString(forKey: PublishingConfiguration.xmlRPCBlogUsernameKey) != nil &&
+			Settings.getInsecureString(forKey: PublishingConfiguration.xmlRPCBlogUsernameKey).count > 0 &&
+			Settings.getInsecureString(forKey: PublishingConfiguration.xmlRPCBlogEndpointKey).count > 0
+	}
+	
+	func getToken() -> String {
+		if let token = Settings.getSecureString(forKey: PublishingConfiguration.micropubAccessTokenKey) {
+			return token
+		}
+		else {
+			return ""
+		}
 	}
 	
 	func getBlogName() -> String {
@@ -143,7 +170,20 @@ class PublishingConfiguration {
 		
 		return nil
 	}
-	
+
+	static func updateSnippetsConfig() {
+		if self.current.hasConfigurationForExternal() {
+			let sunlit_config = self.current
+			let snippets_config = Snippets.Configuration()
+			snippets_config.token = sunlit_config.getToken()
+			snippets_config.endpoint = sunlit_config.getPostingEndpoint()
+			snippets_config.micropubEndpoint = sunlit_config.getPostingEndpoint()
+			snippets_config.mediaEndpoint = sunlit_config.getMediaEndpoint()
+			snippets_config.uid = sunlit_config.getBlogIdentifier()
+			Snippets.shared.configurePublishing(snippets_config)
+		}
+	}
+
 	/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -156,6 +196,7 @@ class PublishingConfiguration {
 				self.username = Settings.getInsecureString(forKey: PublishingConfiguration.micropubUserKey)
 				self.address = Settings.getInsecureString(forKey: PublishingConfiguration.micropubUserKey)
 				self.postingEndpoint = Settings.getInsecureString(forKey: PublishingConfiguration.micropubPostingEndpointKey)
+				self.mediaEndpoint = Settings.getInsecureString(forKey: PublishingConfiguration.micropubMediaEndpointKey)
 				self.blogId = ""
 			}
 			else {

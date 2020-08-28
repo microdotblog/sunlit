@@ -50,7 +50,7 @@ class MediaUploader {
 		let media = self.mediaQueue.removeFirst()
 		
 		if media.type == .image {
-			if Settings.usesExternalBlog() && PublishingConfiguration.current.hasConfigurationForExternal() {
+			if Settings.usesExternalBlog() && PublishingConfiguration.current.hasConfigurationForXMLRPC() {
 				self.uploadImageToXMLRPC(media, completion)
 			}
 			else {
@@ -61,7 +61,7 @@ class MediaUploader {
 			
 			VideoTranscoder.exportVideo(sourceUrl: media.videoURL) { (error, videoURL) in
 				if let data = try? Data(contentsOf: videoURL) {
-					if Settings.usesExternalBlog() && PublishingConfiguration.current.hasConfigurationForExternal() {
+					if Settings.usesExternalBlog() && PublishingConfiguration.current.hasConfigurationForXMLRPC() {
 						self.uploadVideoToXMLRPC(media, data, completion)
 					}
 					else {

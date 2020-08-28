@@ -434,7 +434,12 @@ public class UUHttpSession: NSObject
         var fullUrl = request.url;
         if (request.queryArguments.count > 0)
         {
-            fullUrl = "\(request.url)\(request.queryArguments.uuBuildQueryString())"
+			let startingURL = request.url
+			var queryString = request.queryArguments.uuBuildQueryString()
+			if startingURL.contains("?") {
+				queryString = queryString.replacingOccurrences(of: "?", with: "&")
+			}
+            fullUrl = "\(startingURL)\(queryString)"
         }
         
         guard let url = URL.init(string: fullUrl) else

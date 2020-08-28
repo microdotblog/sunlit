@@ -73,10 +73,9 @@ class Dialog {
 		Snippets.shared.fetchCurrentUserConfiguration { (error, configuration) in
 			
 			// Check for a media endpoint definition...
-			/*if let mediaEndPoint = configuration["media-endpoint"] as? String {
+			if let mediaEndPoint = configuration["media-endpoint"] as? String {
 				PublishingConfiguration.configureMicropubMediaEndpoint(mediaEndPoint)
-				Snippets.shared.setMediaEndPoint(mediaEndPoint)
-			}*/
+			}
 			
 			DispatchQueue.main.async {
 
