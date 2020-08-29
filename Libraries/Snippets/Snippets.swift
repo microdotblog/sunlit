@@ -580,6 +580,7 @@ public class Snippets : NSObject {
 			let body = try JSONSerialization.data(withJSONObject: arguments, options: .prettyPrinted)
 			
 			let request = self.securePost(self.publishingConfiguration, path: self.pathForPublishingRoute(), arguments: [:], body: body)
+			request.bodyContentType = UUContentType.applicationJson
 			
 			return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
 				let publishedPath = parsedServerResponse.httpResponse?.allHeaderFields["Location"] as? String
