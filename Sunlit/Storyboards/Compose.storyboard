@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17124"/>
@@ -68,8 +68,8 @@
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" alwaysBounceVertical="YES" delaysContentTouches="NO" keyboardDismissMode="onDrag" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehI-KN-yqo">
-                                <rect key="frame" x="0.0" y="104" width="414" height="792"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <rect key="frame" x="0.0" y="104" width="414" height="714"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="iJd-OI-jXi">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -239,7 +239,7 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="uVH-QH-NDT" secondAttribute="trailing" id="3Nj-Z3-vhk"/>
                                     <constraint firstItem="uVH-QH-NDT" firstAttribute="top" secondItem="grM-1V-fO8" secondAttribute="top" id="Q2r-fk-bd8"/>
@@ -250,7 +250,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ZVb-fk-Mtm"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="KSH-VH-Uxb" firstAttribute="leading" secondItem="ZVb-fk-Mtm" secondAttribute="leading" id="2P8-Yw-gSt"/>
                             <constraint firstItem="ehI-KN-yqo" firstAttribute="trailing" secondItem="ZVb-fk-Mtm" secondAttribute="trailing" id="46C-vo-3Ea"/>
@@ -260,7 +260,7 @@
                             <constraint firstItem="ZVb-fk-Mtm" firstAttribute="bottom" secondItem="grM-1V-fO8" secondAttribute="bottom" id="KtA-WS-8AB"/>
                             <constraint firstItem="grM-1V-fO8" firstAttribute="leading" secondItem="ZVb-fk-Mtm" secondAttribute="leading" id="NJI-Kj-bPO"/>
                             <constraint firstItem="Y7O-Qg-4a1" firstAttribute="trailing" secondItem="ZVb-fk-Mtm" secondAttribute="trailing" id="ZaY-hz-eDp"/>
-                            <constraint firstAttribute="bottom" secondItem="ehI-KN-yqo" secondAttribute="bottom" id="fL5-nd-VFt"/>
+                            <constraint firstItem="grM-1V-fO8" firstAttribute="top" secondItem="ehI-KN-yqo" secondAttribute="bottom" id="f44-QK-4uA"/>
                             <constraint firstItem="Y7O-Qg-4a1" firstAttribute="leading" secondItem="ZVb-fk-Mtm" secondAttribute="leading" id="hcw-HE-2j8"/>
                             <constraint firstItem="KSH-VH-Uxb" firstAttribute="trailing" secondItem="ZVb-fk-Mtm" secondAttribute="trailing" id="k4E-Pj-8T5"/>
                             <constraint firstItem="ehI-KN-yqo" firstAttribute="leading" secondItem="ZVb-fk-Mtm" secondAttribute="leading" id="oi4-rS-Exp"/>
@@ -290,11 +290,8 @@
             <color red="0.0" green="0.60000002384185791" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="color_publish_overlay">
-            <color white="0.71103566884994507" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color white="0.69999998807907104" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
-        <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
