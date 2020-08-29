@@ -86,9 +86,13 @@ class ExternalBlogConfigurationViewController: UIViewController {
 								Dialog(self).information(formattedErrorString)
 							}
 							else {
+								var app = ""
+								if is_wordpress {
+									app = "WordPress"
+								}
 								
 								// If we have successfully configured the blog, we can tell settings to use it...
-								PublishingConfiguration.configureXMLRPCBlog(username: username, password: password, url: self.blogAddress.text!, endpoint: xmlrpcEndpoint!, blogId: blogId!, app: "WordPress")
+								PublishingConfiguration.configureXMLRPCBlog(username: username, password: password, url: self.blogAddress.text!, endpoint: xmlrpcEndpoint!, blogId: blogId!, app: app)
 								Settings.useExternalBlog(true)
 								
 								Dialog(self).information("Successfully configured for publishing!") {
