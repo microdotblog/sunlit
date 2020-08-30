@@ -84,7 +84,14 @@ class PublishingConfiguration {
 	}
 
 	static func deleteMicropubSettings() {
+		Settings.deleteSecureString(forKey: PublishingConfiguration.micropubPostingEndpointKey)
+		Settings.deleteSecureString(forKey: PublishingConfiguration.micropubAuthEndpointKey)
+		Settings.deleteSecureString(forKey: PublishingConfiguration.micropubTokenEndpointKey)
+		Settings.deleteSecureString(forKey: PublishingConfiguration.micropubMediaEndpointKey)
+		Settings.deleteSecureString(forKey: PublishingConfiguration.micropubUserKey)
+		Settings.deleteSecureString(forKey: PublishingConfiguration.micropubStateKey)
 		Settings.deleteSecureString(forKey: PublishingConfiguration.micropubAccessTokenKey)
+
 		self.updateSnippetsConfig()
 	}
 	
