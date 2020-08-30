@@ -41,6 +41,15 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
 
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		self.searchBar.resignFirstResponder()
+
+		if let s = searchBar.text {
+			Snippets.shared.searchUsers(s, done: true) { error, users in
+				DispatchQueue.main.async {
+					self.results = users
+					self.tableView.reloadData()
+				}
+			}
+		}
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

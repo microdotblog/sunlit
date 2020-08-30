@@ -421,7 +421,7 @@ public class Snippets : NSObject {
 		})
 	}
 
-	@objc public func searchUsers(_ q: String, completion: @escaping(Error?, [SnippetsUser]) -> ())
+	@objc public func searchUsers(_ q: String, done: Bool = false, completion: @escaping(Error?, [SnippetsUser]) -> ())
 	{
 		// Pre-flight check to see if we are even configured...
 		if self.timelineConfiguration.token.count == 0 {
@@ -430,7 +430,11 @@ public class Snippets : NSObject {
 		}
 		
 		let route = "users/search"
-		let args: [ String: String ] = [ "q": q ]
+		var args: [ String: String ] = [ "q": q ]
+		
+		if done {
+			args["done"] = "1"
+		}
 		
 		let request = self.secureGet(self.timelineConfiguration, path: self.pathForTimelineRoute(route), arguments: args)
 		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
@@ -680,7 +684,7 @@ public class Snippets : NSObject {
 			return nil
 		}
 		
-		var arguments : [ String : String ] = [ "id" : originalPost.identifier,
+		let arguments : [ String : String ] = [ "id" : originalPost.identifier,
 											    "text" : content ]
 		
         let request = self.securePost(self.timelineConfiguration, path: self.pathForTimelineRoute("posts/reply"), arguments: arguments)
