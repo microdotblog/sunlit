@@ -181,8 +181,8 @@ class PublishingConfiguration {
 	}
 
 	static func updateSnippetsConfig() {
+		let sunlit_config = self.current
 		if Settings.usesExternalBlog() && self.current.hasConfigurationForExternal() {
-			let sunlit_config = self.current
 			let snippets_config = Snippets.Configuration()
 			snippets_config.token = sunlit_config.getToken()
 			snippets_config.endpoint = sunlit_config.getPostingEndpoint()
@@ -192,7 +192,9 @@ class PublishingConfiguration {
 			Snippets.shared.configurePublishing(snippets_config)
 		}
 		else {
-			Snippets.shared.configurePublishing(Snippets.shared.timelineConfiguration)
+			let snippets_config = Snippets.shared.timelineConfiguration
+			snippets_config.uid = sunlit_config.getBlogIdentifier()
+			Snippets.shared.configurePublishing(snippets_config)
 		}
 	}
 
