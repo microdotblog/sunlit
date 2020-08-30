@@ -47,10 +47,6 @@ class SettingsViewController: UIViewController {
 	@objc func finishedExternalConfigNotification(_ notification: Notification) {
 		self.updateButtons()
 		self.updateWordpressSettings()
-
-		if PublishingConfiguration.current.hasConfigurationForMicropub() {
-			Dialog(self).selectBlog()
-		}
 	}
 	
 	func updateButtons() {

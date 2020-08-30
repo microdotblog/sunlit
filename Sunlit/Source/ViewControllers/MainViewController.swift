@@ -271,13 +271,13 @@ class MainViewController: UIViewController {
 						if let dictionary = parsedServerResponse.parsedResponse as? [ String : Any ] {
 							if let access_token = dictionary["access_token"] as? String {
 								DispatchQueue.main.async {
-									PublishingConfiguration.configureMicropubBlog(accessToken: access_token)
 									Settings.useExternalBlog(true)
-									
-									let publishingConfig = Snippets.shared.publishingConfiguration
-									publishingConfig.token = access_token
-									Snippets.shared.configurePublishing(publishingConfig)
-									
+									PublishingConfiguration.configureMicropubBlog(accessToken: access_token)
+
+									if PublishingConfiguration.current.hasConfigurationForMicropub() {
+										Dialog(self).selectBlog()
+									}
+
 									NotificationCenter.default.post(name: .finishedExternalConfigNotification, object: self)
 								}
 							}
