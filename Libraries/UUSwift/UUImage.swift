@@ -175,10 +175,9 @@ public extension UUImage
 		let srcHeight = srcSize.height
 		let srcAspectRatio = srcHeight / srcWidth
 		
-		let targetWidth = width * UUImage.uuScreenScale()
-		let targetHeight = targetWidth * srcAspectRatio
+		let targetHeight = width * srcAspectRatio
 		
-		return CGSize(width: targetWidth, height: targetHeight)
+		return CGSize(width: width, height: targetHeight)
 	}
 	
 	private static func uuCalculateScaleToHeightDestSize(height : CGFloat, srcSize : CGSize) -> CGSize
@@ -187,10 +186,9 @@ public extension UUImage
 		let srcHeight = srcSize.height
 		let srcAspectRatio = srcWidth / srcHeight
 		
-		let targetHeight = height * UUImage.uuScreenScale()
-		let targetWidth = targetHeight * srcAspectRatio
+		let targetWidth = height * srcAspectRatio
 		
-		return CGSize(width: targetWidth, height: targetHeight)
+		return CGSize(width: targetWidth, height: height)
 	}
 	
 	private func uuCalculateScaleToWidth(width : CGFloat) -> CGSize
