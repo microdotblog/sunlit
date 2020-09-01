@@ -12,7 +12,7 @@ For the current shipping version of Sunlit available in the App Store, please se
 Sunlit is available under the MIT license. See [`LICENSE.md`](https://github.com/microdotblog/sunlit/blob/develop/LICENSE.md) for more information.
 
 ## Third Party Components included in Sunlit:
-* [Snippets](https://github.com/microdotblog/snippets">https://github.com/microdotblog/snippets)
+* [Snippets](https://github.com/microdotblog/snippets)
 * [UUSwift](https://github.com/SilverPineSoftware/UUSwift)
 * [SwiftSoup](https://github.com/scinfu/SwiftSoup)
 * [NextLevel Session Exporter](https://github.com/NextLevel/NextLevelSessionExporter)
