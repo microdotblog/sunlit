@@ -14,7 +14,7 @@ class Tagmoji {
 	static let shared = Tagmoji()
 	
 	func refresh(_ completion: @escaping ((Bool)-> Void)) {
-		Snippets.shared.fetchTagmojiCategories { (error, tagmoji) in
+		Snippets.Microblog.fetchTagmojiCategories { (error, tagmoji) in
 			
 			let changed = self.updateFromServerResponse(tagmoji)
 			completion(changed)

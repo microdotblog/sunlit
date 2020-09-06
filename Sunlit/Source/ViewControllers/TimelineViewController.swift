@@ -211,7 +211,7 @@ class TimelineViewController: UIViewController {
 		}
 		
 		self.loadingData = true
-		Snippets.shared.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
+		Snippets.Microblog.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
 			DispatchQueue.main.async {
                 if error == nil && postObjects.count > 0 {
                     self.refreshTableView(postObjects)
@@ -235,7 +235,7 @@ class TimelineViewController: UIViewController {
 			parameters["count"] = "10"
 			parameters["before_id"] = last.identifier
 
-			Snippets.shared.fetchCurrentUserMediaTimeline(parameters: parameters, completion:
+			Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters, completion:
 			{ (error, entries : [SnippetsPost]) in
 				DispatchQueue.main.async {
 					

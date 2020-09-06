@@ -10,16 +10,11 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-	@IBOutlet var microBlogButton : UIButton!
-	@IBOutlet var wordPressButton : UIButton!
 	@IBOutlet var signOutButton : UIButton!
+    @IBOutlet var tableView : UITableView!
 	
-	@IBOutlet var wordPressSettingsView :UIView!
-	@IBOutlet var wordPressSettingsViewHeightConstraint : NSLayoutConstraint!
-	@IBOutlet var wordPressSite : UILabel!
-	@IBOutlet var wordPressSignoutButton : UIButton!
-	@IBOutlet var wordPressAppTitle : UILabel!
-	
+    var tableData : [BlogSettings] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 	
@@ -29,9 +24,9 @@ class SettingsViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-
-		self.updateButtons()
-		self.updateWordpressSettings()
+        self.tableData = BlogSettings.publishedBlogs()
+        self.tableView.reloadData()
+        self.updateSelection()
 	}
 	
 	func setupNavigation() {
@@ -45,61 +40,24 @@ class SettingsViewController: UIViewController {
 	}
 		
 	@objc func finishedExternalConfigNotification(_ notification: Notification) {
-		self.updateButtons()
-		self.updateWordpressSettings()
+        self.tableData = BlogSettings.publishedBlogs()
+        self.tableView.reloadData()
+        self.updateSelection()
 	}
+    
+    func updateSelection() {
+        
+        let selectedName = BlogSettings.publishingPath
+        
+        var index = 0
+        for settings in self.tableData {
+            if settings.blogAddress == selectedName {
+                self.tableView.selectRow(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .none)
+            }
+            index = index + 1
+        }
+    }
 	
-	func updateButtons() {
-		self.wordPressButton.isSelected = Settings.usesExternalBlog()
-		self.microBlogButton.isSelected = !Settings.usesExternalBlog()
-		
-		self.updateWordpressSettings()
-		let settingsHeight : CGFloat = self.wordPressButton.isSelected ? 100.0 : 0.0
-		self.wordPressSettingsViewHeightConstraint.constant = settingsHeight
-	}
-
-	func updateWordpressSettings() {
-		let blog_name = PublishingConfiguration.current.getBlogName()
-		let blog_address = PublishingConfiguration.current.getBlogAddress()
-			
-		if PublishingConfiguration.current.hasConfigurationForExternal() {
-			if PublishingConfiguration.current.hasConfigurationForXMLRPC() {
-				self.wordPressSite.text = "\(blog_address) (\(blog_name))"
-			}
-			else {
-				self.wordPressSite.text = blog_address
-			}
-			self.wordPressSignoutButton.setTitle("Sign Out", for: .normal)
-		}
-		else {
-			self.wordPressSite.text = ""
-			self.wordPressSignoutButton.setTitle("Sign In", for: .normal)
-		}
-		
-		var appName = PublishingConfiguration.current.getExternalBlogAppName()
-		if appName.count <= 0 {
-			appName = "External Blog"
-		}
-		self.wordPressAppTitle.text = appName
-
-		if self.wordPressButton.isSelected {
-			self.wordPressAppTitle.isHidden = false
-			self.wordPressSignoutButton.isHidden = false
-			self.wordPressSite.isHidden = false
-		}
-		else {
-			self.wordPressAppTitle.isHidden = true
-			self.wordPressSignoutButton.isHidden = true
-			self.wordPressSite.isHidden = true
-		}
-	}
-	
-	func wordPressLogin() {
-		let storyBoard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
-		let blogConfigurationViewController = storyBoard.instantiateViewController(withIdentifier: "ExternalBlogConfigurationViewController")
-		self.navigationController?.pushViewController(blogConfigurationViewController, animated: true)
-	}
-
 	@IBAction func onDismiss() {
 		self.dismiss(animated: true, completion: nil)
 	}
@@ -114,18 +72,10 @@ class SettingsViewController: UIViewController {
 		}
 	}
 	
-	@IBAction func onSignoutWordPress() {
-		if PublishingConfiguration.current.hasConfigurationForExternal() {
-			Dialog(self).question(title: nil, question: "Are you sure you want to sign out of your external blog?", accept: "Sign Out", cancel: "Cancel") {
-			
-				PublishingConfiguration.deleteXMLRPCBlogSettings()
-				PublishingConfiguration.deleteMicropubSettings()
-				self.onSelectPostType(self.microBlogButton)
-			}
-		}
-		else {
-			self.wordPressLogin()
-		}
+	@IBAction func onAddBlog() {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
+        let blogConfigurationViewController = storyBoard.instantiateViewController(withIdentifier: "ExternalBlogConfigurationViewController")
+        self.navigationController?.pushViewController(blogConfigurationViewController, animated: true)
 	}
 	
 	@IBAction @objc func onViewCredits() {
@@ -134,42 +84,36 @@ class SettingsViewController: UIViewController {
 		self.navigationController?.pushViewController(about_controller, animated: true)
 	}
 	
-	@IBAction func onSelectPostType(_ button : UIButton) {
-		
-		self.microBlogButton.isSelected = false
-		self.wordPressButton.isSelected = false
-		button.isSelected = true
-		
-		var settingsHeight : CGFloat = 0
-		if self.wordPressButton.isSelected {
-			if PublishingConfiguration.current.hasConfigurationForExternal() {
-				settingsHeight = 100
-			}
-			else {
-				settingsHeight = 60
-			}
-		}
 
-		// Three configurations here to manage...
-		if self.wordPressButton.isSelected && !PublishingConfiguration.current.hasConfigurationForExternal() {
-//			self.wordPressLogin()
-		}
-		else if self.wordPressButton.isSelected {
-			Settings.useExternalBlog(true)
-		}
-		else {
-			Settings.useExternalBlog(false)
-			PublishingConfiguration.deleteXMLRPCBlogSettings()
-			PublishingConfiguration.deleteMicropubSettings()
-		}
-		
-		self.updateWordpressSettings()
-		
-		UIView.animate(withDuration: 0.25) {
-			self.wordPressSettingsViewHeightConstraint.constant = settingsHeight
-			self.view.layoutIfNeeded()
-		}
-		
-		
-	}
+}
+
+extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.tableData.count + 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row >= self.tableData.count {
+            return tableView.dequeueReusableCell(withIdentifier: "BlogSelectionAddNewBlog")!
+        }
+        
+        let blogInfo = self.tableData[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BlogSelectionTableViewCell", for: indexPath) as! BlogSelectionTableViewCell
+        cell.blogTitle.text = blogInfo.blogAddress
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.row >= self.tableData.count {
+            self.onAddBlog()
+            self.updateSelection()
+        }
+        else {
+            let blogInfo = self.tableData[indexPath.row]
+            BlogSettings.publishingPath = blogInfo.blogAddress
+        }
+    }
+    
 }

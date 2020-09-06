@@ -44,7 +44,7 @@ class SunlitMentions {
 	}
 
 	func update(_ callback : @escaping () -> () ) {
-		Snippets.shared.fetchCurrentUserMentions { (error, posts) in
+		Snippets.Microblog.fetchCurrentUserMentions { (error, posts) in
 		
             // We don't want to do anything if there is an error
             if error != nil {

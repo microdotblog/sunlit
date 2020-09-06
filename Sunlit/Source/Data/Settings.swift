@@ -54,11 +54,11 @@ class Settings {
 	static func logout() {
 		Settings.deleteSnippetsToken()
 		SnippetsUser.deleteCurrentUser()
-        Snippets.Configuration.reset()
+        Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: "")
+        Snippets.Configuration.publishing = Snippets.Configuration.timeline
 
-		Settings.useExternalBlog(false)
-		PublishingConfiguration.deleteXMLRPCBlogSettings()
-		PublishingConfiguration.deleteMicropubSettings()
+        BlogSettings.deleteTimelineInfo()
+        BlogSettings.deletePublishingInfo()
 	}
 	
 	static func saveSnippetsToken(_ token : String) {
@@ -74,27 +74,6 @@ class Settings {
 	static func deleteSnippetsToken() {
 		UserDefaults.standard.removeObject(forKey: "SunlitToken")
 	}
-
-	/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-	
-	static func usesExternalBlog() -> Bool {
-		let value = UserDefaults.standard.bool(forKey: Settings.externalBlogPreferenceKey)
-		return value
-	}
-	
-	static func useExternalBlog(_ useExternalBlog : Bool) {
-		UserDefaults.standard.set(useExternalBlog, forKey: Settings.externalBlogPreferenceKey)
-	}
-
-	
-	/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-	
-	private static let externalBlogPreferenceKey = "ExternalBlogIsPreferred"
 
 }
 

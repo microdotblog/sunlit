@@ -30,7 +30,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
 		}
 		
 		self.delayTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { Timer in
-			Snippets.shared.searchUsers(searchText) { error, users in
+			Snippets.Microblog.searchUsers(searchText) { error, users in
 				DispatchQueue.main.async {
 					self.results = users
 					self.tableView.reloadData()
@@ -43,7 +43,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
 		self.searchBar.resignFirstResponder()
 
 		if let s = searchBar.text {
-			Snippets.shared.searchUsers(s, done: true) { error, users in
+			Snippets.Microblog.searchUsers(s, done: true) { error, users in
 				DispatchQueue.main.async {
 					self.results = users
 					self.tableView.reloadData()
