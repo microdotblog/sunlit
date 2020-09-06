@@ -1,5 +1,5 @@
 //
-//  PublishingConfiguration.swift
+//  BlogSettings.swift
 //  Sunlit
 //
 //  Created by Jonathan Hays on 6/10/20.

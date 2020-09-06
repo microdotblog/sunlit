@@ -141,7 +141,7 @@
 		C5A1DF3524913BDC00B50B54 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */; };
 		C5A1DF39249144E800B50B54 /* credits.html in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF37249144E800B50B54 /* credits.html */; };
 		C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF38249144E800B50B54 /* olive.jpg */; };
-		C5A1DF3C2491948B00B50B54 /* PublishingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3B2491948B00B50B54 /* PublishingConfiguration.swift */; };
+		C5A1DF3C2491948B00B50B54 /* BlogSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3B2491948B00B50B54 /* BlogSettings.swift */; };
 		C5A1DF3E2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */; };
 		C5BEDF4D24DA302F0068CBF1 /* Following.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5BEDF4C24DA302F0068CBF1 /* Following.storyboard */; };
 		C5BEDF4F24DA305F0068CBF1 /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BEDF4E24DA305F0068CBF1 /* FollowingViewController.swift */; };
@@ -423,7 +423,7 @@
 		C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Source/ViewControllers/SettingsViewController.swift; sourceTree = "<group>"; };
 		C5A1DF37249144E800B50B54 /* credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = credits.html; path = Resources/credits.html; sourceTree = "<group>"; };
 		C5A1DF38249144E800B50B54 /* olive.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = olive.jpg; path = Resources/olive.jpg; sourceTree = "<group>"; };
-		C5A1DF3B2491948B00B50B54 /* PublishingConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PublishingConfiguration.swift; path = Source/Data/PublishingConfiguration.swift; sourceTree = "<group>"; };
+		C5A1DF3B2491948B00B50B54 /* BlogSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogSettings.swift; path = Source/Data/BlogSettings.swift; sourceTree = "<group>"; };
 		C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExternalBlogConfigurationViewController.swift; path = Source/ViewControllers/ExternalBlogConfigurationViewController.swift; sourceTree = "<group>"; };
 		C5B9A71724563E66003EF82B /* Sunlit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sunlit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5BEDF4C24DA302F0068CBF1 /* Following.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Following.storyboard; path = Storyboards/Following.storyboard; sourceTree = "<group>"; };
@@ -999,7 +999,7 @@
 			isa = PBXGroup;
 			children = (
 				C5A1DE6124901DBC00B50B54 /* Settings.swift */,
-				C5A1DF3B2491948B00B50B54 /* PublishingConfiguration.swift */,
+				C5A1DF3B2491948B00B50B54 /* BlogSettings.swift */,
 				C5A1DE6024901DBC00B50B54 /* SnippetsPost+Sunlit.swift */,
 				C5A1DE6524901DBC00B50B54 /* SnippetsUser+Sunlit.swift */,
 				C5A1DE6424901DBC00B50B54 /* SunlitComposition.swift */,
@@ -1457,7 +1457,7 @@
 			files = (
 				C5A1DE7D24901DCC00B50B54 /* SnippetsScrollContentProtocol.swift in Sources */,
 				C5A1DE5E24901DAD00B50B54 /* ImageCache.swift in Sources */,
-				C5A1DF3C2491948B00B50B54 /* PublishingConfiguration.swift in Sources */,
+				C5A1DF3C2491948B00B50B54 /* BlogSettings.swift in Sources */,
 				C5BEDF5124DA30DA0068CBF1 /* ProfileTableViewCell.swift in Sources */,
 				C5A1DE8F24901DE600B50B54 /* ProfileBioCollectionViewCell.swift in Sources */,
 				C5A1DE5F24901DAD00B50B54 /* VideoTranscoder.swift in Sources */,
