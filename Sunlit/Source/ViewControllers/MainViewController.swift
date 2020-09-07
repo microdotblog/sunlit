@@ -289,15 +289,30 @@ class MainViewController: UIViewController {
 	}
 
 	@objc func handleShowCurrentUserProfileNotification() {
-		self.onTabletShowProfile()
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.onTabletShowProfile()
+        }
+        else {
+            self.phoneViewController!.onShowProfile()
+        }
 	}
 
 	@objc func handleShowTimelineNotification() {
-		self.onTabletShowTimeline()
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.onTabletShowTimeline()
+        }
+        else {
+            self.phoneViewController!.onShowTimeline()
+        }
 	}
 
 	@objc func handleShowDiscoverNotification() {
-		self.onTabletShowDiscover()
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.onTabletShowDiscover()
+        }
+        else {
+            self.phoneViewController!.onShowDiscover()
+        }
 	}
 
 	@objc func handleShowComposeNotification() {

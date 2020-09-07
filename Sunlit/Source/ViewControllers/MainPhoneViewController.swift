@@ -225,34 +225,58 @@ class MainPhoneViewController: UIViewController {
 	}
 				
 	func onShowTimeline() {
+        var animate = false
+        if self.currentViewController == self.mentionsViewController {
+            animate = true
+        }
+
 		var offset =  self.scrollView.contentOffset
 		offset.x = 0.0
-		self.scrollView.setContentOffset(offset, animated: false)
+		self.scrollView.setContentOffset(offset, animated: animate)
 		self.timelineViewController.loadTimeline()
         self.updateTabBar(self.scrollView)
         self.updateCurrentViewController(self.scrollView)
 	}
 
 	func onShowMentions() {
+        var animate = false
+        if self.currentViewController == self.timelineViewController ||
+            self.currentViewController == self.discoverViewController {
+            animate = true
+        }
+        
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 1.0
-		self.scrollView.setContentOffset(offset, animated: false)
-        self.updateTabBar(self.scrollView)
-        self.updateCurrentViewController(self.scrollView)
+		self.scrollView.setContentOffset(offset, animated: animate)
+        if !animate {
+            self.updateTabBar(self.scrollView)
+            self.updateCurrentViewController(self.scrollView)
+        }
 	}
 
 	func onShowDiscover() {
+        var animate = false
+        if self.currentViewController == self.mentionsViewController ||
+            self.currentViewController == self.profileViewController{
+            animate = true
+        }
+
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 2.0
-		self.scrollView.setContentOffset(offset, animated: false)
+		self.scrollView.setContentOffset(offset, animated: animate)
         self.updateTabBar(self.scrollView)
         self.updateCurrentViewController(self.scrollView)
 	}
 	
 	func onShowProfile() {
+        var animate = false
+        if self.currentViewController == self.discoverViewController {
+            animate = true
+        }
+
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 3.0
-		self.scrollView.setContentOffset(offset, animated: false)
+		self.scrollView.setContentOffset(offset, animated: animate)
         self.updateTabBar(self.scrollView)
         self.updateCurrentViewController(self.scrollView)
 	}
@@ -325,15 +349,22 @@ extension MainPhoneViewController : UIScrollViewDelegate {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             self.updateCurrentViewController(scrollView)
+            self.updateCurrentViewController(self.scrollView)
         }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.updateCurrentViewController(scrollView)
+        self.updateCurrentViewController(self.scrollView)
     }
     
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.updateTabBar(scrollView)
 	}
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        self.updateTabBar(scrollView)
+        self.updateCurrentViewController(self.scrollView)
+    }
 }
 
