@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SnippetsScrollContentProtocol : AnyObject {
+protocol SnippetsScrollContentProtocol : NSObject {
 
 	func prepareToDisplay()
 	func prepareToHide()

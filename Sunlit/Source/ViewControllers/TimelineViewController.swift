@@ -20,6 +20,7 @@ class TimelineViewController: UIViewController {
 	var keyboardAccessoryView : UIView!
 	var tableViewData : [SunlitPost] = []
 	var loadingData = false
+    var noMoreToLoad = false
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -201,6 +202,8 @@ class TimelineViewController: UIViewController {
 	
 	@objc func loadTimeline() {
 		
+        self.noMoreToLoad = false
+        
 		let token = Settings.snippetsToken()
 		self.loggedOutView.isHidden = (token != nil)
 		self.loggedOutView.superview?.bringSubviewToFront(self.loggedOutView)
@@ -227,6 +230,11 @@ class TimelineViewController: UIViewController {
 		if self.loadingData == true {
 			return
 		}
+        
+        // Don't keep reloading the same stuff over and over again...
+        if self.noMoreToLoad == true {
+            return
+        }
 
 		if let last = self.tableViewData.last {
 			self.loadingData = true
@@ -238,6 +246,13 @@ class TimelineViewController: UIViewController {
 			Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters, completion:
 			{ (error, entries : [SnippetsPost]) in
 				DispatchQueue.main.async {
+                    
+                    if entries.count == 0 {
+                        self.noMoreToLoad = true
+                        let indexPath = IndexPath(row: self.tableViewData.count, section: 0)
+                        self.tableView.insertRows(at: [indexPath], with: .automatic)
+                        return
+                    }
 					
 					var row = self.tableViewData.count
 					var indexPaths : [IndexPath] = []
@@ -263,6 +278,11 @@ class TimelineViewController: UIViewController {
 
 	
 	func prefetchImages(_ indexPath : IndexPath) {
+        
+        if indexPath.row >= self.tableViewData.count {
+            return
+        }
+        
 		let post = self.tableViewData[indexPath.row]
 		
 		for imageSource in post.images {
@@ -315,11 +335,25 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
 	}
 
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return self.tableViewData.count
+        var count = self.tableViewData.count
+        if self.noMoreToLoad == true {
+            count = count + 1
+        }
+        
+        return count
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
+        if indexPath.row >= self.tableViewData.count {
+            if self.tableViewData.count == 0 {
+                return tableView.dequeueReusableCell(withIdentifier: "TimelineFirstTimeCell")!
+            }
+            else {
+                return tableView.dequeueReusableCell(withIdentifier: "TimelineNoMoreCell")!
+            }
+        }
+        
 		let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
 		let post = self.tableViewData[indexPath.row]
 		cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
@@ -342,6 +376,12 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.row >= self.tableViewData.count {
+            NotificationCenter.default.post(name: .showDiscoverNotification, object:nil)
+            return
+        }
+        
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		let post = self.tableViewData[indexPath.row]
@@ -354,6 +394,15 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
 	}
 
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row >= self.tableViewData.count {
+            if self.tableViewData.count == 0 {
+                return self.tableView.bounds.size.height - 60.0
+            }
+            else {
+                return 215.0
+            }
+        }
+        
 		let post = self.tableViewData[indexPath.row]
 		return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 	}
