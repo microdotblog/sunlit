@@ -219,6 +219,9 @@ class TimelineViewController: UIViewController {
                 if error == nil && postObjects.count > 0 {
                     self.refreshTableView(postObjects)
                 }
+                else if let err = error {
+                    Dialog(self).information("Error: " + err.localizedDescription)
+                }
 				self.loadingData = false
 				self.spinner.stopAnimating()
 			}
