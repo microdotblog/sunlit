@@ -181,9 +181,15 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         
         for key in keys
         {
-            removeIfExpired(for: key)
+			if (isDataExpired(for: key))
+			{
+				UUDataCacheDb.shared.clearMetaData(for: key, withSaving: false)
+				removeFile(for: key)
+			}
         }
-    }
+
+		UUDataCacheDb.shared.saveCurrentMetaData()
+	}
     
     public func listKeys() -> [String]
     {
@@ -387,17 +393,19 @@ private class UUDataCacheDb
         self.saveCurrentMetaData()
     }
     
-    public func clearMetaData(for key: String)
-    {
-        mutex.lock()
-        defer {
-            mutex.unlock()
-        }
+	public func clearMetaData(for key: String, withSaving: Bool = true)
+	{
+		mutex.lock()
+		defer {
+			mutex.unlock()
+		}
 
-        self.metaData.removeValue(forKey: key)
-        self.saveCurrentMetaData()
-    }
-    
+		self.metaData.removeValue(forKey: key)
+		if (withSaving) {
+			self.saveCurrentMetaData()
+		}
+	}
+
     public func clearAllMetaData()
     {
         mutex.lock()
@@ -409,7 +417,7 @@ private class UUDataCacheDb
         self.metaData = [:]
     }
 
-	private func saveCurrentMetaData() {
+	public func saveCurrentMetaData() {
         mutex.lock()
         defer {
             mutex.unlock()
