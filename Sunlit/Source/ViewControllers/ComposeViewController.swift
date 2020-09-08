@@ -63,8 +63,7 @@ class ComposeViewController: UIViewController {
 	
 	func configureNavigationController() {
 		self.navigationItem.title = "New Post"
-		let rightItems : [UIBarButtonItem] = [UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(onPost)) ]
-		self.navigationItem.rightBarButtonItems = rightItems
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(onPost))
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(onCancel))
 	}
 	
@@ -173,10 +172,12 @@ class ComposeViewController: UIViewController {
 		}
 		
 		self.uploading = true
-		
+		self.navigationItem.rightBarButtonItem?.isEnabled = false
+
 		UIView.animate(withDuration: 0.15) {
 			self.disabledInterface.alpha = 1.0
 		}
+
 		self.uploadComposition()
 	}
 	
@@ -356,6 +357,7 @@ class ComposeViewController: UIViewController {
 	func cancelPosting() {
 
 		self.uploading = false
+		self.navigationItem.rightBarButtonItem?.isEnabled = true
 		self.mediaUpLoader.cancelAll()
 		
 		if let currentUpload = self.activeUpload {
