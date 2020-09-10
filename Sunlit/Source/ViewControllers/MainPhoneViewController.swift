@@ -14,10 +14,10 @@ class MainPhoneViewController: UIViewController {
 	@IBOutlet var contentView : UIView!
 	@IBOutlet var scrollView : UIScrollView!
 	@IBOutlet var tabBar : UIView!
-	@IBOutlet var timelineButton : UIButton!
-	@IBOutlet var discoverButton : UIButton!
-	@IBOutlet var mentionsButton : UIButton!
-	@IBOutlet var profileButton : UIButton!
+	@IBOutlet var timelineButton : TabButton!
+	@IBOutlet var discoverButton : TabButton!
+	@IBOutlet var mentionsButton : TabButton!
+	@IBOutlet var profileButton : TabButton!
 
 	var discoverViewController : DiscoverViewController!
 	var timelineViewController : TimelineViewController!
@@ -43,12 +43,7 @@ class MainPhoneViewController: UIViewController {
 	override func viewDidLayoutSubviews() {
 		
 		super.viewDidLayoutSubviews()
-		
-		self.profileButton.centerVertically()
-		self.discoverButton.centerVertically()
-		self.timelineButton.centerVertically()
-		self.mentionsButton.centerVertically()
-		
+				
 		var frame = self.scrollView.frame
 		self.timelineViewController.view.frame = frame
 		
@@ -126,14 +121,13 @@ class MainPhoneViewController: UIViewController {
 		}
 
 		if let image = profileImage {
-			profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 20, height: 20)).withRenderingMode(.alwaysOriginal)
+			profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 26, height: 26)).withRenderingMode(.alwaysOriginal)
 		}
 
 		self.profileButton.setTitle(profileUsername, for: .normal)
 		self.profileButton.setImage(profileImage, for: .normal)
 		self.profileButton.setImage(profileImage, for: .selected)
-		self.profileButton.imageView?.layer.cornerRadius = 10
-		self.profileButton.centerVertically()
+		self.profileButton.setCornerRadius(13)
 
 		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
 		self.profileButton.addGestureRecognizer(longpressGesture)
@@ -153,19 +147,17 @@ class MainPhoneViewController: UIViewController {
 				else {
 					self.profileButton.setTitle("Profile", for: .normal)
 				}
-				self.profileButton.centerVertically()
 			}
 			
 			// Go ahead and go get the avatar for the logged in user
 			ImageCache.fetch(self, user.avatarURL) { (image) in
 				
 				if let image = image {
-					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 20, height: 20)).withRenderingMode(.alwaysOriginal)
+					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 26, height: 26)).withRenderingMode(.alwaysOriginal)
 					DispatchQueue.main.async {
 						self.profileButton.setImage(profileImage, for: .normal)
 						self.profileButton.setImage(profileImage, for: .selected)
-						self.profileButton.imageView?.layer.cornerRadius = 10
-						self.profileButton.centerVertically()
+						self.profileButton.setCornerRadius(13)
 						self.view.layoutIfNeeded()
 					}
 				}

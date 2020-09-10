@@ -56,7 +56,20 @@ class TabButton: UIButton {
 			imageview.image = image
 		}
 	}
+	
+	func setCornerRadius(_ radius: CGFloat) {
+		if let imageview = self.findImageView() {
+			imageview.clipsToBounds = true
+			imageview.layer.cornerRadius = radius
+		}
+	}
 
+	override func setTitle(_ title: String?, for state: UIControl.State) {
+		if let field = self.findTitleField() {
+			field.text = title
+		}
+	}
+	
 	override func setImage(_ image: UIImage?, for state: UIControl.State) {
 		if let imageview = self.findImageView() {
 			imageview.image = image
