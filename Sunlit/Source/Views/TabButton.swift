@@ -11,55 +11,76 @@ import UIKit
 class TabButton: UIButton {
 
 	var defaultImage: UIImage?
-	var selectedImage: UIImage?
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		self.defaultImage = self.image(for: .normal)
-		if let img = self.defaultImage {
-			if let c = UIColor(named: "color_tab_selected") {
-				self.selectedImage = img.withTintColor(c, renderingMode: .alwaysOriginal)
+		if let imageview = self.findImageView() {
+			self.defaultImage = imageview.image
+		}
+	}
+	
+	private func findSubviewOf(class c: AnyClass) -> AnyObject? {
+		// title and image views are next to UIButton and not actually subviews
+		if let superview = self.superview {
+			for sub in superview.subviews {
+				if sub.isKind(of: c) {
+					return sub
+				}
 			}
 		}
 		
-		self.setTitleColor(UIColor(named: "color_tab_normal"), for: .normal)
-		self.setTitleColor(UIColor(named: "color_tab_normal"), for: .selected)
+		return nil
 	}
-	
-	override func setImage(_ image: UIImage?, for state: UIControl.State) {
-		super.setImage(image, for: state)
 
-		if let img = image {
-			if !img.isSymbolImage {
-				self.defaultImage = nil
-				self.selectedImage = nil
-			}
+	private func findTitleField() -> UILabel? {
+		if let field = self.findSubviewOf(class: UILabel.self) as? UILabel {
+			return field
+		}
+		else {
+			return nil
 		}
 	}
 	
+	private func findImageView() -> UIImageView? {
+		if let imageview = self.findSubviewOf(class: UIImageView.self) as? UIImageView {
+			return imageview
+		}
+		else {
+			return nil
+		}
+	}
+		
+	func setImage(_ image: UIImage?) {
+		if let imageview = self.findImageView() {
+			imageview.image = image
+		}
+	}
+
+	override func setImage(_ image: UIImage?, for state: UIControl.State) {
+		if let imageview = self.findImageView() {
+			imageview.image = image
+		}
+	}
+
     override var isSelected: Bool {
         didSet {
 			if self.isSelected {
-				self.setTitleColor(UIColor(named: "color_tab_selected"), for: .normal)
-				self.setTitleColor(UIColor(named: "color_tab_selected"), for: .selected)
+				if let field = self.findTitleField() {
+					field.textColor = UIColor(named: "color_tab_selected")
+				}
 				
-				if let img = self.selectedImage {
-					if img.isSymbolImage {
-						self.setImage(img, for: .normal)
-						self.setImage(img, for: .selected)
-					}
+				if let imageview = self.findImageView() {
+					imageview.tintColor = UIColor(named: "color_tab_selected")
 				}
 			}
 			else {
-				self.setTitleColor(UIColor(named: "color_tab_normal"), for: .normal)
-				self.setTitleColor(UIColor(named: "color_tab_normal"), for: .selected)
+				if let field = self.findTitleField() {
+					field.textColor = UIColor(named: "color_tab_normal")
+				}
 
-				if let img = self.defaultImage {
-					if img.isSymbolImage {
-						self.setImage(img, for: .normal)
-						self.setImage(img, for: .selected)
-					}
+				if let imageview = self.findImageView() {
+					imageview.tintColor = UIColor(named: "color_tab_normal")
 				}
 			}
         }

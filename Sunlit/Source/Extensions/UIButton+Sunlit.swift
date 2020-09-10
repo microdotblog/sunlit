@@ -12,6 +12,8 @@ extension UIButton {
 
     func centerVertically(padding: CGFloat = 8.0) {
 		
+		return
+		
         guard
             let imageViewSize = self.imageView?.frame.size,
             let titleLabelSize = self.titleLabel?.frame.size else {
