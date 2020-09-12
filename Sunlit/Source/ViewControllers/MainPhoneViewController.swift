@@ -45,6 +45,9 @@ class MainPhoneViewController: UIViewController {
 		super.viewDidLayoutSubviews()
 				
 		var frame = self.scrollView.frame
+		frame.size.width = self.view.frame.size.width
+		self.scrollView.frame = frame
+
 		self.timelineViewController.view.frame = frame
 		
 		frame.origin.x += frame.size.width

@@ -21,10 +21,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ois-MX-ace">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="802"/>
                                 <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" directionalLockEnabled="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" translatesAutoresizingMaskIntoConstraints="NO" id="D4j-cD-DQP">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
-                                        <viewLayoutGuide key="contentLayoutGuide" id="vJ0-JB-7S0"/>
-                                        <viewLayoutGuide key="frameLayoutGuide" id="mje-vK-qeq"/>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" directionalLockEnabled="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" translatesAutoresizingMaskIntoConstraints="NO" id="D4j-cD-DQP">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="802"/>
                                         <connections>
                                             <outlet property="delegate" destination="zzu-uT-cxA" id="Wi3-o1-QcU"/>
                                         </connections>
