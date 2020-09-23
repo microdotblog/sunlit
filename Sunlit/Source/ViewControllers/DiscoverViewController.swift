@@ -185,7 +185,7 @@ class DiscoverViewController: UIViewController {
 		
 		self.loadingData = true
 		
-		Snippets.shared.fetchDiscoverTimeline(collection: self.collection) { (error, postObjects, tagmoji) in
+		Snippets.Microblog.fetchDiscoverTimeline(collection: self.collection) { (error, postObjects, tagmoji) in
 			DispatchQueue.main.async {
 				
 				// Default to using the collection view...
@@ -221,7 +221,7 @@ class DiscoverViewController: UIViewController {
 			parameters["count"] = "10"
 			parameters["before_id"] = last.identifier
 
-			Snippets.shared.fetchDiscoverTimeline(collection: self.collection, parameters: parameters) { (error, entries, tagmoji) in
+			Snippets.Microblog.fetchDiscoverTimeline(collection: self.collection, parameters: parameters) { (error, entries, tagmoji) in
 				
 				DispatchQueue.main.async {
 					var row = self.posts.count
@@ -391,7 +391,7 @@ class DiscoverViewController: UIViewController {
 				self.busyIndicator.isHidden = false
 			}
 			
-			Snippets.shared.fetchDiscoverTimeline(collection: collection) { (error, postObjects, tagmoji) in
+			Snippets.Microblog.fetchDiscoverTimeline(collection: collection) { (error, postObjects, tagmoji) in
 				DispatchQueue.main.async {
 					self.refresh(postObjects)
 				}

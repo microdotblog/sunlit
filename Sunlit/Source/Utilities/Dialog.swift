@@ -70,24 +70,46 @@ class Dialog {
 		
 		self.completion = completion
 		
-		Snippets.shared.fetchCurrentUserConfiguration { (error, configuration) in
+		Snippets.Microblog.fetchCurrentUserConfiguration { (error, configuration) in
 			
 			// Check for a media endpoint definition...
-			if let mediaEndPoint = configuration["media-endpoint"] as? String {
-				PublishingConfiguration.configureMicropubMediaEndpoint(mediaEndPoint)
-			}
+            let mediaEndPoint : String = configuration["media-endpoint"] as? String ?? ""
+            let micropubEndPoint = Snippets.Configuration.timeline.micropubEndpoint
+            let micropubToken = Snippets.Configuration.timeline.micropubToken
 			
 			DispatchQueue.main.async {
 
 				if let destinations = configuration["destination"] as? [[String : Any]] {
 					
-					if destinations.count > 1 {
-						self.selectBlogConfiguration(destinations)
+                    for destination in destinations {
+                        if let title = destination["name"] as? String,
+                           let blogId = destination["uid"] as? String {
+                            
+                            let config = Snippets.Configuration.fromDictionary(destination)
+                            config.micropubUid = blogId
+                            config.micropubEndpoint = micropubEndPoint
+                            config.micropubMediaEndpoint = mediaEndPoint
+                            config.micropubToken = micropubToken
+                        
+                            let blogSettings = BlogSettings(title)
+                            blogSettings.blogName = title
+                            blogSettings.snippetsConfiguration = config
+                            blogSettings.save()
+                            
+                            BlogSettings.addPublishedBlog(blogSettings)
+                        }
+                    }
+                    
+                    let blogList = BlogSettings.publishedBlogs()
+					if blogList.count > 1 {
+						self.selectBlogConfiguration(blogList)
 						return
 					}
 				
 					if let destination = destinations.first {
-						PublishingConfiguration.configureSnippetsBlog(destination)
+                        if let blogId = destination["uid"] as? String {
+                            BlogSettings.publishingPath = blogId
+                        }
 					}
 				}
 			}
@@ -95,28 +117,21 @@ class Dialog {
 
 	}
 	
-	private func selectBlogConfiguration(_ destinations : [[String : Any]]) {
+	private func selectBlogConfiguration(_ blogList : [BlogSettings]) {
 
 		let actionSheet = UIAlertController(title: nil, message: "Please select which Micro.blog to use when publishing.", preferredStyle: .actionSheet)
 
-		for destination in destinations {
-			if let title = destination["name"] as? String,
-				let blogId = destination["uid"] as? String {
-				let action = UIAlertAction(title: title, style: .default) { (action) in
+		for blog in blogList {
+            let action = UIAlertAction(title: blog.blogAddress, style: .default) { (action) in
 					
-					PublishingConfiguration.configureSnippetsBlog(destination)
+                BlogSettings.publishingPath = blog.blogAddress
 
-					let publishingConfig = Snippets.shared.publishingConfiguration
-					publishingConfig.uid = blogId
-					Snippets.shared.configurePublishing(publishingConfig)
-					
-					if let completion = self.completion {
-						completion()
-					}
-				}
-				
-				actionSheet.addAction(action)
-			}
+                if let completion = self.completion {
+                    completion()
+                }
+            }
+            
+            actionSheet.addAction(action)
 		}
 		
 		if let popoverController = actionSheet.popoverPresentationController {

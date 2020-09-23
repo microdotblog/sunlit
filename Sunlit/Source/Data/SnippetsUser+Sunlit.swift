@@ -98,7 +98,7 @@ extension SnippetsUser {
 			completion(user)
 		}
 		else {
-			Snippets.shared.fetchCurrentUserInfo { (error, user) in
+            Snippets.Microblog.fetchCurrentUserInfo { (error, user) in
 				if let current = user {
 					_ = SnippetsUser.saveAsCurrent(current)
 				}

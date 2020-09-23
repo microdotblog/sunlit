@@ -69,10 +69,14 @@ class ExternalBlogConfigurationViewController: UIViewController {
 				is_wordpress = endpoint.contains("/xmlrpc.php")
 			}
 			
-			let identity = SnippetsXMLRPCIdentity.create(username: username, password: password, endpoint: xmlrpcEndpoint!, blogId: blogId!, wordPress: is_wordpress)
-			let request = SnippetsXMLRPCRequest(identity: identity, method: methodName)
+            var identity = Snippets.Configuration.xmlRpcConfiguration(username: username, password: password, endpoint: xmlrpcEndpoint!, blogId: blogId!)
+            if is_wordpress {
+                identity = Snippets.Configuration.wordpressConfiguration(username: username, password: password, endpoint: xmlrpcEndpoint!, blogId: blogId!)
+            }
+            //SnippetsXMLRPCIdentity.create(username: username, password: password, endpoint: xmlrpcEndpoint!, blogId: blogId!, wordPress: is_wordpress)
+            let request = Snippets.XMLRPC.Request(identity: identity, method: methodName)
 			
-			_ = Snippets.shared.executeRPC(request: request, params: params) { (error, responseData) in
+			_ = Snippets.XMLRPC.execute(request: request, params: params) { (error, responseData) in
 				
 				if let data = responseData {
 					SnippetsXMLRPCParser.parsedResponseFromData(data) { (responseFault, responseParams) in
@@ -86,15 +90,22 @@ class ExternalBlogConfigurationViewController: UIViewController {
 								Dialog(self).information(formattedErrorString)
 							}
 							else {
-								var app = ""
-								if is_wordpress {
-									app = "WordPress"
-								}
 								
 								// If we have successfully configured the blog, we can tell settings to use it...
-								PublishingConfiguration.configureXMLRPCBlog(username: username, password: password, url: self.blogAddress.text!, endpoint: xmlrpcEndpoint!, blogId: blogId!, app: app)
-								Settings.useExternalBlog(true)
-								
+                                if is_wordpress {
+                                    let settings = BlogSettings(self.blogAddress.text!)
+                                    settings.blogName = "Wordpress"
+                                    settings.snippetsConfiguration = identity
+                                    BlogSettings.addPublishedBlog(settings)
+                                    BlogSettings.publishingPath = settings.blogAddress
+                                }
+                                else {
+                                    let settings = BlogSettings(self.blogAddress.text!)
+                                    settings.blogName = ""
+                                    settings.snippetsConfiguration = identity
+                                    BlogSettings.addPublishedBlog(settings)
+                                    BlogSettings.publishingPath = settings.blogAddress
+                                }
 								Dialog(self).information("Successfully configured for publishing!") {
 									self.navigationController?.popViewController(animated: true)
 								}
@@ -131,9 +142,13 @@ class ExternalBlogConfigurationViewController: UIViewController {
 				authEndpoint = authEndpoint + "&state=" + micropubState
 				authEndpoint = authEndpoint + "&scope=create"
 				authEndpoint = authEndpoint + "&response_type=code"
-				
-				PublishingConfiguration.configureMicropubBlog(username: path, postingEndpoint: micropubEndpoint, authEndpoint: authEndpoint, tokenEndpoint: tokenEndpoint, stateKey: micropubState)
-				
+
+                let settings = BlogSettings(self.blogAddress.text!)
+                settings.tokenEndpoint = micropubEndpoint
+                settings.stateKey = micropubState
+                settings.authEndpoint = authEndpoint
+                settings.save()
+            
 				DispatchQueue.main.async {
 					UIApplication.shared.open(URL(string: authEndpoint)!)
 					self.navigationController?.popViewController(animated: true)
@@ -200,20 +215,28 @@ class ExternalBlogConfigurationViewController: UIViewController {
 extension ExternalBlogConfigurationViewController : UITextFieldDelegate {
 	
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-		textField.resignFirstResponder()
 		
 		if textField == self.blogAddress {
 			self.interrogateURL()
+            textField.resignFirstResponder()
 		}
 		else if textField == self.username || textField == self.password {
 			if let username = self.username.text,
 				let password = self.password.text {
-				if username.count > 0 && password.count > 0 {
+				
+                if username.count > 0 && password.count > 0 {
 					self.usernameText = username
 					self.passwordText = password
-					
+
 					self.interrogateWordPressURL()
+                    textField.resignFirstResponder()
 				}
+                else if username.count == 0 {
+                    self.username.becomeFirstResponder()
+                }
+                else {
+                    self.password.becomeFirstResponder()
+                }
 			}
 		}
 		return false

@@ -38,7 +38,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			self.lockUserInterface()
 
 			if email.uuIsValidEmail() {
-				Snippets.shared.requestUserLoginEmail(email: email, appName: "Sunlit", redirect: "https://sunlit.io/microblog/redirect/")
+				Snippets.Microblog.requestUserLoginEmail(email: email, appName: "Sunlit", redirect: "https://sunlit.io/microblog/redirect/")
 				{ error in
 					self.unlockUserInterface()
 
@@ -53,7 +53,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 				}
 			}
 			else {
-				Snippets.shared.requestPermanentTokenFromTemporaryToken(token: email) { error, token in
+                // TODO: Need to verify this code path with respect to the micropub path
+				Snippets.Microblog.requestPermanentTokenFromTemporaryToken(token: email) { error, token in
 					self.unlockUserInterface()
 					if let err = error {
 						Dialog(self).information(err.localizedDescription)

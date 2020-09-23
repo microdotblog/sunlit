@@ -48,9 +48,7 @@ class MainViewController: UIViewController {
 		
 	func setupSnippets() {
 		if let token = Settings.snippetsToken() {
-			let timelineConfig = Snippets.shared.timelineConfiguration
-			timelineConfig.token = token
-			Snippets.shared.timelineConfiguration = timelineConfig
+            Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: token)
 			
 			SunlitMentions.shared.update {
 			}
@@ -202,16 +200,27 @@ class MainViewController: UIViewController {
 	@objc func handleTemporaryTokenReceivedNotification(_ notification : Notification) {
 		if let temporaryToken = notification.object as? String
 		{
-			Snippets.shared.requestPermanentTokenFromTemporaryToken(token: temporaryToken) { (error, token) in
-				if let permanentToken = token
+			Snippets.Microblog.requestPermanentTokenFromTemporaryToken(token: temporaryToken) { (error, token) in
+                if let err = error {
+                    DispatchQueue.main.async {
+                        Dialog(self).information("Error - " + err.localizedDescription)
+                    }
+
+                    return
+                }
+                
+                if let permanentToken = token
 				{
-					
 					// Save our info and setup Snippets
 					Settings.saveSnippetsToken(permanentToken)
-					
-					let config = Snippets.shared.timelineConfiguration
-					config.token = permanentToken
-					Snippets.shared.configureTimeline(config)
+                    
+                    // Save to user prefs...
+                    let blogSettings = BlogSettings(BlogSettings.timelinePath)
+                    blogSettings.snippetsConfiguration = Snippets.Configuration.microblogConfiguration(token: permanentToken)
+                    blogSettings.save()
+                    
+                    // Update the Snippets library...
+                    Snippets.Configuration.timeline = blogSettings.snippetsConfiguration!
 
 					// We can hide the login view now...
 					DispatchQueue.main.async {
@@ -219,7 +228,7 @@ class MainViewController: UIViewController {
 						self.timelineViewController.prepareToDisplay()
 					}
 					
-					Snippets.shared.fetchCurrentUserInfo { (error, updatedUser) in
+					Snippets.Microblog.fetchCurrentUserInfo { (error, updatedUser) in
 						
 						if let user = updatedUser {
 							_ = SnippetsUser.saveAsCurrent(user)
@@ -255,8 +264,8 @@ class MainViewController: UIViewController {
 				}
 
 				if (code.count > 0) && (state.count > 0) {
-					let me = PublishingConfiguration.current.getBlogName()
-					let token_endpoint = PublishingConfiguration.current.getTokenEndpoint()
+                    let me = BlogSettings.publishingPath
+                    let token_endpoint = BlogSettings(me).tokenEndpoint
 					
 					var params = ""
 					params = params + "grant_type=authorization_code"
@@ -271,10 +280,13 @@ class MainViewController: UIViewController {
 						if let dictionary = parsedServerResponse.parsedResponse as? [ String : Any ] {
 							if let access_token = dictionary["access_token"] as? String {
 								DispatchQueue.main.async {
-									Settings.useExternalBlog(true)
-									PublishingConfiguration.configureMicropubBlog(accessToken: access_token)
+                                    
+                                    let settings = BlogSettings(BlogSettings.publishingPath)
+                                    settings.microblogToken = access_token
+                                    settings.save()
+                                    BlogSettings.addPublishedBlog(settings)
 
-									if PublishingConfiguration.current.hasConfigurationForMicropub() {
+                                    if settings.snippetsConfiguration!.type == .micropub {
 										Dialog(self).selectBlog()
 									}
 

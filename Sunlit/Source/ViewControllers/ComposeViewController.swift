@@ -71,10 +71,8 @@ class ComposeViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		
-		self.blogSelectorButton.setTitle(PublishingConfiguration.current.getBlogAddress(), for: .normal)
-		if Settings.usesExternalBlog() {
-			self.blogSelectorButton.isEnabled = false
-		}
+        self.blogSelectorButton.setTitle(BlogSettings.publishingPath, for: .normal)
+        self.blogSelectorButton.isEnabled = BlogSettings.publishedBlogs().count > 1
 	}
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -183,7 +181,7 @@ class ComposeViewController: UIViewController {
 	
 	@IBAction func onSelectBlogConfiguration() {
 		Dialog(self).selectBlog {
-			self.blogSelectorButton.setTitle(PublishingConfiguration.current.getBlogAddress(), for: .normal)
+            self.blogSelectorButton.setTitle(BlogSettings.publishingPath, for: .normal)
 		}
 	}
 	
@@ -290,9 +288,9 @@ class ComposeViewController: UIViewController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func uploadComposition() {
-		// make sure Snippets has the latest config
-		PublishingConfiguration.updateSnippetsConfig()
 
+        Snippets.Configuration.publishing = BlogSettings(BlogSettings.publishingPath).snippetsConfiguration!
+        
 		let title : String = self.titleField.text ?? ""
 		self.uploadMedia { (mediaDictionary : [SunlitMedia : MediaLocation]) in
 			
@@ -303,35 +301,11 @@ class ComposeViewController: UIViewController {
 			
 			let string = HTMLBuilder.createHTML(sections: self.sections, mediaPathDictionary: mediaDictionary)
 			
-			if Settings.usesExternalBlog() && PublishingConfiguration.current.hasConfigurationForXMLRPC(),
-				let identity = PublishingConfiguration.current.xmlRPCIdentity() {
-				
-				let request = SnippetsXMLRPCRequest.publishPostRequest(identity: identity, existingPost: false)
-				
-				self.activeUpload = Snippets.shared.post(title: title, content: string, postFormat: "", postCategory: "", request: request) { (error, identifier) in
-					
-					if let postIdentifier = identifier {
-						let request = SnippetsXMLRPCRequest.fetchPostInfoRequest(identity: identity)
-						_ = Snippets.shared.fetchPostURL(postIdentifier: postIdentifier, request: request) { (error, remotePath) in
-							DispatchQueue.main.async {
-								self.handleUploadCompletion(error, remotePath)
-							}
-						}
-					}
-					else {
-						DispatchQueue.main.async {
-							self.handleUploadCompletion(error, nil)
-						}
-					}
-				}
-			}
-			else {
-				self.activeUpload = Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
-					DispatchQueue.main.async {
-						self.handleUploadCompletion(error, remotePath)
-					}
-				}
-			}
+            self.activeUpload = Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
+                DispatchQueue.main.async {
+                    self.handleUploadCompletion(error, remotePath)
+                }
+            }
 		}
 	}
 

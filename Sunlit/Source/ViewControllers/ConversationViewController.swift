@@ -126,7 +126,7 @@ class ConversationViewController: UIViewController {
 
 	@objc func loadConversation() {
 		if let post = sourcePost {
-			Snippets.shared.fetchConversation(post: post) { (error, posts : [SnippetsPost]) in
+			Snippets.Microblog.fetchConversation(post: post) { (error, posts : [SnippetsPost]) in
 				
 				DispatchQueue.main.async {
 					self.posts = [ ]
@@ -152,7 +152,7 @@ class ConversationViewController: UIViewController {
 	@IBAction func onPostReply() {
         
         let replyText = self.buildReplyText()
-		_ = Snippets.shared.reply(originalPost: self.sourcePost!, content: replyText) { (error) in
+		_ = Snippets.Microblog.reply(originalPost: self.sourcePost!, content: replyText) { (error) in
 			
 			DispatchQueue.main.async {
 				if let err = error {

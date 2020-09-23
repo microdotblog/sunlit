@@ -16,9 +16,7 @@ extension AppDelegate {
 		guard builder.system == .main else { return }
 		
 		if let token = Settings.snippetsToken() {
-			let config = Snippets.shared.timelineConfiguration
-			config.token = token
-			Snippets.shared.configurePublishing(config)
+            Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: token)
 		}
 		
 		// remove Format menu

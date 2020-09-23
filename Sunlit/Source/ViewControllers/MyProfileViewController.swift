@@ -74,7 +74,7 @@ class MyProfileViewController: UIViewController {
 		
 		self.loadInProgress = true
 		
-		Snippets.shared.fetchCurrentUserInfo { (error, snippetsUser) in
+		Snippets.Microblog.fetchCurrentUserInfo { (error, snippetsUser) in
 			
             if let updatedUser = snippetsUser {
 				self.user = SnippetsUser.save(updatedUser)
@@ -83,7 +83,7 @@ class MyProfileViewController: UIViewController {
 					self.collectionView.reloadData()
 				}
 
-				Snippets.shared.fetchUserMediaPosts(user: updatedUser) { (error, snippets : [SnippetsPost]) in
+				Snippets.Microblog.fetchUserMediaPosts(user: updatedUser) { (error, snippets : [SnippetsPost]) in
 	
 					DispatchQueue.main.async {
 
@@ -100,7 +100,7 @@ class MyProfileViewController: UIViewController {
 					}
 				}
 				
-				Snippets.shared.listFollowing(user: self.user, completeList: true) { (error, users) in
+				Snippets.Microblog.listFollowing(user: self.user, completeList: true) { (error, users) in
 					self.followingUsers = users
 					self.followersLoaded = true
 					self.user.followingCount = users.count
