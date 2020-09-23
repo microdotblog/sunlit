@@ -238,7 +238,12 @@ class DiscoverViewController: UIViewController {
 						}						
 					}
 					
-					self.tableView.insertRows(at: indexPaths, with: .automatic)
+					if self.isShowingCollectionView {
+						self.collectionView.insertItems(at: indexPaths)
+					}
+					else {
+						self.tableView.insertRows(at: indexPaths, with: .automatic)
+					}
 					self.loadingData = false
 				}
 			}
@@ -640,6 +645,10 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         self.prefetchImages(indexPath)
+
+		if indexPath.row > (self.posts.count - 3) {
+			self.loadMoreTimeline()
+		}
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {

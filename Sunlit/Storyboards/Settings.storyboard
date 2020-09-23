@@ -115,26 +115,55 @@
                                     <action selector="onSignout" destination="kWB-by-1xh" eventType="touchUpInside" id="P2j-Sk-G83"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O5g-Bm-d3v">
+                                <rect key="frame" x="178.5" y="841" width="57" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="fJk-9g-EBE"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
+<<<<<<< HEAD
                             <constraint firstItem="gpr-fc-7bF" firstAttribute="leading" secondItem="fJk-9g-EBE" secondAttribute="leading" id="2nS-Tz-P9c"/>
                             <constraint firstItem="rQs-dT-iWL" firstAttribute="top" secondItem="gpr-fc-7bF" secondAttribute="bottom" constant="16" id="4Gp-yg-tNp"/>
                             <constraint firstItem="uWo-2e-B1A" firstAttribute="bottom" secondItem="gpr-fc-7bF" secondAttribute="bottom" id="6jy-14-t6u"/>
                             <constraint firstItem="rQs-dT-iWL" firstAttribute="bottom" secondItem="fJk-9g-EBE" secondAttribute="bottom" id="Euy-m1-hWS"/>
+=======
+                            <constraint firstItem="fJk-9g-EBE" firstAttribute="bottom" secondItem="O5g-Bm-d3v" secondAttribute="bottom" id="0pJ-Lf-OU5"/>
+                            <constraint firstItem="nzu-tx-a4a" firstAttribute="top" secondItem="20l-ij-qN6" secondAttribute="bottom" constant="16" id="2WG-X3-pHJ"/>
+                            <constraint firstItem="rQs-dT-iWL" firstAttribute="top" secondItem="4B6-eC-GMc" secondAttribute="bottom" constant="64" id="CgA-X8-jWK"/>
+                            <constraint firstItem="fJk-9g-EBE" firstAttribute="trailing" secondItem="nzu-tx-a4a" secondAttribute="trailing" id="DH7-JL-f0B"/>
+>>>>>>> origin/master
                             <constraint firstItem="20l-ij-qN6" firstAttribute="top" secondItem="fJk-9g-EBE" secondAttribute="top" constant="20" id="Tpl-N2-HeB"/>
                             <constraint firstItem="gpr-fc-7bF" firstAttribute="top" secondItem="20l-ij-qN6" secondAttribute="bottom" constant="4" id="Vjf-dl-RzV"/>
                             <constraint firstItem="rQs-dT-iWL" firstAttribute="centerX" secondItem="Zju-dZ-sT1" secondAttribute="centerX" id="dDS-xC-4ga"/>
                             <constraint firstItem="uWo-2e-B1A" firstAttribute="trailing" secondItem="fJk-9g-EBE" secondAttribute="trailing" id="eL6-hK-Fbj"/>
                             <constraint firstItem="20l-ij-qN6" firstAttribute="leading" secondItem="fJk-9g-EBE" secondAttribute="leading" constant="20" id="glV-c9-LSZ"/>
+<<<<<<< HEAD
                             <constraint firstItem="gpr-fc-7bF" firstAttribute="trailing" secondItem="fJk-9g-EBE" secondAttribute="trailing" id="iAl-to-FhP"/>
                             <constraint firstItem="uWo-2e-B1A" firstAttribute="leading" secondItem="fJk-9g-EBE" secondAttribute="leading" id="z5F-69-0jp"/>
+=======
+                            <constraint firstItem="fJk-9g-EBE" firstAttribute="trailing" secondItem="4B6-eC-GMc" secondAttribute="trailing" id="nj3-at-WpO"/>
+                            <constraint firstItem="4B6-eC-GMc" firstAttribute="leading" secondItem="fJk-9g-EBE" secondAttribute="leading" id="odR-JE-7SF"/>
+                            <constraint firstItem="O5g-Bm-d3v" firstAttribute="centerX" secondItem="Zju-dZ-sT1" secondAttribute="centerX" id="vqi-sL-DoP"/>
+>>>>>>> origin/master
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="signOutButton" destination="rQs-dT-iWL" id="YPR-xd-hAy"/>
+<<<<<<< HEAD
                         <outlet property="tableView" destination="gpr-fc-7bF" id="x2b-R7-1zP"/>
+=======
+                        <outlet property="versionLabel" destination="O5g-Bm-d3v" id="Jt2-JO-IgC"/>
+                        <outlet property="wordPressAppTitle" destination="VBp-6a-vPW" id="MBA-Tv-6fK"/>
+                        <outlet property="wordPressButton" destination="4ru-Iw-kwn" id="ud8-8S-Yfv"/>
+                        <outlet property="wordPressSettingsView" destination="4B6-eC-GMc" id="KRX-xH-yv9"/>
+                        <outlet property="wordPressSettingsViewHeightConstraint" destination="Yvg-m7-SvW" id="Toq-61-LtQ"/>
+                        <outlet property="wordPressSignoutButton" destination="4kp-F1-h5l" id="vpu-GV-hGP"/>
+                        <outlet property="wordPressSite" destination="WBv-j1-xbI" id="CJb-86-E5y"/>
+>>>>>>> origin/master
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gHR-DL-5aH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -147,8 +176,13 @@
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
+<<<<<<< HEAD
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+=======
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+>>>>>>> origin/master
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

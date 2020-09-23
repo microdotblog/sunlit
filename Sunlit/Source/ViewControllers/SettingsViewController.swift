@@ -13,13 +13,25 @@ class SettingsViewController: UIViewController {
 	@IBOutlet var signOutButton : UIButton!
     @IBOutlet var tableView : UITableView!
 	
+<<<<<<< HEAD
     var tableData : [BlogSettings] = []
     
+=======
+	@IBOutlet var wordPressSettingsView :UIView!
+	@IBOutlet var wordPressSettingsViewHeightConstraint : NSLayoutConstraint!
+	@IBOutlet var wordPressSite : UILabel!
+	@IBOutlet var wordPressSignoutButton : UIButton!
+	@IBOutlet var wordPressAppTitle : UILabel!
+	@IBOutlet var versionLabel : UILabel!
+	
+>>>>>>> origin/master
     override func viewDidLoad() {
         super.viewDidLoad()
 	
 		self.setupNavigation()
 		self.setupNotifications()
+		let versionString : String = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+		self.versionLabel.text = "Version " + versionString
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

@@ -357,6 +357,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="205"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+<<<<<<< HEAD
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You're all caught up!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LBY-QA-Fe5">
                                                     <rect key="frame" x="20" y="84" width="374" height="33.666666666666657"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
@@ -387,6 +388,49 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="JuE-6Q-8eS" secondAttribute="bottom" constant="26" id="asU-UM-khF"/>
                                                 <constraint firstItem="JuE-6Q-8eS" firstAttribute="trailing" secondItem="Wsq-wE-3TV" secondAttribute="trailingMargin" id="qsb-8p-CUF"/>
                                                 <constraint firstItem="LBY-QA-Fe5" firstAttribute="trailing" secondItem="Wsq-wE-3TV" secondAttribute="trailingMargin" id="z80-kb-5nP"/>
+=======
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7r-jS-tih">
+                                                    <rect key="frame" x="47" y="26.666666666666671" width="320" height="152"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You're all caught up!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LBY-QA-Fe5">
+                                                            <rect key="frame" x="63.666666666666671" y="58.000000000000007" width="192.66666666666663" height="26.333333333333336"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hand.thumbsup.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="DPT-cm-zFr">
+                                                            <rect key="frame" x="145" y="21.999999999999993" width="30" height="26.000000000000007"/>
+                                                            <color key="tintColor" systemColor="labelColor"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="30" id="BNz-MV-BQf"/>
+                                                                <constraint firstAttribute="width" constant="30" id="Hmy-BG-8Aq"/>
+                                                            </constraints>
+                                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small"/>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Find more in Discover" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JuE-6Q-8eS">
+                                                            <rect key="frame" x="65.666666666666671" y="92.333333333333329" width="188.66666666666663" height="24"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                            <color key="textColor" systemColor="linkColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <constraints>
+                                                        <constraint firstItem="DPT-cm-zFr" firstAttribute="top" secondItem="N7r-jS-tih" secondAttribute="top" constant="20" symbolic="YES" id="N3I-wD-xhi"/>
+                                                        <constraint firstAttribute="width" constant="320" id="Qv9-cG-JFl"/>
+                                                        <constraint firstItem="JuE-6Q-8eS" firstAttribute="top" secondItem="LBY-QA-Fe5" secondAttribute="bottom" constant="8" id="W1B-XK-sE7"/>
+                                                        <constraint firstItem="LBY-QA-Fe5" firstAttribute="top" secondItem="DPT-cm-zFr" secondAttribute="bottom" constant="8" id="cNh-Ee-ufS"/>
+                                                        <constraint firstAttribute="height" constant="152" id="fOc-hs-EDW"/>
+                                                        <constraint firstItem="DPT-cm-zFr" firstAttribute="centerX" secondItem="N7r-jS-tih" secondAttribute="centerX" id="jJs-NE-B6h"/>
+                                                        <constraint firstItem="LBY-QA-Fe5" firstAttribute="centerX" secondItem="N7r-jS-tih" secondAttribute="centerX" id="mu3-wK-ig4"/>
+                                                        <constraint firstItem="JuE-6Q-8eS" firstAttribute="centerX" secondItem="N7r-jS-tih" secondAttribute="centerX" id="zBX-Rj-DqX"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="N7r-jS-tih" firstAttribute="centerY" secondItem="Wsq-wE-3TV" secondAttribute="centerY" id="BZW-7e-S5c"/>
+                                                <constraint firstItem="N7r-jS-tih" firstAttribute="centerX" secondItem="Wsq-wE-3TV" secondAttribute="centerX" id="XEm-hf-kBm"/>
+>>>>>>> origin/master
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -403,14 +447,24 @@
                                                         <constraint firstAttribute="width" secondItem="cGL-bn-hOf" secondAttribute="height" multiplier="414:259" id="cFL-n9-S8Q"/>
                                                     </constraints>
                                                 </imageView>
+<<<<<<< HEAD
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="254" text="Welcome to Sunlit, a photo sharing community powered by the Micro.blog platform." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DXk-MV-BZ4">
                                                     <rect key="frame" x="20" y="129.66666666666666" width="374" height="82.333333333333343"/>
+=======
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="254" text="Welcome to Sunlit, a photo sharing community powered by Micro.blog." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DXk-MV-BZ4">
+                                                    <rect key="frame" x="20" y="194.66666666666666" width="374" height="54.333333333333343"/>
+>>>>>>> origin/master
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+<<<<<<< HEAD
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check out the Discover section to find people to follow." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MUv-ez-uXX">
                                                     <rect key="frame" x="20" y="232" width="374" height="49"/>
+=======
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find people to follow in Discover" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MUv-ez-uXX">
+                                                    <rect key="frame" x="20" y="257" width="374" height="24"/>
+>>>>>>> origin/master
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                     <color key="textColor" systemColor="linkColor"/>
                                                     <nil key="highlightedColor"/>
@@ -418,7 +472,11 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="cGL-bn-hOf" secondAttribute="bottom" id="0nV-ef-nmA"/>
+<<<<<<< HEAD
                                                 <constraint firstItem="MUv-ez-uXX" firstAttribute="top" secondItem="DXk-MV-BZ4" secondAttribute="bottom" constant="20" id="LLU-LF-MLb"/>
+=======
+                                                <constraint firstItem="MUv-ez-uXX" firstAttribute="top" secondItem="DXk-MV-BZ4" secondAttribute="bottom" constant="8" id="LLU-LF-MLb"/>
+>>>>>>> origin/master
                                                 <constraint firstItem="cGL-bn-hOf" firstAttribute="leading" secondItem="bCv-k6-M1t" secondAttribute="leading" id="MrP-Dg-tUC"/>
                                                 <constraint firstAttribute="trailing" secondItem="cGL-bn-hOf" secondAttribute="trailing" id="P4d-j3-za5"/>
                                                 <constraint firstItem="MUv-ez-uXX" firstAttribute="leading" secondItem="bCv-k6-M1t" secondAttribute="leadingMargin" id="X9M-oq-Jy5"/>

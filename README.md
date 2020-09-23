@@ -5,21 +5,17 @@ Publish photos to your own blog — hosted by Micro.blog or compatible blogs usi
 
 For the current shipping version of Sunlit available in the App Store, please see [sunlit.io](https://sunlit.io/).
 
-
 ## Beta Installation Link
 [https://testflight.apple.com/join/vAQQbw8J](https://testflight.apple.com/join/vAQQbw8J)
 
 ## License
 Sunlit is available under the MIT license. See [`LICENSE.md`](https://github.com/microdotblog/sunlit/blob/develop/LICENSE.md) for more information.
 
-
-
 ## Third Party Components included in Sunlit:
-*[Snippets](https://github.com/microdotblog/snippets">https://github.com/microdotblog/snippets)
-*[UUSwift](https://github.com/SilverPineSoftware/UUSwift)
-*[SwiftSoup](https://github.com/scinfu/SwiftSoup)
-*[NextLevel Session Exporter](https://github.com/NextLevel/NextLevelSessionExporter)
-
+* [Snippets](https://github.com/microdotblog/snippets)
+* [UUSwift](https://github.com/SilverPineSoftware/UUSwift)
+* [SwiftSoup](https://github.com/scinfu/SwiftSoup)
+* [NextLevel Session Exporter](https://github.com/NextLevel/NextLevelSessionExporter)
 
 ## Screenshots
 ![Screenshot 1](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot01.jpeg?raw=true)
@@ -27,13 +23,10 @@ Sunlit is available under the MIT license. See [`LICENSE.md`](https://github.com
 ![Screenshot 3](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot03.jpeg?raw=true)
 ![Screenshot 4](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot04.jpeg?raw=true)
 
-
 ## Requirements
-
 This app requires a minimum target of iOS 13.0 or greater
 
+Micropub endpoints must provide a [media endpoint](https://micropub.spec.indieweb.org/#media-endpoint) for Sunlit to publish photos. 
 
 ### Swift
-
 This app is written entirely in Swift.
-
