@@ -57,14 +57,20 @@ class ConversationViewController: UIViewController {
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 
+		let deviceWithHomeButtonBottomMargin: CGFloat = 8
+		let iPhoneWithHomeIndicatorBottomMargin: CGFloat = -2
+		let iPadWithHomeIndicatorBottomMargin: CGFloat = 0
+
 		// iPhone with Home-Button vs. iPhone with Home-Indicator
 		if self.view.safeAreaInsets.bottom > 0 {
-			// set constant to -2
-			self.replyTextfieldBottomMarginConstraint.constant = -2
+			if UIDevice.current.userInterfaceIdiom == .pad {
+				self.replyTextfieldBottomMarginConstraint.constant = iPadWithHomeIndicatorBottomMargin
+			} else {
+				self.replyTextfieldBottomMarginConstraint.constant = iPhoneWithHomeIndicatorBottomMargin
+			}
 		} else {
-			self.replyTextfieldBottomMarginConstraint.constant = 8
+			self.replyTextfieldBottomMarginConstraint.constant = deviceWithHomeButtonBottomMargin
 		}
-
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
