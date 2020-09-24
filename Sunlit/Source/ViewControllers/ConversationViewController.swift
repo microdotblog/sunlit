@@ -61,7 +61,6 @@ class ConversationViewController: UIViewController {
 		let iPhoneWithHomeIndicatorBottomMargin: CGFloat = -2
 		let iPadWithHomeIndicatorBottomMargin: CGFloat = 0
 
-		// iPhone with Home-Button vs. iPhone with Home-Indicator
 		if self.view.safeAreaInsets.bottom > 0 {
 			if UIDevice.current.userInterfaceIdiom == .pad {
 				self.replyTextfieldBottomMarginConstraint.constant = iPadWithHomeIndicatorBottomMargin
