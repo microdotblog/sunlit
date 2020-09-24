@@ -195,7 +195,8 @@ class ConversationViewController: UIViewController {
 				}
 
 				UIView.animate(withDuration: 0.25) {
-					self.replyContainerBottomConstraint.constant = frame.size.height  - 20.0//+ self.view.safeAreaInsets.bottom
+					self.replyTextfieldBottomMarginConstraint.isActive = false
+					self.replyContainerBottomConstraint.constant = frame.size.height
 					self.postButton.alpha = 1.0
 					self.view.layoutIfNeeded()
 					self.replyFieldPlaceholder.alpha = 0.0
@@ -209,6 +210,7 @@ class ConversationViewController: UIViewController {
 				
 			UIView.animate(withDuration: 0.25) {
 				self.replyContainerBottomConstraint.constant = 0
+				self.replyTextfieldBottomMarginConstraint.isActive = true
 				//self.tableBottomConstraint.constant = 44
 				self.postButton.alpha = 0.0
 				self.view.layoutIfNeeded()
