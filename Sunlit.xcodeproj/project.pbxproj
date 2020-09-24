@@ -143,6 +143,7 @@
 		C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DF38249144E800B50B54 /* olive.jpg */; };
 		C5A1DF3C2491948B00B50B54 /* BlogSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3B2491948B00B50B54 /* BlogSettings.swift */; };
 		C5A1DF3E2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */; };
+		C5BC722F251C6C0600A21038 /* ItemProviderProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC722E251C6C0600A21038 /* ItemProviderProcessor.swift */; };
 		C5BEDF4D24DA302F0068CBF1 /* Following.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5BEDF4C24DA302F0068CBF1 /* Following.storyboard */; };
 		C5BEDF4F24DA305F0068CBF1 /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BEDF4E24DA305F0068CBF1 /* FollowingViewController.swift */; };
 		C5BEDF5124DA30DA0068CBF1 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BEDF5024DA30DA0068CBF1 /* ProfileTableViewCell.swift */; };
@@ -426,6 +427,7 @@
 		C5A1DF3B2491948B00B50B54 /* BlogSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogSettings.swift; path = Source/Data/BlogSettings.swift; sourceTree = "<group>"; };
 		C5A1DF3D2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExternalBlogConfigurationViewController.swift; path = Source/ViewControllers/ExternalBlogConfigurationViewController.swift; sourceTree = "<group>"; };
 		C5B9A71724563E66003EF82B /* Sunlit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sunlit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5BC722E251C6C0600A21038 /* ItemProviderProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ItemProviderProcessor.swift; path = Source/Utilities/ItemProviderProcessor.swift; sourceTree = "<group>"; };
 		C5BEDF4C24DA302F0068CBF1 /* Following.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Following.storyboard; path = Storyboards/Following.storyboard; sourceTree = "<group>"; };
 		C5BEDF4E24DA305F0068CBF1 /* FollowingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FollowingViewController.swift; path = Source/ViewControllers/FollowingViewController.swift; sourceTree = "<group>"; };
 		C5BEDF5024DA30DA0068CBF1 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileTableViewCell.swift; path = Source/TableViewCells/ProfileTableViewCell.swift; sourceTree = "<group>"; };
@@ -702,6 +704,7 @@
 				C5A1DE5524901DAD00B50B54 /* MediaUploader.swift */,
 				C5A1DE5624901DAD00B50B54 /* Tagmoji.swift */,
 				C5A1DE5924901DAD00B50B54 /* VideoTranscoder.swift */,
+				C5BC722E251C6C0600A21038 /* ItemProviderProcessor.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1514,6 +1517,7 @@
 				C56316AC2504AE6400CC447C /* BlogSelectionTableViewCell.swift in Sources */,
 				4B55700224F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift in Sources */,
 				C5A1DF3E2491AEFA00B50B54 /* ExternalBlogConfigurationViewController.swift in Sources */,
+				C5BC722F251C6C0600A21038 /* ItemProviderProcessor.swift in Sources */,
 				C5BEDF4F24DA305F0068CBF1 /* FollowingViewController.swift in Sources */,
 				C5A1DE5324901D9D00B50B54 /* URL+Sunlit.swift in Sources */,
 			);

@@ -11,6 +11,7 @@ import SafariServices
 import AVFoundation
 import Snippets
 import UUSwift
+import PhotosUI
 
 class MainViewController: UIViewController {
 	
@@ -366,14 +367,40 @@ class MainViewController: UIViewController {
 		
 	}
 
+    @available(iOS 14, *)
+    func iOS14PhotoPicker() -> UIViewController {
+        var configuration = PHPickerConfiguration()
+        configuration.filter = .any(of: [.images, .videos])
+        configuration.selectionLimit = 0
+        configuration.preferredAssetRepresentationMode = .automatic
+
+        let pickerController = PHPickerViewController(configuration: configuration)
+        pickerController.delegate = self
+        return pickerController
+    }
+
+    func defaultPhotoPicker() -> UIViewController {
+        let pickerController = UIImagePickerController()
+        pickerController.modalPresentationCapturesStatusBarAppearance = true
+        pickerController.delegate = self
+        pickerController.allowsEditing = false
+        pickerController.mediaTypes = ["public.image", "public.movie"]
+        pickerController.sourceType = .savedPhotosAlbum
+        return pickerController
+    }
+
 	@IBAction @objc func onNewPost() {
         if let _ = SnippetsUser.current() {
-            let pickerController = UIImagePickerController()
-            pickerController.modalPresentationCapturesStatusBarAppearance = true
-            pickerController.delegate = self
-            pickerController.allowsEditing = false
-            pickerController.mediaTypes = ["public.image", "public.movie"]
-            pickerController.sourceType = .savedPhotosAlbum
+
+            var pickerController : UIViewController!
+
+            if #available(iOS 14, *) {
+                pickerController = iOS14PhotoPicker()
+            }
+            else {
+                pickerController = defaultPhotoPicker()
+            }
+
             self.present(pickerController, animated: true, completion: nil)
         }
 	}
@@ -462,8 +489,50 @@ class MainViewController: UIViewController {
 MARK: -
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
+@available(iOS 14, *)
+extension MainViewController : PHPickerViewControllerDelegate {
+
+    @available(iOS 14, *)
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+
+        var providers : [NSItemProvider] = []
+        for result in results {
+            providers.append(result.itemProvider)
+        }
+
+        let processor = ItemProviderProcessor { (media) in
+            if media.count > 0 {
+                self.composeWithMedia(media, picker: picker)
+            }
+            else {
+                picker.dismiss(animated: true, completion: nil)
+            }
+        }
+
+        processor.process(providers)
+    }
+}
+
 extension MainViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-	
+
+    func composeWithMedia(_ media : [SunlitMedia], picker : UIViewController) {
+
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
+        let postViewController = storyBoard.instantiateViewController(withIdentifier: "ComposeViewController") as! ComposeViewController
+        postViewController.modalPresentationStyle = .fullScreen
+
+        for object in media {
+            postViewController.addMedia(object)
+        }
+
+        picker.dismiss(animated: true) {
+            let navigationController = UINavigationController(rootViewController: postViewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            self.present(navigationController, animated: true, completion: nil)
+        }
+
+    }
+
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 		var media : SunlitMedia? = nil
 
@@ -476,19 +545,9 @@ extension MainViewController : UIImagePickerControllerDelegate, UINavigationCont
 		else if let video = info[.mediaURL] as? URL {
 			media = SunlitMedia(withVideo: video)
 		}
-
 		
 		if let media = media {
-			let storyBoard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
-			let postViewController = storyBoard.instantiateViewController(withIdentifier: "ComposeViewController") as! ComposeViewController
-			postViewController.modalPresentationStyle = .fullScreen
-			postViewController.addMedia(media)
-			
-			picker.dismiss(animated: true) {
-				let navigationController = UINavigationController(rootViewController: postViewController)
-				navigationController.modalPresentationStyle = .fullScreen
-				self.present(navigationController, animated: true, completion: nil)
-			}
+            self.composeWithMedia([media], picker: picker)
 		}
 		else {
 			picker.dismiss(animated: true, completion: nil)

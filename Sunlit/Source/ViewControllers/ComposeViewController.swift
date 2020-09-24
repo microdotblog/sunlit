@@ -10,6 +10,8 @@ import UIKit
 import Mantis
 import Snippets
 import UUSwift
+import PhotosUI
+
 
 class ComposeViewController: UIViewController {
 
@@ -147,15 +149,41 @@ class ComposeViewController: UIViewController {
 		
 		self.present(alertController, animated: true, completion: nil)
 	}
-	
+
+    @available(iOS 14, *)
+    func iOS14PhotoPicker() -> UIViewController {
+        var configuration = PHPickerConfiguration()
+        configuration.filter = .any(of: [.images, .videos])
+        configuration.selectionLimit = 0
+        configuration.preferredAssetRepresentationMode = .automatic
+
+        let pickerController = PHPickerViewController(configuration: configuration)
+        pickerController.delegate = self
+        return pickerController
+    }
+
+    func defaultPhotoPicker() -> UIViewController {
+        let pickerController = UIImagePickerController()
+        pickerController.modalPresentationCapturesStatusBarAppearance = true
+        pickerController.delegate = self
+        pickerController.allowsEditing = false
+        pickerController.mediaTypes = ["public.image", "public.movie"]
+        pickerController.sourceType = .savedPhotosAlbum
+        return pickerController
+    }
+
 	@objc func onAddPhoto(_ section : Int) {
 		self.sectionToAddMedia = section
-		
-		let pickerController = UIImagePickerController()
-		pickerController.delegate = self
-		pickerController.mediaTypes = ["public.image", "public.movie"]
-		pickerController.sourceType = .savedPhotosAlbum
-		pickerController.allowsEditing = false
+
+        var pickerController : UIViewController!
+
+        if #available(iOS 14, *) {
+            pickerController = iOS14PhotoPicker()
+        }
+        else {
+            pickerController = defaultPhotoPicker()
+        }
+
 		self.present(pickerController, animated: true, completion: nil)
 	}
 
@@ -693,7 +721,36 @@ extension ComposeViewController : UITextViewDelegate {
 
 
 /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
+MARK: - PHPickerViewControllerDelegate
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+@available(iOS 14, *)
+extension ComposeViewController : PHPickerViewControllerDelegate {
+
+    @available(iOS 14, *)
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+
+        var providers : [NSItemProvider] = []
+        for result in results {
+            providers.append(result.itemProvider)
+        }
+
+        let processor = ItemProviderProcessor { (mediaList) in
+            if mediaList.count > 0 {
+                for media in mediaList {
+                    self.addMedia(media)
+                }
+            }
+
+            picker.dismiss(animated: true, completion: nil)
+        }
+
+        processor.process(providers)
+    }
+}
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: - UIImagePickerControllerDelegate
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 extension ComposeViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -723,6 +780,11 @@ extension ComposeViewController : UIImagePickerControllerDelegate, UINavigationC
 	}
 	
 }
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: - CropViewControllerDelegate
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 extension ComposeViewController : CropViewControllerDelegate {
     
