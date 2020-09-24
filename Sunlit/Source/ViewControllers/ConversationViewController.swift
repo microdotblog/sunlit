@@ -22,7 +22,8 @@ class ConversationViewController: UIViewController {
 	@IBOutlet var replyingToButton : UIButton!
 
 	@IBOutlet var replyContainerBottomConstraint : NSLayoutConstraint!
-	
+	@IBOutlet var replyTextfieldBottomMarginConstraint: NSLayoutConstraint!
+
 	var posts : [SunlitPost] = []
 	var allUsers : Set<String> = []
 	var selectedUsers : Set<String> = []
@@ -42,7 +43,6 @@ class ConversationViewController: UIViewController {
 		self.setupTable()
 		self.setupNavigation()
 		self.setupGesture()
-
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -52,6 +52,19 @@ class ConversationViewController: UIViewController {
 
 		self.setupNotifications()
 		self.spinner.startAnimating()
+	}
+
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+
+		// iPhone with Home-Button vs. iPhone with Home-Indicator
+		if self.view.safeAreaInsets.bottom > 0 {
+			// set constant to -2
+			self.replyTextfieldBottomMarginConstraint.constant = -2
+		} else {
+			self.replyTextfieldBottomMarginConstraint.constant = 8
+		}
+
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
