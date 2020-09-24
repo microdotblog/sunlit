@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import Snippets
 
-class TimelineViewController: UIViewController {
+class TimelineViewController: ContentViewController {
 
 	@IBOutlet var tableView : UITableView!
 	@IBOutlet var loggedOutView : UIView!
@@ -34,20 +34,25 @@ class TimelineViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         self.loadTimeline()
     }
-	
-	func setupNavigation() {
-		self.navigationItem.title = "Timeline"
-	}
-	
+
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(loadTimeline), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
 		self.loadFrequentlyUsedEmoji()
 	}
 
-	func setupNotifications() {
-		// Clear out any old notification registrations...
-		NotificationCenter.default.removeObserver(self)
+    override func navbarTitle() -> String {
+        return "Timeline"
+    }
+
+    override func prepareToDisplay() {
+        super.prepareToDisplay()
+
+        self.updateLoggedInStatus()
+    }
+
+	override func setupNotifications() {
+        super.setupNotifications()
 
 		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: .scrollTableViewNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -56,7 +61,12 @@ class TimelineViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
-	}
+        NotificationCenter.default.addObserver(self, selector: #selector(handleScrollToTopNotification), name: .scrollToTopNotification, object: nil)
+    }
+
+    @objc override func handleScrollToTopGesture() {
+        self.tableView.setContentOffset(CGPoint(x: 0, y: -self.view.safeAreaTop()), animated: true)
+    }
 	
 	func updateLoggedInStatus() {
 		let token = Settings.snippetsToken()
@@ -166,7 +176,12 @@ class TimelineViewController: UIViewController {
 	@objc func handleCurrentUserUpdatedNotification() {
 		self.loadTimeline()
 	}
-	
+
+    @objc func handleScrollToTopNotification() {
+        let safeAreaTop = self.view.safeAreaTop()
+        self.tableView.setContentOffset(CGPoint(x: 0, y: -safeAreaTop), animated: true)
+    }
+
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -219,8 +234,9 @@ class TimelineViewController: UIViewController {
                 if error == nil && postObjects.count > 0 {
                     self.refreshTableView(postObjects)
                 }
-                else if let err = error {
-                    Dialog(self).information("Error: " + err.localizedDescription)
+                else if let _ = error {
+                    self.loadingData = false
+                    self.loadTimeline()
                 }
 				self.loadingData = false
 				self.spinner.stopAnimating()
@@ -439,22 +455,5 @@ extension TimelineViewController : UITextViewDelegate {
 
 
 
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-extension TimelineViewController : SnippetsScrollContentProtocol {
-	func prepareToDisplay() {
-		self.navigationController?.navigationBar.topItem?.title = "Timeline"
-		self.navigationController?.navigationBar.topItem?.titleView = nil
-		self.setupNotifications()
-		self.updateLoggedInStatus()
-	}
-	
-	func prepareToHide() {
-		NotificationCenter.default.removeObserver(self)
-	}
-	
-}
 
 

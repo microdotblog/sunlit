@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import Snippets
 
-class DiscoverViewController: UIViewController {
+class DiscoverViewController: ContentViewController {
 	
 	@IBOutlet var busyIndicator : UIActivityIndicatorView!
 	@IBOutlet var collectionView : UICollectionView!
@@ -45,7 +45,16 @@ class DiscoverViewController: UIViewController {
 		self.setupSnippets()
 	}
 
-	func setupNavigation() {
+    override func prepareToDisplay() {
+        super.prepareToDisplay()
+
+        self.loadTagmoji()
+        self.collectionView.reloadData()
+        self.tableView.reloadData()
+    }
+
+
+	override func setupNavigation() {
 		var items: [ UIImage ]  = []
 		if let grid_image = UIImage(systemName: "square.grid.2x2") {
 			items.append(grid_image)
@@ -136,9 +145,8 @@ class DiscoverViewController: UIViewController {
 		self.collectionView.addSubview(self.collectionViewRefreshControl)
 	}
 
-	func setupNotifications() {
-		// Clear out any old notification registrations...
-		NotificationCenter.default.removeObserver(self)
+	override func setupNotifications() {
+        super.setupNotifications()
 
 		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: .scrollTableViewNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -147,7 +155,12 @@ class DiscoverViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
 	}
-	
+
+    @objc override func handleScrollToTopGesture() {
+        self.tableView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+        self.collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+    }
+
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -673,21 +686,3 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 }
 
 
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-extension DiscoverViewController : SnippetsScrollContentProtocol {
-	func prepareToDisplay() {
-		self.setupNavigation()
-		self.setupNotifications()
-		self.loadTagmoji()
-        self.collectionView.reloadData()
-        self.tableView.reloadData()
-	}
-	
-	func prepareToHide() {
-		NotificationCenter.default.removeObserver(self)
-	}
-	
-}
