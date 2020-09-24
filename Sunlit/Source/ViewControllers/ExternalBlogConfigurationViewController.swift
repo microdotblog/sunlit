@@ -124,7 +124,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
 			let tokenStrings = SnippetsXMLLinkParser.parse(data, relValue: "token_endpoint")
 			
 			if var authEndpoint = authStrings.first,
-				let tokenEndpoint = tokenStrings.first,
+				let _ /*tokenEndpoint */ = tokenStrings.first,
 				let micropubEndpoint = links.first {
 				
 				let micropubState = UUID().uuidString

@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import Snippets
 
-class MyProfileViewController: UIViewController {
+class MyProfileViewController: ContentViewController {
 		
 	var user : SnippetsUser!
 	var updatedUserInfo : SnippetsUser? = nil
@@ -37,8 +37,40 @@ class MyProfileViewController: UIViewController {
 		
 		self.refreshControl.addTarget(self, action: #selector(fetchUserInfo), for: .valueChanged)
 		self.collectionView.addSubview(self.refreshControl)
+    }
 
-		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
+    override func navbarTitle() -> String {
+        var title = "Profile"
+
+        self.user = SnippetsUser.current()
+        if self.user.userName.count < 10 {
+            title = "@" + self.user.userName
+        }
+
+        return title
+    }
+
+    @objc override func handleScrollToTopGesture() {
+        self.collectionView.setContentOffset(CGPoint(x: 0, y: -self.view.safeAreaTop()), animated: true)
+    }
+
+    override func setupNotifications() {
+        super.setupNotifications()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
+    }
+
+    override func prepareToDisplay() {
+        super.prepareToDisplay()
+
+        self.collectionView.reloadData()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleViewFollowingButtonClickedNotification), name: .followingButtonClickedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
+
+        self.fetchUserInfo()
     }
 		
 	@objc func handleCurrentUserUpdatedNotification() {
@@ -319,33 +351,4 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 }
 
 
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-extension MyProfileViewController : SnippetsScrollContentProtocol {
-	func prepareToDisplay() {
-		self.user = SnippetsUser.current()
-		if self.user.userName.count < 10 {
-			self.navigationController?.navigationBar.topItem?.title = "@" + self.user.userName
-		}
-		else {
-			self.navigationController?.navigationBar.topItem?.title = "Profile"
-		}
-		self.navigationController?.navigationBar.topItem?.titleView = nil
-		self.collectionView.reloadData()
-
-		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleViewFollowingButtonClickedNotification), name: .followingButtonClickedNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
-
-		self.fetchUserInfo()
-	}
-	
-	func prepareToHide() {
-		NotificationCenter.default.removeObserver(self)
-	}
-	
-}
 

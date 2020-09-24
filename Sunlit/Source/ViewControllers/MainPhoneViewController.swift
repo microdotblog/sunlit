@@ -23,7 +23,7 @@ class MainPhoneViewController: UIViewController {
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
 	var mentionsViewController : MentionsViewController!
-	var currentViewController : SnippetsScrollContentProtocol? = nil
+	var currentViewController : ContentViewController? = nil
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -98,7 +98,7 @@ class MainPhoneViewController: UIViewController {
 		self.scrollView.contentSize = CGSize(width: frame.origin.x, height: 0)
 
 		self.timelineButton.isSelected = true
-		self.timelineButton.isEnabled = false
+		//self.timelineButton.isEnabled = false
 		self.currentViewController = self.timelineViewController
 		self.timelineViewController.prepareToDisplay()
 	}
@@ -220,6 +220,12 @@ class MainPhoneViewController: UIViewController {
 	}
 				
 	func onShowTimeline() {
+
+        if self.currentViewController == self.timelineViewController {
+            self.timelineViewController.handleScrollToTopGesture()
+            return
+        }
+
         var animate = false
         if self.currentViewController == self.mentionsViewController {
             animate = true
@@ -234,6 +240,12 @@ class MainPhoneViewController: UIViewController {
 	}
 
 	func onShowMentions() {
+
+        if self.currentViewController == self.mentionsViewController {
+            self.mentionsViewController.handleScrollToTopGesture()
+            return
+        }
+
         var animate = false
         if self.currentViewController == self.timelineViewController ||
             self.currentViewController == self.discoverViewController {
@@ -250,6 +262,12 @@ class MainPhoneViewController: UIViewController {
 	}
 
 	func onShowDiscover() {
+
+        if self.currentViewController == self.discoverViewController {
+            self.discoverViewController.handleScrollToTopGesture()
+            return
+        }
+
         var animate = false
         if self.currentViewController == self.mentionsViewController ||
             self.currentViewController == self.profileViewController{
@@ -264,6 +282,12 @@ class MainPhoneViewController: UIViewController {
 	}
 	
 	func onShowProfile() {
+
+        if self.currentViewController == self.profileViewController {
+            self.profileViewController.handleScrollToTopGesture()
+            return
+        }
+
         var animate = false
         if self.currentViewController == self.discoverViewController {
             animate = true
@@ -289,10 +313,10 @@ extension MainPhoneViewController : UIScrollViewDelegate {
         let offset = scrollView.contentOffset.x
         let frameSize = scrollView.bounds.size.width
 
-        self.timelineButton.isEnabled = true
-        self.profileButton.isEnabled = true
-        self.discoverButton.isEnabled = true
-        self.mentionsButton.isEnabled = true
+        //self.timelineButton.isEnabled = true
+        //self.profileButton.isEnabled = true
+        //self.discoverButton.isEnabled = true
+        //self.mentionsButton.isEnabled = true
         self.timelineButton.isSelected = false
         self.profileButton.isSelected = false
         self.discoverButton.isSelected = false
@@ -300,19 +324,19 @@ extension MainPhoneViewController : UIScrollViewDelegate {
         
         if offset < (frameSize / 2.0) {
             self.timelineButton.isSelected = true
-            self.timelineButton.isEnabled = false
+            //self.timelineButton.isEnabled = false
         }
         else if offset < (frameSize + (frameSize / 2.0)) {
             self.mentionsButton.isSelected = true
-            self.mentionsButton.isEnabled = false
+            //self.mentionsButton.isEnabled = false
         }
         else if offset < (frameSize * 2.0 + (frameSize / 2.0)) {
             self.discoverButton.isSelected = true
-            self.discoverButton.isEnabled = false
+            //self.discoverButton.isEnabled = false
         }
         else {
             self.profileButton.isSelected = true
-            self.profileButton.isEnabled = false
+            //self.profileButton.isEnabled = false
         }
     }
 

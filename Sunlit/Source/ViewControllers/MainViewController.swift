@@ -25,7 +25,7 @@ class MainViewController: UIViewController {
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
 	var mentionsViewController : MentionsViewController!
-	var currentContentViewController : SnippetsScrollContentProtocol? = nil
+	var currentContentViewController : ContentViewController? = nil
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -420,26 +420,24 @@ class MainViewController: UIViewController {
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-	func activateContentViewController(_ viewController : SnippetsScrollContentProtocol) {
+	func activateContentViewController(_ viewController : ContentViewController) {
 		
 		self.navigationController?.popToRootViewController(animated: false)
 		self.deactivateContentViewController(self.currentContentViewController)
 
-		if let currentViewController = viewController as? UIViewController {
-			self.addChild(currentViewController)
-			self.view.addSubview(currentViewController.view)
-			currentViewController.view.translatesAutoresizingMaskIntoConstraints = false
-			currentViewController.view.constrainAllSides(self.view)
-			currentViewController.view.setNeedsLayout()
-		}
-		
+        self.addChild(viewController)
+        self.view.addSubview(viewController.view)
+        viewController.view.translatesAutoresizingMaskIntoConstraints = false
+        viewController.view.constrainAllSides(self.view)
+        viewController.view.setNeedsLayout()
+
 		self.currentContentViewController = viewController
 		self.currentContentViewController?.prepareToDisplay()
 	}
 	
-	func deactivateContentViewController(_ viewController : SnippetsScrollContentProtocol?) {
+	func deactivateContentViewController(_ viewController : ContentViewController?) {
 		
-		if let previousViewController = viewController as? UIViewController {
+		if let previousViewController = viewController {
 			previousViewController.removeFromParent()
 			previousViewController.view.removeFromSuperview()
 			viewController!.prepareToHide()

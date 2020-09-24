@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MentionsViewController: UIViewController {
+class MentionsViewController: ContentViewController {
 
 	@IBOutlet var spinner : UIActivityIndicatorView!
 	@IBOutlet var tableView : UITableView!
@@ -24,7 +24,35 @@ class MentionsViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 	}
-	
+
+    override func navbarTitle() -> String {
+        return "Mentions"
+    }
+
+    @objc override func handleScrollToTopGesture() {
+        self.tableView.setContentOffset(CGPoint(x: 0, y: -self.view.safeAreaTop()), animated: true)
+    }
+
+    override func prepareToDisplay() {
+        super.prepareToDisplay()
+
+        SunlitMentions.shared.allMentionsViewed()
+
+        self.posts = SunlitMentions.shared.allMentions()
+        self.tableView.reloadData()
+
+        SunlitMentions.shared.update {
+        }
+    }
+
+    override func setupNotifications() {
+        super.setupNotifications()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAvatarLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
+    }
+
+
 	@objc func handleAvatarLoadedNotification(_ notification: Notification) {
 		DispatchQueue.main.async {
 			self.tableView.reloadData()
@@ -66,29 +94,3 @@ extension MentionsViewController : UITableViewDelegate, UITableViewDataSource {
 }
 
 
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-extension MentionsViewController : SnippetsScrollContentProtocol {
-	func prepareToDisplay() {
-		self.navigationController?.navigationBar.topItem?.title = "Mentions"
-		self.navigationController?.navigationBar.topItem?.titleView = nil
-		
-		SunlitMentions.shared.allMentionsViewed()
-
-		self.posts = SunlitMentions.shared.allMentions()
-		self.tableView.reloadData()
-		
-		SunlitMentions.shared.update {
-		}
-
-		NotificationCenter.default.addObserver(self, selector: #selector(handleAvatarLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
-	}
-	
-	func prepareToHide() {
-		NotificationCenter.default.removeObserver(self)
-	}
-
-}
