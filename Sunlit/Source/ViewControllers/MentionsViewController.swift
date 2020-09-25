@@ -43,6 +43,14 @@ class MentionsViewController: ContentViewController {
 
         SunlitMentions.shared.update {
         }
+
+		UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+			if granted {
+				DispatchQueue.main.async {
+					UIApplication.shared.registerForRemoteNotifications()
+				}
+			}
+		}
     }
 
     override func setupNotifications() {

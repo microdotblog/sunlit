@@ -8,6 +8,7 @@
 
 import UIKit
 import UUSwift
+import Snippets
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -49,6 +50,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Called when the user discards a scene session.
 		// If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
 		// Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+	}
+
+	func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+		let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
+		let token = tokenParts.joined()
+
+		var fullPath : NSString = Snippets.Configuration.timeline.microblogEndpoint as NSString
+		fullPath = fullPath.appendingPathComponent("/users/push/register") as NSString
+
+
+		let arguments : [ String : String ] = [ "device_token" : token,
+												"push_env" : "production",
+												"app_name" : "Sunlit" ]
+
+		let request = Snippets.securePost(Snippets.Configuration.timeline, path: fullPath as String, arguments: arguments)
+
+		_ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
+		})
+
+
+	}
+
+	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+		NotificationCenter.default.post(name: .showMentionsNotification, object: userInfo)
 	}
 
 

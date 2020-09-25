@@ -103,25 +103,25 @@ public class Snippets : NSObject {
 
 extension Snippets {
 
-    static func secureGet(_ configuration: Snippets.Configuration, path : String, arguments : [String : String]) -> UUHttpRequest
+    static public func secureGet(_ configuration: Snippets.Configuration, path : String, arguments : [String : String]) -> UUHttpRequest
     {
         let request = UUHttpRequest(url:path, method: .get, queryArguments: arguments, headers : ["Authorization" : "Bearer \(configuration.micropubToken)"])
         return request
     }
 
-    static func securePut(_ configuration: Snippets.Configuration, path : String, arguments : [String : String], body : Data? = nil) -> UUHttpRequest
+    static public func securePut(_ configuration: Snippets.Configuration, path : String, arguments : [String : String], body : Data? = nil) -> UUHttpRequest
     {
         let request = UUHttpRequest(url:path, method: .put,  queryArguments:arguments, headers : ["Authorization" : "Bearer \(configuration.micropubToken)"], body:body)
         return request
     }
 
-    static func securePost(_ configuration: Snippets.Configuration, path : String, arguments : [String : String], body : Data? = nil) -> UUHttpRequest
+    static public func securePost(_ configuration: Snippets.Configuration, path : String, arguments : [String : String], body : Data? = nil) -> UUHttpRequest
     {
         let request = UUHttpRequest(url:path, method: .post, queryArguments:arguments, headers : ["Authorization" : "Bearer \(configuration.micropubToken)"], body:body)
         return request
     }
     
-    static func secureDelete(_ configuration: Snippets.Configuration, path : String, arguments : [String : String]) -> UUHttpRequest
+    static public func secureDelete(_ configuration: Snippets.Configuration, path : String, arguments : [String : String]) -> UUHttpRequest
     {
         let request = UUHttpRequest(url: path, method: .delete, queryArguments: arguments)
         request.headerFields["Authorization"] = "Bearer \(configuration.micropubToken)"
@@ -129,7 +129,7 @@ extension Snippets {
         return request
     }
 
-    static func appendParameter(body : String, name : String, content : String) -> String
+    static public func appendParameter(body : String, name : String, content : String) -> String
     {
         var newBody = body
         if (body.count > 0 && content.count > 0)
