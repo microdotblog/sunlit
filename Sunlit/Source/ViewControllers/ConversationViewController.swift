@@ -22,7 +22,8 @@ class ConversationViewController: UIViewController {
 	@IBOutlet var replyingToButton : UIButton!
 
 	@IBOutlet var replyContainerBottomConstraint : NSLayoutConstraint!
-	
+	@IBOutlet var replyTextfieldBottomMarginConstraint: NSLayoutConstraint!
+
 	var posts : [SunlitPost] = []
 	var allUsers : Set<String> = []
 	var selectedUsers : Set<String> = []
@@ -42,7 +43,6 @@ class ConversationViewController: UIViewController {
 		self.setupTable()
 		self.setupNavigation()
 		self.setupGesture()
-
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -52,6 +52,24 @@ class ConversationViewController: UIViewController {
 
 		self.setupNotifications()
 		self.spinner.startAnimating()
+	}
+
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+
+		let deviceWithHomeButtonBottomMargin: CGFloat = 8
+		let iPhoneWithHomeIndicatorBottomMargin: CGFloat = -2
+		let iPadWithHomeIndicatorBottomMargin: CGFloat = 0
+
+		if self.view.safeAreaInsets.bottom > 0 {
+			if UIDevice.current.userInterfaceIdiom == .pad {
+				self.replyTextfieldBottomMarginConstraint.constant = iPadWithHomeIndicatorBottomMargin
+			} else {
+				self.replyTextfieldBottomMarginConstraint.constant = iPhoneWithHomeIndicatorBottomMargin
+			}
+		} else {
+			self.replyTextfieldBottomMarginConstraint.constant = deviceWithHomeButtonBottomMargin
+		}
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -182,7 +200,8 @@ class ConversationViewController: UIViewController {
 				}
 
 				UIView.animate(withDuration: 0.25) {
-					self.replyContainerBottomConstraint.constant = frame.size.height  - 20.0//+ self.view.safeAreaInsets.bottom
+					self.replyTextfieldBottomMarginConstraint.isActive = false
+					self.replyContainerBottomConstraint.constant = frame.size.height
 					self.postButton.alpha = 1.0
 					self.view.layoutIfNeeded()
 					self.replyFieldPlaceholder.alpha = 0.0
@@ -196,6 +215,7 @@ class ConversationViewController: UIViewController {
 				
 			UIView.animate(withDuration: 0.25) {
 				self.replyContainerBottomConstraint.constant = 0
+				self.replyTextfieldBottomMarginConstraint.isActive = true
 				//self.tableBottomConstraint.constant = 44
 				self.postButton.alpha = 0.0
 				self.view.layoutIfNeeded()
