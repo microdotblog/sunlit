@@ -37,7 +37,7 @@ class SunlitPost : SnippetsPost {
 		
 		// We create an allowedList for most of the html elements as well as strip out the image tags
 		if let allowedList = try? AllowedList.basicWithImages() {
-			_ = try? allowedList.removeTags("p")
+//			_ = try? allowedList.removeTags("p")
 			_ = try? allowedList.addTags("style")
 			_ = try? allowedList.addTags("video").addAttributes("video", "src", "width", "height", "alt", "poster")
 			if let cleanString = try? SwiftSoup.clean(html, allowedList) {
@@ -68,7 +68,8 @@ class SunlitPost : SnippetsPost {
 		if let document = try? SwiftSoup.parse(string) {
 			let images = findImageElements(document)
 			let videos = findVideoElements(document)
-			let text = stripImagesAndVideos(document, images, videos)
+			var text = stripImagesAndVideos(document, images, videos)
+			text = text.replaceAll(of: "<p></p>", with: "")
 			parsedEntry.htmlString = text
 			
 			var aspectRatio : Float = 0.0
