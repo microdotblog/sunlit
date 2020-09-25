@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="kWB-by-1xh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17503.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="kWB-by-1xh">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17502"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,46 +19,47 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gpr-fc-7bF">
-                                <rect key="frame" x="0.0" y="92" width="414" height="721"/>
+                                <rect key="frame" x="0.0" y="104.5" width="414" height="708.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="BlogSelectionTableViewCell" id="J6r-mN-fiv" customClass="BlogSelectionTableViewCell" customModule="Sunlit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="88"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="BlogSelectionTableViewCell" rowHeight="80" id="J6r-mN-fiv" customClass="BlogSelectionTableViewCell" customModule="Sunlit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="J6r-mN-fiv" id="6bI-1A-ai0">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="GTb-3M-8d3">
-                                                    <rect key="frame" x="20" y="27.5" width="44" height="43"/>
+                                                    <rect key="frame" x="20" y="25.5" width="30" height="29"/>
                                                     <color key="tintColor" systemColor="labelColor"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="44" id="BZ2-Xv-Xhh"/>
-                                                        <constraint firstAttribute="width" constant="44" id="QeD-3H-tnB"/>
+                                                        <constraint firstAttribute="height" constant="30" id="BZ2-Xv-Xhh"/>
+                                                        <constraint firstAttribute="width" constant="30" id="QeD-3H-tnB"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="cheesemaker.micro.blog" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XtA-Xf-rrx">
-                                                    <rect key="frame" x="72" y="39" width="322" height="20.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <rect key="frame" x="58" y="30" width="336" height="20.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2iF-h8-f02">
-                                                    <rect key="frame" x="0.0" y="87" width="414" height="1"/>
-                                                    <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                                    <rect key="frame" x="0.0" y="79.5" width="414" height="0.5"/>
+                                                    <color key="backgroundColor" systemColor="separatorColor"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="1" id="gHp-kf-sDb"/>
+                                                        <constraint firstAttribute="height" constant="0.5" id="gHp-kf-sDb"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="XtA-Xf-rrx" firstAttribute="centerY" secondItem="GTb-3M-8d3" secondAttribute="centerY" id="8Gm-zE-kaO"/>
-                                                <constraint firstItem="2iF-h8-f02" firstAttribute="top" secondItem="GTb-3M-8d3" secondAttribute="bottom" constant="16" id="LKv-wW-TST"/>
+                                                <constraint firstItem="2iF-h8-f02" firstAttribute="top" secondItem="GTb-3M-8d3" secondAttribute="bottom" constant="24.5" id="8R9-XM-hRk"/>
+                                                <constraint firstItem="GTb-3M-8d3" firstAttribute="centerY" secondItem="6bI-1A-ai0" secondAttribute="centerY" id="AsN-fj-QHC"/>
+                                                <constraint firstItem="GTb-3M-8d3" firstAttribute="top" secondItem="6bI-1A-ai0" secondAttribute="topMargin" constant="14" id="CTA-gM-qTh"/>
                                                 <constraint firstItem="GTb-3M-8d3" firstAttribute="leading" secondItem="6bI-1A-ai0" secondAttribute="leadingMargin" id="NTY-yx-3vo"/>
                                                 <constraint firstItem="XtA-Xf-rrx" firstAttribute="leading" secondItem="GTb-3M-8d3" secondAttribute="trailing" constant="8" symbolic="YES" id="YNX-NK-5Oo"/>
                                                 <constraint firstItem="2iF-h8-f02" firstAttribute="leading" secondItem="6bI-1A-ai0" secondAttribute="leading" id="fR6-Bn-zDg"/>
                                                 <constraint firstItem="XtA-Xf-rrx" firstAttribute="trailing" secondItem="6bI-1A-ai0" secondAttribute="trailingMargin" id="ghn-ls-CT8"/>
                                                 <constraint firstAttribute="trailing" secondItem="2iF-h8-f02" secondAttribute="trailing" id="huq-zf-wa3"/>
-                                                <constraint firstItem="GTb-3M-8d3" firstAttribute="top" secondItem="6bI-1A-ai0" secondAttribute="topMargin" constant="16" id="i08-a4-NIW"/>
                                                 <constraint firstAttribute="bottom" secondItem="2iF-h8-f02" secondAttribute="bottom" id="kV2-on-XAU"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -66,17 +68,17 @@
                                             <outlet property="selectionImage" destination="GTb-3M-8d3" id="Hjg-Ip-oMX"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BlogSelectionAddNewBlog" id="ktl-15-Q2M">
-                                        <rect key="frame" x="0.0" y="116" width="414" height="110"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BlogSelectionAddNewCell" id="ktl-15-Q2M" customClass="BlogSelectionAddNewCell" customModule="Sunlit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="108" width="414" height="106.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ktl-15-Q2M" id="QI3-iA-202">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="106.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add new blog" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1u-Td-akK">
-                                                    <rect key="frame" x="147" y="43" width="120" height="24"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                    <color key="textColor" systemColor="linkColor"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add external blog" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1u-Td-akK">
+                                                    <rect key="frame" x="140" y="43" width="134" height="20.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <color key="textColor" name="color_tab_selected"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -87,6 +89,9 @@
                                                 <constraint firstItem="b1u-Td-akK" firstAttribute="centerY" secondItem="QI3-iA-202" secondAttribute="centerY" id="xI5-05-Iu5"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="titleField" destination="b1u-Td-akK" id="BLh-P8-ghq"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -95,8 +100,8 @@
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When writing a new post, publish to:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="20l-ij-qN6">
-                                <rect key="frame" x="20" y="64" width="316" height="24"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                <rect key="frame" x="20" y="64" width="276" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -131,7 +136,7 @@
                             <constraint firstItem="rQs-dT-iWL" firstAttribute="bottom" secondItem="fJk-9g-EBE" secondAttribute="bottom" id="Euy-m1-hWS"/>
                             <constraint firstItem="fJk-9g-EBE" firstAttribute="trailing" secondItem="O5g-Bm-d3v" secondAttribute="trailing" constant="8" id="MeS-p2-d1f"/>
                             <constraint firstItem="20l-ij-qN6" firstAttribute="top" secondItem="fJk-9g-EBE" secondAttribute="top" constant="20" id="Tpl-N2-HeB"/>
-                            <constraint firstItem="gpr-fc-7bF" firstAttribute="top" secondItem="20l-ij-qN6" secondAttribute="bottom" constant="4" id="Vjf-dl-RzV"/>
+                            <constraint firstItem="gpr-fc-7bF" firstAttribute="top" secondItem="20l-ij-qN6" secondAttribute="bottom" constant="20" id="Vjf-dl-RzV"/>
                             <constraint firstItem="O5g-Bm-d3v" firstAttribute="centerY" secondItem="rQs-dT-iWL" secondAttribute="centerY" id="WhC-fL-j74"/>
                             <constraint firstItem="rQs-dT-iWL" firstAttribute="centerX" secondItem="Zju-dZ-sT1" secondAttribute="centerX" id="dDS-xC-4ga"/>
                             <constraint firstItem="uWo-2e-B1A" firstAttribute="trailing" secondItem="fJk-9g-EBE" secondAttribute="trailing" id="eL6-hK-Fbj"/>
@@ -153,11 +158,14 @@
     </scenes>
     <resources>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
+        <namedColor name="color_tab_selected">
+            <color red="0.0" green="0.60000002384185791" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="separatorColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

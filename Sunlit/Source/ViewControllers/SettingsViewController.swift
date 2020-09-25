@@ -98,7 +98,7 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row >= self.tableData.count {
-            return tableView.dequeueReusableCell(withIdentifier: "BlogSelectionAddNewBlog")!
+            return tableView.dequeueReusableCell(withIdentifier: "BlogSelectionAddNewCell")!
         }
         
         let blogInfo = self.tableData[indexPath.row]
