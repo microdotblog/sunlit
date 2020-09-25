@@ -21,11 +21,14 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 	@IBOutlet var userHandle : UILabel!
 	@IBOutlet var postText : UITextView!
     @IBOutlet var deleteButton : UIButton!
+    @IBOutlet var previousButton : UIButton!
+    @IBOutlet var nextButton : UIButton!
 	
 	var pathToImage = ""
 	var post : SunlitPost!
+    var swipeNextGesture = UISwipeGestureRecognizer(target: self, action: #selector(onNextButton))
+    var swipePreviousGesture = UISwipeGestureRecognizer(target: self, action: #selector(onPreviousButton))
 
-	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -37,6 +40,8 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		self.setupScrollView()
 		self.setupGestures()
 		self.setupPostInfo()
+        self.setupImage()
+        self.updateNavigationButtons()
         
         self.deleteButton.isHidden = self.post.owner.userName != SnippetsUser.current()?.userName
 		
@@ -52,7 +57,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
     
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-//		self.image.frame = self.scrollView.bounds
+        //		self.image.frame = self.scrollView.bounds
 	}
 	
 	func setupNavigationBar() {
@@ -65,6 +70,9 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 	}
 	
 	func setupGestures() {
+        self.swipeNextGesture.direction = .right
+        self.swipePreviousGesture.direction = .left
+
 		let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(onDoubleTap))
 		doubleTapGesture.numberOfTapsRequired = 2
 		self.scrollView.addGestureRecognizer(doubleTapGesture)
@@ -73,16 +81,51 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		singleTapGesture.require(toFail: doubleTapGesture)
 		self.scrollView.addGestureRecognizer(singleTapGesture)
 		
-		let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(dismissViewController))
-		swipeGesture.require(toFail: singleTapGesture)
-		swipeGesture.require(toFail: doubleTapGesture)
-		self.scrollView.addGestureRecognizer(swipeGesture)
-        
         let userProfileGesture = UITapGestureRecognizer(target: self, action: #selector(onViewUserProfile))
         self.userAvatar.addGestureRecognizer(userProfileGesture)
         self.userAvatar.isUserInteractionEnabled = true
+
+        self.scrollView.addGestureRecognizer(self.swipeNextGesture)
+        self.scrollView.addGestureRecognizer(self.swipePreviousGesture)
 	}
-	
+
+    func indexOfCurrentPath() -> Int {
+        var index = 0
+        for image in self.post.images {
+            if self.pathToImage == image {
+                return index
+            }
+
+            index = index + 1
+        }
+
+        return index
+    }
+
+    func updateNavigationButtons() {
+        let currentIndex = self.indexOfCurrentPath()
+
+        self.previousButton.isHidden = false
+        self.nextButton.isHidden = false
+
+        if currentIndex == 0 {
+            self.previousButton.isHidden = true
+        }
+        if currentIndex >= (self.post.images.count - 1) {
+            self.nextButton.isHidden = true
+        }
+
+        self.updateSwipeGestures()
+    }
+
+    func setupImage() {
+        ImageCache.fetch(self, self.pathToImage) { (image) in
+            DispatchQueue.main.async {
+                self.image.image = image
+            }
+        }
+    }
+
 	func setupPostInfo() {
 		// Recreate the post with white text...
 		self.post = SunlitPost.create(self.post, textColor: .white)
@@ -97,12 +140,6 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 			}
 		}
 
-		ImageCache.fetch(self, self.pathToImage) { (image) in
-			DispatchQueue.main.async {
-				self.image.image = image
-			}
-		}
-		
 		self.userAvatar.layer.cornerRadius = (self.userAvatar.bounds.size.height / 2.0) - 1.0
 	}
 	
@@ -110,10 +147,21 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		if self.scrollView.zoomScale > 1.0 {
 			UIView.animate(withDuration: 0.15) {
 				self.scrollView.zoomScale = 1.0
+
+                if self.topInfoView.alpha > 0.0 {
+                    self.nextButton.alpha = 0.6
+                    self.previousButton.alpha = 0.6
+                }
+                
+                self.updateSwipeGestures()
 			}
 		}
 		else {
 			UIView.animate(withDuration: 0.15) {
+                self.nextButton.alpha = 0.0
+                self.previousButton.alpha = 0.0
+                self.updateSwipeGestures()
+
 				self.scrollView.zoomScale = self.scrollView.maximumZoomScale
 			}
 		}
@@ -121,16 +169,25 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 	
 	@objc func onSingleTap() {
 		var alpha : CGFloat = 0.0
+        var buttonAlpha : CGFloat = 0.0
+
+        self.swipeNextGesture.isEnabled = false
+        self.swipePreviousGesture.isEnabled = false
+
 		if self.topInfoView.alpha == 0.0 {
 			alpha = 1.0
+            buttonAlpha = 0.6
 		}
 
 		UIView.animate(withDuration: 0.15, delay: 0.35, options: .curveLinear, animations: {
 			self.topInfoView.alpha = alpha
 			self.bottomInfoView.alpha = alpha
+            self.nextButton.alpha = buttonAlpha
+            self.previousButton.alpha = buttonAlpha
+
 //			self.scrollView.zoomScale = 1.0
 		}) { (complete) in
-			
+            self.updateSwipeGestures()
 		}
 	}
     
@@ -162,6 +219,22 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
             }
         }
     }
+
+    @IBAction func onNextButton() {
+        let index = self.indexOfCurrentPath() + 1
+        self.pathToImage = self.post.images[index]
+
+        self.setupImage()
+        self.updateNavigationButtons()
+    }
+
+    @IBAction func onPreviousButton() {
+        let index = self.indexOfCurrentPath() - 1
+        self.pathToImage = self.post.images[index]
+
+        self.setupImage()
+        self.updateNavigationButtons()
+    }
 	
 	@IBAction @objc func onShare() {
 		let url = URL(string: self.post.path)!
@@ -190,5 +263,25 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 	func viewForZooming(in scrollView: UIScrollView) -> UIView? {
 		return self.image
 	}
+
+    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        self.nextButton.alpha = 0.0
+        self.previousButton.alpha = 0.0
+        self.swipeNextGesture.isEnabled = false
+        self.swipePreviousGesture.isEnabled = false
+    }
+
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        if scale == 1.0 && self.topInfoView.alpha > 0.0 {
+            self.nextButton.alpha = 0.6
+            self.previousButton.alpha = 0.6
+            self.updateSwipeGestures()
+        }
+    }
+
+    func updateSwipeGestures() {
+        self.swipeNextGesture.isEnabled = !self.nextButton.isHidden && self.nextButton.alpha > 0.0
+        self.swipePreviousGesture.isEnabled = !self.previousButton.isHidden && self.previousButton.alpha > 0.0
+    }
 }
 

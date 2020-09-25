@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17140" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PHD-An-Ibq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="PHD-An-Ibq">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17115"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -24,13 +24,41 @@
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EhT-yW-dWa">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                     </imageView>
+                                    <button opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bzW-Ki-fpY">
+                                        <rect key="frame" x="362" y="426" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="Pit-n9-vnV"/>
+                                            <constraint firstAttribute="height" constant="44" id="hep-ZL-PAO"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="chevron.right.circle.fill" catalog="system"/>
+                                        <connections>
+                                            <action selector="onNextButton" destination="PHD-An-Ibq" eventType="touchUpInside" id="qt4-7m-UvR"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="63o-4v-wTg">
+                                        <rect key="frame" x="8" y="426" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="Onc-B8-2CE"/>
+                                            <constraint firstAttribute="width" constant="44" id="rC9-Nh-yWz"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="chevron.left.circle.fill" catalog="system"/>
+                                        <connections>
+                                            <action selector="onPreviousButton" destination="PHD-An-Ibq" eventType="touchUpInside" id="aO1-gV-MNu"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="EhT-yW-dWa" firstAttribute="bottom" secondItem="BPq-m9-8F8" secondAttribute="bottom" id="7oD-of-kht"/>
+                                    <constraint firstItem="63o-4v-wTg" firstAttribute="centerY" secondItem="40L-Qi-E5N" secondAttribute="centerY" id="Foy-NU-X5x"/>
                                     <constraint firstItem="EhT-yW-dWa" firstAttribute="height" secondItem="Hdj-tC-ZQg" secondAttribute="height" id="Hro-1I-Rve"/>
                                     <constraint firstItem="EhT-yW-dWa" firstAttribute="leading" secondItem="BPq-m9-8F8" secondAttribute="leading" id="N3s-Ed-qY0"/>
                                     <constraint firstItem="EhT-yW-dWa" firstAttribute="trailing" secondItem="BPq-m9-8F8" secondAttribute="trailing" id="TrD-7p-Blj"/>
+                                    <constraint firstItem="bzW-Ki-fpY" firstAttribute="centerY" secondItem="40L-Qi-E5N" secondAttribute="centerY" id="Xuv-Tr-SeY"/>
+                                    <constraint firstItem="Hdj-tC-ZQg" firstAttribute="trailing" secondItem="bzW-Ki-fpY" secondAttribute="trailing" constant="8" id="fwm-wt-dhB"/>
+                                    <constraint firstItem="63o-4v-wTg" firstAttribute="leading" secondItem="Hdj-tC-ZQg" secondAttribute="leading" constant="8" id="gmW-pS-twk"/>
                                     <constraint firstItem="EhT-yW-dWa" firstAttribute="top" secondItem="BPq-m9-8F8" secondAttribute="top" id="hS9-AY-Bxu"/>
                                     <constraint firstItem="EhT-yW-dWa" firstAttribute="width" secondItem="Hdj-tC-ZQg" secondAttribute="width" id="skH-hZ-6Wh"/>
                                 </constraints>
@@ -212,7 +240,9 @@
                         <outlet property="deleteButton" destination="tyB-TI-uGy" id="jyn-Xg-oDz"/>
                         <outlet property="fullUserName" destination="kyn-kF-Ioz" id="RyJ-kx-Eqg"/>
                         <outlet property="image" destination="EhT-yW-dWa" id="ul1-ak-Yjc"/>
+                        <outlet property="nextButton" destination="bzW-Ki-fpY" id="sVM-pT-D38"/>
                         <outlet property="postText" destination="IkF-my-QPK" id="chy-Rp-2Ug"/>
+                        <outlet property="previousButton" destination="63o-4v-wTg" id="DJJ-An-nQ5"/>
                         <outlet property="scrollView" destination="40L-Qi-E5N" id="cni-nr-zv5"/>
                         <outlet property="topInfoView" destination="FVq-VH-8Ql" id="qVz-Qs-Wag"/>
                         <outlet property="userAvatar" destination="qYa-yJ-szY" id="7Ss-Bt-IUw"/>
@@ -226,6 +256,8 @@
     </scenes>
     <resources>
         <image name="bubble.left.and.bubble.right" catalog="system" width="128" height="96"/>
+        <image name="chevron.left.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="chevron.right.circle.fill" catalog="system" width="128" height="121"/>
         <image name="safari" catalog="system" width="128" height="121"/>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
         <image name="trash" catalog="system" width="121" height="128"/>
