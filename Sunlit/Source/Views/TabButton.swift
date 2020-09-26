@@ -11,6 +11,8 @@ import UIKit
 class TabButton: UIButton {
 
 	var defaultImage: UIImage?
+
+    var dotView : UIView = UIView()
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -18,6 +20,16 @@ class TabButton: UIButton {
 		if let imageview = self.findImageView() {
 			self.defaultImage = imageview.image
 		}
+
+        let dotSize : CGFloat = 6.0
+        self.dotView.layer.cornerRadius = dotSize / 2.0
+        self.dotView.backgroundColor = .red
+        self.dotView.clipsToBounds = true
+        self.dotView.isHidden = true
+        let x = (self.bounds.size.width / 2.0) - (dotSize + 1)
+        let y = self.bounds.size.height
+        self.dotView.frame = CGRect(x: x, y: y, width: dotSize, height: dotSize)
+        self.addSubview(self.dotView)
 	}
 	
 	private func findSubviewOf(class c: AnyClass) -> AnyObject? {
@@ -96,6 +108,15 @@ class TabButton: UIButton {
 					imageview.tintColor = UIColor(named: "color_tab_normal")
 				}
 			}
+        }
+    }
+
+    var shouldDisplayNotificationDot : Bool {
+        get {
+            return !self.dotView.isHidden
+        }
+        set (display) {
+            self.dotView.isHidden = !display
         }
     }
 	

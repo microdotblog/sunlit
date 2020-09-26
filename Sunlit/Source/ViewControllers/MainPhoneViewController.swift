@@ -179,14 +179,8 @@ class MainPhoneViewController: UIViewController {
 	}
 	
 	@objc func handleUserMentionsUpdated() {
-		/*let mentionCount = SunlitMentions.shared.newMentionCount()
-		
-		self.mentionContainer.isHidden = true
-		if mentionCount > 0 {
-			self.mentionContainer.isHidden = false
-			self.mentionIndicator.text = "\(mentionCount)"
-		}
-		*/
+        let mentionCount = SunlitMentions.shared.newMentionCount()
+        self.mentionsButton.shouldDisplayNotificationDot = mentionCount > 0
 	}
 
 	@IBAction func onTabBarButtonPressed(_ button : UIButton) {
