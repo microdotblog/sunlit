@@ -12,8 +12,6 @@ class ContentViewController : UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.setupNotifications()
     }
 
     dynamic func navbarTitle() -> String {
