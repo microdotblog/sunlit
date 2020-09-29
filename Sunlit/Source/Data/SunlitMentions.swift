@@ -65,7 +65,7 @@ class SunlitMentions {
 				NotificationCenter.default.post(name: .mentionsUpdatedNotification, object: nil)
 				
 				//UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .alert, .sound], categories: nil))
-//				UIApplication.shared.applicationIconBadgeNumber = self.newMentionCount()
+				UIApplication.shared.applicationIconBadgeNumber = self.newMentionCount()
 			}
 		}
 	}

@@ -37,6 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		BlogSettings.migrate()
 
+        SunlitMentions.shared.update { }
+
 		return true
 	}
 	
@@ -75,7 +77,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-		NotificationCenter.default.post(name: .showMentionsNotification, object: userInfo)
+        SunlitMentions.shared.update {
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .showMentionsNotification, object: userInfo)
+            }
+        }
 	}
 
 
