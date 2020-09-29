@@ -250,7 +250,132 @@ class BlogSettings : NSObject {
             self.save()
         }
     }
-    
+
+	static func migrate() {
+
+		// One time migration
+		if UserDefaults.standard.bool(forKey: "3.0 to 3.1 settings migration") {
+			return
+		}
+
+		UserDefaults.standard.setValue(true, forKey: "3.0 to 3.1 settings migration")
+
+		let usesExternalBlog = UserDefaults.standard.bool(forKey: externalBlogPreferenceKey)
+
+		migrateXMLRPCSettings(usesExternalBlog: usesExternalBlog)
+		migrateMicropubSettings(usesExternalBlog: usesExternalBlog)
+		migrateMicroblogSettings(usesExternalBlog: usesExternalBlog)
+	}
+
+	static func migrateMicroblogSettings(usesExternalBlog : Bool) {
+
+		if let permanentToken = Settings.snippetsToken() {
+			Snippets.Configuration.timeline.micropubToken = permanentToken
+		}
+
+		var selectedUid = ""
+		if let dictionary =  Settings.getInsecureDictionary(forKey: snippetsConfigurationKey) {
+			selectedUid = dictionary["uid"] as? String ?? ""
+		}
+
+		Snippets.Microblog.fetchCurrentUserConfiguration { (error, configuration) in
+
+			// Check for a media endpoint definition...
+			let mediaEndPoint : String = configuration["media-endpoint"] as? String ?? ""
+			let micropubEndPoint = Snippets.Configuration.timeline.micropubEndpoint
+			let micropubToken = Snippets.Configuration.timeline.micropubToken
+
+
+			if let destinations = configuration["destination"] as? [[String : Any]] {
+
+				for destination in destinations {
+					if let title = destination["name"] as? String,
+					   let blogId = destination["uid"] as? String {
+
+						let config = Snippets.Configuration.fromDictionary(destination)
+						config.micropubUid = blogId
+						config.micropubEndpoint = micropubEndPoint
+						config.micropubMediaEndpoint = mediaEndPoint
+						config.micropubToken = micropubToken
+
+						let blogSettings = BlogSettings(title)
+						blogSettings.blogName = title
+						blogSettings.snippetsConfiguration = config
+						blogSettings.save()
+
+						BlogSettings.addPublishedBlog(blogSettings)
+					}
+				}
+
+				if !usesExternalBlog {
+					selectedUid = selectedUid.replacingOccurrences(of: "https://", with: "")
+					selectedUid = selectedUid.replacingOccurrences(of: "/", with: "")
+					BlogSettings.publishingPath = selectedUid
+				}
+			}
+		}
+	}
+
+	static func migrateXMLRPCSettings(usesExternalBlog : Bool) {
+
+		let xmlUserName = UserDefaults.standard.object(forKey: xmlRPCBlogUsernameKey) as? String
+		let xmlPassword = Settings.getSecureString(forKey: xmlRPCBlogUsernameKey)
+		let xmlUrl = UserDefaults.standard.object(forKey: xmlRPCBlogURLKey) as? String
+		let xmlEndpoint = UserDefaults.standard.object(forKey: xmlRPCBlogEndpointKey) as? String
+		let xmlBlogId = UserDefaults.standard.object(forKey: xmlRPCBlogIDKey) as? String
+		let wordPress = Settings.getInsecureString(forKey: xmlRPCBlogAppKey) ==  "WordPress"
+
+		if let name = xmlUserName,
+		   let password = xmlPassword,
+		   let url = xmlUrl,
+		   let endpoint = xmlEndpoint,
+		   let blogId = xmlBlogId {
+
+			let blogSettings = BlogSettings(url)
+			blogSettings.blogAddress = url
+			blogSettings.username = name
+
+			var identity = Snippets.Configuration.xmlRpcConfiguration(username: name, password: password, endpoint: endpoint, blogId: blogId)
+			if wordPress {
+				identity = Snippets.Configuration.wordpressConfiguration(username: name, password: password, endpoint: endpoint, blogId: blogId)
+			}
+
+			blogSettings.snippetsConfiguration = identity
+
+			BlogSettings.addPublishedBlog(blogSettings)
+
+			if usesExternalBlog {
+				BlogSettings.publishingPath = url
+			}
+		}
+	}
+
+	static func migrateMicropubSettings(usesExternalBlog : Bool) {
+		let micropubToken = Settings.getSecureString(forKey: micropubAccessTokenKey)
+		let micropubMediaEndpoint = UserDefaults.standard.object(forKey: micropubMediaEndpointKey) as? String
+		let micropubPostingEndpoint = UserDefaults.standard.object(forKey: micropubUserKey) as? String
+		//let micropubState = UserDefaults.standard.object(forKey: micropubStateKey) as? String
+		let micropubUser = UserDefaults.standard.object(forKey: micropubUserKey) as? String
+
+		if let user = micropubUser,
+		   let token = micropubToken,
+		   let endpoint = micropubPostingEndpoint {
+
+			let config = Snippets.Configuration.micropubConfiguration(token: token, endpoint: endpoint)
+			config.micropubMediaEndpoint = micropubMediaEndpoint ?? ""
+
+			let settings = BlogSettings(user)
+			settings.microblogToken = token
+			settings.snippetsConfiguration = config
+			settings.save()
+			BlogSettings.addPublishedBlog(settings)
+
+			if usesExternalBlog {
+				BlogSettings.publishingPath = user
+			}
+		}
+	}
+
     var dictionary : [String : Any] = [:]
 
     
@@ -279,6 +404,8 @@ class BlogSettings : NSObject {
 	private static let micropubAccessTokenKey = "ExternalMicropubAccessToken"
 
 	private static let snippetsConfigurationKey = "SunlitBlogDictionary"
+
+	private static let externalBlogPreferenceKey = "ExternalBlogIsPreferred"
 }
 
 

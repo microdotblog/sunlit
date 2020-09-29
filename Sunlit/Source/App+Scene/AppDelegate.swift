@@ -35,6 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		UUHttpRequest.defaultTimeout = 30.0
 		UUHttpRequest.defaultCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
 
+		BlogSettings.migrate()
+
 		return true
 	}
 	
