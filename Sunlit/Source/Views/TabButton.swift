@@ -26,7 +26,7 @@ class TabButton: UIButton {
         self.dotView.backgroundColor = .gray
         self.dotView.clipsToBounds = true
         self.dotView.isHidden = true
-        let x = (self.bounds.size.width / 2.0) - (dotSize + 1)
+		let x = (self.bounds.size.width / 2.0) - (dotSize / 2.0)
         let y = self.bounds.size.height
         self.dotView.frame = CGRect(x: x, y: y, width: dotSize, height: dotSize)
         self.addSubview(self.dotView)
