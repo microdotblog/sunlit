@@ -338,7 +338,7 @@ class MainViewController: UIViewController {
 	
 	@objc func handleShowMentionsNotification() {
 		if UIDevice.current.userInterfaceIdiom == .phone {
-			self.navigationController?.pushViewController(self.mentionsViewController, animated: true)
+            self.phoneViewController?.onShowMentions()
 		}
 		else {
 			self.onTabletShowMentions()

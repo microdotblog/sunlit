@@ -42,6 +42,7 @@ class MentionsViewController: ContentViewController {
         self.tableView.reloadData()
 
         SunlitMentions.shared.update {
+            self.tableView.reloadData()
         }
 
 		UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in

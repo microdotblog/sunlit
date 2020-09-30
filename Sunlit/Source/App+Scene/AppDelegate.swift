@@ -15,7 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-		
+
+        if let token = Settings.snippetsToken() {
+            Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: token)
+        }
+
 		let clearCacheKey = "CacheClearKey-" +  (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") + "-" + (Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "")
 		var shouldClearCache = true
 		// Comment this out to test a fresh install scenario...
@@ -37,7 +41,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		BlogSettings.migrate()
 
-        SunlitMentions.shared.update { }
+        if let notificationOption = launchOptions?[.remoteNotification] {
+            SunlitMentions.shared.update {
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .showMentionsNotification, object: notificationOption)
+                }
+            }
+        }
 
 		return true
 	}
@@ -77,13 +87,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        SunlitMentions.shared.update {
+
+        if application.applicationState != .active {
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: .showMentionsNotification, object: userInfo)
             }
         }
+        else {
+            SunlitMentions.shared.update { }
+        }
+
+        completionHandler(.newData)
 	}
 
 
 }
+
 
