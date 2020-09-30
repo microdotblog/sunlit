@@ -23,7 +23,7 @@ class TabButton: UIButton {
 
         let dotSize : CGFloat = 6.0
         self.dotView.layer.cornerRadius = dotSize / 2.0
-        self.dotView.backgroundColor = .red
+        self.dotView.backgroundColor = .gray
         self.dotView.clipsToBounds = true
         self.dotView.isHidden = true
         let x = (self.bounds.size.width / 2.0) - (dotSize + 1)

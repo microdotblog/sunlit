@@ -11,6 +11,8 @@ import Snippets
 
 class MainPhoneViewController: UIViewController {
 
+    static var needsMentionsSwitch = false
+
 	@IBOutlet var contentView : UIView!
 	@IBOutlet var scrollView : UIScrollView!
 	@IBOutlet var tabBar : UIView!
@@ -69,7 +71,16 @@ class MainPhoneViewController: UIViewController {
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
 		self.reloadTabs()
 	}
-	
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if MainPhoneViewController.needsMentionsSwitch {
+            MainPhoneViewController.needsMentionsSwitch = false
+            self.onShowMentions()
+        }
+    }
+
 	func loadContentViews() {
 		
 		self.addChild(self.timelineViewController)

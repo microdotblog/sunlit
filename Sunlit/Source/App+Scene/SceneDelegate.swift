@@ -62,16 +62,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 
 	func sceneDidBecomeActive(_ scene: UIScene) {
-        SunlitMentions.shared.update { }
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {
-		// Called when the scene will move from an active state to an inactive state.
-		// This may occur due to temporary interruptions (ex. an incoming phone call).
 	}
 
 	func sceneWillEnterForeground(_ scene: UIScene) {
-        SunlitMentions.shared.update { }
 	}
 
 	func sceneDidEnterBackground(_ scene: UIScene) {
@@ -83,7 +79,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
 		if let urlContext = URLContexts.first {
 			let url = urlContext.url
-			if url.absoluteString.contains("micropub?code=") {
+            if url.absoluteString.contains("notification") {
+                MainPhoneViewController.needsMentionsSwitch = true
+
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .showMentionsNotification, object: nil)
+                }
+            }
+			else if url.absoluteString.contains("micropub?code=") {
 				DispatchQueue.main.async {
 					NotificationCenter.default.post(name: .micropubTokenReceivedNotification, object: url)
 				}

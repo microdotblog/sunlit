@@ -41,19 +41,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		BlogSettings.migrate()
 
-        if let notificationOption = launchOptions?[.remoteNotification] {
-            SunlitMentions.shared.update {
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: .showMentionsNotification, object: notificationOption)
-                }
-            }
+        UNUserNotificationCenter.current().delegate = self
+
+        if let _ = launchOptions?[.remoteNotification] {
+            MainPhoneViewController.needsMentionsSwitch = true
         }
 
 		return true
 	}
 	
-	// MARK: UISceneSession Lifecycle
-
 	func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
 		// Called when a new scene session is being created.
 		// Use this method to select a configuration to create the new scene with.
@@ -89,18 +85,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
         if application.applicationState != .active {
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: .showMentionsNotification, object: userInfo)
+            if let url = URL(string:"sunlit://notification") {
+                application.open(url, options: [:], completionHandler: nil)
             }
-        }
-        else {
-            SunlitMentions.shared.update { }
+
+            //DispatchQueue.main.async {
+            //    NotificationCenter.default.post(name: .showMentionsNotification, object: userInfo)
+            //}
         }
 
-        completionHandler(.newData)
+        SunlitMentions.shared.update {
+            completionHandler(.newData)
+        }
 	}
 
 
 }
 
 
+extension AppDelegate : UNUserNotificationCenterDelegate {
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+
+        
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .showMentionsNotification, object: nil)
+        }
+
+        NotificationCenter.default.post(name: .showMentionsNotification, object: nil)
+
+        // tell the app that we have finished processing the user’s action / response
+        completionHandler()
+      }
+}
