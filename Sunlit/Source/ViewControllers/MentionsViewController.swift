@@ -30,7 +30,9 @@ class MentionsViewController: ContentViewController {
     }
 
     @objc override func handleScrollToTopGesture() {
-        self.tableView.setContentOffset(CGPoint(x: 0, y: -self.view.safeAreaTop()), animated: true)
+        if self.posts.count > 0 {
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
     }
 
     override func prepareToDisplay() {

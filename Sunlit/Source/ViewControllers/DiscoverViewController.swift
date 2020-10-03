@@ -157,8 +157,10 @@ class DiscoverViewController: ContentViewController {
 	}
 
     @objc override func handleScrollToTopGesture() {
-        self.tableView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-        self.collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+        if self.posts.count > 0 {
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
+        }
     }
 
 

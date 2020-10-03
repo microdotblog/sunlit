@@ -178,8 +178,9 @@ class TimelineViewController: ContentViewController {
 	}
 
     @objc func handleScrollToTopNotification() {
-        let safeAreaTop = self.view.safeAreaTop()
-        self.tableView.setContentOffset(CGPoint(x: 0, y: -safeAreaTop), animated: true)
+        if tableViewData.count > 0 {
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
     }
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

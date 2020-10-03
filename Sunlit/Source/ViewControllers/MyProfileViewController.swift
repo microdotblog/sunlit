@@ -51,7 +51,7 @@ class MyProfileViewController: ContentViewController {
     }
 
     @objc override func handleScrollToTopGesture() {
-        self.collectionView.setContentOffset(CGPoint(x: 0, y: -self.view.safeAreaTop()), animated: true)
+        self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
     }
 
     override func setupNotifications() {
