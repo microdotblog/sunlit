@@ -308,8 +308,18 @@ class BlogSettings : NSObject {
 				}
 
 				if !usesExternalBlog {
-					selectedUid = selectedUid.replacingOccurrences(of: "https://", with: "")
+
+                    if selectedUid.count <= 0 {
+                        if let destination = destinations.first {
+                            if let title = destination["name"] as? String {
+                                selectedUid = title
+                            }
+                        }
+                    }
+
+                    selectedUid = selectedUid.replacingOccurrences(of: "https://", with: "")
 					selectedUid = selectedUid.replacingOccurrences(of: "/", with: "")
+
 					BlogSettings.publishingPath = selectedUid
 				}
 			}
