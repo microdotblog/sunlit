@@ -21,6 +21,8 @@
 		C5309CB724AEABE700551AC7 /* NSAttributedString+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */; };
 		C541BE8125059AE7001A6FBD /* Snippets+Microblog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C541BE8025059AE7001A6FBD /* Snippets+Microblog.swift */; };
 		C541BE8325059E0C001A6FBD /* Snippets+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = C541BE8225059E0C001A6FBD /* Snippets+Error.swift */; };
+		C542734F25298B08009E4B39 /* UploadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C542734E25298B08009E4B39 /* UploadsViewController.swift */; };
+		C542735625298B44009E4B39 /* Uploads.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C542735525298B44009E4B39 /* Uploads.storyboard */; };
 		C5482F2C24D9E56400A335DF /* TabletMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5482F2B24D9E56400A335DF /* TabletMenuTableViewCell.swift */; };
 		C55DC3132489D37600C1F8A5 /* UUSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC2BA2489D2F700C1F8A5 /* UUSwift.framework */; };
 		C55DC495248A152A00C1F8A5 /* Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3012489D33300C1F8A5 /* Snippets.framework */; };
@@ -307,6 +309,8 @@
 		C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+Sunlit.swift"; path = "Source/Extensions/NSAttributedString+Sunlit.swift"; sourceTree = "<group>"; };
 		C541BE8025059AE7001A6FBD /* Snippets+Microblog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Snippets+Microblog.swift"; sourceTree = "<group>"; };
 		C541BE8225059E0C001A6FBD /* Snippets+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Snippets+Error.swift"; sourceTree = "<group>"; };
+		C542734E25298B08009E4B39 /* UploadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UploadsViewController.swift; path = Source/ViewControllers/UploadsViewController.swift; sourceTree = "<group>"; };
+		C542735525298B44009E4B39 /* Uploads.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Uploads.storyboard; path = Storyboards/Uploads.storyboard; sourceTree = "<group>"; };
 		C5482F2B24D9E56400A335DF /* TabletMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabletMenuTableViewCell.swift; path = Source/TableViewCells/TabletMenuTableViewCell.swift; sourceTree = "<group>"; };
 		C55DC2BA2489D2F700C1F8A5 /* UUSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UUSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55DC3012489D33300C1F8A5 /* Snippets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Snippets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -725,11 +729,10 @@
 			isa = PBXGroup;
 			children = (
 				C5A1DF3124906B9D00B50B54 /* LaunchScreen.storyboard */,
-				C5A1DF3024906B9D00B50B54 /* Content.storyboard */,
 				C5A1DE3B24901D8C00B50B54 /* About.storyboard */,
 				C5A1DE3F24901D8C00B50B54 /* Compose.storyboard */,
+				C5A1DF3024906B9D00B50B54 /* Content.storyboard */,
 				C5A1DE3824901D8C00B50B54 /* Conversation.storyboard */,
-				4B556FFB24F31ABC0012C6C7 /* Usernames.storyboard */,
 				C5BEDF4C24DA302F0068CBF1 /* Following.storyboard */,
 				C5A1DE4024901D8C00B50B54 /* ImageViewer.storyboard */,
 				C5A1DE3C24901D8C00B50B54 /* Login.storyboard */,
@@ -737,6 +740,8 @@
 				C5A1DE3924901D8C00B50B54 /* Profile.storyboard */,
 				4B556FF724F1C4F40012C6C7 /* Search.storyboard */,
 				C5A1DE3D24901D8C00B50B54 /* Settings.storyboard */,
+				C542735525298B44009E4B39 /* Uploads.storyboard */,
+				4B556FFB24F31ABC0012C6C7 /* Usernames.storyboard */,
 				C5E26A35249EADE400F9E158 /* Main.storyboard */,
 				C5E26A33249EAA0900F9E158 /* Main-Phone.storyboard */,
 			);
@@ -1038,6 +1043,7 @@
 				4B556FF524F1C4C10012C6C7 /* SearchViewController.swift */,
 				C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */,
 				C5A1DE6C24901DCC00B50B54 /* TimelineViewController.swift */,
+				C542734E25298B08009E4B39 /* UploadsViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1315,6 +1321,7 @@
 				C5A1DF3A249144E800B50B54 /* olive.jpg in Resources */,
 				C5A1DE4924901D8C00B50B54 /* ImageViewer.storyboard in Resources */,
 				C5A1DF39249144E800B50B54 /* credits.html in Resources */,
+				C542735625298B44009E4B39 /* Uploads.storyboard in Resources */,
 				C5A1DE4224901D8C00B50B54 /* Profile.storyboard in Resources */,
 				C5E26A36249EADE400F9E158 /* Main.storyboard in Resources */,
 				C5BEDF4D24DA302F0068CBF1 /* Following.storyboard in Resources */,
@@ -1474,6 +1481,7 @@
 				C5A1DE9224901DE600B50B54 /* PostImageCollectionViewCell.swift in Sources */,
 				C5A1DE6B24901DBC00B50B54 /* SnippetsUser+Sunlit.swift in Sources */,
 				4B9D143624C889BA004E7EAF /* SectionTextView.swift in Sources */,
+				C542734F25298B08009E4B39 /* UploadsViewController.swift in Sources */,
 				C5281B0C251D352800099C6A /* ContentViewController.swift in Sources */,
 				C5A1DE6624901DBC00B50B54 /* SnippetsPost+Sunlit.swift in Sources */,
 				4B55700024F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift in Sources */,

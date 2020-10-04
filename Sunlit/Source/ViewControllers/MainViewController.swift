@@ -64,8 +64,25 @@ class MainViewController: UIViewController {
 	func setupNavigationBar() {
 
 		if UIDevice.current.userInterfaceIdiom == .phone {
-			let postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
-			var settingsSymbol = "gear"
+
+            var postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
+
+            if #available(iOS 14, *) {
+                postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: nil)
+
+                let libraryAction = UIAction(title: "Photo Library", image: UIImage(systemName: "photo")) { (action) in
+                    self.onNewPost()
+                }
+
+                let filesAction = UIAction(title: "Uploads", image: UIImage(systemName: "folder")) { (action) in
+                    self.onUploads()
+                }
+
+                let menu = UIMenu(children: [libraryAction, filesAction])
+                postButton.menu = menu
+            }
+
+            var settingsSymbol = "gear"
 			if #available(iOS 14, *) {
 				settingsSymbol = "gearshape"
 			}
@@ -404,7 +421,14 @@ class MainViewController: UIViewController {
             self.present(pickerController, animated: true, completion: nil)
         }
 	}
-	
+
+    @IBAction @objc func onUploads() {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Uploads", bundle: nil)
+        let uploadsViewController = storyBoard.instantiateViewController(withIdentifier: "UploadsViewController")
+
+        let navigationController = UINavigationController(rootViewController: uploadsViewController)
+        self.present(navigationController, animated: true, completion: nil)
+    }
 
 	
 	@IBAction @objc func onSettings() {
