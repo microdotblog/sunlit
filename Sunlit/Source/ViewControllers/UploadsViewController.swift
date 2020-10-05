@@ -93,22 +93,16 @@ class UploadsViewController: UIViewController {
         self.busyIndicator.isHidden = false
         self.busyIndicator.startAnimating()
 
-        let fullPath : NSString = Snippets.Configuration.publishing.micropubMediaEndpoint as NSString
-        let arguments : [ String : String ] = [ "q" : "source" ]
-
-        let request = Snippets.secureGet(Snippets.Configuration.publishing, path: fullPath as String, arguments: arguments)
-
-        _ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
-            if let dictionary = parsedServerResponse.parsedResponse as? [String : Any] {
-                if let items = dictionary["items"] as? [ [String : Any] ] {
-                    self.media = items
-                    DispatchQueue.main.async {
-                        self.busyIndicator.isHidden = true
-                        self.collectionView.reloadData()
-                    }
+        _ = Snippets.Micropub.fetchPublishedMedia(Snippets.Configuration.publishing, completion: { (error, items) in
+            if let items = items {
+                self.media = items
+                DispatchQueue.main.async {
+                    self.busyIndicator.isHidden = true
+                    self.collectionView.reloadData()
                 }
             }
         })
+
     }
 
     func isSupportedMediaType(_ index : Int) -> Bool {
