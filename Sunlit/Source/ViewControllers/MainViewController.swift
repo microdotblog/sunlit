@@ -424,7 +424,8 @@ class MainViewController: UIViewController {
 
     @IBAction @objc func onUploads() {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Uploads", bundle: nil)
-        let uploadsViewController = storyBoard.instantiateViewController(withIdentifier: "UploadsViewController")
+        let uploadsViewController = storyBoard.instantiateViewController(withIdentifier: "UploadsViewController") as! UploadsViewController
+        uploadsViewController.delegate = self
 
         let navigationController = UINavigationController(rootViewController: uploadsViewController)
         self.present(navigationController, animated: true, completion: nil)
@@ -510,6 +511,17 @@ class MainViewController: UIViewController {
 /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 MARK: -
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension MainViewController : UploadsPickerControllerDelegate {
+
+    func imagePickerController(_ picker: UploadsViewController, didFinishPickingMediaWithInfo info: [SunlitMedia]) {
+        self.composeWithMedia(info, picker: picker)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UploadsViewController) {
+    }
+
+}
 
 @available(iOS 14, *)
 extension MainViewController : PHPickerViewControllerDelegate {

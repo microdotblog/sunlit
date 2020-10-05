@@ -11,6 +11,7 @@ import UIKit
 class PhotoEntryCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var photo : UIImageView!
 	@IBOutlet var date : UILabel!
+    @IBOutlet var selectionIndicator : UIImageView? = nil
 
 	static func sizeOf(collectionViewWidth : CGFloat) -> CGSize {
 		var sections = Int(collectionViewWidth / 160.0)
@@ -32,5 +33,13 @@ class PhotoEntryCollectionViewCell : UICollectionViewCell {
         super.awakeFromNib()
         
         self.date.font = UIFont.preferredFont(forTextStyle: .footnote)
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            if let selectionIndicator = self.selectionIndicator {
+                selectionIndicator.isHidden = !isSelected
+            }
+        }
     }
 }
