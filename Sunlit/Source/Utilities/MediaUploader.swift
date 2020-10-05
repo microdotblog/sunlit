@@ -94,8 +94,6 @@ class MediaUploader {
 		}
 	}
 	
-
-	
 	func uploadImage(_ media : SunlitMedia) {
 
         self.currentUpload = Snippets.shared.uploadImage(image: media.getImage()) { (error, remotePath) in

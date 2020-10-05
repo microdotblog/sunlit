@@ -134,9 +134,16 @@ class ComposeViewController: UIViewController {
 		
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
 		}
-		
+
+        let media = sectionData.media[item]
+
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		alertController.addAction(cropAction)
+
+        // We can't crop media that has already been published...
+        if media.publishedPath == nil {
+            alertController.addAction(cropAction)
+        }
+
 		alertController.addAction(deleteAction)
 		alertController.addAction(altTextAction)
 		alertController.addAction(cancelAction)
