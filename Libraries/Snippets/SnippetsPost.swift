@@ -31,6 +31,7 @@ open class SnippetsPost : NSObject
 	@objc public var hasConversation : Bool = false
 	@objc public var replies : [SnippetsPost] = []
 	@objc public var isDraft : Bool = false
+    @objc public var isBookmark : Bool = false
 }
 
 
@@ -70,6 +71,9 @@ extension SnippetsPost {
 			if let conversation = microblogDictionary["is_conversation"] as? NSNumber {
 				self.hasConversation = conversation.intValue > 0
 			}
+            if let bookmark = microblogDictionary["is_bookmark"] as? NSNumber {
+                self.isBookmark = bookmark.intValue > 0
+            }
 		}
 		
 		if let identifier = dictionary["id"] as? String

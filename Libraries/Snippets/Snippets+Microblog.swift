@@ -189,7 +189,7 @@ extension Snippets {
                 return
             }
 
-            self.fetchTimeline(Snippets.Configuration.pathForTimelineRoute("posts/favorites"), arguments: parameters, completion: completion)
+            self.fetchTimeline(Snippets.Configuration.pathForTimelineRoute("posts/bookmarks"), arguments: parameters, completion: completion)
         }
         
         
@@ -483,10 +483,10 @@ extension Snippets {
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // MARK: - Favorite Interface
+        // MARK: - Bookmark Interface
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        @objc static public func favorite(post : SnippetsPost, completion: @escaping(Error?) -> ())
+        @objc static public func addBookmark(post : SnippetsPost, completion: @escaping(Error?) -> ())
         {
             // Pre-flight check to see if we are even configured...
             if Snippets.Configuration.timeline.micropubToken.count == 0 {
@@ -496,14 +496,16 @@ extension Snippets {
             
             let arguments : [ String : String ] = [ "id" : post.identifier ]
 
-            let request = Snippets.securePost(Snippets.Configuration.timeline, path: Snippets.Configuration.pathForTimelineRoute("favorites"), arguments: arguments)
+            let request = Snippets.securePost(Snippets.Configuration.timeline, path: Snippets.Configuration.pathForTimelineRoute("posts/bookmarks"), arguments: arguments)
             
             _ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
-                completion(parsedServerResponse.httpError)
+                DispatchQueue.main.async {
+                    completion(parsedServerResponse.httpError)
+                }
             })
         }
 
-        @objc static public func unfavorite(post : SnippetsPost, completion: @escaping(Error?) -> ())
+        @objc static public func removeBookmark(post : SnippetsPost, completion: @escaping(Error?) -> ())
         {
             // Pre-flight check to see if we are even configured...
             if Snippets.Configuration.timeline.micropubToken.count == 0 {
@@ -511,11 +513,13 @@ extension Snippets {
                 return
             }
             
-            let route = "favorites/\(post.identifier)"
+            let route = "posts/bookmarks/\(post.identifier)"
             let request = Snippets.secureDelete(Snippets.Configuration.timeline, path: Snippets.Configuration.pathForTimelineRoute(route), arguments: [:])
             
             _ = UUHttpSession.executeRequest(request, { (parsedServerResponse) in
-                completion(parsedServerResponse.httpError)
+                DispatchQueue.main.async {
+                    completion(parsedServerResponse.httpError)
+                }
             })
         }
         

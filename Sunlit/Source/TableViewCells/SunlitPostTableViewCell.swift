@@ -29,6 +29,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 	@IBOutlet var postButton : UIButton!
 	@IBOutlet var conversationButton : UIButton!
 	@IBOutlet var conversationHeightConstraint : NSLayoutConstraint!
+    @IBOutlet var bookmarkButton : UIButton?
 	
 	var post : SunlitPost!
 	
@@ -164,6 +165,10 @@ class SunlitPostTableViewCell : UITableViewCell {
 		self.pageViewIndicator.numberOfPages = self.post.images.count
 		self.pageViewIndicatorContainer.isHidden = self.post.images.count < 2
 
+        if let bookmarkButton = self.bookmarkButton {
+            bookmarkButton.isSelected = post.isBookmark
+        }
+
 		self.setupAvatar()
 	}
 	
@@ -177,6 +182,33 @@ class SunlitPostTableViewCell : UITableViewCell {
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+    @IBAction func onBookmark() {
+        if !self.post.isBookmark {
+            Snippets.Microblog.addBookmark(post: self.post) { (error) in
+                if error == nil {
+                    self.post.isBookmark = true
+                    if let bookmarkButton = self.bookmarkButton {
+                        bookmarkButton.isSelected = true
+                    }
+                }
+            }
+        }
+        else {
+            Snippets.Microblog.removeBookmark(post: self.post) { (error) in
+                if error == nil {
+                    self.post.isBookmark = false
+                    if let bookmarkButton = self.bookmarkButton {
+                        bookmarkButton.isSelected = false
+                    }
+                }
+            }
+        }
+
+        if let bookmarkButton = self.bookmarkButton {
+            bookmarkButton.isSelected = !bookmarkButton.isSelected
+        }
+    }
 
 	@IBAction func onReply() {
         

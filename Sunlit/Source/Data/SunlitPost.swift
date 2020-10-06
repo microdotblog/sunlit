@@ -55,6 +55,7 @@ class SunlitPost : SnippetsPost {
 		parsedEntry.hasConversation = snippet.hasConversation
 		parsedEntry.replies = snippet.replies
 		parsedEntry.isDraft = snippet.isDraft
+        parsedEntry.isBookmark = snippet.isBookmark
 
 		// Calling this both saves and merges any existing user info/data...
 		parsedEntry.owner = SnippetsUser.save(snippet.owner)
