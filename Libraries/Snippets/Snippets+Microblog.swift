@@ -307,6 +307,21 @@ extension Snippets {
                 completion(parsedServerResponse.httpError)
             })
         }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // MARK: - Delete Interface
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        @objc static func delete(_ identity : Snippets.Configuration, identifier : String, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
+        {
+            let route = "posts/\(identifier)"
+
+            let request = Snippets.secureDelete(identity, path: identity.micropubPathForRoute(route), arguments: [:])
+
+            return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
+                completion(parsedServerResponse.httpError)
+            })
+        }
         
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // MARK: - Follow Interface
