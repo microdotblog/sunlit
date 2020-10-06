@@ -16,8 +16,8 @@ class MainTabletViewController: UIViewController {
 	
     var contentViewController : UIViewController!
     
-	var menuTitles = [ "Timeline", "Mentions", "Discover", "Profile", "Settings" ]
-	var menuIcons = [ "bubble.left.and.bubble.right", "at", "magnifyingglass.circle", "person.crop.circle",  "gear" ]
+	var menuTitles = [ "Timeline", "Mentions", "Discover", "Bookmarks", "Profile", "Settings" ]
+	var menuIcons = [ "bubble.left.and.bubble.right", "at", "magnifyingglass.circle", "bookmark.fill", "person.crop.circle",  "gear" ]
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -59,7 +59,7 @@ class MainTabletViewController: UIViewController {
 			menuTitles = [ "Timeline", "Discover" ]
 		}
 		else {
-			menuTitles = [ "Timeline", "Mentions", "Discover", "Profile", "Settings"]
+			menuTitles = [ "Timeline", "Mentions", "Discover", "Bookmarks", "Profile", "Settings"]
 		}
 		
 		self.tableView.reloadData()
@@ -104,7 +104,14 @@ class MainTabletViewController: UIViewController {
         }
 		NotificationCenter.default.post(name: .showDiscoverNotification, object: nil)
 	}
-	
+
+    @IBAction func onBookmarks() {
+        if self.splitViewController!.isCollapsed {
+            self.navigationController?.pushViewController(self.contentViewController, animated: true)
+        }
+        NotificationCenter.default.post(name: .showBookmarksNotification, object: nil)
+    }
+
 	@IBAction func onProfile() {
         if self.splitViewController!.isCollapsed {
             self.navigationController?.pushViewController(self.contentViewController, animated: true)
@@ -188,9 +195,11 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 			}
 		case 2:
 			self.onDiscover()
-		case 3:
-			self.onProfile()
+        case 3:
+            self.onBookmarks()
 		case 4:
+			self.onProfile()
+		case 5:
 			self.onSettings()
 		default:
 			self.onTimeLine()

@@ -25,6 +25,8 @@ class MainViewController: UIViewController {
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
 	var mentionsViewController : MentionsViewController!
+    var bookmarksViewController : BookmarksViewController!
+
 	var currentContentViewController : ContentViewController? = nil
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,8 +122,11 @@ class MainViewController: UIViewController {
 		self.timelineViewController = storyboard.instantiateViewController(identifier: "TimelineViewController")
 		self.profileViewController = storyboard.instantiateViewController(identifier: "MyProfileViewController")
 		self.discoverViewController = storyboard.instantiateViewController(identifier: "DiscoverViewController")
-		
-		let mentionsStoryBoard: UIStoryboard = UIStoryboard(name: "Mentions", bundle: nil)
+
+        let bookmarksStoryBoard: UIStoryboard = UIStoryboard(name: "Bookmarks", bundle: nil)
+        self.bookmarksViewController = bookmarksStoryBoard.instantiateViewController(identifier: "BookmarksViewController")
+
+        let mentionsStoryBoard: UIStoryboard = UIStoryboard(name: "Mentions", bundle: nil)
 		self.mentionsViewController = mentionsStoryBoard.instantiateViewController(identifier: "MentionsViewController")
 	}
 	
@@ -134,6 +139,7 @@ class MainViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowCurrentUserProfileNotification), name: .showCurrentUserProfileNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowTimelineNotification), name: .showTimelineNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowDiscoverNotification), name: .showDiscoverNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleShowBookmarksNotification), name: .showBookmarksNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowComposeNotification), name: .showComposeNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowMentionsNotification), name: .showMentionsNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowSettingsNotification), name: .showSettingsNotification, object: nil)
@@ -345,6 +351,15 @@ class MainViewController: UIViewController {
         }
 	}
 
+    @objc func handleShowBookmarksNotification() {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.onTabletShowBookmarks()
+        }
+        else {
+            self.phoneViewController!.onShowBookmarks()
+        }
+    }
+
 	@objc func handleShowComposeNotification() {
 		self.onNewPost()
 	}
@@ -477,6 +492,10 @@ class MainViewController: UIViewController {
 		self.activateContentViewController(self.discoverViewController)
 	}
 
+    func onTabletShowBookmarks() {
+        self.activateContentViewController(self.bookmarksViewController)
+    }
+
 	func onTabletShowProfile() {
 		self.activateContentViewController(self.profileViewController)
 	}
@@ -496,6 +515,7 @@ class MainViewController: UIViewController {
 			self.phoneViewController = phoneViewController
 			phoneViewController.timelineViewController = self.timelineViewController
 			phoneViewController.discoverViewController = self.discoverViewController
+            phoneViewController.bookmarksViewController = self.bookmarksViewController
 			phoneViewController.profileViewController = self.profileViewController
 			phoneViewController.mentionsViewController = self.mentionsViewController
 
