@@ -185,22 +185,31 @@ class SunlitPostTableViewCell : UITableViewCell {
 
     @IBAction func onBookmark() {
         if !self.post.isBookmark {
+            if let bookmarkButton = self.bookmarkButton {
+                bookmarkButton.isSelected = true
+            }
             Snippets.Microblog.addBookmark(post: self.post) { (error) in
                 if error == nil {
                     self.post.isBookmark = true
-                    if let bookmarkButton = self.bookmarkButton {
-                        bookmarkButton.isSelected = true
-                    }
+                }
+
+                if let bookmarkButton = self.bookmarkButton {
+                    bookmarkButton.isSelected = self.post.isBookmark
                 }
             }
         }
         else {
+            if let bookmarkButton = self.bookmarkButton {
+                bookmarkButton.isSelected = false
+            }
+
             Snippets.Microblog.removeBookmark(post: self.post) { (error) in
                 if error == nil {
                     self.post.isBookmark = false
-                    if let bookmarkButton = self.bookmarkButton {
-                        bookmarkButton.isSelected = false
-                    }
+                }
+
+                if let bookmarkButton = self.bookmarkButton {
+                    bookmarkButton.isSelected = self.post.isBookmark
                 }
             }
         }

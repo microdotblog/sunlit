@@ -168,7 +168,7 @@
                                                             <action selector="onTabBarButtonPressed:" destination="zzu-uT-cxA" eventType="touchUpInside" id="moP-Ue-sW1"/>
                                                         </connections>
                                                     </button>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZvH-2m-xhJ">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZvH-2m-xhJ">
                                                         <rect key="frame" x="18.5" y="6.5" width="26" height="22.5"/>
                                                         <color key="tintColor" systemColor="labelColor"/>
                                                         <constraints>
@@ -283,7 +283,7 @@
     </scenes>
     <resources>
         <image name="at" catalog="system" width="128" height="124"/>
-        <image name="bookmark.fill" catalog="system" width="112" height="128"/>
+        <image name="bookmark" catalog="system" width="112" height="128"/>
         <image name="bubble.left.and.bubble.right" catalog="system" width="128" height="96"/>
         <image name="magnifyingglass.circle" catalog="system" width="128" height="121"/>
         <image name="person.crop.circle" catalog="system" width="128" height="121"/>

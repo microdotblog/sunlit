@@ -17,7 +17,7 @@ class MainTabletViewController: UIViewController {
     var contentViewController : UIViewController!
     
 	var menuTitles = [ "Timeline", "Mentions", "Discover", "Bookmarks", "Profile", "Settings" ]
-	var menuIcons = [ "bubble.left.and.bubble.right", "at", "magnifyingglass.circle", "bookmark.fill", "person.crop.circle",  "gear" ]
+	var menuIcons = [ "bubble.left.and.bubble.right", "at", "magnifyingglass.circle", "bookmark", "person.crop.circle",  "gear" ]
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
