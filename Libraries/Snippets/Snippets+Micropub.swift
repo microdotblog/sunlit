@@ -132,12 +132,19 @@ extension Snippets {
             
             return nil
         }
+
         
-        static public func deletePostByUrl(_ identity : Snippets.Configuration, path : String, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
+        static func delete(_ identity : Snippets.Configuration, post : SnippetsPost, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
         {
+            // Pre-flight check to see if we are even configured...
+            if identity.micropubToken.count == 0 {
+                completion(SnippetsError.invalidOrMissingToken)
+                return nil
+            }
+            
             var bodyText = ""
             bodyText = Snippets.appendParameter(body: bodyText, name: "action", content: "delete")
-            bodyText = Snippets.appendParameter(body: bodyText, name: "url", content: path)
+            bodyText = Snippets.appendParameter(body: bodyText, name: "url", content: post.path)
             if let blogUid = identity.micropubUid {
                 if blogUid.count > 0 {
                     bodyText = Snippets.appendParameter(body: bodyText, name: "mp-destination", content: blogUid)
@@ -151,38 +158,8 @@ extension Snippets {
             })
         }
         
-        static public func deletePostByIdentifier(_ identity : Snippets.Configuration, identifier : String, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
-        {
-            let route = "posts/\(identifier)"
 
-            let request = Snippets.secureDelete(identity, path: identity.micropubPathForRoute(route), arguments: [:])
-            
-            return UUHttpSession.executeRequest(request, { (parsedServerResponse) in
-                completion(parsedServerResponse.httpError)
-            })
-        }
-        
-        static public func deletePost(_ identity : Snippets.Configuration, post : SnippetsPost, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
-        {
-            // Pre-flight check to see if we are even configured...
-            if identity.micropubToken.count == 0 {
-                completion(SnippetsError.invalidOrMissingToken)
-                return nil
-            }
-            
-            // There are actually two ways to delete posts. The safer way is if you have the post identifier
-            // The other way is more of the "micropub" way in which you just have the path to the post
-            if (post.identifier.count > 0)
-            {
-                return self.deletePostByIdentifier(identity, identifier: post.identifier, completion: completion)
-            }
-            else
-            {
-                return self.deletePostByUrl(identity, path: post.path, completion: completion)
-            }
-        }
-        
-        static public func updatePostByUrl(_ identity : Snippets.Configuration, path : String, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
+        static func updatePostByUrl(_ identity : Snippets.Configuration, path : String, completion: @escaping(Error?) -> ()) -> UUHttpRequest?
         {
             var bodyText = ""
             bodyText = Snippets.appendParameter(body: bodyText, name: "action", content: "update")

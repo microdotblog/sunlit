@@ -206,8 +206,12 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func onDelete() {
+
+        // Make sure that this is set before trying to delete...
+        Snippets.Configuration.publishing = BlogSettings(BlogSettings.publishingPath).snippetsConfiguration!
+
         Dialog(self).warning(title: nil, question: "Are you sure you want to delete this post? It cannot be undone.", action: "Delete", cancel: "Cancel") {
-            _ = Snippets.shared.deletePost(post: self.post) { (error) in
+            _ = Snippets.shared.delete(post: self.post) { (error) in
                 DispatchQueue.main.async {
                     if let err = error {
                         Dialog(self).information("There was an error trying to delete this post: " + err.localizedDescription)
