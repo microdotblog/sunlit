@@ -209,8 +209,26 @@ class MainPhoneViewController: UIViewController {
         // If not logged in, show the login screen...
         if button != self.discoverButton {
             if SnippetsUser.current() == nil {
-                NotificationCenter.default.post(name: .showLoginNotification, object: nil)
-                self.onShowTimeline()
+                if Settings.snippetsToken() != nil {
+
+                    self.onShowTimeline()
+                    
+                    Snippets.Microblog.fetchCurrentUserInfo { (error, updatedUser) in
+
+                        if let user = updatedUser {
+                            _ = SnippetsUser.saveAsCurrent(user)
+
+                            DispatchQueue.main.async {
+                                Dialog(self).selectBlog()
+                                NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
+                            }
+                        }
+                    }
+                }
+                else {
+                    NotificationCenter.default.post(name: .showLoginNotification, object: nil)
+                    self.onShowTimeline()
+                }
                 return
             }
         }

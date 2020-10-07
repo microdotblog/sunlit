@@ -109,18 +109,55 @@ class Settings {
 	}
 	
 	static func saveSnippetsToken(_ token : String) {
-		//UUKeychain.saveString(key: "SunlitToken", acceessLevel: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, string: token)
-		setValue(token, forKey: "SunlitToken")
+		UUKeychain.saveString(key: "Snippets", acceessLevel: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, string: token)
+		setValue(token, forKey: "Snippets")
 	}
 
 	static func snippetsToken() -> String? {
-		//return UUKeychain.getString(key: "SunlitToken")
-		return object(forKey: "SunlitToken") as? String
+
+        if let key = UUKeychain.getString(key: "SunlitToken") {
+            saveSnippetsToken(key)
+            UUKeychain.remove(key: "SunlitToken")
+            return key
+        }
+
+        if let string = UUKeychain.getString(key: "Snippets") {
+            return string
+        }
+
+        if let string = importMicroblogKeychain() {
+            return string
+        }
+
+        return nil
 	}
 
 	static func deleteSnippetsToken() {
         deleteInsecureString(forKey: "SunlitToken")
+        UUKeychain.remove(key: "Snippets")
 	}
+
+    
+    static func importMicroblogKeychain() -> String? {
+        if let user = microblogUserName() {
+            if let password = UUKeychain.password(forService: "Snippets", forAccount: user) {
+                saveSnippetsToken(password)
+                return password
+            }
+        }
+
+        return nil
+    }
+
+    static func microblogUserName() -> String? {
+        if let microBlogSettings = UserDefaults(suiteName: "group.blog.micro.ios") {
+            if let username = microBlogSettings.object(forKey: "AccountUsername") as? String {
+                return username
+            }
+        }
+
+        return nil
+    }
 
 }
 

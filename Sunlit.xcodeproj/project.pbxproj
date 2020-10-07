@@ -924,8 +924,8 @@
 			isa = PBXGroup;
 			children = (
 				C5B9A71924563E66003EF82B /* Sunlit */,
-				C55DC490248A102C00C1F8A5 /* Libraries */,
 				C5235AF9252D0670002F9CC6 /* Sharing Extension */,
+				C55DC490248A102C00C1F8A5 /* Libraries */,
 				C5B9A71824563E66003EF82B /* Products */,
 				C55DC494248A151000C1F8A5 /* Frameworks */,
 			);
@@ -1804,11 +1804,11 @@
 		C5235B05252D0670002F9CC6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = sharing/sharing.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Sharing Extension/sharing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 372;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
-				INFOPLIST_FILE = sharing/Info.plist;
+				INFOPLIST_FILE = "Sharing Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1828,11 +1828,11 @@
 		C5235B06252D0670002F9CC6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = sharing/sharing.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Sharing Extension/sharing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 372;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
-				INFOPLIST_FILE = sharing/Info.plist;
+				INFOPLIST_FILE = "Sharing Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
