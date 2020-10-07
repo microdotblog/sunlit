@@ -46,6 +46,7 @@ class ComposeViewController: UIViewController {
 		self.configureCollectionView()
 		self.configureNavigationController()
 		self.configureKeyboardAccessoryView()
+        self.setupAppExtensionElements()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -228,7 +229,12 @@ class ComposeViewController: UIViewController {
 		}
 
 		if !self.uploading {
-			self.navigationController?.dismiss(animated: true, completion: nil)
+            if let extensionContext = self.extensionContext {
+                extensionContext.cancelRequest(withError: URLError(URLError.cancelled))
+            }
+            else {
+                self.navigationController?.dismiss(animated: true, completion: nil)
+            }
 		}
 		else {
 			self.cancelPosting()
@@ -387,8 +393,9 @@ class ComposeViewController: UIViewController {
 		}
 		else {
 			let alert = UIAlertController(title: nil, message: "Successfully posted!", preferredStyle: .alert)
-			
-			if remotePath != nil {
+
+            // We can only add this action if we received a valid URL AND it's not in the sharing extension
+            if remotePath != nil  && self.extensionContext == nil {
 				alert.addAction(UIAlertAction(title: "View Post", style: .default, handler: { (action) in
 					self.dismiss(animated: true) {
 						NotificationCenter.default.post(name: .openURLNotification, object: remotePath)
@@ -397,7 +404,11 @@ class ComposeViewController: UIViewController {
 			}
 			
 			alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-				self.dismiss(animated: true, completion: nil)
+                self.dismiss(animated: true) {
+                    if let extensionContext = self.extensionContext {
+                        extensionContext.completeRequest(returningItems: nil, completionHandler: nil)
+                    }
+                }
 			}))
 				
 			self.present(alert, animated: true, completion: nil)
@@ -588,7 +599,7 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			else if #available(iOS 14.0, *) {
 				intent = .unspecified
 			}
-			else if #available(iOS 13.0, *) {
+            else { // if #available(iOS 13.0, *) {
 				intent = .insertAtDestinationIndexPath
 			}
 			
@@ -819,4 +830,57 @@ extension ComposeViewController : CropViewControllerDelegate {
 		cropViewController.dismiss(animated: true, completion: nil)
 	}
 
+}
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: - App Extension
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+
+extension ComposeViewController {
+
+    func setupAppExtensionElements() {
+        if let context = self.extensionContext {
+            var items : [NSItemProvider] = []
+            for item in context.inputItems {
+                if let extensionItem = item as? NSExtensionItem {
+                    if let attachments = extensionItem.attachments {
+                        for itemProvider in attachments {
+                            items.append(itemProvider)
+                        }
+                    }
+                }
+            }
+
+            if items.count > 0 {
+                let processor = ItemProviderProcessor { (mediaObjects) in
+                    for media in mediaObjects {
+                        self.addMedia(media)
+                    }
+                }
+
+                processor.process(items)
+            }
+        }
+
+    }
+    /*
+     - (void) setupAppExtensionElements
+     {
+         if (!self.extensionContext)
+             return;
+
+         // Handle alert views...
+         [UUAlertViewController setActiveViewController:self];
+
+         // Grab the first extension item. We really should only ever have one...
+         NSExtensionItem* extensionItem = self.extensionContext.inputItems.firstObject;
+
+         // Process all the attachements...
+         NSMutableArray* itemsToProcess = [NSMutableArray arrayWithArray:extensionItem.attachments];
+         [self processAppExtensionItems:itemsToProcess];
+     }
+
+     */
 }

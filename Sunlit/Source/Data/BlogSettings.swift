@@ -15,7 +15,7 @@ class BlogSettings : NSObject {
         
         var blogList : [BlogSettings] = []
         
-        if let list = UserDefaults.standard.object(forKey: BlogSettings.listOfPublishingBlogsKey) as? [String] {
+        if let list = Settings.object(forKey: BlogSettings.listOfPublishingBlogsKey) as? [String] {
             for blogAddress in list {
                 let blogInfo = BlogSettings(blogAddress)
                 blogList.append(blogInfo)
@@ -35,13 +35,13 @@ class BlogSettings : NSObject {
         
         var publishedList : [String] = []
         
-        if let list = UserDefaults.standard.object(forKey: BlogSettings.listOfPublishingBlogsKey) as? [String] {
+        if let list = Settings.object(forKey: BlogSettings.listOfPublishingBlogsKey) as? [String] {
             publishedList = list
         }
         
         if !publishedList.contains(blogAddress) {
             publishedList.append(blogAddress)
-            UserDefaults.standard.setValue(publishedList, forKey: BlogSettings.listOfPublishingBlogsKey)
+            Settings.setValue(publishedList, forKey: BlogSettings.listOfPublishingBlogsKey)
         }
         
         settings.save()
@@ -49,7 +49,7 @@ class BlogSettings : NSObject {
     
     static var publishingPath : String {
         get {
-            if let path = UserDefaults.standard.object(forKey: BlogSettings.savedPublishingKey) as? String {
+            if let path = Settings.object(forKey: BlogSettings.savedPublishingKey) as? String {
                 return path
             }
             
@@ -57,20 +57,20 @@ class BlogSettings : NSObject {
         }
         
         set (path) {
-            UserDefaults.standard.setValue(path, forKey: BlogSettings.savedPublishingKey)
+            Settings.setValue(path, forKey: BlogSettings.savedPublishingKey)
         }
     }
     
     static var timelinePath : String {
         get {
-            if let path = UserDefaults.standard.object(forKey: BlogSettings.savedTimelineKey) as? String {
+            if let path = Settings.object(forKey: BlogSettings.savedTimelineKey) as? String {
                 return path
             }
             
             return "https://micro.blog"
         }
         set (path) {
-            UserDefaults.standard.setValue(path, forKey: BlogSettings.savedTimelineKey)
+            Settings.setValue(path, forKey: BlogSettings.savedTimelineKey)
         }
     }
 
@@ -88,11 +88,11 @@ class BlogSettings : NSObject {
     }
     
     static func deleteTimelineInfo() {
-        UserDefaults.standard.removeObject(forKey: BlogSettings.savedTimelineKey)
+        Settings.removeObject(forKey: BlogSettings.savedTimelineKey)
     }
     
     static func deletePublishingInfo() {
-        UserDefaults.standard.removeObject(forKey: BlogSettings.savedPublishingKey)
+        Settings.removeObject(forKey: BlogSettings.savedPublishingKey)
     }
     
     /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,7 +113,7 @@ class BlogSettings : NSObject {
 
     
     func load(_ blogAddress : String) {
-        if let dictionary = UserDefaults.standard.object(forKey: BlogSettings.publishingSettingsKey + blogAddress) as? [String : Any] {
+        if let dictionary = Settings.object(forKey: BlogSettings.publishingSettingsKey + blogAddress) as? [String : Any] {
             self.dictionary = dictionary
         }
         else {
@@ -124,7 +124,7 @@ class BlogSettings : NSObject {
     
     func save() {
         let blogAddress = self.blogAddress
-        UserDefaults.standard.setValue(self.dictionary, forKey: BlogSettings.publishingSettingsKey + blogAddress)
+        Settings.setValue(self.dictionary, forKey: BlogSettings.publishingSettingsKey + blogAddress)
     }
 
     
@@ -254,13 +254,13 @@ class BlogSettings : NSObject {
 	static func migrate() {
 
 		// One time migration
-		if UserDefaults.standard.bool(forKey: "3.0 to 3.1 settings migration") {
+		if Settings.bool(forKey: "3.0 to 3.1 settings migration") {
 			return
 		}
 
-		UserDefaults.standard.setValue(true, forKey: "3.0 to 3.1 settings migration")
+        Settings.setValue(true, forKey: "3.0 to 3.1 settings migration")
 
-		let usesExternalBlog = UserDefaults.standard.bool(forKey: externalBlogPreferenceKey)
+		let usesExternalBlog = Settings.bool(forKey: externalBlogPreferenceKey)
 
 		migrateXMLRPCSettings(usesExternalBlog: usesExternalBlog)
 		migrateMicropubSettings(usesExternalBlog: usesExternalBlog)
@@ -328,11 +328,11 @@ class BlogSettings : NSObject {
 
 	static func migrateXMLRPCSettings(usesExternalBlog : Bool) {
 
-		let xmlUserName = UserDefaults.standard.object(forKey: xmlRPCBlogUsernameKey) as? String
+		let xmlUserName = Settings.object(forKey: xmlRPCBlogUsernameKey) as? String
 		let xmlPassword = Settings.getSecureString(forKey: xmlRPCBlogUsernameKey)
-		let xmlUrl = UserDefaults.standard.object(forKey: xmlRPCBlogURLKey) as? String
-		let xmlEndpoint = UserDefaults.standard.object(forKey: xmlRPCBlogEndpointKey) as? String
-		let xmlBlogId = UserDefaults.standard.object(forKey: xmlRPCBlogIDKey) as? String
+		let xmlUrl = Settings.object(forKey: xmlRPCBlogURLKey) as? String
+		let xmlEndpoint = Settings.object(forKey: xmlRPCBlogEndpointKey) as? String
+		let xmlBlogId = Settings.object(forKey: xmlRPCBlogIDKey) as? String
 		let wordPress = Settings.getInsecureString(forKey: xmlRPCBlogAppKey) ==  "WordPress"
 
 		if let name = xmlUserName,
@@ -362,10 +362,10 @@ class BlogSettings : NSObject {
 
 	static func migrateMicropubSettings(usesExternalBlog : Bool) {
 		let micropubToken = Settings.getSecureString(forKey: micropubAccessTokenKey)
-		let micropubMediaEndpoint = UserDefaults.standard.object(forKey: micropubMediaEndpointKey) as? String
-		let micropubPostingEndpoint = UserDefaults.standard.object(forKey: micropubUserKey) as? String
-		//let micropubState = UserDefaults.standard.object(forKey: micropubStateKey) as? String
-		let micropubUser = UserDefaults.standard.object(forKey: micropubUserKey) as? String
+		let micropubMediaEndpoint = Settings.object(forKey: micropubMediaEndpointKey) as? String
+		let micropubPostingEndpoint = Settings.object(forKey: micropubUserKey) as? String
+		//let micropubState = Settings.object(forKey: micropubStateKey) as? String
+		let micropubUser = Settings.object(forKey: micropubUserKey) as? String
 
 		if let user = micropubUser,
 		   let token = micropubToken,

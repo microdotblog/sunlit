@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UUSwift
 import MobileCoreServices
 
 class ItemProviderProcessor : NSObject {
@@ -38,16 +39,54 @@ class ItemProviderProcessor : NSObject {
         }
 
         let provider = self.providers.removeFirst()
-        if provider.canLoadObject(ofClass: UIImage.self) {
-            self.processImageProvider(provider)
+
+        for registeredType in provider.registeredTypeIdentifiers {
+
+            if registeredType == "public.movie" || registeredType == "com.apple.quicktime-movie" || registeredType == "com.apple.avfoundation.urlasset" {
+                self.processVideoProvider(provider)
+                return
+            }
+
+            if registeredType == "public.image" || registeredType == "public.jpeg" || registeredType == "public.heic" {
+                self.processImageProvider(provider)
+                return
+            }
+
+            if registeredType == "public.url" {
+                self.processURLProvider(provider)
+                return
+            }
+
+            print("Unknown provider type: \(registeredType)")
         }
-        else if provider.canLoadObject(ofClass: URL.self) {
-            self.processVideoProvider(provider)
-        }
-        else {
-            print("*** Skipping unknown/unhandled item provder ***")
-            self.processNextProvider()
-        }
+
+    }
+
+    private func processURLProvider(_ provider : NSItemProvider) {
+
+        _ = provider.loadObject(ofClass: URL.self, completionHandler: { (urlObject, error) in
+            if let url = urlObject {
+                let request = UUHttpRequest(url: url.absoluteString)
+                request.processMimeTypes = false
+
+                _ = UUHttpSession.executeRequest(request) { (response) in
+
+                    if let data = response.rawResponse {
+                        if let image = UIImage(data: data) {
+                            self.processedMedia.append(SunlitMedia(withImage: image))
+                        }
+                    }
+
+                    // TODO: DO we need to add a text media type here???
+
+                    self.processNextProvider()
+                }
+            }
+            else {
+                print("Unable to load URL object")
+                self.processNextProvider()
+            }
+        })
     }
 
     private func processImageProvider(_ provider : NSItemProvider) {
@@ -82,7 +121,7 @@ class ItemProviderProcessor : NSObject {
 
     private func processVideoProvider(_ provider : NSItemProvider) {
 
-        _ = provider.loadObject(ofClass: URL.self) { (url, error) in
+        _ = provider.loadFileRepresentation(forTypeIdentifier: String(kUTTypeMovie), completionHandler: { (url, error) in
             if let videoURL = url {
                 self.processedMedia.append(SunlitMedia(withVideo: videoURL))
             }
@@ -91,7 +130,8 @@ class ItemProviderProcessor : NSObject {
             }
 
             self.processNextProvider()
-        }
+
+        })
 
     }
 }

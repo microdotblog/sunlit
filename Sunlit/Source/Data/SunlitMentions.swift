@@ -37,7 +37,7 @@ class SunlitMentions {
 
         // This only matters if the user is logged in...
         if SnippetsUser.current() != nil {
-            UserDefaults.standard.setValue(Date(), forKey: self.cachedMentionDateKey)
+            Settings.setValue(Date(), forKey: self.cachedMentionDateKey)
             NotificationCenter.default.post(name: .mentionsUpdatedNotification, object: nil)
             UIApplication.shared.applicationIconBadgeNumber = self.newMentionCount()
         }
@@ -76,7 +76,7 @@ class SunlitMentions {
 	}
 	
 	private func lastViewedMentionDate() -> Date {
-		if let date = UserDefaults.standard.value(forKey: self.cachedMentionDateKey) as? Date {
+		if let date = Settings.object(forKey: self.cachedMentionDateKey) as? Date {
 			return date
 		}
 		

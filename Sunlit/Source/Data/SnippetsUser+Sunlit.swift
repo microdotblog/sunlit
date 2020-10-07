@@ -19,7 +19,7 @@ extension SnippetsUser {
 	var posts : [SnippetsPost] {
 		get {
 			var postArray : [SnippetsPost] = []
-			if let array = UserDefaults.standard.object(forKey: self.userName + "-Posts") as? [[String : Any]] {
+			if let array = Settings.object(forKey: self.userName + "-Posts") as? [[String : Any]] {
 				for dictionary in array {
 					let post = SnippetsPost(dictionary)
 					postArray.append(post)
@@ -34,7 +34,7 @@ extension SnippetsUser {
 				dictionaryArray.append(dictionary)
 			}
 			
-			UserDefaults.standard.set(dictionaryArray, forKey: self.userName + "-Posts")
+            Settings.setValue(dictionaryArray, forKey: self.userName + "-Posts")
 		}
 	}
 	
@@ -109,7 +109,7 @@ extension SnippetsUser {
 	}
 	
 	static func deleteCurrentUser() {
-		UserDefaults.standard.removeObject(forKey: "Current User")
+        Settings.removeObject(forKey: "Current User")
 	}
 	
 	static func save(_ user : SnippetsUser, key : String? = nil) -> SnippetsUser {
@@ -120,17 +120,17 @@ extension SnippetsUser {
 		}
 		
 		// See if there is an existing dictionary to see if we need to merge...
-		let master = UserDefaults.standard.object(forKey: saveKey) as? [String : Any]
+		let master = Settings.object(forKey: saveKey) as? [String : Any]
 		let dictionary = user.dictionary(mergeWith: master)
 		
-		UserDefaults.standard.set(dictionary, forKey: saveKey)
+        Settings.setValue(dictionary, forKey: saveKey)
 		
 		return SnippetsUser.load(saveKey)!
 	}
 	
 	static func load(_ userHandle : String) -> SnippetsUser? {
 		
-		if let dictionary = UserDefaults.standard.object(forKey: userHandle) as? [String : Any] {
+		if let dictionary = Settings.object(forKey: userHandle) as? [String : Any] {
 			let user = SnippetsUser()
 			user.fullName = dictionary["full_name"] as? String ?? ""
 			user.userName = dictionary["user_handle"] as? String ?? ""

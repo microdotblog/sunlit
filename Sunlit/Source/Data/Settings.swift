@@ -11,27 +11,74 @@ import Snippets
 import UUSwift
 
 class Settings {
-	
-	static func getInsecureString(forKey : String) -> String {
-		let value = UserDefaults.standard.string(forKey: forKey) ?? ""
-		return value
+
+    static private let shared = UserDefaults(suiteName: "group.blog.micro.sunlit")!
+
+    static func bool(forKey key: String) -> Bool {
+        return self.object(forKey: key) as? Bool ?? false
+    }
+
+    static func object(forKey key : String) -> Any? {
+        if let object = Settings.shared.object(forKey: key) {
+            return object
+        }
+
+        if let object = UserDefaults.standard.object(forKey: key) {
+            Settings.shared.setValue(object, forKey: key)
+            return object
+        }
+
+        return nil
+    }
+
+    static func removeObject(forKey key : String) {
+        Settings.shared.removeObject(forKey: key)
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+
+    static func setValue(_ object : Any?, forKey key : String) {
+        Settings.shared.setValue(object, forKey: key)
+    }
+
+	static func getInsecureString(forKey key : String) -> String {
+        if let value = Settings.shared.string(forKey: key) {
+            return value
+        }
+
+        if let value = UserDefaults.standard.string(forKey: key) {
+            // If we got here, it means we need to migrate the key to the shared keychain...
+            Settings.shared.setValue(value, forKey: key)
+            return value
+        }
+
+        return ""
 	}
 	
-	static func setInsecureString(_ value : String, forKey : String) {
-		UserDefaults.standard.set(value, forKey: forKey)
+	static func setInsecureString(_ value : String, forKey key : String) {
+        Settings.shared.setValue(value, forKey: key)
 	}
 	
-	static func deleteInsecureString(forKey : String) {
-		UserDefaults.standard.removeObject(forKey: forKey)
+	static func deleteInsecureString(forKey key : String) {
+        Settings.shared.removeObject(forKey: key)
+		UserDefaults.standard.removeObject(forKey: key)
 	}
 	
-	static func getInsecureDictionary(forKey : String) -> [String : Any]? {
-		let dictionary = UserDefaults.standard.object(forKey: forKey) as? [String : Any]
-		return dictionary
+	static func getInsecureDictionary(forKey key : String) -> [String : Any]? {
+        if let dictionary = Settings.shared.object(forKey: key) as? [String : Any] {
+            return dictionary
+        }
+
+        if let dictionary = UserDefaults.standard.object(forKey: key) as? [String : Any] {
+            // If we got here, it means there is a setting to migrate...
+            Settings.shared.set(dictionary, forKey: key)
+            return dictionary
+        }
+
+        return nil
 	}
 	
 	static func setInsecureDictionary(_ dictionary : [String : Any], forKey : String) {
-		UserDefaults.standard.set(dictionary, forKey: forKey)
+		Settings.shared.set(dictionary, forKey: forKey)
 	}
 	
 	static func setSecureString(_ value : String, forKey : String) {
@@ -63,16 +110,16 @@ class Settings {
 	
 	static func saveSnippetsToken(_ token : String) {
 		//UUKeychain.saveString(key: "SunlitToken", acceessLevel: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, string: token)
-		UserDefaults.standard.setValue(token, forKey: "SunlitToken")
+		setValue(token, forKey: "SunlitToken")
 	}
 
 	static func snippetsToken() -> String? {
 		//return UUKeychain.getString(key: "SunlitToken")
-		return UserDefaults.standard.string(forKey: "SunlitToken")
+		return object(forKey: "SunlitToken") as? String
 	}
 
 	static func deleteSnippetsToken() {
-		UserDefaults.standard.removeObject(forKey: "SunlitToken")
+        deleteInsecureString(forKey: "SunlitToken")
 	}
 
 }
