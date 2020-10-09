@@ -23,14 +23,22 @@ class TabButton: UIButton {
 
         let dotSize : CGFloat = 6.0
         self.dotView.layer.cornerRadius = dotSize / 2.0
-        self.dotView.backgroundColor = .gray
+        self.dotView.backgroundColor = UIColor(named: "color_highlight")
         self.dotView.clipsToBounds = true
         self.dotView.isHidden = true
 		let x = (self.bounds.size.width / 2.0) - (dotSize / 2.0)
         let y = self.bounds.size.height
         self.dotView.frame = CGRect(x: x, y: y, width: dotSize, height: dotSize)
+        self.dotView.translatesAutoresizingMaskIntoConstraints = false
+
         self.addSubview(self.dotView)
-	}
+
+        self.dotView.heightAnchor.constraint(equalToConstant: dotSize).isActive = true
+        self.dotView.widthAnchor.constraint(equalToConstant: dotSize).isActive = true
+        let horizontalConstraint = NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: self.dotView, attribute: .centerX, multiplier: 1.0, constant: 0.0)
+        let verticalConstraint = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: self.dotView, attribute: .top, multiplier: 1.0, constant: 0.0)
+        NSLayoutConstraint.activate([horizontalConstraint, verticalConstraint])
+    }
 	
 	private func findSubviewOf(class c: AnyClass) -> AnyObject? {
 		// title and image views are next to UIButton and not actually subviews
