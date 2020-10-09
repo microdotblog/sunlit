@@ -47,7 +47,7 @@ class ItemProviderProcessor : NSObject {
                 return
             }
 
-            if registeredType == "public.image" || registeredType == "public.jpeg" || registeredType == "public.heic" {
+            if registeredType == "public.image" || registeredType == "public.jpeg" || registeredType == "public.heic" || registeredType == "public.png" || registeredType == "public.gif" {
                 self.processImageProvider(provider)
                 return
             }

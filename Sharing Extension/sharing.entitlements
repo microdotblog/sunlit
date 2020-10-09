@@ -7,12 +7,13 @@
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>group.blog.micro.sunlit</string>
+		<string>group.blog.micro.ios</string>
 	</array>
 	<key>com.apple.security.network.client</key>
 	<true/>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)blog.micro.sunlit.shared</string>
+		<string>$(AppIdentifierPrefix)blog.micro.ios</string>
 	</array>
 </dict>
 </plist>
