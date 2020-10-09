@@ -43,12 +43,14 @@ class ConversationViewController: UIViewController {
 		self.setupTable()
 		self.setupNavigation()
 		self.setupGesture()
+
+        self.replyField.text = self.sourcePost?.loadDraftedText()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 
-		self.loadConversation()
+		self.loadConversation(scrollToBottom: false)
 
 		self.setupNotifications()
 		self.spinner.startAnimating()
@@ -93,7 +95,7 @@ class ConversationViewController: UIViewController {
 	}
 	
 	func setupTable() {
-		self.tableViewRefreshControl.addTarget(self, action: #selector(loadConversation), for: .valueChanged)
+		self.tableViewRefreshControl.addTarget(self, action: #selector(refreshConversation), for: .valueChanged)
 		self.tableView.addSubview(self.tableViewRefreshControl)
 	}
 	
@@ -142,7 +144,11 @@ class ConversationViewController: UIViewController {
 		return self.buildUsernamesText() + self.replyField.text
 	}
 
-	@objc func loadConversation() {
+    @objc func refreshConversation() {
+        self.loadConversation(scrollToBottom: false)
+    }
+
+    func loadConversation(scrollToBottom : Bool) {
 		if let post = sourcePost {
 			Snippets.Microblog.fetchConversation(post: post) { (error, posts : [SnippetsPost]) in
 				
@@ -158,6 +164,10 @@ class ConversationViewController: UIViewController {
 					self.tableView.reloadData()
 					self.spinner.stopAnimating()
 					self.tableViewRefreshControl.endRefreshing()
+
+                    if scrollToBottom {
+                        self.tableView.scrollToRow(at: IndexPath(row: self.posts.count - 1, section: 0), at: .bottom, animated: true)
+                    }
 				}
 			}
 		}
@@ -177,8 +187,9 @@ class ConversationViewController: UIViewController {
 					Dialog(self).information(err.localizedDescription)
 				}
 				else {
+                    self.sourcePost?.saveDraftedReply("")
 					self.replyField.text = ""
-					self.loadConversation()
+					self.loadConversation(scrollToBottom: true)
 				}
 			}
 		}
@@ -271,6 +282,11 @@ extension ConversationViewController : UITextViewDelegate {
 			self.replyContainer.updateConstraints()
 			self.replyContainer.layoutIfNeeded()
 		}
+
+        if let currentText = textView.text,
+           let textRange = Range(range, in: currentText) {
+            self.sourcePost?.saveDraftedReply(currentText.replacingCharacters(in: textRange, with: text))
+        }
 		
 		return true
 	}

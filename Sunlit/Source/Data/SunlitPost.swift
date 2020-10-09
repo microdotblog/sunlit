@@ -266,3 +266,17 @@ extension SunlitPost {
         return names
     }
 }
+
+extension SunlitPost {
+    func loadDraftedText() -> String {
+        if let string = Settings.object(forKey: "\(self.identifier)-DRAFT") as? String {
+            return string
+        }
+
+        return ""
+    }
+
+    func saveDraftedReply(_ text : String) {
+        Settings.setValue(text, forKey: "\(self.identifier)-DRAFT")
+    }
+}

@@ -142,7 +142,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 
 		self.conversationButton.isHidden = !self.post.hasConversation
 		
-        self.replyField.text = ""
+        self.replyField.text = self.post.loadDraftedText()
         
 		// Update the text objects
 		self.textView.attributedText = post.attributedText
@@ -232,6 +232,8 @@ class SunlitPostTableViewCell : UITableViewCell {
 		}
 		
         self.replyField.resignFirstResponder()
+
+        self.post.saveDraftedReply("")
 	}
 	
 	@IBAction func onViewConversation() {
@@ -291,7 +293,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 	}
 	
 	@objc func keyboardOffScreen(_ notification : Notification) {
-			
+
 		self.replyContainer.layer.borderWidth = 0.0
 
 		self.replyField.isHidden = true
@@ -346,6 +348,32 @@ class SunlitPostTableViewCell : UITableViewCell {
 			self.userAvatar.image = avatar
 		}
 	}
+}
+
+
+extension SunlitPostTableViewCell : UITextViewDelegate {
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        UIView.setAnimationsEnabled(false)
+        if let tableView = self.superview as? UITableView {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+        UIView.setAnimationsEnabled(true)
+
+        if let currentText = textView.text,
+           let textRange = Range(range, in: currentText) {
+            self.post.saveDraftedReply(currentText.replacingCharacters(in: textRange, with: text))
+        }
+
+        return true
+    }
+
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        NotificationCenter.default.post(name: .openURLNotification, object: URL)
+        return false
+    }
+
 }
 
 extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
