@@ -236,8 +236,11 @@ class TimelineViewController: ContentViewController {
                     self.refreshTableView(postObjects)
                 }
                 else if let _ = error {
+					// wait a few seconds before re-trying after an error
                     self.loadingData = false
-                    self.loadTimeline()
+					DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+						self.loadTimeline()
+					}
                 }
 				self.loadingData = false
 				self.spinner.stopAnimating()
