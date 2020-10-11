@@ -23,8 +23,6 @@ This document outlines the general development roadmap for Sunlit. It is subject
 ## 3.5
 - Android?
 
-## Beyond
-
 
 ## Beta Installation Link
 [https://testflight.apple.com/join/vAQQbw8J](https://testflight.apple.com/join/vAQQbw8J)
