@@ -30,7 +30,7 @@ Micropub endpoints must provide a [media endpoint](https://micropub.spec.indiewe
 
 
 ### Roadmap
-For information on future plans and features, please see [the development roadmap](https://github.com/microdotblog/sunlit/blob/master/README.md).
+For information on future plans and features, please see [the development roadmap](https://github.com/microdotblog/sunlit/blob/master/ROADMAP.md).
 
 ### Swift
 This app is written entirely in Swift.
