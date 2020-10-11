@@ -28,5 +28,9 @@ This app requires a minimum target of iOS 13.0 or greater
 
 Micropub endpoints must provide a [media endpoint](https://micropub.spec.indieweb.org/#media-endpoint) for Sunlit to publish photos. 
 
+
+### Roadmap
+For information on future plans and features, please see [the development roadmap](https://github.com/microdotblog/sunlit/blob/master/README.md).
+
 ### Swift
 This app is written entirely in Swift.
