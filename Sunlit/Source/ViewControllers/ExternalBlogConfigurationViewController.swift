@@ -25,6 +25,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
 	var wordpressRsdPath = ""
 	var usernameText = ""
 	var passwordText = ""
+    var externalServerPath = ""
 
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,11 +144,14 @@ class ExternalBlogConfigurationViewController: UIViewController {
 				authEndpoint = authEndpoint + "&scope=create"
 				authEndpoint = authEndpoint + "&response_type=code"
 
-                let settings = BlogSettings(self.blogAddress.text!)
+                let serverAddress : String = URL(string:self.externalServerPath)?.host ?? ""
+                let settings = BlogSettings(serverAddress)
                 settings.tokenEndpoint = micropubEndpoint
                 settings.stateKey = micropubState
                 settings.authEndpoint = authEndpoint
                 settings.save()
+
+                MicropubState.save(state: micropubState, path: serverAddress)
             
 				DispatchQueue.main.async {
 					UIApplication.shared.open(URL(string: authEndpoint)!)
@@ -172,7 +176,8 @@ class ExternalBlogConfigurationViewController: UIViewController {
 		if !path!.contains("http:") && !path!.contains("https:") {
 			path = "http://" + path!
 		}
-		
+
+        self.externalServerPath = path!
 		let fullURL = path!
 		
 		let request = UUHttpRequest(url: path!)

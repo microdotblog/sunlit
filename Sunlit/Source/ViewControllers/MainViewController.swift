@@ -273,7 +273,7 @@ class MainViewController: UIViewController {
 			if let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
 				var code = ""
 				var state = ""
-				
+
 				if let items = components.queryItems {
 					for q in items {
 						if let val = q.value {
@@ -287,17 +287,20 @@ class MainViewController: UIViewController {
 					}
 				}
 
-				if (code.count > 0) && (state.count > 0) {
-                    let me = BlogSettings.publishingPath
-                    let token_endpoint = BlogSettings(me).tokenEndpoint
-					
+                let endpoint : String = MicropubState.lookupEndpoint(from: state) ?? ""
+
+                if (code.count > 0) && (state.count > 0) && (endpoint.count > 0){
+
+                    let token_endpoint = BlogSettings(endpoint).tokenEndpoint
+					let me = "https://" + endpoint
 					var params = ""
 					params = params + "grant_type=authorization_code"
 					params = params + "&code=" + code
 					params = params + "&client_id=" + String("https://sunlit.io/").uuUrlEncoded()
 					params = params + "&redirect_uri=" + String("https://sunlit.io/micropub/redirect").uuUrlEncoded()
-					params = params + "&me=" + me.uuUrlEncoded()
-					
+                    params = params + "&me=" + me.uuUrlEncoded()
+
+                    print("\(params)")
 					let d = params.data(using: .utf8)
 
 					UUHttpSession.post(url: token_endpoint, queryArguments: [ : ], body: d, contentType: "application/x-www-form-urlencoded") { (parsedServerResponse) in
