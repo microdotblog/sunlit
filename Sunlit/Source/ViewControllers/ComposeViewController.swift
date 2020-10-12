@@ -22,7 +22,14 @@ class ComposeViewController: UIViewController {
 	@IBOutlet var keyboardAccessoryView : UIView!
 	@IBOutlet var keyboardAccessoryViewBottomConstraint : NSLayoutConstraint!
 	@IBOutlet var blogSelectorButton : UIButton!
-	
+
+    @IBOutlet var altTextDialogView : UIView!
+    @IBOutlet var altTextTextView : UITextView!
+    @IBOutlet var altTextCancelButton : UIButton!
+    @IBOutlet var altTextDoneButton : UIButton!
+    var altTextSection : SunlitComposition? = nil
+    var altTextItem : Int = 0
+
 	var sections : [SunlitComposition] = []
 	var textViewDictionary : [UITextView : SunlitComposition] = [ : ]
 	var needsInitialFirstResponder = true
@@ -262,39 +269,6 @@ class ComposeViewController: UIViewController {
 		self.present(cropViewController, animated: true)
 	}
 
-
-	func onEditAltText(_ section : SunlitComposition, _ item : Int) {
-		
-		let currentAltText = section.media[item].altText
-		var alertTextField : UITextField? = nil
-		let alertController = UIAlertController(title: "Accessibility Description", message: nil, preferredStyle: .alert)
-		alertController.addTextField { (textField) in
-			textField.text = currentAltText
-			textField.autocorrectionType = .yes
-			textField.keyboardType = .asciiCapable
-			textField.autocapitalizationType = .sentences
-			alertTextField = textField
-		}
-
-		let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-		}
-
-		var saveTitle = "Add"
-		if currentAltText.count > 0 {
-			saveTitle = "Update"
-		}
-
-		let update = UIAlertAction(title: saveTitle, style: .default) { (action) in
-			let altText : String = alertTextField?.text ?? ""
-			section.media[item].altText = altText
-		}
-		
-		alertController.addAction(update)
-		alertController.addAction(cancel)
-		
-		self.present(alertController, animated: true, completion: nil)
-	}
-	
 	@IBAction func onDismissKeyboard() {
 		self.view.endEditing(true)
 	}
@@ -322,7 +296,56 @@ class ComposeViewController: UIViewController {
 		}
 	}
 	
-	
+    /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    MARK: -
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+    func onEditAltText(_ section : SunlitComposition, _ item : Int) {
+
+        self.altTextSection = section
+        self.altTextItem = item
+        self.view.bringSubviewToFront(self.altTextDialogView)
+        self.altTextDialogView.alpha = 0.0
+        self.altTextDialogView.isHidden = false
+        self.altTextTextView.text = section.media[item].altText
+
+        UIView.animate(withDuration: 0.15) {
+            self.altTextDialogView.alpha = 1.0
+        }
+
+        let currentAltText = section.media[item].altText
+        var saveTitle = "Add"
+        if currentAltText.count > 0 {
+            saveTitle = "Update"
+        }
+
+        self.altTextDoneButton.setTitle(saveTitle, for: .normal)
+        self.altTextTextView.becomeFirstResponder()
+    }
+
+
+
+    @IBAction func onAltTextCancel() {
+        UIView.animate(withDuration: 0.15) {
+            self.altTextDialogView.alpha = 0.0
+        }
+
+        self.altTextTextView.resignFirstResponder()
+    }
+
+    @IBAction func onAltTextDone() {
+
+        if let section = self.altTextSection {
+            section.media[self.altTextItem].altText = self.altTextTextView.text
+        }
+
+        UIView.animate(withDuration: 0.15) {
+            self.altTextDialogView.alpha = 0.0
+        }
+
+        self.altTextTextView.resignFirstResponder()
+    }
+
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -339,15 +362,44 @@ class ComposeViewController: UIViewController {
 			if !self.uploading {
 				return
 			}
+
+            if self.sections.count <= 1 {
+                var photos : [String] = []
+                var photoAltTags : [String] = []
+                var videos : [String] = []
+                var videoAltTags : [String] = []
+                let text = self.sections.first?.text ?? ""
+
+                for media in mediaDictionary.keys {
+                    let location = mediaDictionary[media]!
+
+                    if media.type == .image {
+                        photos.append(location.path)
+                        photoAltTags.append(media.altText)
+                    }
+                    else {
+                        videos.append(location.path)
+                        videoAltTags.append(media.altText)
+                    }
+                }
+
+                self.activeUpload = Snippets.shared.postText(title: title, content: text, isDraft: false, photos: photos, altTags: photoAltTags, videos: videos, videoAltTags: videoAltTags, completion: { (error, remotePath) in
+                    DispatchQueue.main.async {
+                        self.handleUploadCompletion(error, remotePath)
+                    }
+
+                })
+            }
+            else {
+                let string = HTMLBuilder.createHTML(sections: self.sections, mediaPathDictionary: mediaDictionary)
 			
-			let string = HTMLBuilder.createHTML(sections: self.sections, mediaPathDictionary: mediaDictionary)
-			
-            self.activeUpload = Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
-                DispatchQueue.main.async {
-                    self.handleUploadCompletion(error, remotePath)
+                self.activeUpload = Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
+                    DispatchQueue.main.async {
+                        self.handleUploadCompletion(error, remotePath)
+                    }
                 }
             }
-		}
+        }
 	}
 
 	func uploadMedia(_ completion : @escaping ([SunlitMedia : MediaLocation]) -> Void) {
