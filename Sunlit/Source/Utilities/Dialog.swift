@@ -108,7 +108,7 @@ class Dialog {
 				
 					if let destination = destinations.first {
                         if let blogId = destination["uid"] as? String {
-                            BlogSettings.publishingPath = blogId
+                            BlogSettings.setBlogForPublishing(BlogSettings(blogId))
                         }
 					}
 				}
@@ -122,9 +122,9 @@ class Dialog {
 		let actionSheet = UIAlertController(title: nil, message: "Please select which Micro.blog to use when publishing.", preferredStyle: .actionSheet)
 
 		for blog in blogList {
-            let action = UIAlertAction(title: blog.blogAddress, style: .default) { (action) in
-					
-                BlogSettings.publishingPath = blog.blogAddress
+            let action = UIAlertAction(title: blog.blogName, style: .default) { (action) in
+
+                BlogSettings.setBlogForPublishing(blog)
 
                 if let completion = self.completion {
                     completion()

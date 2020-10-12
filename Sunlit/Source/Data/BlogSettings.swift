@@ -16,8 +16,8 @@ class BlogSettings : NSObject {
         var blogList : [BlogSettings] = []
         
         if let list = Settings.object(forKey: BlogSettings.listOfPublishingBlogsKey) as? [String] {
-            for blogAddress in list {
-                let blogInfo = BlogSettings(blogAddress)
+            for blogName in list {
+                let blogInfo = BlogSettings(blogName)
                 blogList.append(blogInfo)
             }
         }
@@ -31,7 +31,7 @@ class BlogSettings : NSObject {
     
     static func addPublishedBlog(_ settings : BlogSettings) {
         
-        let blogAddress = settings.blogAddress
+        let blogName = settings.blogName
         
         var publishedList : [String] = []
         
@@ -39,52 +39,32 @@ class BlogSettings : NSObject {
             publishedList = list
         }
         
-        if !publishedList.contains(blogAddress) {
-            publishedList.append(blogAddress)
+        if !publishedList.contains(blogName) {
+            publishedList.append(blogName)
             Settings.setValue(publishedList, forKey: BlogSettings.listOfPublishingBlogsKey)
         }
         
         settings.save()
     }
-    
-    static var publishingPath : String {
-        get {
-            if let path = Settings.object(forKey: BlogSettings.savedPublishingKey) as? String {
-                return path
-            }
-            
-            return "https://micro.blog"
-        }
-        
-        set (path) {
-            Settings.setValue(path, forKey: BlogSettings.savedPublishingKey)
-        }
-    }
-    
-    static var timelinePath : String {
-        get {
-            if let path = Settings.object(forKey: BlogSettings.savedTimelineKey) as? String {
-                return path
-            }
-            
-            return "https://micro.blog"
-        }
-        set (path) {
-            Settings.setValue(path, forKey: BlogSettings.savedTimelineKey)
-        }
+
+    static func blogForPublishing() -> BlogSettings {
+        return BlogSettings(BlogSettings.publishingName)
     }
 
-    
-    static var defaultBlogInfo : BlogSettings {
-        get {
-            var dictionary : [String : Any] = [:]
-            dictionary["tokenEndpoint"] = "https://micro.blog"
-            dictionary["blogAddress"] = "https://micro.blog"
-            dictionary["blogName"] = "Micro.blog"
-            dictionary["Snippets.Configuration"] = Snippets.Configuration.microblogConfiguration(token: "").toDictionary()
-            
-            return BlogSettings(dictionary)
-        }
+    static func setBlogForPublishing(_ blog : BlogSettings) {
+        BlogSettings.publishingName = blog.blogName
+    }
+
+    static func blogForTimeline() -> BlogSettings {
+        return BlogSettings(BlogSettings.timelineName)
+    }
+
+    static func setBlogForTimeline(_ blog : BlogSettings) {
+        BlogSettings.timelineName = blog.blogName
+    }
+
+    static func defaultBlogSettings() -> BlogSettings {
+        return BlogSettings.defaultBlogInfo
     }
     
     static func deleteTimelineInfo() {
@@ -94,7 +74,47 @@ class BlogSettings : NSObject {
     static func deletePublishingInfo() {
         Settings.removeObject(forKey: BlogSettings.savedPublishingKey)
     }
-    
+
+    private static var publishingName : String {
+        get {
+            if let path = Settings.object(forKey: BlogSettings.savedPublishingKey) as? String {
+                return path
+            }
+
+            return "https://micro.blog"
+        }
+
+        set (path) {
+            Settings.setValue(path, forKey: BlogSettings.savedPublishingKey)
+        }
+    }
+
+    private static var timelineName : String {
+        get {
+            if let path = Settings.object(forKey: BlogSettings.savedTimelineKey) as? String {
+                return path
+            }
+
+            return "https://micro.blog"
+        }
+        set (path) {
+            Settings.setValue(path, forKey: BlogSettings.savedTimelineKey)
+        }
+    }
+
+    private static var defaultBlogInfo : BlogSettings {
+        get {
+            var dictionary : [String : Any] = [:]
+            dictionary["tokenEndpoint"] = "https://micro.blog"
+            dictionary["blogPublishingAddress"] = "https://micro.blog"
+            dictionary["blogName"] = "Micro.blog"
+            dictionary["Snippets.Configuration"] = Snippets.Configuration.microblogConfiguration(token: "").toDictionary()
+
+            return BlogSettings(dictionary)
+        }
+    }
+
+
     /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     MARK: - Construction interface
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -112,19 +132,19 @@ class BlogSettings : NSObject {
     }
 
     
-    func load(_ blogAddress : String) {
-        if let dictionary = Settings.object(forKey: BlogSettings.publishingSettingsKey + blogAddress) as? [String : Any] {
+    func load(_ blogName : String) {
+        if let dictionary = Settings.object(forKey: BlogSettings.publishingSettingsKey + blogName) as? [String : Any] {
             self.dictionary = dictionary
         }
         else {
             self.dictionary = BlogSettings.defaultBlogInfo.dictionary
-            self.blogAddress = blogAddress
+            self.blogName = blogName
         }
     }
     
     func save() {
-        let blogAddress = self.blogAddress
-        Settings.setValue(self.dictionary, forKey: BlogSettings.publishingSettingsKey + blogAddress)
+        let blogName = self.blogName
+        Settings.setValue(self.dictionary, forKey: BlogSettings.publishingSettingsKey + blogName)
     }
 
     
@@ -237,16 +257,16 @@ class BlogSettings : NSObject {
         }
     }
     
-    var blogAddress : String {
+    var blogPublishingAddress : String {
         get {
-            if let name = self.dictionary["blogAddress"] as? String {
+            if let name = self.dictionary["blogPublishingAddress"] as? String {
                 return name
             }
             
             return ""
         }
         set (name) {
-            self.dictionary["blogAddress"] = name
+            self.dictionary["blogPublishingAddress"] = name
             self.save()
         }
     }
@@ -320,7 +340,7 @@ class BlogSettings : NSObject {
                     selectedUid = selectedUid.replacingOccurrences(of: "https://", with: "")
 					selectedUid = selectedUid.replacingOccurrences(of: "/", with: "")
 
-					BlogSettings.publishingPath = selectedUid
+					BlogSettings.publishingName = selectedUid
 				}
 			}
 		}
@@ -342,7 +362,7 @@ class BlogSettings : NSObject {
 		   let blogId = xmlBlogId {
 
 			let blogSettings = BlogSettings(url)
-			blogSettings.blogAddress = url
+			blogSettings.blogPublishingAddress = url
 			blogSettings.username = name
 
 			var identity = Snippets.Configuration.xmlRpcConfiguration(username: name, password: password, endpoint: endpoint, blogId: blogId)
@@ -355,7 +375,7 @@ class BlogSettings : NSObject {
 			BlogSettings.addPublishedBlog(blogSettings)
 
 			if usesExternalBlog {
-				BlogSettings.publishingPath = url
+				BlogSettings.publishingName = url
 			}
 		}
 	}
@@ -381,7 +401,7 @@ class BlogSettings : NSObject {
 			BlogSettings.addPublishedBlog(settings)
 
 			if usesExternalBlog {
-				BlogSettings.publishingPath = user
+				BlogSettings.publishingName = user
 			}
 		}
 	}

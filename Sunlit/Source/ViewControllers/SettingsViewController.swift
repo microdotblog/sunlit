@@ -50,11 +50,11 @@ class SettingsViewController: UIViewController {
     
     func updateSelection() {
         
-        let selectedName = BlogSettings.publishingPath
+        let selectedName = BlogSettings.blogForPublishing().blogName
         
         var index = 0
         for settings in self.tableData {
-            if settings.blogAddress == selectedName {
+            if settings.blogName == selectedName {
                 self.tableView.selectRow(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .none)
             }
             index = index + 1
@@ -103,7 +103,7 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
         
         let blogInfo = self.tableData[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "BlogSelectionTableViewCell", for: indexPath) as! BlogSelectionTableViewCell
-        cell.blogTitle.text = blogInfo.blogAddress
+        cell.blogTitle.text = blogInfo.blogName
         return cell
     }
     
@@ -115,7 +115,7 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
         }
         else {
             let blogInfo = self.tableData[indexPath.row]
-            BlogSettings.publishingPath = blogInfo.blogAddress
+            BlogSettings.setBlogForPublishing(blogInfo)
         }
     }
     

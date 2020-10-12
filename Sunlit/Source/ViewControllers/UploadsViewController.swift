@@ -93,7 +93,7 @@ class UploadsViewController: UIViewController {
         self.busyIndicator.isHidden = false
         self.busyIndicator.startAnimating()
 
-        _ = Snippets.Micropub.fetchPublishedMedia(Snippets.Configuration.publishing, completion: { (error, items) in
+        _ = Snippets.Micropub.fetchPublishedMedia(BlogSettings.blogForPublishing().snippetsConfiguration!, completion: { (error, items) in
             if let items = items {
                 self.media = items
                 DispatchQueue.main.async {

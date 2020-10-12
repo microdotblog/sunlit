@@ -239,7 +239,7 @@ class MainViewController: UIViewController {
 					Settings.saveSnippetsToken(permanentToken)
                     
                     // Save to user prefs...
-                    let blogSettings = BlogSettings(BlogSettings.timelinePath)
+                    let blogSettings = BlogSettings.blogForTimeline()
                     blogSettings.snippetsConfiguration = Snippets.Configuration.microblogConfiguration(token: permanentToken)
                     blogSettings.save()
                     
@@ -287,12 +287,12 @@ class MainViewController: UIViewController {
 					}
 				}
 
-                let endpoint : String = MicropubState.lookupEndpoint(from: state) ?? ""
+                let blogName : String = MicropubState.lookupBlogName(from: state) ?? ""
 
-                if (code.count > 0) && (state.count > 0) && (endpoint.count > 0){
+                if (code.count > 0) && (state.count > 0) && (blogName.count > 0){
 
-                    let token_endpoint = BlogSettings(endpoint).tokenEndpoint
-					let me = "https://" + endpoint
+                    let blogSettings = BlogSettings(blogName)
+                    let token_endpoint = blogSettings.tokenEndpoint
 					var params = ""
 					params = params + "grant_type=authorization_code"
 					params = params + "&code=" + code
@@ -305,13 +305,13 @@ class MainViewController: UIViewController {
 						if let dictionary = parsedServerResponse.parsedResponse as? [ String : Any ] {
 							if let access_token = dictionary["access_token"] as? String {
 								DispatchQueue.main.async {
-                                    
-                                    let settings = BlogSettings(BlogSettings.publishingPath)
-                                    settings.microblogToken = access_token
-                                    settings.save()
-                                    BlogSettings.addPublishedBlog(settings)
 
-                                    if settings.snippetsConfiguration!.type == .micropub {
+                                    blogSettings.microblogToken = access_token
+                                    blogSettings.snippetsConfiguration = Snippets.Configuration.micropubConfiguration(token: access_token, endpoint: blogSettings.blogPublishingAddress)
+                                    blogSettings.save()
+                                    BlogSettings.addPublishedBlog(blogSettings)
+
+                                    if blogSettings.snippetsConfiguration!.type == .micropub {
 										Dialog(self).selectBlog()
 									}
 
@@ -439,6 +439,14 @@ class MainViewController: UIViewController {
 	}
 
     @IBAction @objc func onUploads() {
+
+        if BlogSettings.blogForPublishing().snippetsConfiguration?.type != .micropub {
+            Dialog(self).information("Uploads are currently only supported by Micropub blogs.") {
+
+            }
+            return
+        }
+
         let storyBoard: UIStoryboard = UIStoryboard(name: "Uploads", bundle: nil)
         let uploadsViewController = storyBoard.instantiateViewController(withIdentifier: "UploadsViewController") as! UploadsViewController
         uploadsViewController.delegate = self

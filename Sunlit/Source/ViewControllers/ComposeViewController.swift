@@ -74,7 +74,7 @@ class ComposeViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		
-        self.blogSelectorButton.setTitle(BlogSettings.publishingPath, for: .normal)
+        self.blogSelectorButton.setTitle(BlogSettings.blogForPublishing().blogName, for: .normal)
         self.blogSelectorButton.isEnabled = BlogSettings.publishedBlogs().count > 1
 	}
 	
@@ -217,7 +217,7 @@ class ComposeViewController: UIViewController {
 	
 	@IBAction func onSelectBlogConfiguration() {
 		Dialog(self).selectBlog {
-            self.blogSelectorButton.setTitle(BlogSettings.publishingPath, for: .normal)
+            self.blogSelectorButton.setTitle(BlogSettings.blogForPublishing().blogName, for: .normal)
 		}
 	}
 	
@@ -330,7 +330,7 @@ class ComposeViewController: UIViewController {
 	
 	func uploadComposition() {
 
-        Snippets.Configuration.publishing = BlogSettings(BlogSettings.publishingPath).snippetsConfiguration!
+        Snippets.Configuration.publishing = BlogSettings.blogForPublishing().snippetsConfiguration!
         
 		let title : String = self.titleField.text ?? ""
 		self.uploadMedia { (mediaDictionary : [SunlitMedia : MediaLocation]) in

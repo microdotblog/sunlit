@@ -10,18 +10,18 @@ import Foundation
 
 class MicropubState {
 
-    static func save(state : String, path : String) {
+    static func save(state : String, name : String) {
         var dictionary : [String : String] = [:]
 
         if let saved = Settings.object(forKey: key) as? [String : String] {
             dictionary = saved
         }
 
-        dictionary[state] = path
+        dictionary[state] = name
         Settings.setValue(dictionary, forKey: key)
     }
 
-    static func lookupEndpoint(from state : String) -> String? {
+    static func lookupBlogName(from state : String) -> String? {
 
         if let dictionary = Settings.object(forKey: key) as? [String : String] {
             return dictionary[state]
@@ -30,10 +30,10 @@ class MicropubState {
         return nil
     }
 
-    static func delete(state : String) {
+    static func delete(blogName : String) {
 
         if var saved = Settings.object(forKey: key) as? [String : String] {
-            saved.removeValue(forKey: state)
+            saved.removeValue(forKey: blogName)
             Settings.setValue(saved, forKey: key)
         }
 
