@@ -125,8 +125,8 @@ class ExternalBlogConfigurationViewController: UIViewController {
 			let tokenStrings = SnippetsXMLLinkParser.parse(data, relValue: "token_endpoint")
 			
 			if var authEndpoint = authStrings.first,
-				let _ /*tokenEndpoint */ = tokenStrings.first,
-				let micropubEndpoint = links.first {
+               let tokenEndpoint = tokenStrings.first {
+				//, let _ = links.first {
 				
 				let micropubState = UUID().uuidString
 				
@@ -146,7 +146,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
 
                 let serverAddress : String = URL(string:self.externalServerPath)?.host ?? ""
                 let settings = BlogSettings(serverAddress)
-                settings.tokenEndpoint = micropubEndpoint
+                settings.tokenEndpoint = tokenEndpoint
                 settings.stateKey = micropubState
                 settings.authEndpoint = authEndpoint
                 settings.save()

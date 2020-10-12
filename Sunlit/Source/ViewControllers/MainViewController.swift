@@ -298,10 +298,8 @@ class MainViewController: UIViewController {
 					params = params + "&code=" + code
 					params = params + "&client_id=" + String("https://sunlit.io/").uuUrlEncoded()
 					params = params + "&redirect_uri=" + String("https://sunlit.io/micropub/redirect").uuUrlEncoded()
-                    params = params + "&me=" + me.uuUrlEncoded()
 
-                    print("\(params)")
-					let d = params.data(using: .utf8)
+                    let d = params.data(using: .utf8)
 
 					UUHttpSession.post(url: token_endpoint, queryArguments: [ : ], body: d, contentType: "application/x-www-form-urlencoded") { (parsedServerResponse) in
 						if let dictionary = parsedServerResponse.parsedResponse as? [ String : Any ] {
