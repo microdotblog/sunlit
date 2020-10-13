@@ -277,8 +277,8 @@
                                                         <constraint firstAttribute="height" constant="30" id="hbN-1C-C3h"/>
                                                     </constraints>
                                                     <color key="tintColor" systemColor="labelColor"/>
-                                                    <state key="normal" image="bookmark" catalog="system"/>
-                                                    <state key="selected" image="bookmark.fill" catalog="system"/>
+                                                    <state key="normal" image="star" catalog="system"/>
+                                                    <state key="selected" image="star.fill" catalog="system"/>
                                                     <connections>
                                                         <action selector="onBookmark" destination="AOY-QH-rEP" eventType="touchUpInside" id="owD-RJ-ZuA"/>
                                                     </connections>
@@ -366,9 +366,9 @@
     </scenes>
     <resources>
         <image name="arrowshape.turn.up.left.fill" catalog="system" width="128" height="106"/>
-        <image name="bookmark" catalog="system" width="112" height="128"/>
-        <image name="bookmark.fill" catalog="system" width="112" height="128"/>
         <image name="bubble.left.and.bubble.right.fill" catalog="system" width="128" height="97"/>
+        <image name="star" catalog="system" width="128" height="116"/>
+        <image name="star.fill" catalog="system" width="128" height="116"/>
         <image name="videoButtonOverlay" width="30" height="30"/>
         <namedColor name="color_highlight">
             <color red="0.0" green="0.60000002384185791" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
