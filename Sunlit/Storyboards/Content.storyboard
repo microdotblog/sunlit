@@ -308,8 +308,8 @@
                                                         <constraint firstAttribute="width" constant="40" id="htH-5f-9kS"/>
                                                     </constraints>
                                                     <color key="tintColor" systemColor="labelColor"/>
-                                                    <state key="normal" image="bookmark" catalog="system"/>
-                                                    <state key="selected" image="bookmark.fill" catalog="system"/>
+                                                    <state key="normal" image="star"/>
+                                                    <state key="selected" image="star.fill" catalog="system"/>
                                                     <connections>
                                                         <action selector="onBookmark" destination="hm2-S6-ZAt" eventType="touchUpInside" id="gRO-oX-dCI"/>
                                                     </connections>
@@ -983,8 +983,8 @@
                                                         <constraint firstAttribute="width" constant="40" id="zh8-6K-dvY"/>
                                                     </constraints>
                                                     <color key="tintColor" systemColor="labelColor"/>
-                                                    <state key="normal" image="bookmark" catalog="system"/>
-                                                    <state key="selected" image="bookmark.fill" catalog="system"/>
+                                                    <state key="normal" image="star" catalog="system"/>
+                                                    <state key="selected" image="star.fill" catalog="system"/>
                                                     <connections>
                                                         <action selector="onBookmark" destination="2ps-xG-txR" eventType="touchUpInside" id="CTh-jB-sDC"/>
                                                     </connections>
@@ -1114,10 +1114,11 @@
     </scenes>
     <resources>
         <image name="arrowshape.turn.up.left.fill" catalog="system" width="128" height="106"/>
-        <image name="bookmark" catalog="system" width="112" height="128"/>
-        <image name="bookmark.fill" catalog="system" width="112" height="128"/>
         <image name="bubble.left.and.bubble.right.fill" catalog="system" width="128" height="97"/>
         <image name="hand.thumbsup.fill" catalog="system" width="128" height="121"/>
+        <image name="star" width="128" height="128"/>
+        <image name="star" catalog="system" width="128" height="116"/>
+        <image name="star.fill" catalog="system" width="128" height="116"/>
         <image name="videoButtonOverlay" width="30" height="30"/>
         <image name="welcome_waves" width="320" height="200"/>
         <namedColor name="color_highlight">
