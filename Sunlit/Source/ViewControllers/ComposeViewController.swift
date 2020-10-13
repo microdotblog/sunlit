@@ -615,7 +615,11 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 		if indexPath.item > section.media.count {
 			return []
 		}
-		
+
+        if indexPath.item == 0 {
+            return []
+        }
+        
 		let media = section.media[indexPath.item - 1]
 		let itemProvider = NSItemProvider(object: media.getImage())
 		let dragItem = UIDragItem(itemProvider: itemProvider)
