@@ -47,6 +47,22 @@ class BlogSettings : NSObject {
         settings.save()
     }
 
+    static func deletePublishedBlog(_ settings : BlogSettings) {
+
+        if var list = Settings.object(forKey: BlogSettings.listOfPublishingBlogsKey) as? [String] {
+            if let index = list.firstIndex(of: settings.blogName) {
+                list.remove(at: index)
+
+                Settings.setValue(list, forKey: BlogSettings.listOfPublishingBlogsKey)
+                Settings.removeObject(forKey: BlogSettings.publishingSettingsKey + settings.blogName)
+
+                if settings.blogName == BlogSettings.publishingName {
+                    BlogSettings.publishingName = list.first ?? "Micro.blog"
+                }
+            }
+        }
+    }
+
     static func blogForPublishing() -> BlogSettings {
         return BlogSettings(BlogSettings.publishingName)
     }

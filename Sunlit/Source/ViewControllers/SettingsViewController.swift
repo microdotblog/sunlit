@@ -118,5 +118,20 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
             BlogSettings.setBlogForPublishing(blogInfo)
         }
     }
+
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return self.tableData.count > 1
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let blogInfo = self.tableData[indexPath.row]
+        Dialog(self).question(title: nil, question: "Are you sure you want to delete the settings for \(blogInfo.blogName)?", accept: "Delete", cancel: "Cancel") {
+            BlogSettings.deletePublishedBlog(blogInfo)
+
+            self.tableData = BlogSettings.publishedBlogs()
+            self.tableView.reloadData()
+            self.updateSelection()
+        }
+    }
     
 }
