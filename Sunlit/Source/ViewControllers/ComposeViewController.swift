@@ -363,7 +363,7 @@ class ComposeViewController: UIViewController {
 				return
 			}
 
-            if self.sections.count <= 1 {
+            if self.sections.count <= 1 && Snippets.Configuration.publishing.type == .micropub {
                 var photos : [String] = []
                 var photoAltTags : [String] = []
                 var videos : [String] = []
