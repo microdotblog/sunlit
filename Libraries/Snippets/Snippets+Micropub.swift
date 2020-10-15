@@ -207,6 +207,7 @@ extension Snippets {
             var formData : Data = Data()
             let imageName = "file"
             let boundary = ProcessInfo.processInfo.globallyUniqueString
+            let filename = UUID().uuidString.replacingOccurrences(of: "-", with: "") + ".jpg"
 
             if let blogUid = identity.micropubUid {
                 if blogUid.count > 0 {
@@ -217,7 +218,7 @@ extension Snippets {
             }
             
             formData.append(String("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-            formData.append(String("Content-Disposition: form-data; name=\"\(imageName)\"; filename=\"image.jpg\"\r\n").data(using: String.Encoding.utf8)!)
+            formData.append(String("Content-Disposition: form-data; name=\"\(imageName)\"; filename=\"\(filename)\r\n").data(using: String.Encoding.utf8)!)
             formData.append(String("Content-Type: image/jpeg\r\n\r\n").data(using: String.Encoding.utf8)!)
             formData.append(imageData)
             formData.append(String("\r\n").data(using: String.Encoding.utf8)!)
@@ -245,6 +246,7 @@ extension Snippets {
             var formData : Data = Data()
             let imageName = "file"
             let boundary = ProcessInfo.processInfo.globallyUniqueString
+            let filename = UUID().uuidString.replacingOccurrences(of: "-", with: "") + ".mov"
                     
             if let blogUid = identity.micropubUid {
                 if blogUid.count > 0 {
@@ -255,7 +257,7 @@ extension Snippets {
             }
             
             formData.append(String("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-            formData.append(String("Content-Disposition: form-data; name=\"\(imageName)\"; filename=\"video.mov\"\r\n").data(using: String.Encoding.utf8)!)
+            formData.append(String("Content-Disposition: form-data; name=\"\(imageName)\"; filename=\"\(filename)\"\r\n").data(using: String.Encoding.utf8)!)
             formData.append(String("Content-Type: video/mov\r\n\r\n").data(using: String.Encoding.utf8)!)
             formData.append(data)
             formData.append(String("\r\n").data(using: String.Encoding.utf8)!)
