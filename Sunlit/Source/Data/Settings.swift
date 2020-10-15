@@ -6,7 +6,7 @@
 //  Copyright © 2020 Micro.blog, LLC. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Snippets
 import UUSwift
 
@@ -116,12 +116,15 @@ class Settings {
 	static func snippetsToken() -> String? {
 
         if let key = UUKeychain.getString(key: "SunlitToken") {
+            Settings.setValue("true", forKey: Settings.oneTimeImportKey)
+
             saveSnippetsToken(key)
             UUKeychain.remove(key: "SunlitToken")
             return key
         }
 
         if let string = UUKeychain.getString(key: "Snippets") {
+            Settings.setValue("true", forKey: Settings.oneTimeImportKey)
             return string
         }
 
@@ -139,6 +142,13 @@ class Settings {
 
     
     static func importMicroblogKeychain() -> String? {
+
+        if Settings.object(forKey: oneTimeImportKey) != nil {
+            return nil
+        }
+
+        Settings.setValue("true", forKey: oneTimeImportKey)
+
         if let user = microblogUserName() {
             if let password = UUKeychain.password(forService: "Snippets", forAccount: user) {
                 saveSnippetsToken(password)
@@ -158,6 +168,8 @@ class Settings {
 
         return nil
     }
+
+    static let oneTimeImportKey = "One Time Micro.blog Import"
 
 }
 
