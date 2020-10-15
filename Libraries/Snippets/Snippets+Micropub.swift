@@ -218,7 +218,7 @@ extension Snippets {
             }
             
             formData.append(String("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-            formData.append(String("Content-Disposition: form-data; name=\"\(imageName)\"; filename=\"\(filename)\r\n").data(using: String.Encoding.utf8)!)
+            formData.append(String("Content-Disposition: form-data; name=\"\(imageName)\"; filename=\"\(filename)\"\r\n").data(using: String.Encoding.utf8)!)
             formData.append(String("Content-Type: image/jpeg\r\n\r\n").data(using: String.Encoding.utf8)!)
             formData.append(imageData)
             formData.append(String("\r\n").data(using: String.Encoding.utf8)!)
