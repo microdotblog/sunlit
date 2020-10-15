@@ -61,7 +61,8 @@ class MediaUploader {
             self.results[media] = location
         }
 
-        if self.currentUploads.count == 0 && self.mediaQueue.count == 0 && error == nil {
+        if (self.currentUploads.count == 0 && self.mediaQueue.count == 0 && error == nil) ||
+            (error != nil) {
             DispatchQueue.main.async {
                 if let completion = self.completion {
                     completion(error, self.results)

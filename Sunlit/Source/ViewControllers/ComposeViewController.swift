@@ -413,7 +413,7 @@ class ComposeViewController: UIViewController {
 		self.mediaUpLoader.uploadMedia(uploadQueue) { (error, dictionary) in
 
 			if let err = error {
-				Dialog(self).information(err.localizedDescription)
+                self.handleUploadCompletion(err, nil)
 			}
 			else {
 				completion(dictionary)
