@@ -58,11 +58,12 @@ class BookmarksViewController: ContentViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleScrollToTopNotification), name: .scrollToTopNotification, object: nil)
     }
 
     @objc override func handleScrollToTopGesture() {
-        self.tableView.setContentOffset(CGPoint(x: 0, y: -self.view.safeAreaTop()), animated: true)
+        if tableViewData.count > 0 {
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
     }
 
     /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -162,12 +163,6 @@ class BookmarksViewController: ContentViewController {
 
     @objc func handleCurrentUserUpdatedNotification() {
         self.loadTimeline()
-    }
-
-    @objc func handleScrollToTopNotification() {
-        if tableViewData.count > 0 {
-            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-        }
     }
 
     /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

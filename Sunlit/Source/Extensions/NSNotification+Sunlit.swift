@@ -36,5 +36,4 @@ extension NSNotification.Name {
 	static let followingButtonClickedNotification = NSNotification.Name("Following Button Clicked Notification")
 	static let showFollowingNotification = NSNotification.Name("Show Following Notification")
 	static let selectedUsernamesChangedNotification = NSNotification.Name("SelectedUsernamesChangedNotification")
-    static let scrollToTopNotification = NSNotification.Name("scrollToTopNotification")
 }
