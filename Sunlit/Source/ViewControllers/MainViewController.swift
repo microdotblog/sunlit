@@ -292,12 +292,14 @@ class MainViewController: UIViewController {
                 if (code.count > 0) && (state.count > 0) && (blogName.count > 0){
 
                     let blogSettings = BlogSettings(blogName)
+                    let me = "https://" + blogName
                     let token_endpoint = blogSettings.tokenEndpoint
 					var params = ""
 					params = params + "grant_type=authorization_code"
 					params = params + "&code=" + code
 					params = params + "&client_id=" + String("https://sunlit.io/").uuUrlEncoded()
 					params = params + "&redirect_uri=" + String("https://sunlit.io/micropub/redirect").uuUrlEncoded()
+                    params = params + "&me=" + me.uuUrlEncoded()
 
                     let d = params.data(using: .utf8)
 
