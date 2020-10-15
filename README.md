@@ -1,4 +1,5 @@
 # Sunlit 3.0
+<img src = "https://github.com/microdotblog/sunlit/blob/master/Screenshots/SunlitStripe.png?raw=true" alt = "">
 
 ## Overview
 Publish photos to your own blog — hosted by Micro.blog or compatible blogs using WordPress or Micropub — and discover beautiful photos from other users. Sunlit 3.0 is a complete rewrite, improving the UI for discovery and creating blog posts with multiple photos and blocks of text.
