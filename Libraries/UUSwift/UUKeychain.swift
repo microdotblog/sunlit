@@ -51,6 +51,26 @@ public class UUKeychain: NSObject
         
     }
 
+    public class func setPassword(_ password : String, forService service: String, forAccount account: String) {
+
+        let dictionary = NSMutableDictionary()
+        dictionary.setObject(kSecClassGenericPassword, forKey: kSecClass as NSString)
+        dictionary.setObject(service, forKey: kSecAttrService as NSString)
+        dictionary.setObject(account, forKey: kSecAttrAccount as NSString)
+        dictionary.setObject(password, forKey: kSecValueData as NSString)
+
+        var result: CFTypeRef? = nil
+        let status = SecItemAdd(dictionary, &result)
+
+        if (status == errSecSuccess && result != nil) {
+            print("Successfully saved")
+        }
+        else {
+            print("Could not save password")
+        }
+
+    }
+
     public class func password(forService service: String, forAccount account: String) -> String? {
 
         let dictionary = NSMutableDictionary()

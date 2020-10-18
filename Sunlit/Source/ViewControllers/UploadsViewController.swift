@@ -149,7 +149,7 @@ class UploadsViewController: UIViewController {
             return
         }
 
-        ImageCache.fetch(self, path) { (image) in
+        ImageCache.fetch(path) { (image) in
 
             if let img = image {
 

@@ -89,7 +89,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDa
             return
         }
         
-        ImageCache.fetch(self, path) { (image) in
+        ImageCache.fetch(path) { (image) in
             if let _ = image {
                 DispatchQueue.main.async {
                     if let visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
