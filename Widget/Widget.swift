@@ -89,7 +89,7 @@ struct SunlitWidgetView : TimelineEntry, View {
         HStack {
             Image(uiImage: ImageCache.prefetch(post.images.first!) ?? UIImage(named: "olive")!)
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .aspectRatio(contentMode: .fill)
 
             if family == .systemMedium {
                 Text(post.attributedText.string)
