@@ -15,7 +15,7 @@ struct SunlitTimelineProvider: TimelineProvider {
 
     func getSnapshot(in context: Context, completion: @escaping (SunlitWidgetView) -> Void) {
 
-        let widget = SunlitWidgetView(post: SunlitPost("Hello world", ["olive"]), family: context.family)
+        let widget = SunlitWidgetView(posts: [SunlitPost("Hello world", ["olive"])], family: context.family)
         completion(widget)
     }
 
@@ -29,7 +29,7 @@ struct SunlitTimelineProvider: TimelineProvider {
 
             if let err = error {
                 var entries : [SunlitWidgetView] = []
-                let post = SunlitWidgetView(post: SunlitPost(err.localizedDescription , []), family: context.family)
+                let post = SunlitWidgetView(posts: [SunlitPost(err.localizedDescription , [])], family: context.family)
                 entries.append(post)
 
                 let timeline = Timeline(entries: entries, policy: .atEnd)
@@ -38,26 +38,30 @@ struct SunlitTimelineProvider: TimelineProvider {
                 return
             }
 
-            var entries: [SunlitWidgetView] = []
+            var entries: [SunlitPost] = []
 
-            if let entry = postObjects.first {
-                let post = SunlitPost.create(entry)
-                entries.append(SunlitWidgetView(post: post, family: context.family))
+            for entry in postObjects {
 
-                ImageCache.fetch(post.images.first!) { (image) in
-                    let timeline = Timeline(entries: entries, policy: .atEnd)
-                    completion(timeline)
+                if entries.count < 4 {
+                    let post = SunlitPost.create(entry)
+
+                    if post.images.count > 0 {
+                        entries.append(post)
+
+                        if let imagePath = post.images.first {
+                            if ImageCache.prefetch(imagePath) == nil {
+                                ImageCache.fetch(imagePath) { (image) in
+                                    WidgetCenter.shared.reloadTimelines(ofKind: "blog.micro.sunlit.widget")
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
-            /*for entry in postObjects {
-                let post = SunlitPost.create(entry)
-                if post.images.count > 0 {
-                    entries.append(SunlitWidgetView(post: post))
-                }
-            }*/
-
-
+            let widgetView = SunlitWidgetView(posts: entries, family: context.family)
+            let timeline = Timeline(entries: [widgetView], policy: .atEnd)
+            completion(timeline)
         }
 
     }
@@ -65,10 +69,9 @@ struct SunlitTimelineProvider: TimelineProvider {
 
     func placeholder(in context: Context) -> SunlitWidgetView {
 
-        let post = SunlitWidgetView(post: SunlitPost("Placeholder", ["olive"]), family: context.family)
+        let post = SunlitWidgetView(posts: [SunlitPost("Placeholder", ["olive"])], family: context.family)
         return post
     }
-
 }
 
 
@@ -77,23 +80,151 @@ struct SunlitWidgetView : TimelineEntry, View {
 
     public var date : Date {
         get {
-            return post.publishedDate ?? Date()
+            return posts.first?.publishedDate ?? Date()
         }
     }
 
-    let post : SunlitPost
+    let posts : [SunlitPost]
     let family : WidgetFamily
+
+    var largeWidget : some View {
+        HStack {
+            Spacer()
+                .frame(width:14.0)
+
+            VStack(alignment: .leading, spacing: 0.0, content: {
+
+                Spacer()
+                    .frame(height: 8.0)
+
+                Text("Recent Sunlit Posts")
+                    .font(Font.system(.headline).bold())
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(.red)
+
+                Spacer()
+                    .frame(height:8.0)
+
+                ForEach(posts, id: \.self) { post in
+
+
+                    HStack(alignment: .center, spacing: 8.0, content: {
+
+                        if let imagePath = post.images.first {
+                            Image(uiImage: ImageCache.prefetch(imagePath) ?? UIImage(named: "olive")!)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 60.0, height: 60.0)
+                                .clipped()
+                                .cornerRadius(8.0)
+                        }
+
+
+                        VStack(alignment: .leading, spacing: 0.0, content: {
+                            Text(post.owner.fullName)
+                                .font(Font.system(.caption).bold().italic())
+                                .foregroundColor(.gray)
+                                .frame(height:16.0)
+
+                            Text(post.attributedText.string)
+                                .font(Font.system(.subheadline))
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(2)
+                                .frame(height: 42.0)
+
+                            Spacer()
+                        })
+                    })
+                    .frame(height: 64.0)
+
+                    Spacer()
+
+                }
+
+                Spacer()
+                   .frame(height:8.0)
+            })
+
+            Spacer()
+                .frame(width: 16.0)
+        }
+    }
+
+    var smallWidget: some View {
+        HStack {
+            if let post = posts.first {
+                if let imagePath = post.images.first {
+                    Image(uiImage: ImageCache.prefetch(imagePath) ?? UIImage(named: "olive")!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                }
+            }
+        }
+    }
+
+    var mediumWidget: some View {
+        HStack {
+            Spacer()
+                .frame(width: 12.0)
+
+            if let post = posts.first {
+                HStack(alignment: .center, spacing: 8.0, content: {
+
+                    if let imagePath = post.images.first {
+                        Image(uiImage: ImageCache.prefetch(imagePath) ?? UIImage(named: "olive")!)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 128.0, height: 128.0)
+                            .clipped()
+                            .cornerRadius(8.0)
+                    }
+
+                    VStack(alignment: .leading, spacing: 0.0, content: {
+                        Text(post.owner.fullName)
+                            .font(Font.system(.caption).bold().italic())
+                            .foregroundColor(.gray)
+                            .frame(height:16.0)
+
+                        Spacer()
+                            .frame(height: 4.0)
+
+                        Text(post.attributedText.string)
+                            .font(Font.system(size: 14.0))
+                            //.font(Font.system(.subheadline))
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(6)
+                            .frame(height: 84.0)
+
+                        Spacer()
+                            .frame(height: 8.0)
+
+                        Divider()
+
+                        Text(post.publishedDate!.friendlyFormat())
+                            .font(Font.system(.footnote))
+                            .foregroundColor(.gray)
+                            .frame(height: 16.0)
+                            .multilineTextAlignment(.leading)
+
+                    })
+                })
+            }
+
+            Spacer()
+                .frame(width: 8.0)
+        }
+    }
 
     var body: some View {
 
-        HStack {
-            Image(uiImage: ImageCache.prefetch(post.images.first!) ?? UIImage(named: "olive")!)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-
-            if family == .systemMedium {
-                Text(post.attributedText.string)
-            }
+        if family == .systemSmall {
+            self.smallWidget
+        }
+        else if family == .systemMedium{
+            self.mediumWidget
+        }
+        else {
+            self.largeWidget
         }
 
     }
@@ -111,14 +242,14 @@ struct SunlitWidget: Widget {
         { (entry) in
             entry
         }
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
 
 struct Widget_Previews:
     PreviewProvider {
     static var previews: some View {
-        SunlitWidgetView(post: SunlitPost("Loading...", ["olive", "olive", "olive"]), family: .systemMedium)
+        SunlitWidgetView(posts: [SunlitPost("This is some text that will appear in the placeholder Widget. This image is of my lovely dog, Olive.", ["olive", "olive", "olive"])], family: .systemMedium)
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }
@@ -128,5 +259,8 @@ extension SunlitPost {
         self.init()
         self.attributedText = NSAttributedString(string: text)
         self.images = images
+        self.publishedDate = Date()
+        self.owner = SnippetsUser()
+        self.owner.fullName = "Jonathan Hays"
     }
 }

@@ -67,6 +67,7 @@
 		C55DC4A2248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3992489D5CB00C1F8A5 /* NextLevelSessionExporter.framework */; };
 		C55DC4A3248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3992489D5CB00C1F8A5 /* NextLevelSessionExporter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C56316AC2504AE6400CC447C /* BlogSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56316AB2504AE6400CC447C /* BlogSelectionTableViewCell.swift */; };
+		C5841CED253D0C670090B7BD /* Date+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DE4D24901D9D00B50B54 /* Date+Sunlit.swift */; };
 		C5A1DE4124901D8C00B50B54 /* Conversation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3824901D8C00B50B54 /* Conversation.storyboard */; };
 		C5A1DE4224901D8C00B50B54 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3924901D8C00B50B54 /* Profile.storyboard */; };
 		C5A1DE4424901D8C00B50B54 /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3B24901D8C00B50B54 /* About.storyboard */; };
@@ -1840,6 +1841,7 @@
 				C5EC477E253BC35000DDE4AC /* SnippetsUser+Sunlit.swift in Sources */,
 				C5EC4736253BB27600DDE4AC /* Widget.intentdefinition in Sources */,
 				C5EC4775253BC32F00DDE4AC /* BlogSettings.swift in Sources */,
+				C5841CED253D0C670090B7BD /* Date+Sunlit.swift in Sources */,
 				C5EC478E253BC46E00DDE4AC /* SnippetsPost+Sunlit.swift in Sources */,
 				C5EC4786253BC45900DDE4AC /* NSAttributedString+Sunlit.swift in Sources */,
 				C5EC4731253BB27400DDE4AC /* Widget.swift in Sources */,
