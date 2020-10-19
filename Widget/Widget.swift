@@ -11,11 +11,12 @@ import SwiftUI
 import Intents
 import Snippets
 
+let placeholderPost = SunlitPost("This is some text that will appear in the placeholder Widget. ", ["welcome_waves"])
+
 struct SunlitTimelineProvider: TimelineProvider {
 
     func getSnapshot(in context: Context, completion: @escaping (SunlitWidgetView) -> Void) {
-
-        let widget = SunlitWidgetView(posts: [SunlitPost("Hello world", ["olive"])], family: context.family)
+        let widget = SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: context.family)
         completion(widget)
     }
 
@@ -32,21 +33,21 @@ struct SunlitTimelineProvider: TimelineProvider {
                 let post = SunlitWidgetView(posts: [SunlitPost(err.localizedDescription , [])], family: context.family)
                 entries.append(post)
 
-                let timeline = Timeline(entries: entries, policy: .atEnd)
+                let timeline = Timeline(entries: entries, policy: .after(Date(timeIntervalSinceNow: 60.0)))
                 completion(timeline)
 
                 return
             }
 
-            var entries: [SunlitPost] = []
+            var posts: [SunlitPost] = []
 
             for entry in postObjects {
 
-                if entries.count < 4 {
+                if posts.count < 4 {
                     let post = SunlitPost.create(entry)
 
                     if post.images.count > 0 {
-                        entries.append(post)
+                        posts.append(post)
 
                         if let imagePath = post.images.first {
                             if ImageCache.prefetch(imagePath) == nil {
@@ -59,17 +60,27 @@ struct SunlitTimelineProvider: TimelineProvider {
                 }
             }
 
-            let widgetView = SunlitWidgetView(posts: entries, family: context.family)
-            let timeline = Timeline(entries: [widgetView], policy: .atEnd)
-            completion(timeline)
-        }
+            if context.family == .systemLarge {
+                let widgetView = SunlitWidgetView(posts: posts, family: context.family)
+                let timeline = Timeline(entries: [widgetView], policy: .after(Date(timeIntervalSinceNow: 60.0)))
+                completion(timeline)
+            }
+            else {
+                var entries : [SunlitWidgetView] = []
+                for post in posts {
+                    let widgetView = SunlitWidgetView(posts: [post], family: context.family)
+                    entries.append(widgetView)
+                }
 
+                let timeline = Timeline(entries: entries, policy: .after(Date(timeIntervalSinceNow: 60.0)))
+                completion(timeline)
+            }
+        }
     }
 
 
     func placeholder(in context: Context) -> SunlitWidgetView {
-
-        let post = SunlitWidgetView(posts: [SunlitPost("Placeholder", ["olive"])], family: context.family)
+        let post = SunlitWidgetView(posts: [placeholderPost], family: context.family)
         return post
     }
 }
@@ -107,16 +118,25 @@ struct SunlitWidgetView : TimelineEntry, View {
 
                 ForEach(posts, id: \.self) { post in
 
-
                     HStack(alignment: .center, spacing: 8.0, content: {
 
                         if let imagePath = post.images.first {
-                            Image(uiImage: ImageCache.prefetch(imagePath) ?? UIImage(named: "olive")!)
+                            if let image = ImageCache.prefetch(imagePath) {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 60.0, height: 60.0)
+                                    .clipped()
+                                    .cornerRadius(8.0)
+                            }
+                            else {
+                                Image(uiImage: UIImage(named: "welcome_waves")!)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 60.0, height: 60.0)
                                 .clipped()
                                 .cornerRadius(8.0)
+                            }
                         }
 
 
@@ -154,9 +174,16 @@ struct SunlitWidgetView : TimelineEntry, View {
         HStack {
             if let post = posts.first {
                 if let imagePath = post.images.first {
-                    Image(uiImage: ImageCache.prefetch(imagePath) ?? UIImage(named: "olive")!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
+                    if let image = ImageCache.prefetch(imagePath) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    }
+                    else {
+                        Image(uiImage: UIImage(named: "welcome_waves")!)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    }
                 }
             }
         }
@@ -170,8 +197,18 @@ struct SunlitWidgetView : TimelineEntry, View {
             if let post = posts.first {
                 HStack(alignment: .center, spacing: 8.0, content: {
 
-                    if let imagePath = post.images.first {
-                        Image(uiImage: ImageCache.prefetch(imagePath) ?? UIImage(named: "olive")!)
+                    if let imagePath = post.images.first,
+                       let image = ImageCache.prefetch(imagePath) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 128.0, height: 128.0)
+                            .clipped()
+                            .cornerRadius(8.0)
+
+                    }
+                    else {
+                        Image(uiImage: UIImage(named: "welcome_waves")!)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 128.0, height: 128.0)
@@ -249,7 +286,7 @@ struct SunlitWidget: Widget {
 struct Widget_Previews:
     PreviewProvider {
     static var previews: some View {
-        SunlitWidgetView(posts: [SunlitPost("This is some text that will appear in the placeholder Widget. This image is of my lovely dog, Olive.", ["olive", "olive", "olive"])], family: .systemMedium)
+        SunlitWidgetView(posts: [placeholderPost], family: .systemMedium)
             .previewContext(WidgetPreviewContext(family: .systemMedium))
     }
 }

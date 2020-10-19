@@ -68,6 +68,8 @@
 		C55DC4A3248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3992489D5CB00C1F8A5 /* NextLevelSessionExporter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C56316AC2504AE6400CC447C /* BlogSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56316AB2504AE6400CC447C /* BlogSelectionTableViewCell.swift */; };
 		C5841CED253D0C670090B7BD /* Date+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DE4D24901D9D00B50B54 /* Date+Sunlit.swift */; };
+		C5841CF5253D102A0090B7BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE9C24901E0B00B50B54 /* Assets.xcassets */; };
+		C5841CFD253D102B0090B7BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE9C24901E0B00B50B54 /* Assets.xcassets */; };
 		C5A1DE4124901D8C00B50B54 /* Conversation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3824901D8C00B50B54 /* Conversation.storyboard */; };
 		C5A1DE4224901D8C00B50B54 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3924901D8C00B50B54 /* Profile.storyboard */; };
 		C5A1DE4424901D8C00B50B54 /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3B24901D8C00B50B54 /* About.storyboard */; };
@@ -273,7 +275,6 @@
 		C5EC472C253BB27400DDE4AC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC472B253BB27400DDE4AC /* WidgetKit.framework */; platformFilter = ios; };
 		C5EC472E253BB27400DDE4AC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC472D253BB27400DDE4AC /* SwiftUI.framework */; };
 		C5EC4731253BB27400DDE4AC /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4730253BB27400DDE4AC /* Widget.swift */; };
-		C5EC4734253BB27600DDE4AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5EC4733253BB27600DDE4AC /* Assets.xcassets */; };
 		C5EC4736253BB27600DDE4AC /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4732253BB27400DDE4AC /* Widget.intentdefinition */; };
 		C5EC4737253BB27600DDE4AC /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4732253BB27400DDE4AC /* Widget.intentdefinition */; };
 		C5EC473A253BB27600DDE4AC /* WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C5EC472A253BB27400DDE4AC /* WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -630,7 +631,6 @@
 		C5EC472D253BB27400DDE4AC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C5EC4730253BB27400DDE4AC /* Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widget.swift; sourceTree = "<group>"; };
 		C5EC4732253BB27400DDE4AC /* Widget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Widget.intentdefinition; sourceTree = "<group>"; };
-		C5EC4733253BB27600DDE4AC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C5EC4735253BB27600DDE4AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C5EC473B253BB27600DDE4AC /* WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetExtension.entitlements; sourceTree = "<group>"; };
 		C5EDE49424D8E75F009ACF2A /* SunlitMentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SunlitMentions.swift; path = Source/Data/SunlitMentions.swift; sourceTree = "<group>"; };
@@ -976,9 +976,9 @@
 			children = (
 				C5EC473B253BB27600DDE4AC /* WidgetExtension.entitlements */,
 				C5B9A71924563E66003EF82B /* Sunlit */,
+				C5EC472F253BB27400DDE4AC /* Widget */,
 				C5235AF9252D0670002F9CC6 /* Sharing Extension */,
 				C55DC490248A102C00C1F8A5 /* Libraries */,
-				C5EC472F253BB27400DDE4AC /* Widget */,
 				C5B9A71824563E66003EF82B /* Products */,
 				C55DC494248A151000C1F8A5 /* Frameworks */,
 			);
@@ -1122,7 +1122,6 @@
 			children = (
 				C5EC4730253BB27400DDE4AC /* Widget.swift */,
 				C5EC4732253BB27400DDE4AC /* Widget.intentdefinition */,
-				C5EC4733253BB27600DDE4AC /* Assets.xcassets */,
 				C5EC4735253BB27600DDE4AC /* Info.plist */,
 			);
 			path = Widget;
@@ -1482,6 +1481,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5235AFE252D0670002F9CC6 /* MainInterface.storyboard in Resources */,
+				C5841CF5253D102A0090B7BD /* Assets.xcassets in Resources */,
 				C5235B0E252D07EE002F9CC6 /* Compose.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1553,7 +1553,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5EC4734253BB27600DDE4AC /* Assets.xcassets in Resources */,
+				C5841CFD253D102B0090B7BD /* Assets.xcassets in Resources */,
 				C5EC4796253BC8C100DDE4AC /* olive.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2457,8 +2457,8 @@
 		C5EC473C253BB27600DDE4AC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = color_highlight;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = widget_background;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 384;
@@ -2483,8 +2483,8 @@
 		C5EC473D253BB27600DDE4AC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = color_highlight;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = widget_background;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 384;
