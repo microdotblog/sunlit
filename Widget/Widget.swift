@@ -11,7 +11,7 @@ import SwiftUI
 import Intents
 import Snippets
 
-let placeholderPost = SunlitPost("This is some text that will appear in the placeholder Widget. ", ["welcome_waves"])
+let placeholderPost = SunlitPost("This is some text that will appear in the placeholder Widget. ", [])
 
 struct SunlitTimelineProvider: TimelineProvider {
 
@@ -86,6 +86,65 @@ struct SunlitTimelineProvider: TimelineProvider {
 }
 
 
+struct SunlitLargeTextView : View {
+
+    let post : SunlitPost
+
+    var body : some View {
+        VStack(alignment: .leading, spacing: 0.0, content: {
+            Text(post.owner.fullName)
+                .font(Font.system(.caption).bold().italic())
+                .foregroundColor(.gray)
+                .frame(height:16.0)
+
+            Text(post.attributedText.string)
+                .font(Font.system(.subheadline))
+                .multilineTextAlignment(.leading)
+                .lineLimit(2)
+                .frame(height: 42.0)
+
+            Spacer()
+        })
+    }
+}
+
+
+struct SunlitMediumTextView : View {
+
+    let post : SunlitPost
+
+    var body : some View {
+        VStack(alignment: .leading, spacing: 0.0, content: {
+            Text(post.owner.fullName)
+                .font(Font.system(.caption).bold().italic())
+                .foregroundColor(.gray)
+                .frame(height:16.0)
+
+            Spacer()
+                .frame(height: 4.0)
+
+            Text(post.attributedText.string)
+                .font(Font.system(size: 14.0))
+                //.font(Font.system(.subheadline))
+                .multilineTextAlignment(.leading)
+                .lineLimit(6)
+                .frame(height: 84.0)
+
+            Spacer()
+                .frame(height: 8.0)
+
+            Divider()
+
+            Text(post.publishedDate!.friendlyFormat())
+                .font(Font.system(.footnote))
+                .foregroundColor(.gray)
+                .frame(height: 16.0)
+                .multilineTextAlignment(.leading)
+
+        })
+    }
+}
+
 
 struct SunlitWidgetView : TimelineEntry, View {
 
@@ -120,40 +179,29 @@ struct SunlitWidgetView : TimelineEntry, View {
 
                     HStack(alignment: .center, spacing: 8.0, content: {
 
-                        if let imagePath = post.images.first {
-                            if let image = ImageCache.prefetch(imagePath) {
+                        if let imagePath = post.images.first,
+                           let image = ImageCache.prefetch(imagePath) {
                                 Image(uiImage: image)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 60.0, height: 60.0)
                                     .clipped()
                                     .cornerRadius(8.0)
-                            }
-                            else {
-                                Image(uiImage: UIImage(named: "welcome_waves")!)
+
+                                SunlitLargeTextView(post: post)
+                        }
+                        else {
+                            Image(uiImage: UIImage(named: "welcome_waves")!)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 60.0, height: 60.0)
                                 .clipped()
                                 .cornerRadius(8.0)
-                            }
+
+                            SunlitLargeTextView(post: post)
+                                .redacted(reason: .placeholder)
                         }
 
-
-                        VStack(alignment: .leading, spacing: 0.0, content: {
-                            Text(post.owner.fullName)
-                                .font(Font.system(.caption).bold().italic())
-                                .foregroundColor(.gray)
-                                .frame(height:16.0)
-
-                            Text(post.attributedText.string)
-                                .font(Font.system(.subheadline))
-                                .multilineTextAlignment(.leading)
-                                .lineLimit(2)
-                                .frame(height: 42.0)
-
-                            Spacer()
-                        })
                     })
                     .frame(height: 64.0)
 
@@ -170,20 +218,21 @@ struct SunlitWidgetView : TimelineEntry, View {
         }
     }
 
+
+
     var smallWidget: some View {
         HStack {
             if let post = posts.first {
-                if let imagePath = post.images.first {
-                    if let image = ImageCache.prefetch(imagePath) {
+                if let imagePath = post.images.first,
+                   let image = ImageCache.prefetch(imagePath){
                         Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                    }
-                    else {
-                        Image(uiImage: UIImage(named: "welcome_waves")!)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    }
+                }
+                else {
+                    Image(uiImage: UIImage(named: "welcome_waves")!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
                 }
             }
         }
@@ -206,6 +255,7 @@ struct SunlitWidgetView : TimelineEntry, View {
                             .clipped()
                             .cornerRadius(8.0)
 
+                        SunlitMediumTextView(post: post)
                     }
                     else {
                         Image(uiImage: UIImage(named: "welcome_waves")!)
@@ -214,36 +264,11 @@ struct SunlitWidgetView : TimelineEntry, View {
                             .frame(width: 128.0, height: 128.0)
                             .clipped()
                             .cornerRadius(8.0)
+
+                        SunlitMediumTextView(post: post)
+                            .redacted(reason: .placeholder)
                     }
 
-                    VStack(alignment: .leading, spacing: 0.0, content: {
-                        Text(post.owner.fullName)
-                            .font(Font.system(.caption).bold().italic())
-                            .foregroundColor(.gray)
-                            .frame(height:16.0)
-
-                        Spacer()
-                            .frame(height: 4.0)
-
-                        Text(post.attributedText.string)
-                            .font(Font.system(size: 14.0))
-                            //.font(Font.system(.subheadline))
-                            .multilineTextAlignment(.leading)
-                            .lineLimit(6)
-                            .frame(height: 84.0)
-
-                        Spacer()
-                            .frame(height: 8.0)
-
-                        Divider()
-
-                        Text(post.publishedDate!.friendlyFormat())
-                            .font(Font.system(.footnote))
-                            .foregroundColor(.gray)
-                            .frame(height: 16.0)
-                            .multilineTextAlignment(.leading)
-
-                    })
                 })
             }
 
