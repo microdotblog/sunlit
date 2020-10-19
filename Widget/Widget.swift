@@ -10,8 +10,22 @@ import WidgetKit
 import SwiftUI
 import Intents
 import Snippets
+import UIKit
 
 let placeholderPost = SunlitPost("This is some text that will appear in the placeholder Widget. ", [])
+
+struct HTMLText: UIViewRepresentable {
+
+    let attributedString : NSAttributedString
+
+    func updateUIView(_ uiView: UILabel, context: Context) {
+        uiView.attributedText = attributedString
+    }
+
+    func makeUIView(context: UIViewRepresentableContext<Self>) -> UILabel {
+        return UILabel()
+    }
+}
 
 struct SunlitTimelineProvider: TimelineProvider {
 
@@ -97,6 +111,7 @@ struct SunlitLargeTextView : View {
                 .foregroundColor(.gray)
                 .frame(height:16.0)
 
+            //HTMLText(attributedString: post.attributedText)
             Text(post.attributedText.string)
                 .font(Font.system(.subheadline))
                 .multilineTextAlignment(.leading)
@@ -123,9 +138,9 @@ struct SunlitMediumTextView : View {
             Spacer()
                 .frame(height: 4.0)
 
+            //HTMLText(attributedString: post.attributedText)
             Text(post.attributedText.string)
                 .font(Font.system(size: 14.0))
-                //.font(Font.system(.subheadline))
                 .multilineTextAlignment(.leading)
                 .lineLimit(6)
                 .frame(height: 84.0)
