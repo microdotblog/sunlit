@@ -74,21 +74,9 @@ struct SunlitTimelineProvider: TimelineProvider {
                 }
             }
 
-            if context.family == .systemLarge {
-                let widgetView = SunlitWidgetView(posts: posts, family: context.family)
-                let timeline = Timeline(entries: [widgetView], policy: .after(Date(timeIntervalSinceNow: 60.0)))
-                completion(timeline)
-            }
-            else {
-                var entries : [SunlitWidgetView] = []
-                for post in posts {
-                    let widgetView = SunlitWidgetView(posts: [post], family: context.family)
-                    entries.append(widgetView)
-                }
-
-                let timeline = Timeline(entries: entries, policy: .after(Date(timeIntervalSinceNow: 60.0)))
-                completion(timeline)
-            }
+            let widgetView = SunlitWidgetView(posts: posts, family: context.family)
+            let timeline = Timeline(entries: [widgetView], policy: .after(Date(timeIntervalSinceNow: 60.0)))
+            completion(timeline)
         }
     }
 
@@ -182,15 +170,31 @@ struct SunlitWidgetView : TimelineEntry, View {
                 Spacer()
                     .frame(height: 8.0)
 
-                Text("Recent Sunlit Posts")
-                    .font(Font.system(.headline).bold())
-                    .multilineTextAlignment(.leading)
-                    .foregroundColor(.red)
+                HStack {
+                    Text("Recent Sunlit Posts")
+                        .font(Font.system(.headline).bold())
+                        .multilineTextAlignment(.leading)
+                        .foregroundColor(.red)
+
+                    Spacer()
+                    Image("welcome_waves")
+                        .resizable()
+                        .cornerRadius(2.0)
+                        .frame(width: 20, height: 20)
+                        .clipped()
+
+                }
 
                 Spacer()
                     .frame(height:8.0)
 
                 ForEach(posts, id: \.self) { post in
+
+                    if post != posts.first {
+                        Divider()
+                        Spacer()
+                            .frame(height: 10.0)
+                    }
 
                     HStack(alignment: .center, spacing: 8.0, content: {
 
@@ -218,7 +222,8 @@ struct SunlitWidgetView : TimelineEntry, View {
                         }
 
                     })
-                    .frame(height: 64.0)
+                    .frame(height: 60.0)
+                    .widgetURL(URL(string: post.identifier))
 
                     Spacer()
 
@@ -237,17 +242,20 @@ struct SunlitWidgetView : TimelineEntry, View {
 
     var smallWidget: some View {
         HStack {
-            if let post = posts.first {
+            let index = Int.random(in: 0..<posts.count)
+            if let post = posts[index] {
                 if let imagePath = post.images.first,
                    let image = ImageCache.prefetch(imagePath){
                         Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
+                            .widgetURL(URL(string: post.identifier))
                 }
                 else {
                     Image(uiImage: UIImage(named: "welcome_waves")!)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
+                        .widgetURL(URL(string: post.identifier))
                 }
             }
         }
@@ -258,7 +266,8 @@ struct SunlitWidgetView : TimelineEntry, View {
             Spacer()
                 .frame(width: 12.0)
 
-            if let post = posts.first {
+            let index = Int.random(in: 0..<posts.count)
+            if let post = posts[index] {
                 HStack(alignment: .center, spacing: 8.0, content: {
 
                     if let imagePath = post.images.first,
@@ -285,6 +294,7 @@ struct SunlitWidgetView : TimelineEntry, View {
                     }
 
                 })
+                .widgetURL(URL(string: post.identifier))
             }
 
             Spacer()
@@ -326,8 +336,8 @@ struct SunlitWidget: Widget {
 struct Widget_Previews:
     PreviewProvider {
     static var previews: some View {
-        SunlitWidgetView(posts: [placeholderPost], family: .systemMedium)
-            .previewContext(WidgetPreviewContext(family: .systemMedium))
+        SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: .systemLarge)
+            .previewContext(WidgetPreviewContext(family: .systemLarge))
     }
 }
 
