@@ -75,7 +75,8 @@ struct SunlitTimelineProvider: TimelineProvider {
             }
 
             let widgetView = SunlitWidgetView(posts: posts, family: context.family)
-            let timeline = Timeline(entries: [widgetView], policy: .after(Date(timeIntervalSinceNow: 60.0)))
+            let date = Date(timeIntervalSinceNow: 5 * 60.0)
+            let timeline = Timeline(entries: [widgetView], policy: .after(date))
             completion(timeline)
         }
     }
@@ -223,7 +224,7 @@ struct SunlitWidgetView : TimelineEntry, View {
 
                     })
                     .frame(height: 60.0)
-                    .widgetURL(URL(string: post.identifier))
+                    .widgetURL(URL(string: "sunlit://show?id=\(post.identifier)"))
 
                     Spacer()
 
@@ -249,13 +250,13 @@ struct SunlitWidgetView : TimelineEntry, View {
                         Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .widgetURL(URL(string: post.identifier))
+                            .widgetURL(URL(string: "sunlit://show?id=\(post.identifier)"))
                 }
                 else {
                     Image(uiImage: UIImage(named: "welcome_waves")!)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .widgetURL(URL(string: post.identifier))
+                        .widgetURL(URL(string: "sunlit://show?id=\(post.identifier)"))
                 }
             }
         }
@@ -294,7 +295,7 @@ struct SunlitWidgetView : TimelineEntry, View {
                     }
 
                 })
-                .widgetURL(URL(string: post.identifier))
+                .widgetURL(URL(string: "sunlit://show?id=\(post.identifier)"))
             }
 
             Spacer()
