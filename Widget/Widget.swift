@@ -196,35 +196,35 @@ struct SunlitWidgetView : TimelineEntry, View {
                         Spacer()
                             .frame(height: 10.0)
                     }
+					Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
+						HStack(alignment: .center, spacing: 8.0, content: {
 
-                    HStack(alignment: .center, spacing: 8.0, content: {
+							if let imagePath = post.images.first,
+							   let image = ImageCache.prefetch(imagePath) {
+									Image(uiImage: image)
+										.resizable()
+										.aspectRatio(contentMode: .fill)
+										.frame(width: 60.0, height: 60.0)
+										.clipped()
+										.cornerRadius(8.0)
 
-                        if let imagePath = post.images.first,
-                           let image = ImageCache.prefetch(imagePath) {
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 60.0, height: 60.0)
-                                    .clipped()
-                                    .cornerRadius(8.0)
+									SunlitLargeTextView(post: post)
+							}
+							else {
+								Image(uiImage: UIImage(named: "welcome_waves")!)
+									.resizable()
+									.aspectRatio(contentMode: .fill)
+									.frame(width: 60.0, height: 60.0)
+									.clipped()
+									.cornerRadius(8.0)
 
-                                SunlitLargeTextView(post: post)
-                        }
-                        else {
-                            Image(uiImage: UIImage(named: "welcome_waves")!)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 60.0, height: 60.0)
-                                .clipped()
-                                .cornerRadius(8.0)
+								SunlitLargeTextView(post: post)
+									.redacted(reason: .placeholder)
+							}
 
-                            SunlitLargeTextView(post: post)
-                                .redacted(reason: .placeholder)
-                        }
-
-                    })
-                    .frame(height: 60.0)
-                    .widgetURL(URL(string: "sunlit://show?id=\(post.identifier)"))
+						})
+						.frame(height: 60.0)
+					}
 
                     Spacer()
 
@@ -245,19 +245,19 @@ struct SunlitWidgetView : TimelineEntry, View {
         HStack {
             let index = Int.random(in: 0..<posts.count)
             if let post = posts[index] {
-                if let imagePath = post.images.first,
-                   let image = ImageCache.prefetch(imagePath){
-                        Image(uiImage: image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .widgetURL(URL(string: "sunlit://show?id=\(post.identifier)"))
-                }
-                else {
-                    Image(uiImage: UIImage(named: "welcome_waves")!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .widgetURL(URL(string: "sunlit://show?id=\(post.identifier)"))
-                }
+				Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
+					if let imagePath = post.images.first,
+					   let image = ImageCache.prefetch(imagePath){
+							Image(uiImage: image)
+								.resizable()
+								.aspectRatio(contentMode: .fill)
+					}
+					else {
+						Image(uiImage: UIImage(named: "welcome_waves")!)
+							.resizable()
+							.aspectRatio(contentMode: .fill)
+					}
+				}
             }
         }
     }
@@ -269,33 +269,34 @@ struct SunlitWidgetView : TimelineEntry, View {
 
             let index = Int.random(in: 0..<posts.count)
             if let post = posts[index] {
-                HStack(alignment: .center, spacing: 8.0, content: {
+				Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
+					HStack(alignment: .center, spacing: 8.0, content: {
 
-                    if let imagePath = post.images.first,
-                       let image = ImageCache.prefetch(imagePath) {
-                        Image(uiImage: image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 128.0, height: 128.0)
-                            .clipped()
-                            .cornerRadius(8.0)
+						if let imagePath = post.images.first,
+						   let image = ImageCache.prefetch(imagePath) {
+							Image(uiImage: image)
+								.resizable()
+								.aspectRatio(contentMode: .fill)
+								.frame(width: 128.0, height: 128.0)
+								.clipped()
+								.cornerRadius(8.0)
 
-                        SunlitMediumTextView(post: post)
-                    }
-                    else {
-                        Image(uiImage: UIImage(named: "welcome_waves")!)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 128.0, height: 128.0)
-                            .clipped()
-                            .cornerRadius(8.0)
+							SunlitMediumTextView(post: post)
+						}
+						else {
+							Image(uiImage: UIImage(named: "welcome_waves")!)
+								.resizable()
+								.aspectRatio(contentMode: .fill)
+								.frame(width: 128.0, height: 128.0)
+								.clipped()
+								.cornerRadius(8.0)
 
-                        SunlitMediumTextView(post: post)
-                            .redacted(reason: .placeholder)
-                    }
+							SunlitMediumTextView(post: post)
+								.redacted(reason: .placeholder)
+						}
 
-                })
-                .widgetURL(URL(string: "sunlit://show?id=\(post.identifier)"))
+					})
+				}
             }
 
             Spacer()
