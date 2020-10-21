@@ -34,14 +34,14 @@ struct SunlitTimelineProvider: IntentTimelineProvider {
 
 
     func getSnapshot(for configuration: SunlitFeedConfigurationIntent, in context: Context, completion: @escaping (SunlitWidgetView) -> Void) {
-        let widget = SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: context.family)
+        let widget = SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: context.family, configuration: configuration)
         completion(widget)
     }
 
-    func handleTimeline(error : Error?, postObjects: [SnippetsPost], context: Context, completion: @escaping (Timeline<SunlitWidgetView>) -> Void) {
+    func handleTimeline(error : Error?, postObjects: [SnippetsPost], context: Context, configuration: SunlitFeedConfigurationIntent, completion: @escaping (Timeline<SunlitWidgetView>) -> Void) {
         if let err = error {
             var entries : [SunlitWidgetView] = []
-            let post = SunlitWidgetView(posts: [SunlitPost(err.localizedDescription , [])], family: context.family)
+            let post = SunlitWidgetView(posts: [SunlitPost(err.localizedDescription , [])], family: context.family, configuration: configuration)
             entries.append(post)
 
             let timeline = Timeline(entries: entries, policy: .after(Date(timeIntervalSinceNow: 60.0)))
@@ -63,15 +63,23 @@ struct SunlitTimelineProvider: IntentTimelineProvider {
                         }
                     }
                     else {
-                        if posts.count < 4 || context.family != .systemLarge{
-                            posts.append(post)
-                        }
+						posts.append(post)
                     }
                 }
             }
         }
 
-        let widgetView = SunlitWidgetView(posts: posts, family: context.family)
+		// If the context is large, we want to leave only 4 posts in the list...
+		if context.family == .systemLarge {
+			while posts.count > 4 {
+				
+				// Because random is a setting, we need to randomly remove posts until there are only 4 left...
+				let index = (configuration.random == true) ? Int.random(in: 0..<posts.count) : posts.count - 1
+				posts.remove(at: index)
+			}
+		}
+
+        let widgetView = SunlitWidgetView(posts: posts, family: context.family, configuration: configuration)
         let date = Date(timeIntervalSinceNow: 5 * 60.0)
         let timeline = Timeline(entries: [widgetView], policy: .after(date))
         completion(timeline)
@@ -86,19 +94,19 @@ struct SunlitTimelineProvider: IntentTimelineProvider {
 
         if configuration.feed == .discover {
             Snippets.Microblog.fetchDiscoverTimeline { (error, posts, tagmoji) in
-                handleTimeline(error: error, postObjects: posts, context: context, completion: completion)
+				handleTimeline(error: error, postObjects: posts, context: context, configuration: configuration, completion: completion)
             }
         }
         else {
             Snippets.Microblog.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
-                handleTimeline(error: error, postObjects: postObjects, context: context, completion: completion)
+				handleTimeline(error: error, postObjects: postObjects, context: context, configuration : configuration, completion: completion)
             }
         }
     }
 
 
     func placeholder(in context: Context) -> SunlitWidgetView {
-        let post = SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: context.family)
+        let post = SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: context.family, configuration: SunlitFeedConfigurationIntent())
         return post
     }
 }
@@ -269,22 +277,30 @@ struct SunlitWidgetView : TimelineEntry, View {
 
     let posts : [SunlitPost]
     let family : WidgetFamily
+	let configuration : SunlitFeedConfigurationIntent
 
 
     var smallWidget: some View {
 		HStack {
-			let index = Int.random(in: 0..<posts.count)
-			if let post = posts[index] {
-				SunlitWidgetImage(post: post)
-					.widgetURL(URL(string: "sunlit://show?id=\(post.identifier)"))
+			if posts.count > 0 {
+				let index = (configuration.random == true) ? Int.random(in: 0..<posts.count) : 0
+
+				if let post = posts[index] {
+					SunlitWidgetImage(post: post)
+						.widgetURL(URL(string: "sunlit://show?id=\(post.identifier)"))
+				}
+			}
+			else {
+				SunlitWidgetImage(post: placeholderPost)
 			}
 		}
     }
 
     var mediumWidget: some View {
         HStack {
-            let index = Int.random(in: 0..<posts.count)
-            if let post = posts[index] {
+			let index = (configuration.random == true) ? Int.random(in: 0..<posts.count) : 0
+
+			if let post = posts[index] {
 				Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
 					Spacer()
 						.frame(width: 12.0)
@@ -373,7 +389,7 @@ struct SunlitWidget: Widget {
 struct Widget_Previews:
     PreviewProvider {
     static var previews: some View {
-        SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: .systemLarge)
+        SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: .systemLarge, configuration: SunlitFeedConfigurationIntent())
             .previewContext(WidgetPreviewContext(family: .systemLarge))
     }
 }
