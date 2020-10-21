@@ -275,8 +275,8 @@
 		C5EC472C253BB27400DDE4AC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC472B253BB27400DDE4AC /* WidgetKit.framework */; platformFilter = ios; };
 		C5EC472E253BB27400DDE4AC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC472D253BB27400DDE4AC /* SwiftUI.framework */; };
 		C5EC4731253BB27400DDE4AC /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4730253BB27400DDE4AC /* Widget.swift */; };
-		C5EC4736253BB27600DDE4AC /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4732253BB27400DDE4AC /* Widget.intentdefinition */; };
-		C5EC4737253BB27600DDE4AC /* Widget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4732253BB27400DDE4AC /* Widget.intentdefinition */; };
+		C5EC4736253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */; };
+		C5EC4737253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */; };
 		C5EC473A253BB27600DDE4AC /* WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C5EC472A253BB27400DDE4AC /* WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C5EC474D253BB2FA00DDE4AC /* UUSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC2BA2489D2F700C1F8A5 /* UUSwift.framework */; };
 		C5EC474E253BB2FD00DDE4AC /* Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3012489D33300C1F8A5 /* Snippets.framework */; };
@@ -630,7 +630,7 @@
 		C5EC472B253BB27400DDE4AC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		C5EC472D253BB27400DDE4AC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C5EC4730253BB27400DDE4AC /* Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widget.swift; sourceTree = "<group>"; };
-		C5EC4732253BB27400DDE4AC /* Widget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Widget.intentdefinition; sourceTree = "<group>"; };
+		C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = SunlitFeedConfiguration.intentdefinition; sourceTree = "<group>"; };
 		C5EC4735253BB27600DDE4AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C5EC473B253BB27600DDE4AC /* WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetExtension.entitlements; sourceTree = "<group>"; };
 		C5EDE49424D8E75F009ACF2A /* SunlitMentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SunlitMentions.swift; path = Source/Data/SunlitMentions.swift; sourceTree = "<group>"; };
@@ -1121,7 +1121,7 @@
 			isa = PBXGroup;
 			children = (
 				C5EC4730253BB27400DDE4AC /* Widget.swift */,
-				C5EC4732253BB27400DDE4AC /* Widget.intentdefinition */,
+				C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */,
 				C5EC4735253BB27600DDE4AC /* Info.plist */,
 			);
 			path = Widget;
@@ -1731,7 +1731,7 @@
 				C5A1DE9324901DE600B50B54 /* PostAddSectionCollectionViewCell.swift in Sources */,
 				C5A1DE5124901D9D00B50B54 /* UIBarButtonItem+Sunlit.swift in Sources */,
 				C5A1DE8024901DCC00B50B54 /* ComposeViewController.swift in Sources */,
-				C5EC4737253BB27600DDE4AC /* Widget.intentdefinition in Sources */,
+				C5EC4737253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */,
 				C5A1DE9224901DE600B50B54 /* PostImageCollectionViewCell.swift in Sources */,
 				C5A1DE6B24901DBC00B50B54 /* SnippetsUser+Sunlit.swift in Sources */,
 				4B9D143624C889BA004E7EAF /* SectionTextView.swift in Sources */,
@@ -1839,7 +1839,7 @@
 			files = (
 				C5EC4776253BC32F00DDE4AC /* Settings.swift in Sources */,
 				C5EC477E253BC35000DDE4AC /* SnippetsUser+Sunlit.swift in Sources */,
-				C5EC4736253BB27600DDE4AC /* Widget.intentdefinition in Sources */,
+				C5EC4736253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */,
 				C5EC4775253BC32F00DDE4AC /* BlogSettings.swift in Sources */,
 				C5841CED253D0C670090B7BD /* Date+Sunlit.swift in Sources */,
 				C5EC478E253BC46E00DDE4AC /* SnippetsPost+Sunlit.swift in Sources */,

@@ -27,63 +27,78 @@ struct HTMLText: UIViewRepresentable {
     }
 }
 
-struct SunlitTimelineProvider: TimelineProvider {
+struct SunlitTimelineProvider: IntentTimelineProvider {
 
-    func getSnapshot(in context: Context, completion: @escaping (SunlitWidgetView) -> Void) {
+    typealias Entry = SunlitWidgetView
+    typealias Intent = SunlitFeedConfigurationIntent
+
+
+    func getSnapshot(for configuration: SunlitFeedConfigurationIntent, in context: Context, completion: @escaping (SunlitWidgetView) -> Void) {
         let widget = SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: context.family)
         completion(widget)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<SunlitWidgetView>) -> Void) {
+    func handleTimeline(error : Error?, postObjects: [SnippetsPost], context: Context, completion: @escaping (Timeline<SunlitWidgetView>) -> Void) {
+        if let err = error {
+            var entries : [SunlitWidgetView] = []
+            let post = SunlitWidgetView(posts: [SunlitPost(err.localizedDescription , [])], family: context.family)
+            entries.append(post)
+
+            let timeline = Timeline(entries: entries, policy: .after(Date(timeIntervalSinceNow: 60.0)))
+            completion(timeline)
+
+            return
+        }
+
+        var posts: [SunlitPost] = []
+
+        for entry in postObjects {
+
+            let post = SunlitPost.create(entry)
+            if post.images.count > 0 {
+                if let imagePath = post.images.first {
+                    if ImageCache.prefetch(imagePath) == nil {
+                        ImageCache.fetch(imagePath) { (image) in
+                            WidgetCenter.shared.reloadTimelines(ofKind: "blog.micro.sunlit.widget")
+                        }
+                    }
+                    else {
+                        if posts.count < 4 || context.family != .systemLarge{
+                            posts.append(post)
+                        }
+                    }
+                }
+            }
+        }
+
+        let widgetView = SunlitWidgetView(posts: posts, family: context.family)
+        let date = Date(timeIntervalSinceNow: 5 * 60.0)
+        let timeline = Timeline(entries: [widgetView], policy: .after(date))
+        completion(timeline)
+    }
+
+
+    func getTimeline(for configuration: SunlitFeedConfigurationIntent, in context: Context, completion: @escaping (Timeline<SunlitWidgetView>) -> Void) {
 
         if let token = Settings.object(forKey: "Snippets") as? String {
             Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: token)
         }
 
-        Snippets.Microblog.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
-
-            if let err = error {
-                var entries : [SunlitWidgetView] = []
-                let post = SunlitWidgetView(posts: [SunlitPost(err.localizedDescription , [])], family: context.family)
-                entries.append(post)
-
-                let timeline = Timeline(entries: entries, policy: .after(Date(timeIntervalSinceNow: 60.0)))
-                completion(timeline)
-
-                return
+        if configuration.feed == .discover {
+            Snippets.Microblog.fetchDiscoverTimeline { (error, posts, tagmoji) in
+                handleTimeline(error: error, postObjects: posts, context: context, completion: completion)
             }
-
-            var posts: [SunlitPost] = []
-
-            for entry in postObjects {
-
-				let post = SunlitPost.create(entry)
-				if post.images.count > 0 {
-					if let imagePath = post.images.first {
-						if ImageCache.prefetch(imagePath) == nil {
-							ImageCache.fetch(imagePath) { (image) in
-								WidgetCenter.shared.reloadTimelines(ofKind: "blog.micro.sunlit.widget")
-							}
-						}
-						else {
-							if posts.count < 4 || context.family != .systemLarge{
-								posts.append(post)
-							}
-						}
-					}
-				}
+        }
+        else {
+            Snippets.Microblog.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
+                handleTimeline(error: error, postObjects: postObjects, context: context, completion: completion)
             }
-
-            let widgetView = SunlitWidgetView(posts: posts, family: context.family)
-            let date = Date(timeIntervalSinceNow: 5 * 60.0)
-            let timeline = Timeline(entries: [widgetView], policy: .after(date))
-            completion(timeline)
         }
     }
 
 
     func placeholder(in context: Context) -> SunlitWidgetView {
-        let post = SunlitWidgetView(posts: [placeholderPost], family: context.family)
+        let post = SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: context.family)
         return post
     }
 }
@@ -307,15 +322,10 @@ struct SunlitWidgetView : TimelineEntry, View {
 							.frame(height: 10.0)
 					}
 
-					if let path = post.images.first,
-					   ImageCache.prefetch(path) != nil
-					{
-
-						Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
-							SunlitLargeWidgetEntry(post: post)
-							Spacer()
-						}
-					}
+                    Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
+                        SunlitLargeWidgetEntry(post: post)
+                        Spacer()
+                    }
 				}
 
 				Spacer()
@@ -352,7 +362,7 @@ struct SunlitWidget: Widget {
 
     var body: some WidgetConfiguration {
 
-        StaticConfiguration(kind: "blog.micro.sunlit.widget", provider: SunlitTimelineProvider())
+        IntentConfiguration(kind: "blog.micro.sunlit.widget", intent: SunlitFeedConfigurationIntent.self, provider: SunlitTimelineProvider())
         { (entry) in
             entry
         }

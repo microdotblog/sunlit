@@ -48,6 +48,10 @@
 	<string>Sunlit uses your location to add a check-in to a story.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Sunlit needs access to your photos to help you create beautiful stories.</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>SunlitFeedConfigurationIntent</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
