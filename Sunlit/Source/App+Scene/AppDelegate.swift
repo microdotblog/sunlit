@@ -20,6 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: token)
         }
 
+		if let options = launchOptions,
+		   let url = options[.url] as? URL,
+		   url.host == "show" {
+			DispatchQueue.main.async {
+				SceneDelegate.handleShowURL(url)
+			}
+		}
+
 		let clearCacheKey = "CacheClearKey-" +  (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") + "-" + (Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "")
 		var shouldClearCache = true
 		// Comment this out to test a fresh install scenario...
@@ -47,6 +55,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             MainPhoneViewController.needsMentionsSwitch = true
         }
 
+		return true
+	}
+
+	func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+		if url.host == "show" {
+			DispatchQueue.main.async {
+				SceneDelegate.handleShowURL(url)
+			}
+		}
 		return true
 	}
 	

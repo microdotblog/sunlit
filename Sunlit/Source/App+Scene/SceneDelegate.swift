@@ -82,9 +82,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
 		if let urlContext = URLContexts.first {
 			let url = urlContext.url
-
             if url.host == "show" {
-                self.handleShowURL(url)
+				SceneDelegate.handleShowURL(url)
                 return
             }
             else if url.absoluteString.contains("notification") {
@@ -101,21 +100,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			}
 			else {
 				let token = url.lastPathComponent
-				DispatchQueue.main.async {
-					NotificationCenter.default.post(name: .temporaryTokenReceivedNotification, object: token)
+				if token.count > 0 {
+					DispatchQueue.main.async {
+						NotificationCenter.default.post(name: .temporaryTokenReceivedNotification, object: token)
+					}
 				}
 			}
 		}
 	}
 
 
-    func handleShowURL(_ url : URL) {
+    static func handleShowURL(_ url : URL) {
         if let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
 
             if let items = components.queryItems {
                 for q in items {
                     if q.name == "id",
-                       let identifier = q.value {
+					   let identifier = q.value,
+					   identifier.count > 0 {
 
                         let sunlitPost = SunlitPost()
                         sunlitPost.identifier = identifier
