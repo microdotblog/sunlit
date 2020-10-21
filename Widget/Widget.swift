@@ -57,21 +57,21 @@ struct SunlitTimelineProvider: TimelineProvider {
 
             for entry in postObjects {
 
-                if posts.count < 4 {
-                    let post = SunlitPost.create(entry)
-
-                    if post.images.count > 0 {
-                        posts.append(post)
-
-                        if let imagePath = post.images.first {
-                            if ImageCache.prefetch(imagePath) == nil {
-                                ImageCache.fetch(imagePath) { (image) in
-                                    WidgetCenter.shared.reloadTimelines(ofKind: "blog.micro.sunlit.widget")
-                                }
-                            }
-                        }
-                    }
-                }
+				let post = SunlitPost.create(entry)
+				if post.images.count > 0 {
+					if let imagePath = post.images.first {
+						if ImageCache.prefetch(imagePath) == nil {
+							ImageCache.fetch(imagePath) { (image) in
+								WidgetCenter.shared.reloadTimelines(ofKind: "blog.micro.sunlit.widget")
+							}
+						}
+						else {
+							if posts.count < 4 || context.family != .systemLarge{
+								posts.append(post)
+							}
+						}
+					}
+				}
             }
 
             let widgetView = SunlitWidgetView(posts: posts, family: context.family)
@@ -88,28 +88,25 @@ struct SunlitTimelineProvider: TimelineProvider {
     }
 }
 
+struct SunlitWidgetImage : View {
 
-struct SunlitLargeTextView : View {
+	let post : SunlitPost
 
-    let post : SunlitPost
-
-    var body : some View {
-        VStack(alignment: .leading, spacing: 0.0, content: {
-            Text(post.owner.fullName)
-                .font(Font.system(.caption).bold().italic())
-                .foregroundColor(.gray)
-                .frame(height:16.0)
-
-            //HTMLText(attributedString: post.attributedText)
-            Text(post.attributedText.string)
-                .font(Font.system(.subheadline))
-                .multilineTextAlignment(.leading)
-                .lineLimit(2)
-                .frame(height: 42.0)
-
-            Spacer()
-        })
-    }
+	var body : some View {
+		Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
+			if let imagePath = post.images.first,
+			   let image = ImageCache.prefetch(imagePath){
+					Image(uiImage: image)
+						.resizable()
+						.aspectRatio(contentMode: .fill)
+			}
+			else {
+				Image(uiImage: UIImage(named: "welcome_waves")!)
+					.resizable()
+					.aspectRatio(contentMode: .fill)
+			}
+		}
+	}
 }
 
 
@@ -149,6 +146,111 @@ struct SunlitMediumTextView : View {
     }
 }
 
+struct SunlitMediumWidgetEntry : View {
+	let post : SunlitPost
+
+	var body : some View {
+		Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
+			HStack(alignment: .center, spacing: 8.0, content: {
+
+				SunlitWidgetImage(post: post)
+					.frame(width: 128.0, height: 128.0)
+					.clipped()
+					.cornerRadius(8.0)
+
+				if let imagePath = post.images.first,
+				   ImageCache.prefetch(imagePath) != nil {
+					SunlitMediumTextView(post: post)
+				}
+				else {
+					SunlitMediumTextView(post: post)
+						.redacted(reason: .placeholder)
+				}
+
+			})
+		}
+
+	}
+}
+
+struct SunlitLargeWidgetHeader : View {
+	var body : some View {
+		HStack {
+			Text("Recent Sunlit Posts")
+				.font(Font.system(.headline).bold())
+				.multilineTextAlignment(.leading)
+				.foregroundColor(.red)
+
+			Spacer()
+			Image("welcome_waves")
+				.resizable()
+				.cornerRadius(2.0)
+				.frame(width: 20, height: 20)
+				.clipped()
+
+		}
+	}
+}
+
+struct SunlitLargeTextView : View {
+
+	let post : SunlitPost
+
+	var body : some View {
+		VStack(alignment: .leading, spacing: 0.0, content: {
+			Text(post.owner.fullName)
+				.font(Font.system(.caption).bold().italic())
+				.foregroundColor(.gray)
+				.frame(height:16.0)
+
+			//HTMLText(attributedString: post.attributedText)
+			Text(post.attributedText.string)
+				.font(Font.system(.subheadline))
+				.multilineTextAlignment(.leading)
+				.lineLimit(2)
+				.frame(height: 42.0)
+
+			Spacer()
+		})
+	}
+}
+
+struct SunlitLargeWidgetEntry : View {
+	let post : SunlitPost
+
+	var body : some View {
+		Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
+			HStack(alignment: .center, spacing: 8.0, content: {
+
+				if let imagePath = post.images.first,
+				   let image = ImageCache.prefetch(imagePath) {
+						Image(uiImage: image)
+							.resizable()
+							.aspectRatio(contentMode: .fill)
+							.frame(width: 60.0, height: 60.0)
+							.clipped()
+							.cornerRadius(8.0)
+
+						SunlitLargeTextView(post: post)
+				}
+				else {
+					Image(uiImage: UIImage(named: "welcome_waves")!)
+						.resizable()
+						.aspectRatio(contentMode: .fill)
+						.frame(width: 60.0, height: 60.0)
+						.clipped()
+						.cornerRadius(8.0)
+
+					SunlitLargeTextView(post: post)
+						.redacted(reason: .placeholder)
+				}
+
+			})
+			.frame(height: 60.0)
+		}
+	}
+}
+
 
 struct SunlitWidgetView : TimelineEntry, View {
 
@@ -161,103 +263,12 @@ struct SunlitWidgetView : TimelineEntry, View {
     let posts : [SunlitPost]
     let family : WidgetFamily
 
-    var largeWidget : some View {
-        HStack {
-            Spacer()
-                .frame(width:14.0)
-
-            VStack(alignment: .leading, spacing: 0.0, content: {
-
-                Spacer()
-                    .frame(height: 8.0)
-
-                HStack {
-                    Text("Recent Sunlit Posts")
-                        .font(Font.system(.headline).bold())
-                        .multilineTextAlignment(.leading)
-                        .foregroundColor(.red)
-
-                    Spacer()
-                    Image("welcome_waves")
-                        .resizable()
-                        .cornerRadius(2.0)
-                        .frame(width: 20, height: 20)
-                        .clipped()
-
-                }
-
-                Spacer()
-                    .frame(height:8.0)
-
-                ForEach(posts, id: \.self) { post in
-
-                    if post != posts.first {
-                        Divider()
-                        Spacer()
-                            .frame(height: 10.0)
-                    }
-					Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
-						HStack(alignment: .center, spacing: 8.0, content: {
-
-							if let imagePath = post.images.first,
-							   let image = ImageCache.prefetch(imagePath) {
-									Image(uiImage: image)
-										.resizable()
-										.aspectRatio(contentMode: .fill)
-										.frame(width: 60.0, height: 60.0)
-										.clipped()
-										.cornerRadius(8.0)
-
-									SunlitLargeTextView(post: post)
-							}
-							else {
-								Image(uiImage: UIImage(named: "welcome_waves")!)
-									.resizable()
-									.aspectRatio(contentMode: .fill)
-									.frame(width: 60.0, height: 60.0)
-									.clipped()
-									.cornerRadius(8.0)
-
-								SunlitLargeTextView(post: post)
-									.redacted(reason: .placeholder)
-							}
-
-						})
-						.frame(height: 60.0)
-					}
-
-                    Spacer()
-
-                }
-
-                Spacer()
-                   .frame(height:8.0)
-            })
-
-            Spacer()
-                .frame(width: 16.0)
-        }
-    }
-
-
 
     var smallWidget: some View {
         HStack {
             let index = Int.random(in: 0..<posts.count)
             if let post = posts[index] {
-				Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
-					if let imagePath = post.images.first,
-					   let image = ImageCache.prefetch(imagePath){
-							Image(uiImage: image)
-								.resizable()
-								.aspectRatio(contentMode: .fill)
-					}
-					else {
-						Image(uiImage: UIImage(named: "welcome_waves")!)
-							.resizable()
-							.aspectRatio(contentMode: .fill)
-					}
-				}
+				SunlitWidgetImage(post: post)
             }
         }
     }
@@ -269,40 +280,54 @@ struct SunlitWidgetView : TimelineEntry, View {
 
             let index = Int.random(in: 0..<posts.count)
             if let post = posts[index] {
-				Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
-					HStack(alignment: .center, spacing: 8.0, content: {
-
-						if let imagePath = post.images.first,
-						   let image = ImageCache.prefetch(imagePath) {
-							Image(uiImage: image)
-								.resizable()
-								.aspectRatio(contentMode: .fill)
-								.frame(width: 128.0, height: 128.0)
-								.clipped()
-								.cornerRadius(8.0)
-
-							SunlitMediumTextView(post: post)
-						}
-						else {
-							Image(uiImage: UIImage(named: "welcome_waves")!)
-								.resizable()
-								.aspectRatio(contentMode: .fill)
-								.frame(width: 128.0, height: 128.0)
-								.clipped()
-								.cornerRadius(8.0)
-
-							SunlitMediumTextView(post: post)
-								.redacted(reason: .placeholder)
-						}
-
-					})
-				}
+				SunlitMediumWidgetEntry(post: post)
             }
 
             Spacer()
                 .frame(width: 8.0)
         }
-    }
+	}
+
+
+	var largeWidget : some View {
+		HStack {
+			Spacer()
+				.frame(width:14.0)
+
+			VStack(alignment: .leading, spacing: 0.0, content: {
+
+				Spacer()
+					.frame(height: 8.0)
+
+				SunlitLargeWidgetHeader()
+
+				Spacer()
+					.frame(height:8.0)
+
+				ForEach(posts, id: \.self) { post in
+
+					if post != posts.first {
+						Divider()
+						Spacer()
+							.frame(height: 10.0)
+					}
+
+					if let path = post.images.first,
+					   ImageCache.prefetch(path) != nil {
+						SunlitLargeWidgetEntry(post: post)
+						Spacer()
+					}
+				}
+
+				Spacer()
+				   .frame(height:8.0)
+			})
+
+			Spacer()
+				.frame(width: 16.0)
+		}
+	}
+
 
     var body: some View {
 
