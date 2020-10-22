@@ -274,7 +274,7 @@
 		C5EC12FD248D64A60032B84D /* Mantis.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC1292248C33E40032B84D /* Mantis.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C5EC472C253BB27400DDE4AC /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC472B253BB27400DDE4AC /* WidgetKit.framework */; platformFilter = ios; };
 		C5EC472E253BB27400DDE4AC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC472D253BB27400DDE4AC /* SwiftUI.framework */; };
-		C5EC4731253BB27400DDE4AC /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4730253BB27400DDE4AC /* Widget.swift */; };
+		C5EC4731253BB27400DDE4AC /* SunlitWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4730253BB27400DDE4AC /* SunlitWidget.swift */; };
 		C5EC4736253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */; };
 		C5EC4737253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */; };
 		C5EC473A253BB27600DDE4AC /* WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C5EC472A253BB27400DDE4AC /* WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -294,9 +294,9 @@
 		C5EDE49B24D9C7E6009ACF2A /* Mentions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */; };
 		C5F680EC252C35B300D6987D /* Bookmarks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5F680EB252C35B300D6987D /* Bookmarks.storyboard */; };
 		C5F680F3252C36A800D6987D /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F680F2252C36A800D6987D /* BookmarksViewController.swift */; };
-		C5FBC241254143750070E4DA /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FBC2382541434C0070E4DA /* WidgetView.swift */; };
-		C5FBC249254143770070E4DA /* TimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FBC2372541430C0070E4DA /* TimelineProvider.swift */; };
-		C5FBC268254143B50070E4DA /* WidgetTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FBC251254143AD0070E4DA /* WidgetTextView.swift */; };
+		C5FBC241254143750070E4DA /* SunlitWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FBC2382541434C0070E4DA /* SunlitWidgetView.swift */; };
+		C5FBC249254143770070E4DA /* SunlitTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FBC2372541430C0070E4DA /* SunlitTimelineProvider.swift */; };
+		C5FBC268254143B50070E4DA /* SunlitWidgetTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FBC251254143AD0070E4DA /* SunlitWidgetTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -632,7 +632,7 @@
 		C5EC472A253BB27400DDE4AC /* WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5EC472B253BB27400DDE4AC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		C5EC472D253BB27400DDE4AC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		C5EC4730253BB27400DDE4AC /* Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widget.swift; sourceTree = "<group>"; };
+		C5EC4730253BB27400DDE4AC /* SunlitWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitWidget.swift; sourceTree = "<group>"; };
 		C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = SunlitFeedConfiguration.intentdefinition; sourceTree = "<group>"; };
 		C5EC4735253BB27600DDE4AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C5EC473B253BB27600DDE4AC /* WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetExtension.entitlements; sourceTree = "<group>"; };
@@ -641,9 +641,9 @@
 		C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Mentions.storyboard; path = Storyboards/Mentions.storyboard; sourceTree = "<group>"; };
 		C5F680EB252C35B300D6987D /* Bookmarks.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Bookmarks.storyboard; path = Storyboards/Bookmarks.storyboard; sourceTree = "<group>"; };
 		C5F680F2252C36A800D6987D /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksViewController.swift; path = Source/ViewControllers/BookmarksViewController.swift; sourceTree = "<group>"; };
-		C5FBC2372541430C0070E4DA /* TimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineProvider.swift; sourceTree = "<group>"; };
-		C5FBC2382541434C0070E4DA /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
-		C5FBC251254143AD0070E4DA /* WidgetTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetTextView.swift; sourceTree = "<group>"; };
+		C5FBC2372541430C0070E4DA /* SunlitTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitTimelineProvider.swift; sourceTree = "<group>"; };
+		C5FBC2382541434C0070E4DA /* SunlitWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitWidgetView.swift; sourceTree = "<group>"; };
+		C5FBC251254143AD0070E4DA /* SunlitWidgetTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitWidgetTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1126,10 +1126,10 @@
 		C5EC472F253BB27400DDE4AC /* Widget */ = {
 			isa = PBXGroup;
 			children = (
-				C5EC4730253BB27400DDE4AC /* Widget.swift */,
-				C5FBC2382541434C0070E4DA /* WidgetView.swift */,
-				C5FBC251254143AD0070E4DA /* WidgetTextView.swift */,
-				C5FBC2372541430C0070E4DA /* TimelineProvider.swift */,
+				C5EC4730253BB27400DDE4AC /* SunlitWidget.swift */,
+				C5FBC2382541434C0070E4DA /* SunlitWidgetView.swift */,
+				C5FBC251254143AD0070E4DA /* SunlitWidgetTextView.swift */,
+				C5FBC2372541430C0070E4DA /* SunlitTimelineProvider.swift */,
 				C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */,
 				C5EC4735253BB27600DDE4AC /* Info.plist */,
 			);
@@ -1846,17 +1846,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5FBC241254143750070E4DA /* WidgetView.swift in Sources */,
+				C5FBC241254143750070E4DA /* SunlitWidgetView.swift in Sources */,
 				C5EC4776253BC32F00DDE4AC /* Settings.swift in Sources */,
 				C5EC477E253BC35000DDE4AC /* SnippetsUser+Sunlit.swift in Sources */,
-				C5FBC249254143770070E4DA /* TimelineProvider.swift in Sources */,
+				C5FBC249254143770070E4DA /* SunlitTimelineProvider.swift in Sources */,
 				C5EC4736253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */,
-				C5FBC268254143B50070E4DA /* WidgetTextView.swift in Sources */,
+				C5FBC268254143B50070E4DA /* SunlitWidgetTextView.swift in Sources */,
 				C5EC4775253BC32F00DDE4AC /* BlogSettings.swift in Sources */,
 				C5841CED253D0C670090B7BD /* Date+Sunlit.swift in Sources */,
 				C5EC478E253BC46E00DDE4AC /* SnippetsPost+Sunlit.swift in Sources */,
 				C5EC4786253BC45900DDE4AC /* NSAttributedString+Sunlit.swift in Sources */,
-				C5EC4731253BB27400DDE4AC /* Widget.swift in Sources */,
+				C5EC4731253BB27400DDE4AC /* SunlitWidget.swift in Sources */,
 				C5EC476D253BC08400DDE4AC /* ImageCache.swift in Sources */,
 				C5EC4765253BBFB100DDE4AC /* SunlitPost.swift in Sources */,
 			);
