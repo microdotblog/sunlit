@@ -294,6 +294,9 @@
 		C5EDE49B24D9C7E6009ACF2A /* Mentions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */; };
 		C5F680EC252C35B300D6987D /* Bookmarks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5F680EB252C35B300D6987D /* Bookmarks.storyboard */; };
 		C5F680F3252C36A800D6987D /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F680F2252C36A800D6987D /* BookmarksViewController.swift */; };
+		C5FBC241254143750070E4DA /* WidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FBC2382541434C0070E4DA /* WidgetView.swift */; };
+		C5FBC249254143770070E4DA /* TimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FBC2372541430C0070E4DA /* TimelineProvider.swift */; };
+		C5FBC268254143B50070E4DA /* WidgetTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FBC251254143AD0070E4DA /* WidgetTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -638,6 +641,9 @@
 		C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Mentions.storyboard; path = Storyboards/Mentions.storyboard; sourceTree = "<group>"; };
 		C5F680EB252C35B300D6987D /* Bookmarks.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Bookmarks.storyboard; path = Storyboards/Bookmarks.storyboard; sourceTree = "<group>"; };
 		C5F680F2252C36A800D6987D /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksViewController.swift; path = Source/ViewControllers/BookmarksViewController.swift; sourceTree = "<group>"; };
+		C5FBC2372541430C0070E4DA /* TimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineProvider.swift; sourceTree = "<group>"; };
+		C5FBC2382541434C0070E4DA /* WidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetView.swift; sourceTree = "<group>"; };
+		C5FBC251254143AD0070E4DA /* WidgetTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1121,6 +1127,9 @@
 			isa = PBXGroup;
 			children = (
 				C5EC4730253BB27400DDE4AC /* Widget.swift */,
+				C5FBC2382541434C0070E4DA /* WidgetView.swift */,
+				C5FBC251254143AD0070E4DA /* WidgetTextView.swift */,
+				C5FBC2372541430C0070E4DA /* TimelineProvider.swift */,
 				C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */,
 				C5EC4735253BB27600DDE4AC /* Info.plist */,
 			);
@@ -1837,9 +1846,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5FBC241254143750070E4DA /* WidgetView.swift in Sources */,
 				C5EC4776253BC32F00DDE4AC /* Settings.swift in Sources */,
 				C5EC477E253BC35000DDE4AC /* SnippetsUser+Sunlit.swift in Sources */,
+				C5FBC249254143770070E4DA /* TimelineProvider.swift in Sources */,
 				C5EC4736253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */,
+				C5FBC268254143B50070E4DA /* WidgetTextView.swift in Sources */,
 				C5EC4775253BC32F00DDE4AC /* BlogSettings.swift in Sources */,
 				C5841CED253D0C670090B7BD /* Date+Sunlit.swift in Sources */,
 				C5EC478E253BC46E00DDE4AC /* SnippetsPost+Sunlit.swift in Sources */,
