@@ -281,12 +281,12 @@ struct SunlitWidgetView : TimelineEntry, View {
             VStack(alignment: .leading, spacing: 0.0, content: {
 
                 Spacer()
-                    .frame(height: 8.0)
+                    .frame(height: 16.0)
 
                 SunlitLargeWidgetHeader(title: title)
 
                 Spacer()
-                    .frame(height:8.0)
+                    .frame(height:16.0)
 
                 ForEach(posts, id: \.self) { post in
 
