@@ -14,6 +14,7 @@
 	<key>keychain-access-groups</key>
 	<array>
 		<string>$(AppIdentifierPrefix)blog.micro.ios</string>
+		<string>$(AppIdentifierPrefix)blog.micro.sunlit</string>
 	</array>
 </dict>
 </plist>
