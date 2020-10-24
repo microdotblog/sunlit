@@ -78,8 +78,25 @@ struct SunlitTimelineProvider: IntentTimelineProvider {
         }
 
         if configuration.feed == .discover {
-            Snippets.Microblog.fetchDiscoverTimeline { (error, posts, tagmoji) in
-                handleTimeline(error: error, postObjects: posts, context: context, configuration: configuration, completion: completion)
+            if configuration.tagmoji == .art {
+                Snippets.Microblog.fetchDiscoverTimeline(collection: "art", parameters: [:]) { (error, posts, tagmoji) in
+                    handleTimeline(error: error, postObjects: posts, context: context, configuration: configuration, completion: completion)
+                }
+            }
+            else if configuration.tagmoji == .cats {
+                Snippets.Microblog.fetchDiscoverTimeline(collection: "cats", parameters: [:]) { (error, posts, tagmoji) in
+                    handleTimeline(error: error, postObjects: posts, context: context, configuration: configuration, completion: completion)
+                }
+            }
+            else if configuration.tagmoji == .dogs {
+                Snippets.Microblog.fetchDiscoverTimeline(collection: "dogs", parameters: [:]) { (error, posts, tagmoji) in
+                    handleTimeline(error: error, postObjects: posts, context: context, configuration: configuration, completion: completion)
+                }
+            }
+            else {
+                Snippets.Microblog.fetchDiscoverTimeline { (error, posts, tagmoji) in
+                    handleTimeline(error: error, postObjects: posts, context: context, configuration: configuration, completion: completion)
+                }
             }
         }
         else {
