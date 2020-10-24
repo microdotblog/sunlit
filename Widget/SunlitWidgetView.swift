@@ -103,9 +103,12 @@ MARK: -
 
 
 struct SunlitLargeWidgetHeader : View {
+
+    let title : String
+
     var body : some View {
         HStack {
-            Text("Recent Sunlit Posts")
+            Text(title)
                 .font(Font.system(.headline).bold())
                 .multilineTextAlignment(.leading)
                 .foregroundColor(.red)
@@ -192,10 +195,47 @@ struct SunlitWidgetView : TimelineEntry, View {
         }
     }
 
+    public var title : String {
+
+        if self.configuration.random == true {
+            if self.configuration.feed == .timeline {
+                return "Random Sunlit Posts"
+            }
+            else if self.configuration.tagmoji == .art {
+                return "🎨🖌 Random Art Posts"
+            }
+            else if self.configuration.tagmoji == .cats {
+                return "🐈 🐱 Random Cat Posts"
+            }
+            else if self.configuration.tagmoji == .dogs {
+                return "🐕 🐶 Random Dog Posts"
+            }
+            else {
+                return "📷 Random Discover Posts"
+            }
+        }
+        else {
+            if self.configuration.feed == .timeline {
+                return "Recent Sunlit Posts"
+            }
+            else if self.configuration.tagmoji == .art {
+                return "🎨🖌 Recent Art Posts"
+            }
+            else if self.configuration.tagmoji == .cats {
+                return "🐈 🐱 Recent Cat Posts"
+            }
+            else if self.configuration.tagmoji == .dogs {
+                return "🐕 🐶 Recent Dog Posts"
+            }
+            else {
+                return "📷 Recent Discover Posts"
+            }
+        }
+    }
+
     let posts : [SunlitPost]
     let family : WidgetFamily
     let configuration : SunlitFeedConfigurationIntent
-
 
     var smallWidget: some View {
         HStack {
@@ -233,6 +273,7 @@ struct SunlitWidgetView : TimelineEntry, View {
 
 
     var largeWidget : some View {
+
         HStack {
             Spacer()
                 .frame(width:14.0)
@@ -242,7 +283,7 @@ struct SunlitWidgetView : TimelineEntry, View {
                 Spacer()
                     .frame(height: 8.0)
 
-                SunlitLargeWidgetHeader()
+                SunlitLargeWidgetHeader(title: title)
 
                 Spacer()
                     .frame(height:8.0)
