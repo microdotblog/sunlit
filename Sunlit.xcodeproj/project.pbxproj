@@ -277,7 +277,7 @@
 		C5EC4731253BB27400DDE4AC /* SunlitWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4730253BB27400DDE4AC /* SunlitWidget.swift */; };
 		C5EC4736253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */; };
 		C5EC4737253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */; };
-		C5EC473A253BB27600DDE4AC /* WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C5EC472A253BB27400DDE4AC /* WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C5EC473A253BB27600DDE4AC /* Sunlit Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C5EC472A253BB27400DDE4AC /* Sunlit Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C5EC474D253BB2FA00DDE4AC /* UUSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC2BA2489D2F700C1F8A5 /* UUSwift.framework */; };
 		C5EC474E253BB2FD00DDE4AC /* Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3012489D33300C1F8A5 /* Snippets.framework */; };
 		C5EC474F253BB30300DDE4AC /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5A1DEB0249066E900B50B54 /* SwiftSoup.framework */; };
@@ -358,7 +358,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				C5EC473A253BB27600DDE4AC /* WidgetExtension.appex in Embed App Extensions */,
+				C5EC473A253BB27600DDE4AC /* Sunlit Widget.appex in Embed App Extensions */,
 				C5235B02252D0670002F9CC6 /* sharing.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -629,7 +629,7 @@
 		C5EC12D2248C34010032B84D /* RotationDial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationDial.swift; sourceTree = "<group>"; };
 		C5EC12D3248C34010032B84D /* CGAngle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGAngle.swift; sourceTree = "<group>"; };
 		C5EC12D4248C34010032B84D /* DialConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialConfig.swift; sourceTree = "<group>"; };
-		C5EC472A253BB27400DDE4AC /* WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5EC472A253BB27400DDE4AC /* Sunlit Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Sunlit Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5EC472B253BB27400DDE4AC /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		C5EC472D253BB27400DDE4AC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C5EC4730253BB27400DDE4AC /* SunlitWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitWidget.swift; sourceTree = "<group>"; };
@@ -1000,7 +1000,7 @@
 				C5EC1292248C33E40032B84D /* Mantis.framework */,
 				C5A1DEB0249066E900B50B54 /* SwiftSoup.framework */,
 				C5235AF8252D0670002F9CC6 /* sharing.appex */,
-				C5EC472A253BB27400DDE4AC /* WidgetExtension.appex */,
+				C5EC472A253BB27400DDE4AC /* Sunlit Widget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1404,7 +1404,7 @@
 			);
 			name = WidgetExtension;
 			productName = WidgetExtension;
-			productReference = C5EC472A253BB27400DDE4AC /* WidgetExtension.appex */;
+			productReference = C5EC472A253BB27400DDE4AC /* Sunlit Widget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -2484,7 +2484,7 @@
 				);
 				MARKETING_VERSION = 3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.widget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Sunlit Widget";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -2510,7 +2510,7 @@
 				);
 				MARKETING_VERSION = 3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.widget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Sunlit Widget";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
