@@ -53,4 +53,6 @@ class SunlitMedia : NSObject {
 	var image : UIImage!
 	var altText : String = ""
 	var videoURL : URL = URL(fileURLWithPath: "")
+    var publishedPath : String? = nil
+    var thumbnailPath : String? = nil
 }

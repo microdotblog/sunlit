@@ -29,6 +29,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 	@IBOutlet var postButton : UIButton!
 	@IBOutlet var conversationButton : UIButton!
 	@IBOutlet var conversationHeightConstraint : NSLayoutConstraint!
+    @IBOutlet var bookmarkButton : UIButton?
 	
 	var post : SunlitPost!
 	
@@ -141,7 +142,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 
 		self.conversationButton.isHidden = !self.post.hasConversation
 		
-        self.replyField.text = ""
+        self.replyField.text = self.post.loadDraftedText()
         
 		// Update the text objects
 		self.textView.attributedText = post.attributedText
@@ -164,6 +165,10 @@ class SunlitPostTableViewCell : UITableViewCell {
 		self.pageViewIndicator.numberOfPages = self.post.images.count
 		self.pageViewIndicatorContainer.isHidden = self.post.images.count < 2
 
+        if let bookmarkButton = self.bookmarkButton {
+            bookmarkButton.isSelected = post.isBookmark
+        }
+
 		self.setupAvatar()
 	}
 	
@@ -178,6 +183,42 @@ class SunlitPostTableViewCell : UITableViewCell {
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
+    @IBAction func onBookmark() {
+        if !self.post.isBookmark {
+            if let bookmarkButton = self.bookmarkButton {
+                bookmarkButton.isSelected = true
+            }
+            Snippets.Microblog.addBookmark(post: self.post) { (error) in
+                if error == nil {
+                    self.post.isBookmark = true
+                }
+
+                if let bookmarkButton = self.bookmarkButton {
+                    bookmarkButton.isSelected = self.post.isBookmark
+                }
+            }
+        }
+        else {
+            if let bookmarkButton = self.bookmarkButton {
+                bookmarkButton.isSelected = false
+            }
+
+            Snippets.Microblog.removeBookmark(post: self.post) { (error) in
+                if error == nil {
+                    self.post.isBookmark = false
+                }
+
+                if let bookmarkButton = self.bookmarkButton {
+                    bookmarkButton.isSelected = self.post.isBookmark
+                }
+            }
+        }
+
+        if let bookmarkButton = self.bookmarkButton {
+            bookmarkButton.isSelected = !bookmarkButton.isSelected
+        }
+    }
+
 	@IBAction func onReply() {
         
         var userList = ""
@@ -191,6 +232,8 @@ class SunlitPostTableViewCell : UITableViewCell {
 		}
 		
         self.replyField.resignFirstResponder()
+
+        self.post.saveDraftedReply("")
 	}
 	
 	@IBAction func onViewConversation() {
@@ -250,7 +293,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 	}
 	
 	@objc func keyboardOffScreen(_ notification : Notification) {
-			
+
 		self.replyContainer.layer.borderWidth = 0.0
 
 		self.replyField.isHidden = true
@@ -305,6 +348,32 @@ class SunlitPostTableViewCell : UITableViewCell {
 			self.userAvatar.image = avatar
 		}
 	}
+}
+
+
+extension SunlitPostTableViewCell : UITextViewDelegate {
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        UIView.setAnimationsEnabled(false)
+        if let tableView = self.superview as? UITableView {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+        UIView.setAnimationsEnabled(true)
+
+        if let currentText = textView.text,
+           let textRange = Range(range, in: currentText) {
+            self.post.saveDraftedReply(currentText.replacingCharacters(in: textRange, with: text))
+        }
+
+        return true
+    }
+
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        NotificationCenter.default.post(name: .openURLNotification, object: URL)
+        return false
+    }
+
 }
 
 extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

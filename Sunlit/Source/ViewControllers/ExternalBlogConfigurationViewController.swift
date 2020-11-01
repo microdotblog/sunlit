@@ -25,6 +25,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
 	var wordpressRsdPath = ""
 	var usernameText = ""
 	var passwordText = ""
+    var externalServerPath = ""
 
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,21 +93,16 @@ class ExternalBlogConfigurationViewController: UIViewController {
 							else {
 								
 								// If we have successfully configured the blog, we can tell settings to use it...
-                                if is_wordpress {
-                                    let settings = BlogSettings(self.blogAddress.text!)
-                                    settings.blogName = "Wordpress"
-                                    settings.snippetsConfiguration = identity
-                                    BlogSettings.addPublishedBlog(settings)
-                                    BlogSettings.publishingPath = settings.blogAddress
-                                }
-                                else {
-                                    let settings = BlogSettings(self.blogAddress.text!)
-                                    settings.blogName = ""
-                                    settings.snippetsConfiguration = identity
-                                    BlogSettings.addPublishedBlog(settings)
-                                    BlogSettings.publishingPath = settings.blogAddress
-                                }
-								Dialog(self).information("Successfully configured for publishing!") {
+                                //let url = URL(string: self.blogAddress.text!)!
+                                var name = self.blogAddress.text!
+                                name = name.replaceAll(of: "http://", with: "")
+                                name = name.replaceAll(of: "https://", with: "")
+                                let settings = BlogSettings(name)
+                                settings.snippetsConfiguration = identity
+                                BlogSettings.addPublishedBlog(settings)
+                                BlogSettings.setBlogForPublishing(settings)
+
+                                Dialog(self).information("Successfully configured for publishing!") {
 									self.navigationController?.popViewController(animated: true)
 								}
 							}
@@ -124,9 +120,9 @@ class ExternalBlogConfigurationViewController: UIViewController {
 			let tokenStrings = SnippetsXMLLinkParser.parse(data, relValue: "token_endpoint")
 			
 			if var authEndpoint = authStrings.first,
-				let _ /*tokenEndpoint */ = tokenStrings.first,
-				let micropubEndpoint = links.first {
-				
+               let tokenEndpoint = tokenStrings.first,
+               let micropubEndpoint = links.first {
+
 				let micropubState = UUID().uuidString
 				
 				if !authEndpoint.contains("?") {
@@ -143,11 +139,16 @@ class ExternalBlogConfigurationViewController: UIViewController {
 				authEndpoint = authEndpoint + "&scope=create"
 				authEndpoint = authEndpoint + "&response_type=code"
 
-                let settings = BlogSettings(self.blogAddress.text!)
-                settings.tokenEndpoint = micropubEndpoint
+                let blogName : String = URL(string:self.externalServerPath)?.host ?? ""
+                let settings = BlogSettings(blogName)
+                settings.tokenEndpoint = tokenEndpoint
                 settings.stateKey = micropubState
                 settings.authEndpoint = authEndpoint
+                settings.blogPublishingAddress = micropubEndpoint
+
                 settings.save()
+
+                MicropubState.save(state: micropubState, name: blogName)
             
 				DispatchQueue.main.async {
 					UIApplication.shared.open(URL(string: authEndpoint)!)
@@ -172,7 +173,8 @@ class ExternalBlogConfigurationViewController: UIViewController {
 		if !path!.contains("http:") && !path!.contains("https:") {
 			path = "http://" + path!
 		}
-		
+
+        self.externalServerPath = path!
 		let fullURL = path!
 		
 		let request = UUHttpRequest(url: path!)

@@ -23,12 +23,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let clearCacheKey = "CacheClearKey-" +  (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") + "-" + (Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "")
 		var shouldClearCache = true
 		// Comment this out to test a fresh install scenario...
-		shouldClearCache = UserDefaults.standard.bool(forKey: clearCacheKey) != true
+        shouldClearCache = Settings.bool(forKey: clearCacheKey) != true
 
 		if shouldClearCache {
 			UUDataCache.shared.clearCache()
 		}
-		UserDefaults.standard.setValue(true, forKey: clearCacheKey)
+        Settings.setValue(true, forKey: clearCacheKey)
 		
 		// Content should only hang around for a day...
 		UUDataCache.shared.contentExpirationLength = 24.0 * 60.0 * 60.0
@@ -98,6 +98,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             completionHandler(.newData)
         }
 	}
+
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        print("Got here!")
+    }
 
 
 }

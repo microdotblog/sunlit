@@ -22,7 +22,14 @@ class ComposeViewController: UIViewController {
 	@IBOutlet var keyboardAccessoryView : UIView!
 	@IBOutlet var keyboardAccessoryViewBottomConstraint : NSLayoutConstraint!
 	@IBOutlet var blogSelectorButton : UIButton!
-	
+
+    @IBOutlet var altTextDialogView : UIView!
+    @IBOutlet var altTextTextView : UITextView!
+    @IBOutlet var altTextCancelButton : UIButton!
+    @IBOutlet var altTextDoneButton : UIButton!
+    var altTextSection : SunlitComposition? = nil
+    var altTextItem : Int = 0
+
 	var sections : [SunlitComposition] = []
 	var textViewDictionary : [UITextView : SunlitComposition] = [ : ]
 	var needsInitialFirstResponder = true
@@ -46,6 +53,7 @@ class ComposeViewController: UIViewController {
 		self.configureCollectionView()
 		self.configureNavigationController()
 		self.configureKeyboardAccessoryView()
+        self.setupAppExtensionElements()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -73,7 +81,7 @@ class ComposeViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		
-        self.blogSelectorButton.setTitle(BlogSettings.publishingPath, for: .normal)
+        self.blogSelectorButton.setTitle(BlogSettings.blogForPublishing().blogName, for: .normal)
         self.blogSelectorButton.isEnabled = BlogSettings.publishedBlogs().count > 1
 	}
 	
@@ -134,9 +142,16 @@ class ComposeViewController: UIViewController {
 		
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
 		}
-		
+
+        let media = sectionData.media[item]
+
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		alertController.addAction(cropAction)
+
+        // We can't crop media that has already been published...
+        if media.publishedPath == nil {
+            alertController.addAction(cropAction)
+        }
+
 		alertController.addAction(deleteAction)
 		alertController.addAction(altTextAction)
 		alertController.addAction(cancelAction)
@@ -209,7 +224,7 @@ class ComposeViewController: UIViewController {
 	
 	@IBAction func onSelectBlogConfiguration() {
 		Dialog(self).selectBlog {
-            self.blogSelectorButton.setTitle(BlogSettings.publishingPath, for: .normal)
+            self.blogSelectorButton.setTitle(BlogSettings.blogForPublishing().blogName, for: .normal)
 		}
 	}
 	
@@ -221,7 +236,12 @@ class ComposeViewController: UIViewController {
 		}
 
 		if !self.uploading {
-			self.navigationController?.dismiss(animated: true, completion: nil)
+            if let extensionContext = self.extensionContext {
+                extensionContext.cancelRequest(withError: URLError(URLError.cancelled))
+            }
+            else {
+                self.navigationController?.dismiss(animated: true, completion: nil)
+            }
 		}
 		else {
 			self.cancelPosting()
@@ -249,39 +269,6 @@ class ComposeViewController: UIViewController {
 		self.present(cropViewController, animated: true)
 	}
 
-
-	func onEditAltText(_ section : SunlitComposition, _ item : Int) {
-		
-		let currentAltText = section.media[item].altText
-		var alertTextField : UITextField? = nil
-		let alertController = UIAlertController(title: "Accessibility Description", message: nil, preferredStyle: .alert)
-		alertController.addTextField { (textField) in
-			textField.text = currentAltText
-			textField.autocorrectionType = .yes
-			textField.keyboardType = .asciiCapable
-			textField.autocapitalizationType = .sentences
-			alertTextField = textField
-		}
-
-		let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-		}
-
-		var saveTitle = "Add"
-		if currentAltText.count > 0 {
-			saveTitle = "Update"
-		}
-
-		let update = UIAlertAction(title: saveTitle, style: .default) { (action) in
-			let altText : String = alertTextField?.text ?? ""
-			section.media[item].altText = altText
-		}
-		
-		alertController.addAction(update)
-		alertController.addAction(cancel)
-		
-		self.present(alertController, animated: true, completion: nil)
-	}
-	
 	@IBAction func onDismissKeyboard() {
 		self.view.endEditing(true)
 	}
@@ -309,7 +296,56 @@ class ComposeViewController: UIViewController {
 		}
 	}
 	
-	
+    /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    MARK: -
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+    func onEditAltText(_ section : SunlitComposition, _ item : Int) {
+
+        self.altTextSection = section
+        self.altTextItem = item
+        self.view.bringSubviewToFront(self.altTextDialogView)
+        self.altTextDialogView.alpha = 0.0
+        self.altTextDialogView.isHidden = false
+        self.altTextTextView.text = section.media[item].altText
+
+        UIView.animate(withDuration: 0.15) {
+            self.altTextDialogView.alpha = 1.0
+        }
+
+        let currentAltText = section.media[item].altText
+        var saveTitle = "Add"
+        if currentAltText.count > 0 {
+            saveTitle = "Update"
+        }
+
+        self.altTextDoneButton.setTitle(saveTitle, for: .normal)
+        self.altTextTextView.becomeFirstResponder()
+    }
+
+
+
+    @IBAction func onAltTextCancel() {
+        UIView.animate(withDuration: 0.15) {
+            self.altTextDialogView.alpha = 0.0
+        }
+
+        self.altTextTextView.resignFirstResponder()
+    }
+
+    @IBAction func onAltTextDone() {
+
+        if let section = self.altTextSection {
+            section.media[self.altTextItem].altText = self.altTextTextView.text
+        }
+
+        UIView.animate(withDuration: 0.15) {
+            self.altTextDialogView.alpha = 0.0
+        }
+
+        self.altTextTextView.resignFirstResponder()
+    }
+
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -317,7 +353,7 @@ class ComposeViewController: UIViewController {
 	
 	func uploadComposition() {
 
-        Snippets.Configuration.publishing = BlogSettings(BlogSettings.publishingPath).snippetsConfiguration!
+        Snippets.Configuration.publishing = BlogSettings.blogForPublishing().snippetsConfiguration!
         
 		let title : String = self.titleField.text ?? ""
 		self.uploadMedia { (mediaDictionary : [SunlitMedia : MediaLocation]) in
@@ -326,15 +362,44 @@ class ComposeViewController: UIViewController {
 			if !self.uploading {
 				return
 			}
+
+            if self.sections.count <= 1 && Snippets.Configuration.publishing.type == .micropub {
+                var photos : [String] = []
+                var photoAltTags : [String] = []
+                var videos : [String] = []
+                var videoAltTags : [String] = []
+                let text = self.sections.first?.text ?? ""
+
+                for media in mediaDictionary.keys {
+                    let location = mediaDictionary[media]!
+
+                    if media.type == .image {
+                        photos.append(location.path)
+                        photoAltTags.append(media.altText)
+                    }
+                    else {
+                        videos.append(location.path)
+                        videoAltTags.append(media.altText)
+                    }
+                }
+
+                self.activeUpload = Snippets.shared.postText(title: title, content: text, isDraft: false, photos: photos, altTags: photoAltTags, videos: videos, videoAltTags: videoAltTags, completion: { (error, remotePath) in
+                    DispatchQueue.main.async {
+                        self.handleUploadCompletion(error, remotePath)
+                    }
+
+                })
+            }
+            else {
+                let string = HTMLBuilder.createHTML(sections: self.sections, mediaPathDictionary: mediaDictionary)
 			
-			let string = HTMLBuilder.createHTML(sections: self.sections, mediaPathDictionary: mediaDictionary)
-			
-            self.activeUpload = Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
-                DispatchQueue.main.async {
-                    self.handleUploadCompletion(error, remotePath)
+                self.activeUpload = Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
+                    DispatchQueue.main.async {
+                        self.handleUploadCompletion(error, remotePath)
+                    }
                 }
             }
-		}
+        }
 	}
 
 	func uploadMedia(_ completion : @escaping ([SunlitMedia : MediaLocation]) -> Void) {
@@ -348,7 +413,7 @@ class ComposeViewController: UIViewController {
 		self.mediaUpLoader.uploadMedia(uploadQueue) { (error, dictionary) in
 
 			if let err = error {
-				Dialog(self).information(err.localizedDescription)
+                self.handleUploadCompletion(err, nil)
 			}
 			else {
 				completion(dictionary)
@@ -380,8 +445,9 @@ class ComposeViewController: UIViewController {
 		}
 		else {
 			let alert = UIAlertController(title: nil, message: "Successfully posted!", preferredStyle: .alert)
-			
-			if remotePath != nil {
+
+            // We can only add this action if we received a valid URL AND it's not in the sharing extension
+            if remotePath != nil  && self.extensionContext == nil {
 				alert.addAction(UIAlertAction(title: "View Post", style: .default, handler: { (action) in
 					self.dismiss(animated: true) {
 						NotificationCenter.default.post(name: .openURLNotification, object: remotePath)
@@ -390,7 +456,11 @@ class ComposeViewController: UIViewController {
 			}
 			
 			alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-				self.dismiss(animated: true, completion: nil)
+                self.dismiss(animated: true) {
+                    if let extensionContext = self.extensionContext {
+                        extensionContext.completeRequest(returningItems: nil, completionHandler: nil)
+                    }
+                }
 			}))
 				
 			self.present(alert, animated: true, completion: nil)
@@ -545,7 +615,11 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 		if indexPath.item > section.media.count {
 			return []
 		}
-		
+
+        if indexPath.item == 0 {
+            return []
+        }
+        
 		let media = section.media[indexPath.item - 1]
 		let itemProvider = NSItemProvider(object: media.getImage())
 		let dragItem = UIDragItem(itemProvider: itemProvider)
@@ -581,7 +655,7 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			else if #available(iOS 14.0, *) {
 				intent = .unspecified
 			}
-			else if #available(iOS 13.0, *) {
+            else { // if #available(iOS 13.0, *) {
 				intent = .insertAtDestinationIndexPath
 			}
 			
@@ -812,4 +886,57 @@ extension ComposeViewController : CropViewControllerDelegate {
 		cropViewController.dismiss(animated: true, completion: nil)
 	}
 
+}
+
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+MARK: - App Extension
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+
+extension ComposeViewController {
+
+    func setupAppExtensionElements() {
+        if let context = self.extensionContext {
+            var items : [NSItemProvider] = []
+            for item in context.inputItems {
+                if let extensionItem = item as? NSExtensionItem {
+                    if let attachments = extensionItem.attachments {
+                        for itemProvider in attachments {
+                            items.append(itemProvider)
+                        }
+                    }
+                }
+            }
+
+            if items.count > 0 {
+                let processor = ItemProviderProcessor { (mediaObjects) in
+                    for media in mediaObjects {
+                        self.addMedia(media)
+                    }
+                }
+
+                processor.process(items)
+            }
+        }
+
+    }
+    /*
+     - (void) setupAppExtensionElements
+     {
+         if (!self.extensionContext)
+             return;
+
+         // Handle alert views...
+         [UUAlertViewController setActiveViewController:self];
+
+         // Grab the first extension item. We really should only ever have one...
+         NSExtensionItem* extensionItem = self.extensionContext.inputItems.firstObject;
+
+         // Process all the attachements...
+         NSMutableArray* itemsToProcess = [NSMutableArray arrayWithArray:extensionItem.attachments];
+         [self processAppExtensionItems:itemsToProcess];
+     }
+
+     */
 }

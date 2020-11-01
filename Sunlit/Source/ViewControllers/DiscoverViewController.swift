@@ -528,32 +528,6 @@ class DiscoverViewController: ContentViewController {
 
 
 
-
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-
-extension DiscoverViewController : UITextFieldDelegate, UITextViewDelegate {
-
-	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-		UIView.setAnimationsEnabled(false)
-		self.tableView.beginUpdates()
-		self.tableView.endUpdates()
-		UIView.setAnimationsEnabled(true)
-			
-		return true
-	}
-	
-	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-		let safariViewController = SFSafariViewController(url: URL)
-		self.present(safariViewController, animated: true, completion: nil)
-		return false
-	}
-	
-}
-
-
 /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 MARK: -
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */

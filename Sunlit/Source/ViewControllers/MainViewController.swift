@@ -25,6 +25,8 @@ class MainViewController: UIViewController {
 	var timelineViewController : TimelineViewController!
 	var profileViewController : MyProfileViewController!
 	var mentionsViewController : MentionsViewController!
+    var bookmarksViewController : BookmarksViewController!
+
 	var currentContentViewController : ContentViewController? = nil
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,8 +66,25 @@ class MainViewController: UIViewController {
 	func setupNavigationBar() {
 
 		if UIDevice.current.userInterfaceIdiom == .phone {
-			let postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
-			var settingsSymbol = "gear"
+
+            var postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
+
+            if #available(iOS 14, *) {
+                postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: nil)
+
+                let libraryAction = UIAction(title: "Photo Library", image: UIImage(systemName: "photo")) { (action) in
+                    self.onNewPost()
+                }
+
+                let filesAction = UIAction(title: "Uploads", image: UIImage(systemName: "folder")) { (action) in
+                    self.onUploads()
+                }
+
+                let menu = UIMenu(children: [libraryAction, filesAction])
+                postButton.menu = menu
+            }
+
+            var settingsSymbol = "gear"
 			if #available(iOS 14, *) {
 				settingsSymbol = "gearshape"
 			}
@@ -103,8 +122,11 @@ class MainViewController: UIViewController {
 		self.timelineViewController = storyboard.instantiateViewController(identifier: "TimelineViewController")
 		self.profileViewController = storyboard.instantiateViewController(identifier: "MyProfileViewController")
 		self.discoverViewController = storyboard.instantiateViewController(identifier: "DiscoverViewController")
-		
-		let mentionsStoryBoard: UIStoryboard = UIStoryboard(name: "Mentions", bundle: nil)
+
+        let bookmarksStoryBoard: UIStoryboard = UIStoryboard(name: "Bookmarks", bundle: nil)
+        self.bookmarksViewController = bookmarksStoryBoard.instantiateViewController(identifier: "BookmarksViewController")
+
+        let mentionsStoryBoard: UIStoryboard = UIStoryboard(name: "Mentions", bundle: nil)
 		self.mentionsViewController = mentionsStoryBoard.instantiateViewController(identifier: "MentionsViewController")
 	}
 	
@@ -117,6 +139,7 @@ class MainViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowCurrentUserProfileNotification), name: .showCurrentUserProfileNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowTimelineNotification), name: .showTimelineNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowDiscoverNotification), name: .showDiscoverNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleShowBookmarksNotification), name: .showBookmarksNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowComposeNotification), name: .showComposeNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowMentionsNotification), name: .showMentionsNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowSettingsNotification), name: .showSettingsNotification, object: nil)
@@ -216,7 +239,7 @@ class MainViewController: UIViewController {
 					Settings.saveSnippetsToken(permanentToken)
                     
                     // Save to user prefs...
-                    let blogSettings = BlogSettings(BlogSettings.timelinePath)
+                    let blogSettings = BlogSettings.blogForTimeline()
                     blogSettings.snippetsConfiguration = Snippets.Configuration.microblogConfiguration(token: permanentToken)
                     blogSettings.save()
                     
@@ -250,7 +273,7 @@ class MainViewController: UIViewController {
 			if let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
 				var code = ""
 				var state = ""
-				
+
 				if let items = components.queryItems {
 					for q in items {
 						if let val = q.value {
@@ -264,30 +287,33 @@ class MainViewController: UIViewController {
 					}
 				}
 
-				if (code.count > 0) && (state.count > 0) {
-                    let me = BlogSettings.publishingPath
-                    let token_endpoint = BlogSettings(me).tokenEndpoint
-					
+                let blogName : String = MicropubState.lookupBlogName(from: state) ?? ""
+
+                if (code.count > 0) && (state.count > 0) && (blogName.count > 0){
+
+                    let blogSettings = BlogSettings(blogName)
+                    let me = "https://" + blogName
+                    let token_endpoint = blogSettings.tokenEndpoint
 					var params = ""
 					params = params + "grant_type=authorization_code"
 					params = params + "&code=" + code
 					params = params + "&client_id=" + String("https://sunlit.io/").uuUrlEncoded()
 					params = params + "&redirect_uri=" + String("https://sunlit.io/micropub/redirect").uuUrlEncoded()
-					params = params + "&me=" + me.uuUrlEncoded()
-					
-					let d = params.data(using: .utf8)
+                    params = params + "&me=" + me.uuUrlEncoded()
+
+                    let d = params.data(using: .utf8)
 
 					UUHttpSession.post(url: token_endpoint, queryArguments: [ : ], body: d, contentType: "application/x-www-form-urlencoded") { (parsedServerResponse) in
 						if let dictionary = parsedServerResponse.parsedResponse as? [ String : Any ] {
 							if let access_token = dictionary["access_token"] as? String {
 								DispatchQueue.main.async {
-                                    
-                                    let settings = BlogSettings(BlogSettings.publishingPath)
-                                    settings.microblogToken = access_token
-                                    settings.save()
-                                    BlogSettings.addPublishedBlog(settings)
 
-                                    if settings.snippetsConfiguration!.type == .micropub {
+                                    blogSettings.microblogToken = access_token
+                                    blogSettings.snippetsConfiguration = Snippets.Configuration.micropubConfiguration(token: access_token, endpoint: blogSettings.blogPublishingAddress)
+                                    blogSettings.save()
+                                    BlogSettings.addPublishedBlog(blogSettings)
+
+                                    if blogSettings.snippetsConfiguration!.type == .micropub {
 										Dialog(self).selectBlog()
 									}
 
@@ -327,6 +353,15 @@ class MainViewController: UIViewController {
             self.phoneViewController!.onShowDiscover()
         }
 	}
+
+    @objc func handleShowBookmarksNotification() {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.onTabletShowBookmarks()
+        }
+        else {
+            self.phoneViewController!.onShowBookmarks()
+        }
+    }
 
 	@objc func handleShowComposeNotification() {
 		self.onNewPost()
@@ -404,7 +439,23 @@ class MainViewController: UIViewController {
             self.present(pickerController, animated: true, completion: nil)
         }
 	}
-	
+
+    @IBAction @objc func onUploads() {
+
+        if BlogSettings.blogForPublishing().snippetsConfiguration?.type != .micropub {
+            Dialog(self).information("Uploads are currently only supported by Micropub blogs.") {
+
+            }
+            return
+        }
+
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Uploads", bundle: nil)
+        let uploadsViewController = storyBoard.instantiateViewController(withIdentifier: "UploadsViewController") as! UploadsViewController
+        uploadsViewController.delegate = self
+
+        let navigationController = UINavigationController(rootViewController: uploadsViewController)
+        self.present(navigationController, animated: true, completion: nil)
+    }
 
 	
 	@IBAction @objc func onSettings() {
@@ -452,6 +503,10 @@ class MainViewController: UIViewController {
 		self.activateContentViewController(self.discoverViewController)
 	}
 
+    func onTabletShowBookmarks() {
+        self.activateContentViewController(self.bookmarksViewController)
+    }
+
 	func onTabletShowProfile() {
 		self.activateContentViewController(self.profileViewController)
 	}
@@ -471,6 +526,7 @@ class MainViewController: UIViewController {
 			self.phoneViewController = phoneViewController
 			phoneViewController.timelineViewController = self.timelineViewController
 			phoneViewController.discoverViewController = self.discoverViewController
+            phoneViewController.bookmarksViewController = self.bookmarksViewController
 			phoneViewController.profileViewController = self.profileViewController
 			phoneViewController.mentionsViewController = self.mentionsViewController
 
@@ -486,6 +542,17 @@ class MainViewController: UIViewController {
 /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 MARK: -
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+extension MainViewController : UploadsPickerControllerDelegate {
+
+    func imagePickerController(_ picker: UploadsViewController, didFinishPickingMediaWithInfo info: [SunlitMedia]) {
+        self.composeWithMedia(info, picker: picker)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UploadsViewController) {
+    }
+
+}
 
 @available(iOS 14, *)
 extension MainViewController : PHPickerViewControllerDelegate {

@@ -50,11 +50,11 @@ class SettingsViewController: UIViewController {
     
     func updateSelection() {
         
-        let selectedName = BlogSettings.publishingPath
+        let selectedName = BlogSettings.blogForPublishing().blogName
         
         var index = 0
         for settings in self.tableData {
-            if settings.blogAddress == selectedName {
+            if settings.blogName == selectedName {
                 self.tableView.selectRow(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .none)
             }
             index = index + 1
@@ -69,6 +69,8 @@ class SettingsViewController: UIViewController {
 
 		Dialog(self).question(title: nil, question: "Are you sure you want to sign out of your Micro.blog account?", accept: "Sign Out", cancel: "Cancel") {
 			Settings.logout()
+
+            UIApplication.shared.applicationIconBadgeNumber = 0
 
 			NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
 			self.dismiss(animated: true, completion: nil)
@@ -103,7 +105,7 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
         
         let blogInfo = self.tableData[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "BlogSelectionTableViewCell", for: indexPath) as! BlogSelectionTableViewCell
-        cell.blogTitle.text = blogInfo.blogAddress
+        cell.blogTitle.text = blogInfo.blogName
         return cell
     }
     
@@ -115,7 +117,22 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
         }
         else {
             let blogInfo = self.tableData[indexPath.row]
-            BlogSettings.publishingPath = blogInfo.blogAddress
+            BlogSettings.setBlogForPublishing(blogInfo)
+        }
+    }
+
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return self.tableData.count > 1
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let blogInfo = self.tableData[indexPath.row]
+        Dialog(self).question(title: nil, question: "Are you sure you want to delete the settings for \(blogInfo.blogName)?", accept: "Delete", cancel: "Cancel") {
+            BlogSettings.deletePublishedBlog(blogInfo)
+
+            self.tableData = BlogSettings.publishedBlogs()
+            self.tableView.reloadData()
+            self.updateSelection()
         }
     }
     

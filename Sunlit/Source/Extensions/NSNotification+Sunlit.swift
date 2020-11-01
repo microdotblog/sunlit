@@ -15,6 +15,7 @@ extension NSNotification.Name {
 	static let showTimelineNotification = NSNotification.Name(rawValue: "Show Timeline Notification")
 	static let showCurrentUserProfileNotification = NSNotification.Name(rawValue: "Show Current User Profile Notification")
 	static let showDiscoverNotification = NSNotification.Name(rawValue: "Show Discover Notification")
+    static let showBookmarksNotification = NSNotification.Name(rawValue: "Show Bookmarks Notification")
 	static let showComposeNotification = NSNotification.Name(rawValue: "Show Compose Notification")
 	static let showSettingsNotification = NSNotification.Name(rawValue: "Show Settings Notification")
 	static let temporaryTokenReceivedNotification = NSNotification.Name(rawValue: "Temporary Token Received Notification")
@@ -35,5 +36,4 @@ extension NSNotification.Name {
 	static let followingButtonClickedNotification = NSNotification.Name("Following Button Clicked Notification")
 	static let showFollowingNotification = NSNotification.Name("Show Following Notification")
 	static let selectedUsernamesChangedNotification = NSNotification.Name("SelectedUsernamesChangedNotification")
-    static let scrollToTopNotification = NSNotification.Name("scrollToTopNotification")
 }

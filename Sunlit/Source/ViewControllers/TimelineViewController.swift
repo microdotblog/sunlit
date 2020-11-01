@@ -61,11 +61,12 @@ class TimelineViewController: ContentViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleScrollToTopNotification), name: .scrollToTopNotification, object: nil)
     }
 
     @objc override func handleScrollToTopGesture() {
-        self.tableView.setContentOffset(CGPoint(x: 0, y: -self.view.safeAreaTop()), animated: true)
+        if tableViewData.count > 0 {
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
     }
 	
 	func updateLoggedInStatus() {
@@ -177,12 +178,6 @@ class TimelineViewController: ContentViewController {
 		self.loadTimeline()
 	}
 
-    @objc func handleScrollToTopNotification() {
-        if tableViewData.count > 0 {
-            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-        }
-    }
-
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -235,10 +230,10 @@ class TimelineViewController: ContentViewController {
                 if error == nil && postObjects.count > 0 {
                     self.refreshTableView(postObjects)
                 }
-                else if let _ = error {
-                    self.loadingData = false
-                    self.loadTimeline()
+                else {
+                    self.handleTimelineError(error as NSError?)
                 }
+
 				self.loadingData = false
 				self.spinner.stopAnimating()
 			}
@@ -328,6 +323,59 @@ class TimelineViewController: ContentViewController {
 			}
 		}
 	}
+
+    func handleTimelineError(_ error : NSError?) {
+
+        if let err = error as NSError? {
+
+            switch err.code {
+            case 401, // Not authorized
+                 402, // Payment required
+                 451: // Unavailable for legal reasonse
+                Dialog(self).information(err.localizedDescription)
+
+            case 403: // Forbidden
+                break
+            case 404: // Not found
+                break
+
+            case 408: // Timeout
+                // wait a few seconds before re-trying after an error
+                self.loadingData = false
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    self.loadTimeline()
+                }
+
+            case 405, // Method not allowed
+                 406, // Not acceptable
+                 407, // Proxy authentication required
+                 409, // Conflict
+                 410, // Gone
+                 411, // Length required
+                 412, // Precondition failed
+                 413, // Payload too large
+                 414, // URI too long
+                 415, // Unsupported media type
+                 416, // Range not satisfiable
+                 417, // Expectation failed
+                 418: // I'm a teapot
+
+                // wait a few seconds before re-trying after an error
+                self.loadingData = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                    self.loadTimeline()
+                }
+
+            default:
+                // wait a few seconds before re-trying after an error
+                self.loadingData = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                    self.loadTimeline()
+                }
+            }
+
+        }
+    }
 	
 }
 
