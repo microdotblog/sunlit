@@ -47,7 +47,7 @@ struct SunlitMediumTextView : View {
             Text(post.owner.fullName)
                 .font(Font.system(.caption).bold().italic())
                 .foregroundColor(.gray)
-                .frame(height:16.0)
+                .frame(height:16.0, alignment: .topLeading)
 
             Spacer()
                 .frame(height: 4.0)
@@ -57,7 +57,7 @@ struct SunlitMediumTextView : View {
                 .font(Font.system(size: 14.0))
                 .multilineTextAlignment(.leading)
                 .lineLimit(6)
-                .frame(height: 84.0)
+                .frame(height: 84.0, alignment: .topLeading)
 
             Spacer()
                 .frame(height: 8.0)
@@ -67,7 +67,7 @@ struct SunlitMediumTextView : View {
             Text(post.publishedDate!.friendlyFormat())
                 .font(Font.system(.footnote))
                 .foregroundColor(.gray)
-                .frame(height: 16.0)
+                .frame(height: 16.0, alignment: .topLeading)
                 .multilineTextAlignment(.leading)
 
         })
@@ -140,7 +140,8 @@ struct SunlitLargeTextView : View {
                 .font(Font.system(.subheadline))
                 .multilineTextAlignment(.leading)
                 .lineLimit(2)
-                .frame(height: 42.0)
+                .frame(height: 43, alignment: .topLeading)
+
 
             Spacer()
         })
