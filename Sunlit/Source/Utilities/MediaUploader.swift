@@ -108,7 +108,8 @@ class MediaUploader {
                 media.thumbnailPath =  "https://micro.blog/photos/200/" + path
             }
 
-            if let index = self.currentUploads.firstIndex(of: upload!) {
+            if let currentUpload = upload,
+               let index = self.currentUploads.firstIndex(of: currentUpload) {
                 self.currentUploads.remove(at: index)
             }
             self.dataUploaded(error: error, media: media)
@@ -127,7 +128,8 @@ class MediaUploader {
             media.publishedPath = publishedPath
             media.thumbnailPath = posterPath
 
-            if let index = self.currentUploads.firstIndex(of: upload!) {
+            if let currentUpload = upload,
+               let index = self.currentUploads.firstIndex(of: currentUpload) {
                 self.currentUploads.remove(at: index)
             }
             self.dataUploaded(error: error, media: media)

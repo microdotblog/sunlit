@@ -132,6 +132,11 @@ class Settings {
             return string
         }
 
+        if let string = Settings.object(forKey: "Snippets") as? String {
+            saveSnippetsToken(string)
+            return string
+        }
+
         return nil
 	}
 
