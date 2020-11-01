@@ -116,7 +116,7 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>88xZPY</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>20A5395g</string>
+	<string>20B5012d</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
 	<string>12A7403</string>
 	<key>INIntentDefinitionToolsVersion</key>
@@ -126,8 +126,6 @@
 		<dict>
 			<key>INIntentCategory</key>
 			<string>information</string>
-			<key>INIntentConfigurable</key>
-			<true/>
 			<key>INIntentDescriptionID</key>
 			<string>tVvJ9c</string>
 			<key>INIntentEligibleForWidgets</key>
@@ -136,37 +134,6 @@
 			<true/>
 			<key>INIntentLastParameterTag</key>
 			<integer>8</integer>
-			<key>INIntentManagedParameterCombinations</key>
-			<dict>
-				<key>feed,random</key>
-				<dict>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationUpdatesLinked</key>
-					<true/>
-				</dict>
-				<key>feed,random,Seed</key>
-				<dict>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationUpdatesLinked</key>
-					<true/>
-				</dict>
-				<key>feed,random,Seed,tagmoji</key>
-				<dict>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationUpdatesLinked</key>
-					<true/>
-				</dict>
-				<key>feed,random,tagmoji</key>
-				<dict>
-					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
-					<true/>
-					<key>INIntentParameterCombinationUpdatesLinked</key>
-					<true/>
-				</dict>
-			</dict>
 			<key>INIntentName</key>
 			<string>SunlitFeedConfiguration</string>
 			<key>INIntentParameters</key>
@@ -336,8 +303,6 @@
 							<string>Primary</string>
 						</dict>
 					</array>
-					<key>INIntentParameterSupportsResolution</key>
-					<true/>
 					<key>INIntentParameterTag</key>
 					<integer>4</integer>
 					<key>INIntentParameterType</key>
@@ -389,45 +354,10 @@
 						<key>INIntentParameterRelationshipPredicateValue</key>
 						<true/>
 					</dict>
-					<key>INIntentParameterSupportsResolution</key>
-					<true/>
 					<key>INIntentParameterTag</key>
 					<integer>6</integer>
 					<key>INIntentParameterType</key>
 					<string>Integer</string>
-					<key>INIntentParameterUnsupportedReasons</key>
-					<array>
-						<dict>
-							<key>INIntentParameterUnsupportedReasonCode</key>
-							<string>negativeNumbersNotSupported</string>
-							<key>INIntentParameterUnsupportedReasonDefault</key>
-							<true/>
-							<key>INIntentParameterUnsupportedReasonFormatString</key>
-							<string>${displayName} can’t be negative.</string>
-							<key>INIntentParameterUnsupportedReasonFormatStringID</key>
-							<string>EzomMj</string>
-						</dict>
-						<dict>
-							<key>INIntentParameterUnsupportedReasonCode</key>
-							<string>greaterThanMaximumValue</string>
-							<key>INIntentParameterUnsupportedReasonDefault</key>
-							<true/>
-							<key>INIntentParameterUnsupportedReasonFormatString</key>
-							<string>${displayName} can’t be higher than ${maximumValue}.</string>
-							<key>INIntentParameterUnsupportedReasonFormatStringID</key>
-							<string>28YHOa</string>
-						</dict>
-						<dict>
-							<key>INIntentParameterUnsupportedReasonCode</key>
-							<string>lessThanMinimumValue</string>
-							<key>INIntentParameterUnsupportedReasonDefault</key>
-							<true/>
-							<key>INIntentParameterUnsupportedReasonFormatString</key>
-							<string>${displayName} can’t be lower than ${minimumValue}.</string>
-							<key>INIntentParameterUnsupportedReasonFormatStringID</key>
-							<string>fqdTSa</string>
-						</dict>
-					</array>
 				</dict>
 			</array>
 			<key>INIntentResponse</key>
