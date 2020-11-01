@@ -277,7 +277,7 @@
 		C5EC4731253BB27400DDE4AC /* SunlitWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4730253BB27400DDE4AC /* SunlitWidget.swift */; };
 		C5EC4736253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */; };
 		C5EC4737253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4732253BB27400DDE4AC /* SunlitFeedConfiguration.intentdefinition */; };
-		C5EC473A253BB27600DDE4AC /* Sunlit Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C5EC472A253BB27400DDE4AC /* Sunlit Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C5EC473A253BB27600DDE4AC /* Sunlit Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C5EC472A253BB27400DDE4AC /* Sunlit Widget.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C5EC474D253BB2FA00DDE4AC /* UUSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC2BA2489D2F700C1F8A5 /* UUSwift.framework */; };
 		C5EC474E253BB2FD00DDE4AC /* Snippets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55DC3012489D33300C1F8A5 /* Snippets.framework */; };
 		C5EC474F253BB30300DDE4AC /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5A1DEB0249066E900B50B54 /* SwiftSoup.framework */; };
@@ -1897,6 +1897,7 @@
 		};
 		C5EC4739253BB27600DDE4AC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = C5EC4729253BB27400DDE4AC /* WidgetExtension */;
 			targetProxy = C5EC4738253BB27600DDE4AC /* PBXContainerItemProxy */;
 		};
@@ -2486,7 +2487,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.widget;
 				PRODUCT_NAME = "Sunlit Widget";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2512,7 +2513,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.widget;
 				PRODUCT_NAME = "Sunlit Widget";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
