@@ -19,7 +19,7 @@ struct SunlitTimelineProvider: IntentTimelineProvider {
 
 
     func getSnapshot(for configuration: SunlitFeedConfigurationIntent, in context: Context, completion: @escaping (SunlitWidgetView) -> Void) {
-        let widget = SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: context.family, configuration: configuration)
+        let widget = SunlitWidgetView(posts: placeholderPosts, family: context.family, configuration: configuration)
         completion(widget)
     }
 
@@ -73,7 +73,7 @@ struct SunlitTimelineProvider: IntentTimelineProvider {
 
     func getTimeline(for configuration: SunlitFeedConfigurationIntent, in context: Context, completion: @escaping (Timeline<SunlitWidgetView>) -> Void) {
 
-        if let token = Settings.object(forKey: "Snippets") as? String {
+        if let token = Settings.snippetsToken() {
             Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: token)
         }
 
@@ -108,7 +108,7 @@ struct SunlitTimelineProvider: IntentTimelineProvider {
 
 
     func placeholder(in context: Context) -> SunlitWidgetView {
-        let post = SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: context.family, configuration: SunlitFeedConfigurationIntent())
+        let post = SunlitWidgetView(posts: placeholderPosts, family: context.family, configuration: SunlitFeedConfigurationIntent())
         return post
     }
 }

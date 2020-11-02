@@ -124,6 +124,7 @@ class Settings {
         }
 
         if let string = UUKeychain.getString(key: "Snippets") {
+            saveSnippetsToken(string)
             Settings.setValue("true", forKey: Settings.oneTimeImportKey)
             return string
         }

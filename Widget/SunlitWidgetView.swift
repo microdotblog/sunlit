@@ -13,24 +13,40 @@ import Snippets
 import UIKit
 
 
-struct SunlitWidgetImage : View {
-
-    let post : SunlitPost
+struct SunlitImage : View {
+    let path : String
+    let size : CGFloat
+    let contentMode : ContentMode
 
     var body : some View {
-        if let imagePath = post.images.first,
-           let image = ImageCache.prefetch(imagePath){
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
+        if let image = UIImage(named: path) {
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: contentMode)
+                .frame(width: size, height: size)
+                .clipped()
+                .cornerRadius(8.0)
+
+        }
+        else if let image = ImageCache.prefetch(path) {
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: contentMode)
+                .frame(width: size, height: size)
+                .clipped()
+                .cornerRadius(8.0)
         }
         else {
             Image(uiImage: UIImage(named: "welcome_waves")!)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
+                .frame(width: size, height: size)
+                .clipped()
+                .cornerRadius(8.0)
         }
     }
 }
+
 
 
 /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,6 +64,7 @@ struct SunlitMediumTextView : View {
                 .font(Font.system(.caption).bold().italic())
                 .foregroundColor(.gray)
                 .frame(height:16.0, alignment: .topLeading)
+                .allowsTightening(true)
 
             Spacer()
                 .frame(height: 4.0)
@@ -58,6 +75,7 @@ struct SunlitMediumTextView : View {
                 .multilineTextAlignment(.leading)
                 .lineLimit(6)
                 .frame(height: 84.0, alignment: .topLeading)
+                .allowsTightening(true)
 
             Spacer()
                 .frame(height: 8.0)
@@ -69,6 +87,7 @@ struct SunlitMediumTextView : View {
                 .foregroundColor(.gray)
                 .frame(height: 16.0, alignment: .topLeading)
                 .multilineTextAlignment(.leading)
+                .allowsTightening(true)
 
         })
     }
@@ -80,18 +99,14 @@ struct SunlitMediumWidgetEntry : View {
     var body : some View {
         HStack(alignment: .center, spacing: 8.0, content: {
 
-            SunlitWidgetImage(post: post)
-                .frame(width: 128.0, height: 128.0)
-                .clipped()
-                .cornerRadius(8.0)
+            SunlitImage(path: post.images.first ?? "", size: 128.0, contentMode: .fit)
 
-            if let imagePath = post.images.first,
-               ImageCache.prefetch(imagePath) != nil {
+            if post.shouldRedact() {
                 SunlitMediumTextView(post: post)
+                    .redacted(reason: .placeholder)
             }
             else {
                 SunlitMediumTextView(post: post)
-                    .redacted(reason: .placeholder)
             }
         })
     }
@@ -112,6 +127,7 @@ struct SunlitLargeWidgetHeader : View {
                 .font(Font.system(.headline).bold())
                 .multilineTextAlignment(.leading)
                 .foregroundColor(.red)
+                .allowsTightening(true)
 
             Spacer()
             Image("welcome_waves")
@@ -130,17 +146,21 @@ struct SunlitLargeTextView : View {
 
     var body : some View {
         VStack(alignment: .leading, spacing: 0.0, content: {
+
             Text(post.owner.fullName)
                 .font(Font.system(.caption).bold().italic())
                 .foregroundColor(.gray)
                 .frame(height:16.0)
+                .allowsTightening(true)
 
             //HTMLText(attributedString: post.attributedText)
             Text(post.attributedText.string)
                 .font(Font.system(.subheadline))
                 .multilineTextAlignment(.leading)
                 .lineLimit(2)
-                .frame(height: 43, alignment: .topLeading)
+                .frame(height: 38, alignment: .topLeading)
+                .allowsTightening(true)
+                .minimumScaleFactor(0.8)
 
 
             Spacer()
@@ -154,16 +174,8 @@ struct SunlitLargeWidgetEntry : View {
     var body : some View {
         HStack(alignment: .center, spacing: 8.0, content: {
 
-            if let imagePath = post.images.first,
-               let image = ImageCache.prefetch(imagePath) {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 60.0, height: 60.0)
-                        .clipped()
-                        .cornerRadius(8.0)
-
-                    SunlitLargeTextView(post: post)
+            if let imagePath = post.images.first {
+                SunlitImage(path: imagePath, size: 60.0, contentMode: .fit)
             }
             else {
                 Image(uiImage: UIImage(named: "welcome_waves")!)
@@ -172,9 +184,14 @@ struct SunlitLargeWidgetEntry : View {
                     .frame(width: 60.0, height: 60.0)
                     .clipped()
                     .cornerRadius(8.0)
+            }
 
+            if post.shouldRedact() {
                 SunlitLargeTextView(post: post)
                     .redacted(reason: .placeholder)
+            }
+            else {
+                SunlitLargeTextView(post: post)
             }
 
         })
@@ -243,13 +260,14 @@ struct SunlitWidgetView : TimelineEntry, View {
             if posts.count > 0 {
                 let index = (configuration.random == true) ? Int.random(in: 0..<posts.count) : 0
 
-                if let post = posts[index] {
-                    SunlitWidgetImage(post: post)
+                if let post = posts[index],
+                   let path = post.images.first {
+                    SunlitImage(path: path, size: 200.0, contentMode: .fill)
                         .widgetURL(URL(string: "sunlit://show?id=\(post.identifier)"))
                 }
             }
             else {
-                SunlitWidgetImage(post: placeholderPost)
+                SunlitImage(path: placeholderPosts.first!.images.first!, size: 400.0, contentMode: .fill)
             }
         }
     }
@@ -323,7 +341,6 @@ struct SunlitWidgetView : TimelineEntry, View {
         }
         else {
             self.largeWidget
-                .widgetURL(URL(string: "sunlit://"))
         }
 
     }

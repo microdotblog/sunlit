@@ -12,8 +12,12 @@ import Intents
 import Snippets
 import UIKit
 
-let placeholderPost = SunlitPost("This is some text that will appear in the placeholder Widget. ", [])
-
+let placeholderPosts : [SunlitPost] = [
+    SunlitPost("This is some text that will appear in the placeholder Widget. ", ["olive1"]),
+    SunlitPost("This is some text that will appear in the placeholder Widget. ", ["olive2"]),
+    SunlitPost("This is some text that will appear in the placeholder Widget. ", ["olive3"]),
+    SunlitPost("This is some text that will appear in the placeholder Widget. ", ["olive4"])
+]
 
 @main
 struct SunlitWidget: Widget {
@@ -31,8 +35,8 @@ struct SunlitWidget: Widget {
 struct Widget_Previews:
     PreviewProvider {
     static var previews: some View {
-        SunlitWidgetView(posts: [placeholderPost, placeholderPost, placeholderPost, placeholderPost], family: .systemLarge, configuration: SunlitFeedConfigurationIntent())
-            .previewContext(WidgetPreviewContext(family: .systemLarge))
+        SunlitWidgetView(posts: placeholderPosts, family: .systemSmall, configuration: SunlitFeedConfigurationIntent())
+            .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }
 
@@ -44,5 +48,12 @@ extension SunlitPost {
         self.publishedDate = Date()
         self.owner = SnippetsUser()
         self.owner.fullName = "Jonathan Hays"
+    }
+
+    func shouldRedact() -> Bool {
+        if let path = self.images.first {
+            return ImageCache.prefetch(path) == nil
+        }
+        return true
     }
 }
