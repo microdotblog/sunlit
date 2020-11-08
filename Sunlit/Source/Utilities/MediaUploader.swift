@@ -90,6 +90,14 @@ class MediaUploader {
             }
             else if media.type == .video {
                 VideoTranscoder.exportVideo(sourceUrl: media.videoURL) { (error, videoURL) in
+
+                    if let err = error {
+                        if let completion = self.completion {
+                            completion(err, [:])
+                        }
+                        return
+                    }
+
                     if let data = try? Data(contentsOf: videoURL) {
                         self.uploadVideo(media, data)
                     }

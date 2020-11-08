@@ -1,3 +1,5 @@
+<img src = "https://github.com/microdotblog/sunlit/blob/master/Screenshots/SunlitStripe.png?raw=true" alt = "">
+
 # Sunlit 3.0
 
 ## Overview
@@ -27,6 +29,10 @@ Sunlit is available under the MIT license. See [`LICENSE.md`](https://github.com
 This app requires a minimum target of iOS 13.0 or greater
 
 Micropub endpoints must provide a [media endpoint](https://micropub.spec.indieweb.org/#media-endpoint) for Sunlit to publish photos. 
+
+
+### Roadmap
+For information on future plans and features, please see [the development roadmap](https://github.com/microdotblog/sunlit/blob/master/ROADMAP.md).
 
 ### Swift
 This app is written entirely in Swift.

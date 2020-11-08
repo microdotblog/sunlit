@@ -124,7 +124,7 @@ class BlogSettings : NSObject {
             dictionary["tokenEndpoint"] = "https://micro.blog"
             dictionary["blogPublishingAddress"] = "https://micro.blog"
             dictionary["blogName"] = "Micro.blog"
-            dictionary["Snippets.Configuration"] = Snippets.Configuration.microblogConfiguration(token: "").toDictionary()
+            dictionary["Snippets.Configuration"] = Snippets.Configuration.microblogConfiguration(token: Settings.snippetsToken() ?? "").toDictionary()
 
             return BlogSettings(dictionary)
         }
