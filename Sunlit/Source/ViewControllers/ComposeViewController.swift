@@ -80,7 +80,18 @@ class ComposeViewController: UIViewController {
 	func configureKeyboardAccessoryView() {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOnScreenNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardOffScreenNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-		
+
+        // There is a situation where, because of update migrations, the blog configuration can
+        // end up not having a valid token. Try to detect that here and fix.
+        let blogSettings = BlogSettings.blogForPublishing()
+        if let config = blogSettings.snippetsConfiguration {
+            if config.type == .micropub && config.micropubToken.count == 0 {
+                config.micropubToken = Settings.snippetsToken() ?? ""
+
+                blogSettings.snippetsConfiguration = config
+            }
+        }
+
         self.blogSelectorButton.setTitle(BlogSettings.blogForPublishing().blogName, for: .normal)
         self.blogSelectorButton.isEnabled = BlogSettings.publishedBlogs().count > 1
 	}
@@ -437,6 +448,8 @@ class ComposeViewController: UIViewController {
 	func handleUploadCompletion(_ error : Error?, _ remotePath : String?) {
 		
 		if let err = error {
+            self.cancelPosting()
+            
 			Dialog(self).information(err.localizedDescription, completion: {
 				UIView.animate(withDuration: 0.15) {
 					self.disabledInterface.alpha = 0.0
