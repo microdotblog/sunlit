@@ -219,22 +219,12 @@ public extension UUImage
 
 	private func uuPlatformDraw(targetSize : CGSize, thumbnailRect : CGRect) -> UUImage
 	{
-		UIGraphicsBeginImageContextWithOptions(targetSize, false, UUImage.uuScreenScale())
+        let renderer = UIGraphicsImageRenderer(bounds: CGRect(origin: .zero, size: targetSize))
+        let newImage = renderer.image { (ctx) in
+            self.draw(in: thumbnailRect)
+        }
 
-		self.draw(in: thumbnailRect)
-		
-		if let newImage = UIGraphicsGetImageFromCurrentImageContext()
-		{
-			UIGraphicsEndImageContext()
-			return newImage
-		}
-		
-		return self
-	}
-
-	private static func uuScreenScale() -> CGFloat
-	{
-		return UIScreen.main.scale
+        return newImage
 	}
 
 	#else
@@ -290,11 +280,6 @@ public extension UUImage
 		return image
 	}
 
-	private static func uuScreenScale() -> CGFloat
-	{
-		return 1.0
-	}
-	
 	#endif
 	
 }
@@ -347,21 +332,14 @@ public extension UIImage {
 	static func uuSolidColorImage(color : UIColor) -> UUImage?
 	{
 		let rect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
-	
-		UIGraphicsBeginImageContext(rect.size)
-		let context = UIGraphicsGetCurrentContext()
-	
-		context?.setFillColor(color.cgColor)
-		context?.fill(rect)
-	
-		if let image = UIGraphicsGetImageFromCurrentImageContext()
-		{
-			UIGraphicsEndImageContext()
-		
-			return image
-		}
-	
-		return nil
+
+        let renderer = UIGraphicsImageRenderer(size: rect.size)
+        let image = renderer.image { (context) in
+            context.cgContext.setFillColor(color.cgColor)
+            context.cgContext.fill(rect)
+        }
+
+        return image
 	}
 
 	static func uuSolidColorImage(color : UUColor, cornerRadius : CGFloat, borderColor : UIColor, borderWidth : CGFloat) -> UUImage?
@@ -505,19 +483,12 @@ public extension UIImage {
 
 	static func uuViewToImage(_ view : UIView) -> UIImage?
 	{
-		UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, UIScreen.main.scale)
-		if let outputContext = UIGraphicsGetCurrentContext()
-		{
-			view.layer.render(in: outputContext)
-			
-			if let image = UIGraphicsGetImageFromCurrentImageContext()
-			{
-				UIGraphicsEndImageContext()
-				return image
-			}
-		}
-	
-		return nil
+        let renderer = UIGraphicsImageRenderer(bounds: view.bounds)
+        let image = renderer.image { (context) in
+            view.layer.render(in: context.cgContext)
+        }
+
+        return image
 	}
 
 	static func uuMakeStretchableImage(imageName : String, insets : UIEdgeInsets) -> UIImage?
