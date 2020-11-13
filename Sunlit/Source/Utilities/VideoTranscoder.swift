@@ -13,8 +13,8 @@ import NextLevelSessionExporter
 class VideoTranscoder {
 	
 	static func exportVideo(sourceUrl:URL, completion: @escaping ((Error?, URL) -> Void)) {
-		
-		let asset = AVAsset(url: sourceUrl)
+
+        let asset = AVURLAsset(url: sourceUrl, options: nil)
 		let size = VideoTranscoder.calculateSizeForAsset(asset)
 				
 		let compressionDict: [String: Any] = [

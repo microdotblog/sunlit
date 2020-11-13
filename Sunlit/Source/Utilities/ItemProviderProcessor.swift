@@ -121,7 +121,7 @@ class ItemProviderProcessor : NSObject {
 
     private func processVideoProvider(_ provider : NSItemProvider) {
 
-        _ = provider.loadFileRepresentation(forTypeIdentifier: String(kUTTypeMovie), completionHandler: { (url, error) in
+        _ = provider.loadInPlaceFileRepresentation(forTypeIdentifier: String(kUTTypeMovie), completionHandler: { (url, success, error) in
             if let videoURL = url {
                 self.processedMedia.append(SunlitMedia(withVideo: videoURL))
             }
