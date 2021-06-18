@@ -11,7 +11,7 @@ import SwiftUI
 import Intents
 import Snippets
 import UIKit
-
+import WebKit
 
 struct HTMLText: UIViewRepresentable {
 
@@ -23,5 +23,22 @@ struct HTMLText: UIViewRepresentable {
 
     func makeUIView(context: UIViewRepresentableContext<Self>) -> UILabel {
         return UILabel()
+    }
+}
+
+struct HTMLView : UIViewRepresentable {
+
+    let htmlString : String
+
+    init(_ string : String) {
+        htmlString = string
+    }
+
+    func makeUIView(context: Context) -> WKWebView {
+        return WKWebView()
+    }
+
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        uiView.loadHTMLString(self.htmlString, baseURL: nil)
     }
 }

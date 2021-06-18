@@ -70,7 +70,8 @@ struct SunlitMediumTextView : View {
                 .frame(height: 4.0)
 
             //HTMLText(attributedString: post.attributedText)
-            Text(post.attributedText.string)
+            HTMLView(self.post.htmlString)
+            //Text(post.attributedText.string)
                 .font(Font.system(size: 14.0))
                 .multilineTextAlignment(.leading)
                 .lineLimit(6)

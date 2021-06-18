@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			}
 		}
 
+		/*
 		let clearCacheKey = "CacheClearKey-" +  (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") + "-" + (Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "")
 		var shouldClearCache = true
 		// Comment this out to test a fresh install scenario...
@@ -41,7 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Content should only hang around for a day...
 		UUDataCache.shared.contentExpirationLength = 24.0 * 60.0 * 60.0
 		UUDataCache.shared.purgeExpiredData()
-		
+		*/
+
 		// We might want to change this in the future but for now, it covers basically a single view in one of the collection views
 		UURemoteData.shared.maxActiveRequests = 8
 		UUHttpRequest.defaultTimeout = 30.0

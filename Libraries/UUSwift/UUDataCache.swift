@@ -44,6 +44,7 @@ public protocol UUDataCacheProtocol
 // Meta Data is persisted with CoreData
 public class UUDataCache : NSObject, UUDataCacheProtocol
 {
+	public static var useDiskCache = false
     ////////////////////////////////////////////////////////////////////////////
     // Constants
     ////////////////////////////////////////////////////////////////////////////
@@ -87,23 +88,36 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
     ////////////////////////////////////////////////////////////////////////////
     public func data(for key: String) -> Data?
     {
-        removeIfExpired(for: key)
-        
-        let cached = loadFromDisk(for: key)
-        return cached
+		if UUDataCache.useDiskCache {
+			removeIfExpired(for: key)
+
+			let cached = loadFromDisk(for: key)
+			return cached
+
+		}
+
+		return nil
     }
     
     public func set(data: Data, for key: String)
     {
-        saveToDisk(data: data, for: key)
-        
-        var md = metaData(for: key)
-        md[MetaDataKeys.timestamp] = Date()
-        set(metaData: md, for: key)
+		if UUDataCache.useDiskCache {
+			saveToDisk(data: data, for: key)
+
+			var md = metaData(for: key)
+			md[MetaDataKeys.timestamp] = Date()
+			set(metaData: md, for: key)
+
+		}
     }
     
     public func moveIntoCache(localData: URL, for key: String)
     {
+		// Don't save to the disk cache...
+		if UUDataCache.useDiskCache {
+			return
+		}
+
         guard let pathUrl = diskCacheURL(for: key) else {
             return
         }
@@ -125,21 +139,35 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
     
     public func metaData(for key: String) -> [String:Any]
     {
+		if !UUDataCache.useDiskCache {
+			return [:]
+		}
+
         return UUDataCacheDb.shared.metaData(for: key)
     }
     
     public func set(metaData: [String:Any], for key: String)
     {
-        UUDataCacheDb.shared.setMetaData(metaData, for: key)
+		if UUDataCache.useDiskCache {
+			UUDataCacheDb.shared.setMetaData(metaData, for: key)
+		}
     }
     
     public func dataExists(for key: String) -> Bool
     {
+		if !UUDataCache.useDiskCache {
+			return false
+		}
+
         return dataExistsOnDisk(key: key)
     }
     
     public func isDataExpired(for key: String) -> Bool
     {
+		if !UUDataCache.useDiskCache {
+			return true
+		}
+
         let md = metaData(for: key)
         let timestamp = md[MetaDataKeys.timestamp] as? Date
         if (timestamp != nil)
@@ -153,6 +181,10 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
     
     public func removeData(for key: String)
     {
+		if !UUDataCache.useDiskCache {
+			return
+		}
+
         UUDataCacheDb.shared.clearMetaData(for: key)
         removeFile(for: key)
     }
@@ -268,7 +300,11 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
     private func loadFromDisk(for key: String) -> Data?
     {
         var data : Data? = nil
-        
+
+		if !UUDataCache.useDiskCache {
+			return data
+		}
+
         guard let pathUrl = diskCacheURL(for: key) else {
             return nil
         }
@@ -287,6 +323,10 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
         
     private func removeFile(for key: String)
     {
+		if !UUDataCache.useDiskCache {
+			return
+		}
+
         guard let pathUrl = diskCacheURL(for: key) else {
             return
         }
@@ -303,6 +343,10 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
     
     private func saveToDisk(data: Data, for key: String)
     {
+		if !UUDataCache.useDiskCache {
+			return
+		}
+
         guard let pathUrl = diskCacheURL(for: key) else {
             return
         }
@@ -318,6 +362,11 @@ public class UUDataCache : NSObject, UUDataCacheProtocol
     }
         
     private func dataExistsOnDisk(key: String) -> Bool {
+		
+		if !UUDataCache.useDiskCache {
+			return false
+		}
+
         guard let pathUrl = diskCacheURL(for: key) else {
             return false
         }
