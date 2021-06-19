@@ -216,24 +216,24 @@ struct SunlitWidgetView : TimelineEntry, View {
 
     public var title : String {
 
-        if self.configuration.random == true {
-            if self.configuration.feed == .timeline {
-                return "Random Sunlit Posts"
-            }
-            else if self.configuration.tagmoji == .art {
-                return "🎨🖌 Random Art Posts"
-            }
-            else if self.configuration.tagmoji == .cats {
-                return "🐈 🐱 Random Cat Posts"
-            }
-            else if self.configuration.tagmoji == .dogs {
-                return "🐕 🐶 Random Dog Posts"
-            }
-            else {
-                return "📷 Random Discover Posts"
-            }
-        }
-        else {
+//        if self.configuration.random == true {
+//            if self.configuration.feed == .timeline {
+//                return "Random Sunlit Posts"
+//            }
+//            else if self.configuration.tagmoji == .art {
+//                return "🎨🖌 Random Art Posts"
+//            }
+//            else if self.configuration.tagmoji == .cats {
+//                return "🐈 🐱 Random Cat Posts"
+//            }
+//            else if self.configuration.tagmoji == .dogs {
+//                return "🐕 🐶 Random Dog Posts"
+//            }
+//            else {
+//                return "📷 Random Discover Posts"
+//            }
+//        }
+//        else {
             if self.configuration.feed == .timeline {
                 return "Recent Sunlit Posts"
             }
@@ -243,13 +243,16 @@ struct SunlitWidgetView : TimelineEntry, View {
             else if self.configuration.tagmoji == .cats {
                 return "🐈 🐱 Recent Cat Posts"
             }
-            else if self.configuration.tagmoji == .dogs {
-                return "🐕 🐶 Recent Dog Posts"
-            }
+			else if self.configuration.tagmoji == .dogs {
+				return "🐕 🐶 Recent Dog Posts"
+			}
+			else if self.configuration.tagmoji == .pens {
+				return "✒️ Recent Pens Posts"
+			}
             else {
                 return "📷 Recent Discover Posts"
             }
-        }
+//        }
     }
 
     let posts : [SunlitPost]
@@ -259,7 +262,8 @@ struct SunlitWidgetView : TimelineEntry, View {
     var smallWidget: some View {
         HStack {
             if posts.count > 0 {
-                let index = (configuration.random == true) ? Int.random(in: 0..<posts.count) : 0
+//                let index = (configuration.random == true) ? Int.random(in: 0..<posts.count) : 0
+				let index = 0
 
                 if let post = posts[index],
                    let path = post.images.first {
@@ -275,7 +279,8 @@ struct SunlitWidgetView : TimelineEntry, View {
 
     var mediumWidget: some View {
         HStack {
-            let index = (configuration.random == true) ? Int.random(in: 0..<posts.count) : 0
+//            let index = (configuration.random == true) ? Int.random(in: 0..<posts.count) : 0
+			let index = 0
 
             if let post = posts[index] {
                 Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {

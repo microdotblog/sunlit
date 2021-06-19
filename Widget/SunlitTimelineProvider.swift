@@ -59,7 +59,8 @@ struct SunlitTimelineProvider: IntentTimelineProvider {
             while posts.count > 4 {
 
                 // Because random is a setting, we need to randomly remove posts until there are only 4 left...
-                let index = (configuration.random == true) ? Int.random(in: 0..<posts.count) : posts.count - 1
+//                let index = (configuration.random == true) ? Int.random(in: 0..<posts.count) : posts.count - 1
+				let index = posts.count - 1
                 posts.remove(at: index)
             }
         }
