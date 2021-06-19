@@ -3,24 +3,16 @@
 ## Overview
 This document outlines the general development roadmap for Sunlit. It is subject to change and is a general guide to the future.
 
-## 3.2
-- Bookmarks (view, set, remove)
-- Shared Micro.blog login
-- Share sheet
-- Support for using already uploaded images
-- Allow drafted replies to not disappear after losing focus
-
-## 3.3
-- iOS 14 widget
-- Mac Version
-
 ## 3.4
-- Drafts
+- Mac Version
 - Support "Sign-In With Apple"
+
+## 3.5
+- Drafts
 - Support signing-in without a Micro.blog account
 - Animated GIF support?
 
-## 3.5
+## 3.6
 - Android?
 
 
