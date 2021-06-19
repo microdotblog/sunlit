@@ -29,6 +29,8 @@ struct SunlitWidget: Widget {
             entry
         }
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+		.configurationDisplayName("Homescreen Widget")
+		.description("Show an item from the Discover timeline or your feed")
     }
 }
 
