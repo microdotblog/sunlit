@@ -118,6 +118,16 @@
 					<key>INEnumValueName</key>
 					<string>Pens</string>
 				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Books - 📚</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>4UOXki</string>
+					<key>INEnumValueIndex</key>
+					<integer>6</integer>
+					<key>INEnumValueName</key>
+					<string>Books</string>
+				</dict>
 			</array>
 		</dict>
 	</array>

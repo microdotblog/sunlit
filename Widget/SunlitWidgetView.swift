@@ -235,22 +235,25 @@ struct SunlitWidgetView : TimelineEntry, View {
 //        }
 //        else {
             if self.configuration.feed == .timeline {
-                return "Recent Sunlit Posts"
+                return "Recent Photos"
             }
             else if self.configuration.tagmoji == .art {
-                return "🎨🖌 Recent Art Posts"
+                return "🎨🖌 Recent Art"
             }
             else if self.configuration.tagmoji == .cats {
-                return "🐈 🐱 Recent Cat Posts"
+                return "🐈 🐱 Recent Cats"
             }
 			else if self.configuration.tagmoji == .dogs {
-				return "🐕 🐶 Recent Dog Posts"
+				return "🐕 🐶 Recent Dogs"
 			}
 			else if self.configuration.tagmoji == .pens {
-				return "✒️ Recent Pens Posts"
+				return "✒️ Recent Pens"
+			}
+			else if self.configuration.tagmoji == .books {
+				return "📚 Recent Books"
 			}
             else {
-                return "📷 Recent Discover Posts"
+                return "📷 Recent Photos from Discover"
             }
 //        }
     }

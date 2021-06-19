@@ -99,6 +99,11 @@ struct SunlitTimelineProvider: IntentTimelineProvider {
 					handleTimeline(error: error, postObjects: posts, context: context, configuration: configuration, completion: completion)
 				}
 			}
+			else if configuration.tagmoji == .books {
+				Snippets.Microblog.fetchDiscoverTimeline(collection: "books", parameters: [:]) { (error, posts, tagmoji) in
+					handleTimeline(error: error, postObjects: posts, context: context, configuration: configuration, completion: completion)
+				}
+			}
             else {
                 Snippets.Microblog.fetchDiscoverTimeline { (error, posts, tagmoji) in
                     handleTimeline(error: error, postObjects: posts, context: context, configuration: configuration, completion: completion)
