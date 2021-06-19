@@ -130,12 +130,12 @@ struct SunlitLargeWidgetHeader : View {
                 .foregroundColor(.red)
                 .allowsTightening(true)
 
-            Spacer()
-            Image("welcome_waves")
-                .resizable()
-                .cornerRadius(2.0)
-                .frame(width: 20, height: 20)
-                .clipped()
+//            Spacer()
+//            Image("welcome_waves")
+//                .resizable()
+//                .cornerRadius(2.0)
+//                .frame(width: 20, height: 20)
+//                .clipped()
 
         }
     }
