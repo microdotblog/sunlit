@@ -30,7 +30,7 @@ struct SunlitWidget: Widget {
         }
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
 		.configurationDisplayName("Homescreen Widget")
-		.description("Show an item from the Discover timeline or your feed")
+		.description("Show a photo from the Micro.blog timeline or Discover.")
     }
 }
 
