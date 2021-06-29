@@ -70,8 +70,7 @@ class TimelineViewController: ContentViewController {
     }
 	
 	func updateLoggedInStatus() {
-		let token = Settings.snippetsToken()
-		self.loggedOutView.isHidden = (token != nil)
+		self.loggedOutView.isHidden = (SnippetsUser.current() != nil)
 		self.loggedOutView.superview?.bringSubviewToFront(self.loggedOutView)
 	}
 	
