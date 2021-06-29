@@ -174,7 +174,7 @@ class MainPhoneViewController: UIViewController {
 			}
 			
 			// Go ahead and go get the avatar for the logged in user
-			ImageCache.fetch(self, user.avatarURL) { (image) in
+			ImageCache.fetch(user.avatarURL) { (image) in
 				
 				if let image = image {
 					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 26, height: 26)).withRenderingMode(.alwaysOriginal)

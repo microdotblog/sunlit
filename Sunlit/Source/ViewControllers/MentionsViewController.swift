@@ -61,6 +61,7 @@ class MentionsViewController: ContentViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleAvatarLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
     }
 
 
@@ -75,7 +76,15 @@ class MentionsViewController: ContentViewController {
 			self.posts = SunlitMentions.shared.allMentions()
 			self.tableView.reloadData()
 		}
-		
+	}
+
+	@objc func handleViewConversationNotification(_ notification : Notification) {
+		if let post = notification.object as? SunlitPost {
+			let storyBoard: UIStoryboard = UIStoryboard(name: "Conversation", bundle: nil)
+			let conversationViewController = storyBoard.instantiateViewController(withIdentifier: "ConversationViewController") as! ConversationViewController
+			conversationViewController.sourcePost = post
+			self.navigationController?.pushViewController(conversationViewController, animated: true)
+		}
 	}
 
 }

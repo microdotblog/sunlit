@@ -20,6 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: token)
         }
 
+		if let options = launchOptions,
+		   let url = options[.url] as? URL,
+		   url.host == "show" {
+			DispatchQueue.main.async {
+				SceneDelegate.handleShowURL(url)
+			}
+		}
+
+		/*
 		let clearCacheKey = "CacheClearKey-" +  (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") + "-" + (Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "")
 		var shouldClearCache = true
 		// Comment this out to test a fresh install scenario...
@@ -33,7 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Content should only hang around for a day...
 		UUDataCache.shared.contentExpirationLength = 24.0 * 60.0 * 60.0
 		UUDataCache.shared.purgeExpiredData()
-		
+		*/
+
 		// We might want to change this in the future but for now, it covers basically a single view in one of the collection views
 		UURemoteData.shared.maxActiveRequests = 8
 		UUHttpRequest.defaultTimeout = 30.0
@@ -47,6 +57,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             MainPhoneViewController.needsMentionsSwitch = true
         }
 
+		return true
+	}
+
+	func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+		if url.host == "show" {
+			DispatchQueue.main.async {
+				SceneDelegate.handleShowURL(url)
+			}
+		}
 		return true
 	}
 	

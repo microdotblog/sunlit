@@ -81,7 +81,7 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 			self.avatar.image = avatar
 		}
 		else {
-			ImageCache.fetch(self, avatarSource) { (image) in
+			ImageCache.fetch(avatarSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
 						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
@@ -98,7 +98,7 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 				cell.imageView.image = image
 			}
 			else {
-				ImageCache.fetch(self, url) { image in
+				ImageCache.fetch(url) { image in
 					if let _ = image {
 						DispatchQueue.main.async {
 							self.photosCollectionView?.reloadItems(at: [ indexPath ])

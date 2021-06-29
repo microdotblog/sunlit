@@ -182,49 +182,15 @@ public extension NSObject
 
 public class UUMutexWrapper: NSObject
 {
-	private var mutex: pthread_mutex_t = pthread_mutex_t()
-	
-	public override init()
-	{
-		super.init()
-		setupMutex()
-	}
-	
-	private func setupMutex()
-	{
-		var attr = pthread_mutexattr_t()
-		
-		var result = pthread_mutexattr_init(&attr)
-		guard result == 0 else
-		{
-			UUDebugLog("pthread_mutexattr_init failed!")
-			return
-		}
-		
-		pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE)
-		
-		result = pthread_mutex_init(&mutex, &attr)
-		guard result == 0 else
-		{
-			UUDebugLog("pthread_mutex_init failed!")
-			return
-		}
-		
-		pthread_mutexattr_destroy(&attr)
-	}
-	
-	deinit
-	{
-		pthread_mutex_destroy(&mutex)
-	}
-	
+    private var mutex = NSRecursiveLock()
+
 	public func synchronized<ReturnType>(_ method: () throws -> ReturnType) rethrows -> ReturnType
 	{
-		pthread_mutex_lock(&mutex)
-		
+        mutex.lock()
+
 		defer
 		{
-			pthread_mutex_unlock(&mutex)
+            mutex.unlock()
 		}
 		
 		return try method()

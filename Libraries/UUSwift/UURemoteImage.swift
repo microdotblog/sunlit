@@ -26,6 +26,8 @@ public typealias UUImageLoadedCompletionBlock = (UUImage?, Error?) -> Void
 
 public class UURemoteImage: NSObject
 {
+	public static var useDiskCache = false
+
     public struct Notifications
     {
         public static let ImageDownloaded = Notification.Name("UUImageDownloadedNotification")
@@ -56,7 +58,11 @@ public class UURemoteImage: NSObject
         if self.systemImageCache.object(forKey: key as NSString) != nil {
             return true
         }
-        
+
+		if !UURemoteImage.useDiskCache {
+			return false
+		}
+
         return UUDataCache.shared.dataExists(for: key)
     }
     
@@ -96,12 +102,14 @@ public class UURemoteImage: NSObject
         if let imageData = data, let image = UUImage(data: imageData)
         {
             self.systemImageCache.setObject(image, forKey: key as NSString)
-            
-            var md = UUDataCache.shared.metaData(for: key)
-            md[MetaData.ImageWidth] = NSNumber(value: Float(image.size.width))
-            md[MetaData.ImageHeight] = NSNumber(value: Float(image.size.height))
-            UUDataCache.shared.set(metaData: md, for: key)
 
+			if UURemoteImage.useDiskCache {
+				var md = UUDataCache.shared.metaData(for: key)
+				md[MetaData.ImageWidth] = NSNumber(value: Float(image.size.width))
+				md[MetaData.ImageHeight] = NSNumber(value: Float(image.size.height))
+				UUDataCache.shared.set(metaData: md, for: key)
+			}
+			
             var metaData : [String:Any] = [:]
             metaData[UURemoteData.NotificationKeys.RemotePath] = key
             self.notifyImageDownloaded(metaData: metaData)

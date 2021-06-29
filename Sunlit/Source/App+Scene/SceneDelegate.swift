@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Snippets
+import UUSwift
+import WidgetKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -71,15 +74,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 
 	func sceneDidEnterBackground(_ scene: UIScene) {
-		// Called as the scene transitions from the foreground to the background.
-		// Use this method to save data, release shared resources, and store enough scene-specific state information
-		// to restore the scene back to its current state.
+        if #available(iOS 14, *) {
+            WidgetCenter.shared.reloadTimelines(ofKind: "blog.micro.sunlit.widget")
+        }
 	}
 	
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
 		if let urlContext = URLContexts.first {
 			let url = urlContext.url
-            if url.absoluteString.contains("notification") {
+            if url.host == "show" {
+				SceneDelegate.handleShowURL(url)
+                return
+            }
+            else if url.absoluteString.contains("notification") {
                 MainPhoneViewController.needsMentionsSwitch = true
 
                 DispatchQueue.main.async {
@@ -93,13 +100,34 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			}
 			else {
 				let token = url.lastPathComponent
-				DispatchQueue.main.async {
-					NotificationCenter.default.post(name: .temporaryTokenReceivedNotification, object: token)
+				if token.count > 0 {
+					DispatchQueue.main.async {
+						NotificationCenter.default.post(name: .temporaryTokenReceivedNotification, object: token)
+					}
 				}
 			}
 		}
 	}
 
 
+    static func handleShowURL(_ url : URL) {
+        if let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+
+            if let items = components.queryItems {
+                for q in items {
+                    if q.name == "id",
+					   let identifier = q.value,
+					   identifier.count > 0 {
+
+                        let sunlitPost = SunlitPost()
+                        sunlitPost.identifier = identifier
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: .viewConversationNotification, object: sunlitPost)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
