@@ -80,7 +80,11 @@ class MainViewController: UIViewController {
                     self.onUploads()
                 }
 
-                let menu = UIMenu(children: [libraryAction, filesAction])
+				let checkinAction = UIAction(title: "Check-in", image: UIImage(systemName: "mappin.and.ellipse")) { (action) in
+					self.onUploads()
+				}
+
+                let menu = UIMenu(children: [libraryAction, filesAction, checkinAction])
                 postButton.menu = menu
             }
 
