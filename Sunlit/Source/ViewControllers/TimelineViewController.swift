@@ -154,11 +154,18 @@ class TimelineViewController: ContentViewController {
 	}
 	
 	@objc func handleImageLoadedNotification(_ notification : Notification) {
+
+		// Don't do anything if we aren't onscreen...
+		if !self.isPresented {
+			return
+		}
+
         if let indexPath = notification.object as? IndexPath {
 			if indexPath.row < self.tableViewData.count {
 				if let visibleCells = self.tableView.indexPathsForVisibleRows {
 					if visibleCells.contains(indexPath) {
-						self.tableView.reloadRows(at: [ indexPath ], with: .none)
+						print("Redrawing \(indexPath.row)")
+						self.tableView.reloadRows(at: [ indexPath ], with: .fade)
 					}
 				}
 			}
@@ -283,7 +290,7 @@ class TimelineViewController: ContentViewController {
                         }
 					}
 					
-					self.tableView.insertRows(at: indexPaths, with: .automatic)
+					self.tableView.insertRows(at: indexPaths, with: .none)
 					self.loadingData = false
 				}
 			})
@@ -291,37 +298,50 @@ class TimelineViewController: ContentViewController {
 
 	}
 
-	
-	func prefetchImages(_ indexPath : IndexPath) {
-        
-        if indexPath.row >= self.tableViewData.count {
-            return
-        }
-        
-		let post = self.tableViewData[indexPath.row]
-		
+
+	func prefetchPostImages(_ post : SunlitPost, indexPath : IndexPath) {
+
 		for imageSource in post.images {
 			if ImageCache.prefetch(imageSource) == nil {
 				ImageCache.fetch(imageSource) { (image) in
 					if let _ = image {
 						DispatchQueue.main.async {
-							NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+							if self.isPresented {
+								if imageSource == post.images.first {
+									NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+								}
+							}
 						}
 					}
 				}
 			}
 		}
-		
+	}
+
+	
+	func prefetchImages(_ indexPath : IndexPath) {
+
+		// Don't prefetch images for things that aren't visible...
+		if !self.isPresented {
+			return
+		}
+
+        if indexPath.row >= self.tableViewData.count {
+            return
+        }
+        
+		let post = self.tableViewData[indexPath.row]
+
 		let avatarSource = post.owner.avatarURL
 		if ImageCache.prefetch(avatarSource) == nil {
 			ImageCache.fetch(avatarSource) { (image) in
-				if let _ = image {
-					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
-					}
-				}
+				self.prefetchPostImages(post, indexPath: indexPath)
 			}
 		}
+		else {
+			self.prefetchPostImages(post, indexPath: indexPath)
+		}
+
 	}
 
     func handleTimelineError(_ error : NSError?) {
@@ -430,9 +450,9 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
 
 	func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
 
-		for indexPath in indexPaths {
-			self.prefetchImages(indexPath)
-		}
+		//for indexPath in indexPaths {
+		//	self.prefetchImages(indexPath)
+		//}
 	}
 
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

@@ -344,7 +344,12 @@ class DiscoverViewController: ContentViewController {
 	}
 		
 	func prefetchImages(_ indexPath : IndexPath) {
-		
+
+		// Don't prefetch images for things that aren't visible...
+		if !self.isPresented {
+			return
+		}
+
 		// Saftey code in case the posts get changed out in the middle of a collection view refresh...
 		if indexPath.row >= self.posts.count {
 			return
@@ -357,7 +362,9 @@ class DiscoverViewController: ContentViewController {
 			ImageCache.fetch(imageSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+						if self.isPresented {
+							NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+						}
 					}
 				}
 			}
@@ -368,7 +375,9 @@ class DiscoverViewController: ContentViewController {
 			ImageCache.fetch(avatarSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+						if self.isPresented {
+							NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+						}
 					}
 				}
 			}
@@ -483,6 +492,12 @@ class DiscoverViewController: ContentViewController {
 	}
 
 	@objc func handleImageLoadedNotification(_ notification : Notification) {
+
+		// Don't do anything if we aren't onscreen...
+		if !self.isPresented {
+			return
+		}
+
 		DispatchQueue.main.async {
             if !self.tableView.isHidden {
                 if let indexPath = notification.object as? IndexPath,
