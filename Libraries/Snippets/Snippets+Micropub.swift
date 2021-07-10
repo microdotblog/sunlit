@@ -198,9 +198,14 @@ extension Snippets {
             }
             
             var resizedImage = image
-            if image.size.width > 1800.0
+			if image.size.width > 1800.0 || image.size.height > 1800.0
             {
-                resizedImage = resizedImage.uuScaleToWidth(targetWidth: 1800.0 )
+				if image.size.width > image.size.height {
+					resizedImage = resizedImage.uuScaleToWidth(targetWidth: 1800.0)
+				}
+				else {
+					resizedImage = resizedImage.uuScaleToHeight(targetHeight: 1800.0)
+				}
             }
 
             let imageData = resizedImage.uuJpegData(0.9)!
