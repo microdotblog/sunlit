@@ -28,7 +28,7 @@ public extension UUImage
 	}
 	
 	
-	func uuScaleToSize(targetSize : CGSize) -> UUImage
+	func uuScaleToSize(targetSize : CGSize, ignoringScale: Bool = false) -> UUImage
 	{
 		let imageSize = self.size
 		let width : CGFloat = imageSize.width
@@ -75,7 +75,29 @@ public extension UUImage
 		thumbnailRect.size.width = scaledWidth
 		thumbnailRect.size.height = scaledHeight
 		
-		return self.uuPlatformDraw(targetSize : targetSize, thumbnailRect : thumbnailRect)
+		if ignoringScale {
+			// resize manually to avoid scale factor
+			UIGraphicsBeginImageContext(targetSize)
+			
+			var destRect = CGRect()
+			destRect.size = targetSize
+			
+			self.draw(in: destRect)
+			
+			let newImage = UIGraphicsGetImageFromCurrentImageContext()
+			UIGraphicsEndImageContext()
+			
+			if newImage != nil {
+				return newImage!
+			}
+			else {
+				return self
+			}
+		}
+		else {
+			// UIGraphicsImageRenderer always uses scale factor
+			return self.uuPlatformDraw(targetSize : targetSize, thumbnailRect : thumbnailRect)
+		}
 	}
 	
 	func uuScaleAndCropToSize(targetSize : CGSize) -> UUImage
@@ -121,27 +143,27 @@ public extension UUImage
 	}
 	
 	
-	func uuScaleToWidth(targetWidth: CGFloat) -> UUImage
+	func uuScaleToWidth(targetWidth: CGFloat, ignoringScale: Bool = false) -> UUImage
 	{
 		let destSize = self.uuCalculateScaleToWidth(width: targetWidth)
-		return self.uuScaleToSize(targetSize: destSize)
+		return self.uuScaleToSize(targetSize: destSize, ignoringScale: ignoringScale)
 	}
 	
-	func uuScaleToHeight(targetHeight : CGFloat) -> UUImage
+	func uuScaleToHeight(targetHeight : CGFloat, ignoringScale: Bool = false) -> UUImage
 	{
 		let destSize = self.uuCalculateScaleToHeight(height: targetHeight)
-		return self.uuScaleToSize(targetSize: destSize)
+		return self.uuScaleToSize(targetSize: destSize, ignoringScale: ignoringScale)
 	}
 	
-	func uuScaleSmallestDimensionToSize(size : CGFloat) -> UUImage
+	func uuScaleSmallestDimensionToSize(size : CGFloat, ignoringScale: Bool = false) -> UUImage
 	{
 		if (self.size.width < self.size.height)
 		{
-			return self.uuScaleToWidth(targetWidth: size)
+			return self.uuScaleToWidth(targetWidth: size, ignoringScale: ignoringScale)
 		}
 		else
 		{
-			return self.uuScaleToHeight(targetHeight : size)
+			return self.uuScaleToHeight(targetHeight : size, ignoringScale: ignoringScale)
 		}
 	}
 	
