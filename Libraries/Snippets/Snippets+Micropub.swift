@@ -21,7 +21,13 @@ extension Snippets {
         static public func fetchPublishedMedia(_ identity : Snippets.Configuration, completion: @escaping(Error?, [[String : Any]]?)->()) -> UUHttpRequest? {
 
             let fullPath : NSString = identity.micropubMediaEndpoint as NSString
-            let arguments : [ String : String ] = [ "q" : "source" ]
+            var arguments : [ String : String ] = [ "q" : "source" ]
+
+			if let blogUid = identity.micropubUid {
+				if blogUid.count > 0 {
+					arguments["mp-destination"] = blogUid
+				}
+			}
 
             let request = Snippets.secureGet(identity, path: fullPath as String, arguments: arguments)
 
