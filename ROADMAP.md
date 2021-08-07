@@ -4,17 +4,19 @@
 This document outlines the general development roadmap for Sunlit. It is subject to change and is a general guide to the future.
 
 ## 3.4
-- Mac Version
-- Support "Sign-In With Apple"
+- Location check-ins. Add a "Check-in" option to the menu when creating a new post. Look for nearby places using either Foursquare or Apple Maps.
 
 ## 3.5
+- Mac version
+
+## 3.6
+- Support "Sign-in with Apple"
 - Drafts
 - Support signing-in without a Micro.blog account
 - Animated GIF support?
 
-## 3.6
+## 4.0
 - Android?
-
 
 ## Beta Installation Link
 [https://testflight.apple.com/join/vAQQbw8J](https://testflight.apple.com/join/vAQQbw8J)

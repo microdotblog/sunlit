@@ -228,6 +228,11 @@ class BookmarksViewController: ContentViewController {
 
     func prefetchImages(_ indexPath : IndexPath) {
 
+		// Don't prefetch images for things that aren't visible...
+		if !self.isPresented {
+			return
+		}
+
         if indexPath.row >= self.tableViewData.count {
             return
         }
@@ -239,7 +244,9 @@ class BookmarksViewController: ContentViewController {
                 ImageCache.fetch(imageSource) { (image) in
                     if let _ = image {
                         DispatchQueue.main.async {
-                            NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+							if self.isPresented {
+								NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+							}
                         }
                     }
                 }
@@ -251,7 +258,9 @@ class BookmarksViewController: ContentViewController {
             ImageCache.fetch(avatarSource) { (image) in
                 if let _ = image {
                     DispatchQueue.main.async {
-                        NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+						if self.isPresented {
+							NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+						}
                     }
                 }
             }

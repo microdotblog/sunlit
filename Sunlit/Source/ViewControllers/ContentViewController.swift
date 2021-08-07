@@ -10,6 +10,8 @@ import UIKit
 
 class ContentViewController : UIViewController {
 
+	var isPresented = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -35,11 +37,13 @@ class ContentViewController : UIViewController {
     }
 
     dynamic func prepareToDisplay() {
+		self.isPresented = true
         self.setupNavigation()
         self.setupNotifications()
     }
 
     dynamic func prepareToHide() {
+		self.isPresented = false
         NotificationCenter.default.removeObserver(self)
     }
 
