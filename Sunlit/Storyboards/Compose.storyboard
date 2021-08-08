@@ -294,7 +294,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KGh-Ef-hiJ">
-                                <rect key="frame" x="50" y="368" width="314" height="170"/>
+                                <rect key="frame" x="50" y="194" width="314" height="170"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accessibility Description" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcO-S4-mf3">
                                         <rect key="frame" x="16" y="16" width="285" height="20.5"/>
@@ -362,7 +362,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" name="color_alt_pane"/>
                                 <constraints>
                                     <constraint firstItem="5xx-PL-Y80" firstAttribute="leading" secondItem="KGh-Ef-hiJ" secondAttribute="leading" id="8id-BY-xOB"/>
                                     <constraint firstAttribute="trailing" secondItem="bcO-S4-mf3" secondAttribute="trailing" constant="13" id="AaP-8z-NYa"/>
@@ -399,10 +399,10 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Gkh-yX-AiT"/>
-                        <color key="backgroundColor" white="0.89000000000000001" alpha="0.5" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" name="color_alt_background"/>
                         <constraints>
                             <constraint firstItem="KGh-Ef-hiJ" firstAttribute="leading" secondItem="Gkh-yX-AiT" secondAttribute="leading" constant="50" id="AT2-r8-TrA"/>
-                            <constraint firstItem="KGh-Ef-hiJ" firstAttribute="centerY" secondItem="Gkh-yX-AiT" secondAttribute="centerY" id="FxV-iT-22l"/>
+                            <constraint firstItem="KGh-Ef-hiJ" firstAttribute="top" secondItem="Gkh-yX-AiT" secondAttribute="top" constant="150" id="YeM-rR-QH1"/>
                             <constraint firstItem="Gkh-yX-AiT" firstAttribute="trailing" secondItem="KGh-Ef-hiJ" secondAttribute="trailing" constant="50" id="g8f-Gx-4XJ"/>
                         </constraints>
                     </view>
@@ -415,6 +415,12 @@
     <resources>
         <image name="location" catalog="system" width="128" height="121"/>
         <image name="plus.circle" catalog="system" width="128" height="121"/>
+        <namedColor name="color_alt_background">
+            <color white="0.5" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </namedColor>
+        <namedColor name="color_alt_pane">
+            <color white="0.87040567398071289" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </namedColor>
         <namedColor name="color_highlight">
             <color red="0.0" green="0.60000002384185791" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
