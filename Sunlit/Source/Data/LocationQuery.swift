@@ -25,7 +25,7 @@ extension SnippetsLocation
 	class Query : NSObject, CLLocationManagerDelegate
 	{
 		static var locationChangedThreshold = 0.01
-		static var locationProximityThreshold = 100.0
+		static var locationProximityThreshold = 500.0
 		static var locationAccuracyThreshold = 100.0
 
 		static let nearbyVenuesUpdatedNotification = Notification.Name("SnippetsLocation Updated Notification")
@@ -128,7 +128,7 @@ extension SnippetsLocation
 
 			let request = MKLocalSearch.Request()
 			request.naturalLanguageQuery = type
-			request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 100.0, longitudinalMeters: 100.0)
+			request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: SnippetsLocation.Query.locationProximityThreshold, longitudinalMeters: SnippetsLocation.Query.locationProximityThreshold)
 			let search = MKLocalSearch(request: request)
 			search.start { response, error in
 
