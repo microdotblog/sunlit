@@ -106,5 +106,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Sunlit can use your location to allow you to post check-ins.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Sunlit can use your location to allow you to post check-ins.</string>
 </dict>
 </plist>
