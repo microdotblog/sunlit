@@ -48,7 +48,19 @@ extension SnippetsLocation
 		public static func search(searchString : String, _ completion: @escaping(([SnippetsLocation]) -> Void))
 		{
 			let location = CLLocation(latitude: SnippetsLocation.currentLatitude, longitude: SnippetsLocation.currentLongitude)
-			findNearbyLocations(searchString, location, completion)
+
+			findNearbyLocations(searchString, location) { venues in
+				let filteredVenues = filterByDistance(distance: SnippetsLocation.Query.locationProximityThreshold, latitude: SnippetsLocation.currentLatitude, longitude: SnippetsLocation.currentLongitude, venues: venues)
+
+				// If there aren't any nearby, then just return the closest...
+				if filteredVenues.count == 0 {
+					let closest = findClosest(latitude: SnippetsLocation.currentLatitude, longitude: SnippetsLocation.currentLongitude, venues: venues)
+					completion([closest])
+				}
+				else {
+					completion(filteredVenues)
+				}
+			}
 		}
 
 		override private init()
@@ -205,6 +217,22 @@ extension SnippetsLocation
 			}
 
 			return filteredVenues
+		}
+
+		static func findClosest(latitude : Double, longitude : Double, venues : [SnippetsLocation]) -> SnippetsLocation
+		{
+			let location = CLLocation(latitude: latitude, longitude: longitude)
+			var closestVenue = venues.first!
+			var closestDistance = CLLocation(latitude: closestVenue.latitude, longitude: closestVenue.longitude).distance(from: location)
+			for venue in venues {
+				let venueDistance = CLLocation(latitude: venue.latitude, longitude: venue.longitude).distance(from: location)
+				if venueDistance < closestDistance {
+					closestDistance = venueDistance
+					closestVenue = venue
+				}
+			}
+
+			return closestVenue
 		}
 
 		private var locationManager = CLLocationManager()

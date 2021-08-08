@@ -23,6 +23,13 @@ class NearbyLocationsViewController: UIViewController {
     }
 
 	@objc func handleLocationsUpdatedNotification(_ notification : Notification) {
+
+		// Ignore if text in the text field...
+		if let text = self.searchField.text,
+		   text.count > 0 {
+			return
+		}
+
 		self.nearbyVenues = SnippetsLocation.nearbyVenues
 		self.tableView.reloadData()
 	}
