@@ -64,6 +64,9 @@
                                 <rect key="frame" x="20" y="104" width="374" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Y6W-OH-hqX" id="uyv-Xy-pI8"/>
+                                </connections>
                             </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
@@ -79,6 +82,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="searchField" destination="fp8-ZW-csu" id="mKy-Rg-8Jv"/>
                         <outlet property="tableView" destination="5cC-q8-3AL" id="bnS-hj-d9p"/>
                     </connections>
                 </viewController>

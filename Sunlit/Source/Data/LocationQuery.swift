@@ -124,8 +124,6 @@ extension SnippetsLocation
 
 		private static func findNearbyLocations(_ type : String, _ location : CLLocation, _ completion: @escaping(([SnippetsLocation]) -> Void))
 		{
-			print("Searching for locations of type " + type)
-
 			let request = MKLocalSearch.Request()
 			request.naturalLanguageQuery = type
 			request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: SnippetsLocation.Query.locationProximityThreshold, longitudinalMeters: SnippetsLocation.Query.locationProximityThreshold)
@@ -147,19 +145,14 @@ extension SnippetsLocation
 							}
 						}
 
-						let placeLocation = item.placemark.coordinate
-						let distance = CLLocation(latitude: placeLocation.latitude, longitude: placeLocation.longitude).distance(from: location)
-						if distance < SnippetsLocation.Query.locationProximityThreshold
+						if let name = item.name
 						{
-							if let name = item.name
-							{
-								let venueData = SnippetsLocation()
-								venueData.latitude = item.placemark.coordinate.latitude
-								venueData.longitude = item.placemark.coordinate.longitude
-								venueData.name = name
+							let venueData = SnippetsLocation()
+							venueData.latitude = item.placemark.coordinate.latitude
+							venueData.longitude = item.placemark.coordinate.longitude
+							venueData.name = name
 
-								foundLocations.append(venueData)
-							}
+							foundLocations.append(venueData)
 						}
 					}
 
@@ -184,7 +177,10 @@ extension SnippetsLocation
 				if categories.count > 0
 				{
 					let category = categories.removeFirst()
-					findNearbyLocations(category, location, innerCompletion)
+					findNearbyLocations(category, location) { venues in
+						let filteredVenues = filterByDistance(distance: SnippetsLocation.Query.locationProximityThreshold, latitude: SnippetsLocation.currentLatitude, longitude: SnippetsLocation.currentLongitude, venues: venues)
+						innerCompletion(filteredVenues)
+					}
 				}
 				else
 				{
@@ -194,6 +190,21 @@ extension SnippetsLocation
 
 			let category = categories.removeFirst()
 			self.findNearbyLocations(category, location, innerCompletion)
+		}
+
+		static func filterByDistance(distance : Double, latitude : Double, longitude : Double, venues : [SnippetsLocation]) -> [SnippetsLocation]
+		{
+			let location = CLLocation(latitude: latitude, longitude: longitude)
+			var filteredVenues : [SnippetsLocation] = []
+			for venue in venues {
+				let locationDistance = CLLocation(latitude: venue.latitude, longitude: venue.longitude).distance(from: location)
+				if locationDistance < distance
+				{
+					filteredVenues.append(venue)
+				}
+			}
+
+			return filteredVenues
 		}
 
 		private var locationManager = CLLocationManager()

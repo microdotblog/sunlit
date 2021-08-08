@@ -12,6 +12,8 @@ import Snippets
 class NearbyLocationsViewController: UIViewController {
 
 	@IBOutlet var tableView : UITableView!
+	@IBOutlet var searchField : UITextField!
+
 	var nearbyVenues : [SnippetsLocation] = []
 
     override func viewDidLoad() {
@@ -23,6 +25,22 @@ class NearbyLocationsViewController: UIViewController {
 	@objc func handleLocationsUpdatedNotification(_ notification : Notification) {
 		self.nearbyVenues = SnippetsLocation.nearbyVenues
 		self.tableView.reloadData()
+	}
+}
+
+extension NearbyLocationsViewController : UITextFieldDelegate
+{
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		if let text = textField.text,
+		   text.count > 0
+		{
+			SnippetsLocation.Query.search(searchString: text) { nearbyVenues in
+				self.nearbyVenues = nearbyVenues
+				self.tableView.reloadData()
+			}
+		}
+
+		return false
 	}
 }
 
