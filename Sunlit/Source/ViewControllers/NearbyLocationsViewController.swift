@@ -8,11 +8,13 @@
 
 import UIKit
 import Snippets
+import MapKit
 
 class NearbyLocationsViewController: UIViewController {
 
 	@IBOutlet var tableView : UITableView!
 	@IBOutlet var searchField : UITextField!
+	@IBOutlet var busyIndicator : UIActivityIndicatorView!
 
 	var nearbyVenues : [SnippetsLocation] = []
 
@@ -23,6 +25,8 @@ class NearbyLocationsViewController: UIViewController {
     }
 
 	@objc func handleLocationsUpdatedNotification(_ notification : Notification) {
+
+		self.busyIndicator.isHidden = true
 
 		// Ignore if text in the text field...
 		if let text = self.searchField.text,
@@ -58,10 +62,36 @@ extension NearbyLocationsViewController : UITableViewDataSource, UITableViewDele
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "NearbyLocationsTableViewCell", for: indexPath) as! NearbyLocationsTableViewCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: "NearbyLocationsTableViewCell") as! NearbyLocationsTableViewCell
 		let venue = nearbyVenues[indexPath.row]
 		cell.locationNameLabel.text = venue.name
+
+		cell.map.delegate = self
+		cell.map.isUserInteractionEnabled = false
+
+		let location = CLLocationCoordinate2D(latitude: venue.latitude, longitude: venue.longitude)
+		let region = MKCoordinateRegion( center: location, latitudinalMeters: CLLocationDistance(exactly: 500)!, longitudinalMeters: CLLocationDistance(exactly: 500)!)
+
+		//cell.map.alpha = 0.0000000001
+		cell.map.setRegion(cell.map.regionThatFits(region), animated: false)
+
+		cell.map.removeAnnotations(cell.map.annotations)
+		let objectAnnotation = MKPointAnnotation()
+		objectAnnotation.coordinate = location
+		objectAnnotation.title = ""
+		cell.map.addAnnotation(objectAnnotation)
+
 		return cell
+	}
+
+}
+
+extension NearbyLocationsViewController : MKMapViewDelegate {
+
+	func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
+		if fullyRendered {
+			mapView.alpha = 1.0
+		}
 	}
 
 }

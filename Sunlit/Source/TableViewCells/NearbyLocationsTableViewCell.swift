@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import MapKit
 
 class NearbyLocationsTableViewCell: UITableViewCell {
 
 	@IBOutlet var locationNameLabel : UILabel!
 	@IBOutlet var categoryImageView : UIImageView!
+	@IBOutlet var map : MKMapView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
