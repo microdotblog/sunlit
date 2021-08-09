@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreLocation
+import MapKit
 
 open class SnippetsLocation : NSObject
 {
@@ -15,4 +16,5 @@ open class SnippetsLocation : NSObject
 	@objc public var latitude: CLLocationDegrees = 0.0
 	@objc public var name = ""
 	@objc public var url = ""
+	@objc public var category: MKPointOfInterestCategory?
 }

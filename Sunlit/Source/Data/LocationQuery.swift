@@ -163,6 +163,7 @@ extension SnippetsLocation
 							venueData.latitude = item.placemark.coordinate.latitude
 							venueData.longitude = item.placemark.coordinate.longitude
 							venueData.name = name
+							venueData.category = item.pointOfInterestCategory
 
 							foundLocations.append(venueData)
 						}

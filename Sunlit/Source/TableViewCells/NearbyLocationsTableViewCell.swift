@@ -11,6 +11,7 @@ import UIKit
 class NearbyLocationsTableViewCell: UITableViewCell {
 
 	@IBOutlet var locationNameLabel : UILabel!
+	@IBOutlet var categoryImageView : UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
