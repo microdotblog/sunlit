@@ -10,7 +10,6 @@ import UIKit
 import AVKit
 import Snippets
 
-
 class SunlitPostTableViewCell : UITableViewCell {
 
 	@IBOutlet var pageViewIndicator : UIPageControl!
@@ -100,7 +99,8 @@ class SunlitPostTableViewCell : UITableViewCell {
 		height = height + SunlitPostTableViewCell.photoHeight(post, parentWidth: parentWidth)
         height = height + SunlitPostTableViewCell.dateLabelHeight(post, parentWidth: parentWidth)
 		height = height + SunlitPostTableViewCell.textHeight(post, parentWidth: parentWidth)
-        height = height + 2.5 * SunlitPostTableViewCell.replyContainerHeight(parentWidth: parentWidth)
+
+		//height = height + 2.5 * SunlitPostTableViewCell.replyContainerHeight(parentWidth: parentWidth)
 
         //height = height + 88.0
 

@@ -440,8 +440,9 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
                 return tableView.dequeueReusableCell(withIdentifier: "TimelineNoMoreCell")!
             }
         }
-        
-		let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
+
+		let cell = tableView.dequeueReusableCell(withIdentifier: "TimelineTableViewCell", for: indexPath) as! TimelineTableViewCell
+		//let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
 		let post = self.tableViewData[indexPath.row]
 		cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
 		return cell
@@ -472,12 +473,12 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		let post = self.tableViewData[indexPath.row]
-		let imagePath = post.images[0]
-		var dictionary : [String : Any] = [:]
-		dictionary["imagePath"] = imagePath
-		dictionary["post"] = post
+		//let imagePath = post.images[0]
+		//var dictionary : [String : Any] = [:]
+		//dictionary["imagePath"] = imagePath
+		//dictionary["post"] = post
 		
-		NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
+		NotificationCenter.default.post(name: .viewConversationNotification, object: post)
 	}
 
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -491,7 +492,8 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
         }
         
 		let post = self.tableViewData[indexPath.row]
-		return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+		//return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+		return TimelineTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 	}
 
 }
