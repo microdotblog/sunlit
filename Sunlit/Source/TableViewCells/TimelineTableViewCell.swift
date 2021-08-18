@@ -12,6 +12,9 @@ import Snippets
 
 class TimelineTableViewCell : UITableViewCell {
 
+	@IBOutlet var userAvatar : UIImageView!
+	@IBOutlet var userName : UILabel!
+	@IBOutlet var userHandle : UILabel!
 	@IBOutlet var pageViewIndicator : UIPageControl!
 	@IBOutlet var pageViewIndicatorContainer : UIView!
 	@IBOutlet var collectionView : UICollectionView!
@@ -42,16 +45,26 @@ class TimelineTableViewCell : UITableViewCell {
 	}
 
 	static func height(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
-		return photoHeight(post, parentWidth: parentWidth)
+		return photoHeight(post, parentWidth: parentWidth)// + 40.0
 	}
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
+
+		self.userName.font = UIFont.preferredFont(forTextStyle: .caption1)
+		self.userHandle.font = UIFont.preferredFont(forTextStyle: .caption2)
+
+		// Configure the user avatar
+		self.userAvatar.clipsToBounds = true
+		self.userAvatar.layer.cornerRadius = (self.userAvatar.bounds.size.height - 1) / 2.0
 	}
 
 	func setup(_ index: Int, _ post : SunlitPost, parentWidth : CGFloat) {
 
 		self.post = post
+
+		self.userHandle.text = "@" + post.owner.userName
+		self.userName.text = post.owner.fullName
 
 		// Configure the photo sizes...
 		let height = self.setupPhotoAspectRatio(post, parentWidth: parentWidth)
@@ -61,6 +74,8 @@ class TimelineTableViewCell : UITableViewCell {
 		self.pageViewIndicator.hidesForSinglePage = true
 		self.pageViewIndicator.numberOfPages = self.post.images.count
 		self.pageViewIndicatorContainer.isHidden = self.post.images.count < 2
+
+		self.setupAvatar()
 	}
 
 	func setupPhotoAspectRatio(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
@@ -69,6 +84,15 @@ class TimelineTableViewCell : UITableViewCell {
 		self.collectionViewHeightConstraint.constant = height
 		return height
 	}
+
+	func setupAvatar() {
+		self.userAvatar.image = nil
+		let avatarSource = self.post.owner.avatarURL
+		if let avatar = ImageCache.prefetch(avatarSource) {
+			self.userAvatar.image = avatar
+		}
+	}
+
 }
 
 
