@@ -232,7 +232,7 @@
                                             <action selector="onSelectBlogConfiguration" destination="Xuq-8W-x41" eventType="touchUpInside" id="52U-kG-Jo2"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kxE-Nr-1Qe">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kxE-Nr-1Qe">
                                         <rect key="frame" x="372" y="7" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="a93-Vh-cJt"/>
@@ -419,7 +419,7 @@
             <color white="0.5" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
         <namedColor name="color_alt_pane">
-            <color white="0.87040567398071289" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color white="0.94999998807907104" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
         <namedColor name="color_highlight">
             <color red="0.0" green="0.60000002384185791" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
