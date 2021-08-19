@@ -486,6 +486,7 @@
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3Dg-rF-RbF">
                                                             <rect key="frame" x="8" y="8" width="24" height="24"/>
+                                                            <color key="backgroundColor" name="color_avatar_background"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="24" id="3sw-Ek-KPf"/>
                                                                 <constraint firstAttribute="height" constant="24" id="ylK-HQ-gZ0"/>
@@ -687,7 +688,7 @@
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eYA-zL-HuI">
                                                     <rect key="frame" x="8" y="8" width="60" height="60"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" name="color_avatar_background"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="60" id="6Vn-nz-fnr"/>
                                                         <constraint firstAttribute="width" constant="60" id="gTN-lc-Nil"/>
@@ -1293,6 +1294,9 @@
         <image name="star.fill" catalog="system" width="128" height="116"/>
         <image name="videoButtonOverlay" width="30" height="30"/>
         <image name="welcome_waves" width="320" height="200"/>
+        <namedColor name="color_avatar_background">
+            <color white="0.94999998807907104" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </namedColor>
         <namedColor name="color_highlight">
             <color red="0.0" green="0.60000002384185791" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

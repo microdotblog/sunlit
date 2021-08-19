@@ -318,7 +318,7 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 			cell.avatar.image = image
 		}
 		else {
-			cell.avatar.image = UIImage(named: "welcome_waves")
+			cell.avatar.image = nil // UIImage(named: "welcome_waves")
 			self.loadPhoto(user.avatarURL, indexPath)
 		}
 		
