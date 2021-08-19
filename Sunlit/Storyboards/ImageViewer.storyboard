@@ -71,7 +71,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FVq-VH-8Ql">
                                 <rect key="frame" x="0.0" y="44" width="414" height="70"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LCc-rb-zmg">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LCc-rb-zmg">
                                         <rect key="frame" x="53" y="13" width="152" height="44"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="AWe-2L-xq8">
@@ -129,7 +129,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.25217319539999999" alpha="0.79891065139999995" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="tyB-TI-uGy" firstAttribute="centerY" secondItem="UUj-d0-Xt5" secondAttribute="centerY" id="0af-ZD-LqJ"/>
                                     <constraint firstItem="LCc-rb-zmg" firstAttribute="centerY" secondItem="FVq-VH-8Ql" secondAttribute="centerY" id="1g0-v3-zeX"/>
