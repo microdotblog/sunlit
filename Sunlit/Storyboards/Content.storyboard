@@ -55,7 +55,7 @@
                                 <rect key="frame" x="188.66666666666666" y="462.66666666666669" width="37" height="37"/>
                             </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qN6-tU-u9w">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="862.00000000000011"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -472,23 +472,23 @@
                                                 <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="W2U-Sa-0UB">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jonathan Hays" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ias-hZ-IeS">
-                                                            <rect key="frame" x="48" y="5" width="358" height="17"/>
+                                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jonathan Hays" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ias-hZ-IeS">
+                                                            <rect key="frame" x="40" y="5" width="366" height="17"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="@cheesemaker" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m4o-zc-j43">
-                                                            <rect key="frame" x="48" y="22" width="358" height="14"/>
+                                                            <rect key="frame" x="40" y="13" width="366" height="14.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3Dg-rF-RbF">
-                                                            <rect key="frame" x="8" y="4" width="32" height="32"/>
+                                                            <rect key="frame" x="8" y="8" width="24" height="24"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="32" id="3sw-Ek-KPf"/>
-                                                                <constraint firstAttribute="height" constant="32" id="ylK-HQ-gZ0"/>
+                                                                <constraint firstAttribute="width" constant="24" id="3sw-Ek-KPf"/>
+                                                                <constraint firstAttribute="height" constant="24" id="ylK-HQ-gZ0"/>
                                                             </constraints>
                                                         </imageView>
                                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bSu-B0-TPh">
@@ -504,15 +504,13 @@
                                                         <constraint firstItem="m4o-zc-j43" firstAttribute="leading" secondItem="3Dg-rF-RbF" secondAttribute="trailing" constant="8" id="8Mk-4G-Yaf"/>
                                                         <constraint firstItem="ias-hZ-IeS" firstAttribute="top" secondItem="bSu-B0-TPh" secondAttribute="bottom" constant="4" id="8xe-tA-a3k"/>
                                                         <constraint firstItem="ias-hZ-IeS" firstAttribute="leading" secondItem="3Dg-rF-RbF" secondAttribute="trailing" constant="8" id="HhP-WG-YWt"/>
-                                                        <constraint firstAttribute="bottom" secondItem="m4o-zc-j43" secondAttribute="bottom" constant="4" id="Jqe-pY-Vhq"/>
                                                         <constraint firstItem="ias-hZ-IeS" firstAttribute="top" secondItem="bSu-B0-TPh" secondAttribute="bottom" constant="4" id="L9Q-ma-7JO"/>
                                                         <constraint firstAttribute="height" constant="40" id="Pwn-1e-R6a"/>
                                                         <constraint firstItem="3Dg-rF-RbF" firstAttribute="leading" secondItem="W2U-Sa-0UB" secondAttribute="leading" constant="8" id="Qv6-AM-hjo"/>
                                                         <constraint firstItem="3Dg-rF-RbF" firstAttribute="centerY" secondItem="W2U-Sa-0UB" secondAttribute="centerY" id="adp-iL-3kR"/>
                                                         <constraint firstItem="bSu-B0-TPh" firstAttribute="top" secondItem="W2U-Sa-0UB" secondAttribute="top" id="bCQ-W7-M4Y"/>
+                                                        <constraint firstItem="m4o-zc-j43" firstAttribute="centerY" secondItem="W2U-Sa-0UB" secondAttribute="centerY" id="bFG-LT-70D"/>
                                                         <constraint firstAttribute="trailing" secondItem="bSu-B0-TPh" secondAttribute="trailing" id="gNL-ap-5oG"/>
-                                                        <constraint firstItem="m4o-zc-j43" firstAttribute="top" secondItem="ias-hZ-IeS" secondAttribute="bottom" id="r4O-Qk-hkk"/>
-                                                        <constraint firstItem="m4o-zc-j43" firstAttribute="top" secondItem="ias-hZ-IeS" secondAttribute="bottom" id="rsL-US-yf3"/>
                                                         <constraint firstAttribute="trailing" secondItem="m4o-zc-j43" secondAttribute="trailing" constant="8" id="vTH-14-19A"/>
                                                         <constraint firstItem="bSu-B0-TPh" firstAttribute="leading" secondItem="W2U-Sa-0UB" secondAttribute="leading" id="wIl-lh-oBL"/>
                                                         <constraint firstAttribute="trailing" secondItem="ias-hZ-IeS" secondAttribute="trailing" constant="8" id="zkR-SP-4xq"/>
@@ -531,7 +529,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="JII-F2-S6p" secondAttribute="bottom" constant="2" id="ogb-BI-l5D"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <connections>
                                             <outlet property="collectionView" destination="FgS-IE-pHr" id="yiV-ye-M7i"/>
                                             <outlet property="collectionViewHeightConstraint" destination="Kis-Sm-hpS" id="PTU-a9-v2n"/>
