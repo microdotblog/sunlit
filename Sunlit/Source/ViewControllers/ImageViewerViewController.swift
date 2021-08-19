@@ -23,6 +23,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet var deleteButton : UIButton!
     @IBOutlet var previousButton : UIButton!
     @IBOutlet var nextButton : UIButton!
+	@IBOutlet var bookmarkButton : UIButton!
 	
 	var pathToImage = ""
 	var post : SunlitPost!
@@ -53,6 +54,10 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 
 		// This is needed to "lock" the image into place so it won't bounce-scroll when it initially appears
         self.scrollView.zoomScale = 1.0
+
+		if let bookmarkButton = self.bookmarkButton {
+			bookmarkButton.isSelected = self.post.isBookmark
+		}
     }
     
 	override func viewDidLayoutSubviews() {
@@ -239,7 +244,43 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
         self.setupImage()
         self.updateNavigationButtons()
     }
-	
+
+	@IBAction func onBookmark() {
+		if !self.post.isBookmark {
+			if let bookmarkButton = self.bookmarkButton {
+				bookmarkButton.isSelected = true
+			}
+			Snippets.Microblog.addBookmark(post: self.post) { (error) in
+				if error == nil {
+					self.post.isBookmark = true
+				}
+
+				if let bookmarkButton = self.bookmarkButton {
+					bookmarkButton.isSelected = self.post.isBookmark
+				}
+			}
+		}
+		else {
+			if let bookmarkButton = self.bookmarkButton {
+				bookmarkButton.isSelected = false
+			}
+
+			Snippets.Microblog.removeBookmark(post: self.post) { (error) in
+				if error == nil {
+					self.post.isBookmark = false
+				}
+
+				if let bookmarkButton = self.bookmarkButton {
+					bookmarkButton.isSelected = self.post.isBookmark
+				}
+			}
+		}
+
+		if let bookmarkButton = self.bookmarkButton {
+			bookmarkButton.isSelected = !bookmarkButton.isSelected
+		}
+	}
+
 	@IBAction @objc func onShare() {
 		let url = URL(string: self.post.path)!
 		let items : [Any] = [url]
