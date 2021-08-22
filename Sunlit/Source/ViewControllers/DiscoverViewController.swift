@@ -41,14 +41,15 @@ class DiscoverViewController: ContentViewController {
         super.viewDidLoad()
         
 		self.setupTableViewAndCollectionView()
-		self.loadFrequentlyUsedEmoji()
-		self.setupSnippets()
+//		self.loadFrequentlyUsedEmoji()
 	}
 
     override func prepareToDisplay() {
         super.prepareToDisplay()
 
+		self.setupSnippets()
         self.loadTagmoji()
+		
         self.collectionView.reloadData()
         self.tableView.reloadData()
     }

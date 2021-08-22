@@ -38,7 +38,8 @@ class TimelineViewController: ContentViewController {
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(loadTimeline), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
-		self.loadFrequentlyUsedEmoji()
+		
+//		self.loadFrequentlyUsedEmoji()
 	}
 
     override func navbarTitle() -> String {
