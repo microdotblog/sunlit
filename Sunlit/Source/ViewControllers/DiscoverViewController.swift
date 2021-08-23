@@ -41,7 +41,7 @@ class DiscoverViewController: ContentViewController {
         super.viewDidLoad()
         
 		self.setupTableViewAndCollectionView()
-//		self.loadFrequentlyUsedEmoji()
+		self.loadFrequentlyUsedEmoji()
 	}
 
     override func prepareToDisplay() {
