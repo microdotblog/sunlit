@@ -4,12 +4,15 @@
 This document outlines the general development roadmap for Sunlit. It is subject to change and is a general guide to the future.
 
 ## 3.4
-- Location check-ins. Add a "Check-in" option to the menu when creating a new post. Look for nearby places using either Foursquare or Apple Maps.
+- Redesign timeline and other screens to be simpler and flow better between conversation and image viewer.
 
 ## 3.5
-- Mac version
+- Location check-ins. Add a "Check-in" option to the menu when creating a new post. Look for nearby places using either Foursquare or Apple Maps.
 
 ## 3.6
+- Mac version
+
+## 3.7
 - Support "Sign-in with Apple"
 - Drafts
 - Support signing-in without a Micro.blog account
