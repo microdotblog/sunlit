@@ -68,6 +68,69 @@
                                     <outlet property="delegate" destination="PHD-An-Ibq" id="Mmx-Px-WrK"/>
                                 </connections>
                             </scrollView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="MPK-LG-Pbn">
+                                <rect key="frame" x="20" y="832" width="374" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cbX-Ro-8YI">
+                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="G6v-z4-K8d"/>
+                                            <constraint firstAttribute="width" constant="30" id="OhR-Nz-Bjh"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="star" catalog="system"/>
+                                        <state key="selected" image="star.fill" catalog="system"/>
+                                        <connections>
+                                            <action selector="onBookmark" destination="PHD-An-Ibq" eventType="touchUpInside" id="RGq-a0-6c5"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bZS-Di-PGx">
+                                        <rect key="frame" x="114.5" y="0.0" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="7d2-pq-V5Z"/>
+                                            <constraint firstAttribute="width" constant="30" id="vnD-DS-y6M"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal">
+                                            <imageReference key="image" image="bubble.left.and.bubble.right" catalog="system" symbolScale="medium"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onConversation" destination="PHD-An-Ibq" eventType="touchUpInside" id="m3D-Ma-015"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GA5-FZ-zm6">
+                                        <rect key="frame" x="229.5" y="0.0" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="ib8-l8-GmB"/>
+                                            <constraint firstAttribute="width" constant="30" id="oN7-uz-pYA"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal">
+                                            <imageReference key="image" image="square.and.arrow.up" catalog="system" symbolScale="large"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onShare" destination="PHD-An-Ibq" eventType="touchUpInside" id="15Z-FQ-TEs"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ygh-do-vOV">
+                                        <rect key="frame" x="344" y="0.0" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="1jj-UI-WW1"/>
+                                            <constraint firstAttribute="height" constant="30" id="TaU-dX-7He"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal">
+                                            <imageReference key="image" image="safari" catalog="system" symbolScale="large"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onViewInSafari" destination="PHD-An-Ibq" eventType="touchUpInside" id="TPx-hg-r7d"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="VLG-pU-Poo"/>
+                                </constraints>
+                            </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FVq-VH-8Ql">
                                 <rect key="frame" x="0.0" y="44" width="414" height="70"/>
                                 <subviews>
@@ -140,109 +203,16 @@
                                     <constraint firstItem="UUj-d0-Xt5" firstAttribute="centerY" secondItem="FVq-VH-8Ql" secondAttribute="centerY" id="vrV-qU-54r"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h4w-xl-KHa">
-                                <rect key="frame" x="0.0" y="658" width="414" height="238"/>
-                                <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="IkF-my-QPK">
-                                        <rect key="frame" x="8" y="4" width="398" height="166.5"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5I1-9N-8r7">
-                                        <rect key="frame" x="0.0" y="176.5" width="414" height="0.5"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14810051489128637" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="0.5" id="1Cx-2W-z6C"/>
-                                        </constraints>
-                                    </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="MPK-LG-Pbn">
-                                        <rect key="frame" x="16" y="192" width="382" height="30"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cbX-Ro-8YI">
-                                                <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="G6v-z4-K8d"/>
-                                                    <constraint firstAttribute="width" constant="30" id="OhR-Nz-Bjh"/>
-                                                </constraints>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="star" catalog="system"/>
-                                                <state key="selected" image="star.fill" catalog="system"/>
-                                                <connections>
-                                                    <action selector="onBookmark" destination="PHD-An-Ibq" eventType="touchUpInside" id="RGq-a0-6c5"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bZS-Di-PGx">
-                                                <rect key="frame" x="117.5" y="0.0" width="30" height="30"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="7d2-pq-V5Z"/>
-                                                    <constraint firstAttribute="width" constant="30" id="vnD-DS-y6M"/>
-                                                </constraints>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal">
-                                                    <imageReference key="image" image="bubble.left.and.bubble.right" catalog="system" symbolScale="medium"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="onConversation" destination="PHD-An-Ibq" eventType="touchUpInside" id="m3D-Ma-015"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GA5-FZ-zm6">
-                                                <rect key="frame" x="234.5" y="0.0" width="30" height="30"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="ib8-l8-GmB"/>
-                                                    <constraint firstAttribute="width" constant="30" id="oN7-uz-pYA"/>
-                                                </constraints>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal">
-                                                    <imageReference key="image" image="square.and.arrow.up" catalog="system" symbolScale="large"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="onShare" destination="PHD-An-Ibq" eventType="touchUpInside" id="15Z-FQ-TEs"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ygh-do-vOV">
-                                                <rect key="frame" x="352" y="0.0" width="30" height="30"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="30" id="1jj-UI-WW1"/>
-                                                    <constraint firstAttribute="height" constant="30" id="TaU-dX-7He"/>
-                                                </constraints>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal">
-                                                    <imageReference key="image" image="safari" catalog="system" symbolScale="large"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="onViewInSafari" destination="PHD-An-Ibq" eventType="touchUpInside" id="TPx-hg-r7d"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.25217319539999999" alpha="0.79891065139999995" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="IkF-my-QPK" secondAttribute="trailing" constant="8" id="4Qh-ki-2yv"/>
-                                    <constraint firstAttribute="trailing" secondItem="MPK-LG-Pbn" secondAttribute="trailing" constant="16" id="72n-4H-cwv"/>
-                                    <constraint firstItem="5I1-9N-8r7" firstAttribute="top" secondItem="IkF-my-QPK" secondAttribute="bottom" constant="6" id="7Mv-db-ChQ"/>
-                                    <constraint firstItem="MPK-LG-Pbn" firstAttribute="top" secondItem="5I1-9N-8r7" secondAttribute="bottom" constant="15" id="Dyf-Ne-vtp"/>
-                                    <constraint firstItem="MPK-LG-Pbn" firstAttribute="leading" secondItem="h4w-xl-KHa" secondAttribute="leading" constant="16" id="ScK-lb-qPd"/>
-                                    <constraint firstAttribute="trailing" secondItem="5I1-9N-8r7" secondAttribute="trailing" id="cPY-vd-J4z"/>
-                                    <constraint firstItem="IkF-my-QPK" firstAttribute="leading" secondItem="h4w-xl-KHa" secondAttribute="leading" constant="8" id="ety-WH-o7B"/>
-                                    <constraint firstItem="5I1-9N-8r7" firstAttribute="leading" secondItem="h4w-xl-KHa" secondAttribute="leading" id="oKe-Oa-AeM"/>
-                                    <constraint firstItem="IkF-my-QPK" firstAttribute="top" secondItem="h4w-xl-KHa" secondAttribute="top" constant="4" id="rO3-6V-0l0"/>
-                                    <constraint firstAttribute="bottom" secondItem="MPK-LG-Pbn" secondAttribute="bottom" constant="16" id="xlR-GX-9OY"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="D0c-HF-hM6"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="h4w-xl-KHa" firstAttribute="leading" secondItem="D0c-HF-hM6" secondAttribute="leading" id="BH6-i1-RlT"/>
+                            <constraint firstItem="MPK-LG-Pbn" firstAttribute="leading" secondItem="D0c-HF-hM6" secondAttribute="leading" constant="20" id="1B9-Tp-0s5"/>
+                            <constraint firstItem="D0c-HF-hM6" firstAttribute="trailing" secondItem="MPK-LG-Pbn" secondAttribute="trailing" constant="20" id="6V2-0j-RMY"/>
                             <constraint firstAttribute="bottom" secondItem="40L-Qi-E5N" secondAttribute="bottom" id="Jtu-Bi-Kl2"/>
                             <constraint firstItem="40L-Qi-E5N" firstAttribute="trailing" secondItem="D0c-HF-hM6" secondAttribute="trailing" id="QUq-bW-VtU"/>
-                            <constraint firstAttribute="bottom" secondItem="h4w-xl-KHa" secondAttribute="bottom" id="WiW-f7-mDH"/>
+                            <constraint firstItem="D0c-HF-hM6" firstAttribute="bottom" secondItem="MPK-LG-Pbn" secondAttribute="bottom" id="Vo9-4L-eKG"/>
                             <constraint firstItem="FVq-VH-8Ql" firstAttribute="top" secondItem="D0c-HF-hM6" secondAttribute="top" id="YUS-lc-XY9"/>
-                            <constraint firstItem="h4w-xl-KHa" firstAttribute="trailing" secondItem="D0c-HF-hM6" secondAttribute="trailing" id="cI0-Si-KZi"/>
                             <constraint firstItem="FVq-VH-8Ql" firstAttribute="trailing" secondItem="D0c-HF-hM6" secondAttribute="trailing" id="fEN-Wt-GG2"/>
                             <constraint firstItem="FVq-VH-8Ql" firstAttribute="leading" secondItem="D0c-HF-hM6" secondAttribute="leading" id="m7D-Ts-yL1"/>
                             <constraint firstItem="40L-Qi-E5N" firstAttribute="leading" secondItem="D0c-HF-hM6" secondAttribute="leading" id="nSj-iw-0Ne"/>
@@ -251,12 +221,10 @@
                     </view>
                     <connections>
                         <outlet property="bookmarkButton" destination="cbX-Ro-8YI" id="TLX-RB-o6e"/>
-                        <outlet property="bottomInfoView" destination="h4w-xl-KHa" id="kkl-DR-GGd"/>
                         <outlet property="deleteButton" destination="tyB-TI-uGy" id="jyn-Xg-oDz"/>
                         <outlet property="fullUserName" destination="kyn-kF-Ioz" id="RyJ-kx-Eqg"/>
                         <outlet property="image" destination="EhT-yW-dWa" id="ul1-ak-Yjc"/>
                         <outlet property="nextButton" destination="bzW-Ki-fpY" id="sVM-pT-D38"/>
-                        <outlet property="postText" destination="IkF-my-QPK" id="chy-Rp-2Ug"/>
                         <outlet property="previousButton" destination="63o-4v-wTg" id="DJJ-An-nQ5"/>
                         <outlet property="scrollView" destination="40L-Qi-E5N" id="cni-nr-zv5"/>
                         <outlet property="topInfoView" destination="FVq-VH-8Ql" id="qVz-Qs-Wag"/>
