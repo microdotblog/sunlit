@@ -54,7 +54,9 @@ class SunlitPostTableViewCell : UITableViewCell {
 	}
     
     static func authorHeight(_ author : SnippetsUser, parentWidth : CGFloat) -> CGFloat {
-        let fullNameFont = UIFont.preferredFont(forTextStyle: .headline)
+		return 65.0
+		/*
+		let fullNameFont = UIFont.preferredFont(forTextStyle: .headline)
         let userNameFont = UIFont.preferredFont(forTextStyle: .subheadline)
         let constrainedSize = CGSize(width: parentWidth, height: .greatestFiniteMagnitude)
         var height : CGFloat = 16.0
@@ -63,6 +65,7 @@ class SunlitPostTableViewCell : UITableViewCell {
         height = height + 16.0
         
         return height
+		*/
     }
     
     static func dateLabelHeight(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
@@ -80,7 +83,7 @@ class SunlitPostTableViewCell : UITableViewCell {
     static func textHeight(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
         let size = CGSize(width: parentWidth - 40.0, height: .greatestFiniteMagnitude)
         let text = post.attributedText
-        let rect = text.boundingRect(with: size, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics] , context: nil)
+        let rect = text.boundingRect(with: size, options: [.usesLineFragmentOrigin, .usesFontLeading] , context: nil)
         return ceil(rect.size.height)
     }
     

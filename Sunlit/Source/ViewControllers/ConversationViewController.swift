@@ -304,7 +304,7 @@ extension ConversationViewController : UITableViewDelegate, UITableViewDataSourc
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-		if indexPath.row == 0 {
+		if indexPath.row == 0 && self.sourcePost!.images.count > 0 {
 			let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell") as! SunlitPostTableViewCell
 			cell.setup(indexPath.row, self.sourcePost!, parentWidth: tableView.bounds.size.width)
 			return cell
@@ -322,8 +322,10 @@ extension ConversationViewController : UITableViewDelegate, UITableViewDataSourc
 	}
 
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		if indexPath.row == 0 {
-			let post = self.sourcePost! // self.tableViewData[indexPath.row]
+		let post = self.sourcePost!
+
+		if indexPath.row == 0 && post.images.count > 0 {
+			 // self.tableViewData[indexPath.row]
 			return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 		}
 
