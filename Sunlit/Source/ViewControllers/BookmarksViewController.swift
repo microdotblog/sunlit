@@ -26,8 +26,6 @@ class BookmarksViewController: ContentViewController {
 
         self.setupNavigation()
         self.setupTableView()
-
-        self.loadTimeline()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -37,7 +35,8 @@ class BookmarksViewController: ContentViewController {
     func setupTableView() {
         self.refreshControl.addTarget(self, action: #selector(loadTimeline), for: .valueChanged)
         self.tableView.addSubview(self.refreshControl)
-        self.loadFrequentlyUsedEmoji()
+
+//		self.loadFrequentlyUsedEmoji()
     }
 
     override func navbarTitle() -> String {
@@ -46,7 +45,9 @@ class BookmarksViewController: ContentViewController {
 
     override func prepareToDisplay() {
         super.prepareToDisplay()
-    }
+
+		self.loadTimeline()
+	}
 
     override func setupNotifications() {
         super.setupNotifications()

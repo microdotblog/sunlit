@@ -31,7 +31,6 @@ class MyProfileViewController: ContentViewController {
 		
 		if let user = SnippetsUser.current() {
 			self.user = user
-			self.fetchUserInfo()
 			self.navigationItem.title = user.fullName
 		}
 		

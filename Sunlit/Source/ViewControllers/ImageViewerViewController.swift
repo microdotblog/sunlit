@@ -15,11 +15,9 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 	@IBOutlet var image : UIImageView!
 	@IBOutlet var scrollView : UIScrollView!
 	@IBOutlet var topInfoView : UIView!
-	@IBOutlet var bottomInfoView: UIView!
 	@IBOutlet var userAvatar : UIImageView!
 	@IBOutlet var fullUserName : UILabel!
 	@IBOutlet var userHandle : UILabel!
-	@IBOutlet var postText : UITextView!
     @IBOutlet var deleteButton : UIButton!
     @IBOutlet var previousButton : UIButton!
     @IBOutlet var nextButton : UIButton!
@@ -132,10 +130,6 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
     }
 
 	func setupPostInfo() {
-		// Recreate the post with white text...
-		self.post = SunlitPost.create(self.post, textColor: .white)
-		
-		self.postText.attributedText = self.post.attributedText
 		self.userHandle.text = "@" + self.post.owner.userName
 		self.fullUserName.text = self.post.owner.fullName
 		
@@ -186,7 +180,6 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 
 		UIView.animate(withDuration: 0.15, delay: 0.35, options: .curveLinear, animations: {
 			self.topInfoView.alpha = alpha
-			self.bottomInfoView.alpha = alpha
             self.nextButton.alpha = buttonAlpha
             self.previousButton.alpha = buttonAlpha
 

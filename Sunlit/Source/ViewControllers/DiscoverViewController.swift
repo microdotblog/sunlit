@@ -42,13 +42,14 @@ class DiscoverViewController: ContentViewController {
         
 		self.setupTableViewAndCollectionView()
 		self.loadFrequentlyUsedEmoji()
-		self.setupSnippets()
 	}
 
     override func prepareToDisplay() {
         super.prepareToDisplay()
 
+		self.setupSnippets()
         self.loadTagmoji()
+		
         self.collectionView.reloadData()
         self.tableView.reloadData()
     }
@@ -467,14 +468,14 @@ class DiscoverViewController: ContentViewController {
 	}
 
 	@objc func keyboardWillHideNotification(_ notification : Notification) {
-		self.keyboardAccessoryView.removeFromSuperview()
-		self.keyboardAccessoryView.alpha = 0.0
+//		self.keyboardAccessoryView.removeFromSuperview()
+//		self.keyboardAccessoryView.alpha = 0.0
 	}
 
 	@objc func keyboardDidShowNotification(_ notification : Notification) {
-		UIView.animate(withDuration: 0.3) {
-			self.keyboardAccessoryView.alpha = 1.0
-		}
+//		UIView.animate(withDuration: 0.3) {
+//			self.keyboardAccessoryView.alpha = 1.0
+//		}
 	}
 
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
