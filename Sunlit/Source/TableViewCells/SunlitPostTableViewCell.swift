@@ -66,18 +66,19 @@ class SunlitPostTableViewCell : UITableViewCell {
     }
     
     static func dateLabelHeight(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
-        let font = UIFont.preferredFont(forTextStyle: .caption1)
+		return 40.0
+        /*let font = UIFont.preferredFont(forTextStyle: .caption1)
         let constrainedSize = CGSize(width: parentWidth, height: .greatestFiniteMagnitude)
         let dateString = "Date"
-        var height : CGFloat = 10.0
+        var height : CGFloat = 14.0
         height = height + dateString.boundingRect(with: constrainedSize, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics], attributes: [NSAttributedString.Key.font: font], context: nil).height
         height = height + 8.0
         
-        return height
+        return height*/
     }
     
     static func textHeight(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
-        let size = CGSize(width: parentWidth - 34.0, height: .greatestFiniteMagnitude)
+        let size = CGSize(width: parentWidth - 40.0, height: .greatestFiniteMagnitude)
         let text = post.attributedText
         let rect = text.boundingRect(with: size, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics] , context: nil)
         return ceil(rect.size.height)
@@ -102,7 +103,7 @@ class SunlitPostTableViewCell : UITableViewCell {
 
 		//height = height + 2.5 * SunlitPostTableViewCell.replyContainerHeight(parentWidth: parentWidth)
 
-        //height = height + 88.0
+        height = height + 28.0
 
 		return height
 	}
