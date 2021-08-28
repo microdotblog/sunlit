@@ -555,8 +555,9 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
-		let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
+
+		//let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: "TimelineTableViewCell", for: indexPath) as! TimelineTableViewCell
 		if indexPath.row < self.posts.count {
 			let post = self.posts[indexPath.row]
 			cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
@@ -596,7 +597,8 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		let post = self.posts[indexPath.row]
-		return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+		return TimelineTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+		//return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 	}
 }
 

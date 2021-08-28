@@ -304,7 +304,8 @@ extension BookmarksViewController : UITableViewDelegate, UITableViewDataSource, 
             }
         }
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
+		//let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TimelineTableViewCell", for: indexPath) as! TimelineTableViewCell
         let post = self.tableViewData[indexPath.row]
         cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
         return cell
@@ -350,7 +351,8 @@ extension BookmarksViewController : UITableViewDelegate, UITableViewDataSource, 
         }
 
         let post = self.tableViewData[indexPath.row]
-        return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+		return TimelineTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+        //return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
     }
 }
 
