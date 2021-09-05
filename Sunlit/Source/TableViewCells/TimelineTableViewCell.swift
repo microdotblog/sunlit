@@ -42,11 +42,11 @@ class TimelineTableViewCell : UITableViewCell {
 			height = maxHeight
 		}
 
-		return height
+		return ceil(height)
 	}
 
 	static func height(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
-		return photoHeight(post, parentWidth: parentWidth) + 56.0
+		return photoHeight(post, parentWidth: parentWidth) + 40.0 + 16.0
 	}
 
 	override func awakeFromNib() {
@@ -80,7 +80,7 @@ class TimelineTableViewCell : UITableViewCell {
 	}
 
 	func setupPhotoAspectRatio(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
-		let height = SunlitPostTableViewCell.photoHeight(post, parentWidth: parentWidth)
+		let height = TimelineTableViewCell.photoHeight(post, parentWidth: parentWidth)
 		self.collectionViewWidthConstraint.constant = parentWidth
 		self.collectionViewHeightConstraint.constant = height
 		return height
