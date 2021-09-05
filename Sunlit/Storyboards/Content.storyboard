@@ -346,7 +346,7 @@
                                                 <constraint firstItem="MUw-MR-MdT" firstAttribute="leading" secondItem="7YE-2b-tTP" secondAttribute="leading" constant="16" id="xaX-xW-6h2"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="bookmarkButton" destination="bwi-XO-cZc" id="bIU-Ba-xME"/>
                                             <outlet property="collectionView" destination="LpI-Hy-DWx" id="Nsh-qJ-Z9V"/>
@@ -367,10 +367,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TimelineTableViewCell" id="Jge-OZ-XPB" customClass="TimelineTableViewCell" customModule="Sunlit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="559.66664695739746" width="414" height="200"/>
+                                        <rect key="frame" x="0.0" y="559.66664695739746" width="414" height="216"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Jge-OZ-XPB" id="sL6-FJ-kU9">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="216"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FgS-IE-pHr">
@@ -475,13 +475,13 @@
                                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jonathan Hays" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ias-hZ-IeS">
                                                             <rect key="frame" x="40" y="5" width="366" height="17"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="textColor" name="color_tab_normal"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="@cheesemaker" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m4o-zc-j43">
                                                             <rect key="frame" x="40" y="13" width="366" height="14.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="textColor" name="color_tab_normal"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3Dg-rF-RbF">
@@ -500,7 +500,7 @@
                                                             </constraints>
                                                         </view>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" name="color_timeline_header"/>
                                                     <constraints>
                                                         <constraint firstItem="m4o-zc-j43" firstAttribute="leading" secondItem="3Dg-rF-RbF" secondAttribute="trailing" constant="8" id="8Mk-4G-Yaf"/>
                                                         <constraint firstItem="ias-hZ-IeS" firstAttribute="top" secondItem="bSu-B0-TPh" secondAttribute="bottom" constant="4" id="8xe-tA-a3k"/>
@@ -524,13 +524,13 @@
                                                 <constraint firstItem="FgS-IE-pHr" firstAttribute="top" secondItem="sL6-FJ-kU9" secondAttribute="top" id="Fx4-Cu-sGj"/>
                                                 <constraint firstItem="W2U-Sa-0UB" firstAttribute="top" secondItem="sL6-FJ-kU9" secondAttribute="top" id="Le1-0D-DmM"/>
                                                 <constraint firstItem="JII-F2-S6p" firstAttribute="centerX" secondItem="sL6-FJ-kU9" secondAttribute="centerX" id="eV0-Sh-q6S"/>
-                                                <constraint firstAttribute="bottom" secondItem="FgS-IE-pHr" secondAttribute="bottom" id="f2f-WW-5Qy"/>
+                                                <constraint firstAttribute="bottom" secondItem="FgS-IE-pHr" secondAttribute="bottom" constant="16" id="f2f-WW-5Qy"/>
                                                 <constraint firstAttribute="trailing" secondItem="W2U-Sa-0UB" secondAttribute="trailing" id="hKe-w0-mrz"/>
                                                 <constraint firstAttribute="trailing" secondItem="FgS-IE-pHr" secondAttribute="trailing" id="l16-WS-cCQ"/>
-                                                <constraint firstAttribute="bottom" secondItem="JII-F2-S6p" secondAttribute="bottom" constant="2" id="ogb-BI-l5D"/>
+                                                <constraint firstAttribute="bottom" secondItem="JII-F2-S6p" secondAttribute="bottom" constant="18" id="ogb-BI-l5D"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" name="color_timeline_header"/>
                                         <connections>
                                             <outlet property="collectionView" destination="FgS-IE-pHr" id="yiV-ye-M7i"/>
                                             <outlet property="collectionViewHeightConstraint" destination="Kis-Sm-hpS" id="PTU-a9-v2n"/>
@@ -543,7 +543,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TimelineNoMoreCell" rowHeight="205" id="f9C-i6-Uag">
-                                        <rect key="frame" x="0.0" y="759.66664695739746" width="414" height="205"/>
+                                        <rect key="frame" x="0.0" y="775.66664695739746" width="414" height="205"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="f9C-i6-Uag" id="Wsq-wE-3TV">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="205"/>
@@ -583,7 +583,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TimelineFirstTimeCell" rowHeight="600" id="SXb-KS-rHP">
-                                        <rect key="frame" x="0.0" y="964.66664695739746" width="414" height="600"/>
+                                        <rect key="frame" x="0.0" y="980.66664695739746" width="414" height="600"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SXb-KS-rHP" id="bCv-k6-M1t">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="600"/>
@@ -911,10 +911,10 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TimelineTableViewCell" id="Gdt-pV-eNI" customClass="TimelineTableViewCell" customModule="Sunlit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="24.333333969116211" width="414" height="200"/>
+                                        <rect key="frame" x="0.0" y="24.333333969116211" width="414" height="216"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gdt-pV-eNI" id="NSH-1x-Isg">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="216"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="7b0-ae-SsG">
@@ -1019,13 +1019,13 @@
                                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jonathan Hays" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s8Q-Tr-Zwg">
                                                             <rect key="frame" x="40" y="5" width="366" height="17"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="textColor" name="color_tab_normal"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="@cheesemaker" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zoq-mx-BeK">
                                                             <rect key="frame" x="40" y="13" width="366" height="14.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="textColor" name="color_tab_normal"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="n50-pK-VMK">
@@ -1044,7 +1044,7 @@
                                                             </constraints>
                                                         </view>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" name="color_timeline_header"/>
                                                     <constraints>
                                                         <constraint firstItem="s8Q-Tr-Zwg" firstAttribute="top" secondItem="pRY-zW-eev" secondAttribute="bottom" constant="4" id="1VI-Jw-B7F"/>
                                                         <constraint firstItem="zoq-mx-BeK" firstAttribute="centerY" secondItem="e1I-Wq-pSN" secondAttribute="centerY" id="8Os-JN-h7t"/>
@@ -1070,11 +1070,11 @@
                                                 <constraint firstAttribute="trailing" secondItem="e1I-Wq-pSN" secondAttribute="trailing" id="dtt-KX-JfT"/>
                                                 <constraint firstItem="e1I-Wq-pSN" firstAttribute="leading" secondItem="NSH-1x-Isg" secondAttribute="leading" id="fyd-6z-cFT"/>
                                                 <constraint firstAttribute="trailing" secondItem="7b0-ae-SsG" secondAttribute="trailing" id="hbx-xD-Bcv"/>
-                                                <constraint firstAttribute="bottom" secondItem="7b0-ae-SsG" secondAttribute="bottom" id="rtb-4P-h2g"/>
-                                                <constraint firstAttribute="bottom" secondItem="vgh-WG-0dF" secondAttribute="bottom" constant="2" id="w18-z2-ijx"/>
+                                                <constraint firstAttribute="bottom" secondItem="7b0-ae-SsG" secondAttribute="bottom" constant="16" id="rtb-4P-h2g"/>
+                                                <constraint firstAttribute="bottom" secondItem="vgh-WG-0dF" secondAttribute="bottom" constant="18" id="w18-z2-ijx"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" name="color_timeline_header"/>
                                         <connections>
                                             <outlet property="collectionView" destination="7b0-ae-SsG" id="PVe-5V-v7F"/>
                                             <outlet property="collectionViewHeightConstraint" destination="toH-ps-kJ4" id="Jlb-ZE-ONH"/>
@@ -1087,7 +1087,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SunlitPostTableViewCell" id="2ps-xG-txR" customClass="SunlitPostTableViewCell" customModule="Sunlit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="224.33333396911621" width="414" height="543"/>
+                                        <rect key="frame" x="0.0" y="240.33333396911621" width="414" height="543"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2ps-xG-txR" id="JG3-yj-Oif">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="543"/>
@@ -1463,8 +1463,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrowshape.turn.up.left.fill" catalog="system" width="32" height="32"/>
-        <image name="bubble.left.and.bubble.right.fill" catalog="system" width="32" height="32"/>
+        <image name="arrowshape.turn.up.left.fill" catalog="system" width="128" height="106"/>
+        <image name="bubble.left.and.bubble.right.fill" catalog="system" width="128" height="97"/>
         <image name="hand.thumbsup.fill" catalog="system" width="128" height="121"/>
         <image name="star" catalog="system" width="128" height="116"/>
         <image name="star.fill" catalog="system" width="128" height="116"/>
@@ -1475,6 +1475,9 @@
         </namedColor>
         <namedColor name="color_highlight">
             <color red="0.0" green="0.60000002384185791" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="color_tab_normal">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
         <namedColor name="color_timeline_cell">
             <color red="0.94900000095367432" green="0.94900000095367432" blue="0.96899998188018799" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

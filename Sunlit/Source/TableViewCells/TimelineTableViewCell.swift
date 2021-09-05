@@ -46,7 +46,7 @@ class TimelineTableViewCell : UITableViewCell {
 	}
 
 	static func height(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
-		return photoHeight(post, parentWidth: parentWidth) + 40.0
+		return photoHeight(post, parentWidth: parentWidth) + 56.0
 	}
 
 	override func awakeFromNib() {

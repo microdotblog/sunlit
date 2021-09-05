@@ -236,7 +236,7 @@ extension Snippets {
 				resizedImage = resizedImage.uuScaleSmallestDimensionToSize(size: 1800.0, ignoringScale: true)
             }
 
-            let imageData = resizedImage.uuJpegData(0.9)!
+            let imageData = resizedImage.uuJpegData(0.7)!
             var formData : Data = Data()
             let imageName = "file"
             let boundary = ProcessInfo.processInfo.globallyUniqueString
