@@ -61,6 +61,12 @@
 		C53375CA26C092280084C66F /* NearbyLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53375C926C092280084C66F /* NearbyLocationsViewController.swift */; };
 		C53375CC26C092580084C66F /* NearbyLocationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53375CB26C092580084C66F /* NearbyLocationsTableViewCell.swift */; };
 		C53375CE26C092E20084C66F /* NearbyLocations.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C53375CD26C092E20084C66F /* NearbyLocations.storyboard */; };
+		C539FF1826E46B9C00439934 /* BlurHash.h in Headers */ = {isa = PBXBuildFile; fileRef = C539FF1626E46B9C00439934 /* BlurHash.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C539FF1B26E46B9C00439934 /* BlurHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C539FF1426E46B9C00439934 /* BlurHash.framework */; };
+		C539FF1C26E46B9C00439934 /* BlurHash.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C539FF1426E46B9C00439934 /* BlurHash.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C539FF2026E46BAB00439934 /* BlurHashDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C539FF0A26E46B6C00439934 /* BlurHashDecode.swift */; };
+		C539FF2126E46BAB00439934 /* BlurHashEncode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C539FF0926E46B6C00439934 /* BlurHashEncode.swift */; };
+		C539FF2226E46BBB00439934 /* BlurHashKit in Resources */ = {isa = PBXBuildFile; fileRef = C539FF0B26E46B6C00439934 /* BlurHashKit */; };
 		C541BE8125059AE7001A6FBD /* Snippets+Microblog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C541BE8025059AE7001A6FBD /* Snippets+Microblog.swift */; };
 		C541BE8325059E0C001A6FBD /* Snippets+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = C541BE8225059E0C001A6FBD /* Snippets+Error.swift */; };
 		C542734F25298B08009E4B39 /* UploadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C542734E25298B08009E4B39 /* UploadsViewController.swift */; };
@@ -315,6 +321,13 @@
 			remoteGlobalIDString = C5235AF7252D0670002F9CC6;
 			remoteInfo = sharing;
 		};
+		C539FF1926E46B9C00439934 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5B9A70F24563E66003EF82B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C539FF1326E46B9C00439934;
+			remoteInfo = BlurHash;
+		};
 		C55DC497248A152A00C1F8A5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C5B9A70F24563E66003EF82B /* Project object */;
@@ -379,6 +392,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C5EC12FD248D64A60032B84D /* Mantis.framework in Embed Frameworks */,
+				C539FF1C26E46B9C00439934 /* BlurHash.framework in Embed Frameworks */,
 				C55DC49B248A153000C1F8A5 /* UUSwift.framework in Embed Frameworks */,
 				C5A1DEB8249066E900B50B54 /* SwiftSoup.framework in Embed Frameworks */,
 				C55DC4A3248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Embed Frameworks */,
@@ -413,6 +427,12 @@
 		C53375C926C092280084C66F /* NearbyLocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NearbyLocationsViewController.swift; path = Source/ViewControllers/NearbyLocationsViewController.swift; sourceTree = "<group>"; };
 		C53375CB26C092580084C66F /* NearbyLocationsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NearbyLocationsTableViewCell.swift; path = Source/TableViewCells/NearbyLocationsTableViewCell.swift; sourceTree = "<group>"; };
 		C53375CD26C092E20084C66F /* NearbyLocations.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = NearbyLocations.storyboard; path = Storyboards/NearbyLocations.storyboard; sourceTree = "<group>"; };
+		C539FF0926E46B6C00439934 /* BlurHashEncode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurHashEncode.swift; sourceTree = "<group>"; };
+		C539FF0A26E46B6C00439934 /* BlurHashDecode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurHashDecode.swift; sourceTree = "<group>"; };
+		C539FF0B26E46B6C00439934 /* BlurHashKit */ = {isa = PBXFileReference; lastKnownFileType = folder; path = BlurHashKit; sourceTree = "<group>"; };
+		C539FF1426E46B9C00439934 /* BlurHash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BlurHash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C539FF1626E46B9C00439934 /* BlurHash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlurHash.h; sourceTree = "<group>"; };
+		C539FF1726E46B9C00439934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C541BE8025059AE7001A6FBD /* Snippets+Microblog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Snippets+Microblog.swift"; sourceTree = "<group>"; };
 		C541BE8225059E0C001A6FBD /* Snippets+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Snippets+Error.swift"; sourceTree = "<group>"; };
 		C542734E25298B08009E4B39 /* UploadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UploadsViewController.swift; path = Source/ViewControllers/UploadsViewController.swift; sourceTree = "<group>"; };
@@ -674,6 +694,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C539FF1126E46B9C00439934 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C55DC2B72489D2F700C1F8A5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -708,6 +735,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5EC12FC248D64A50032B84D /* Mantis.framework in Frameworks */,
+				C539FF1B26E46B9C00439934 /* BlurHash.framework in Frameworks */,
 				C55DC49A248A153000C1F8A5 /* UUSwift.framework in Frameworks */,
 				C5A1DEB7249066E900B50B54 /* SwiftSoup.framework in Frameworks */,
 				C55DC4A2248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Frameworks */,
@@ -769,6 +797,25 @@
 				C5235AFF252D0670002F9CC6 /* Info.plist */,
 			);
 			path = "Sharing Extension";
+			sourceTree = "<group>";
+		};
+		C539FF0826E46B5000439934 /* BlurHash */ = {
+			isa = PBXGroup;
+			children = (
+				C539FF0A26E46B6C00439934 /* BlurHashDecode.swift */,
+				C539FF0926E46B6C00439934 /* BlurHashEncode.swift */,
+				C539FF0B26E46B6C00439934 /* BlurHashKit */,
+			);
+			path = BlurHash;
+			sourceTree = "<group>";
+		};
+		C539FF1526E46B9C00439934 /* BlurHash */ = {
+			isa = PBXGroup;
+			children = (
+				C539FF1626E46B9C00439934 /* BlurHash.h */,
+				C539FF1726E46B9C00439934 /* Info.plist */,
+			);
+			path = BlurHash;
 			sourceTree = "<group>";
 		};
 		C55DC2BB2489D2F700C1F8A5 /* UUSwift */ = {
@@ -841,6 +888,7 @@
 		C55DC490248A102C00C1F8A5 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				C539FF0826E46B5000439934 /* BlurHash */,
 				C5EC129A248C34010032B84D /* Mantis */,
 				C5A1DEB1249066E900B50B54 /* SwiftSoup */,
 				C55DC2BB2489D2F700C1F8A5 /* UUSwift */,
@@ -1002,6 +1050,7 @@
 				C5EC472F253BB27400DDE4AC /* Widget */,
 				C5235AF9252D0670002F9CC6 /* Sharing Extension */,
 				C55DC490248A102C00C1F8A5 /* Libraries */,
+				C539FF1526E46B9C00439934 /* BlurHash */,
 				C5B9A71824563E66003EF82B /* Products */,
 				C55DC494248A151000C1F8A5 /* Frameworks */,
 			);
@@ -1018,6 +1067,7 @@
 				C5A1DEB0249066E900B50B54 /* SwiftSoup.framework */,
 				C5235AF8252D0670002F9CC6 /* sharing.appex */,
 				C5EC472A253BB27400DDE4AC /* Sunlit Widget.appex */,
+				C539FF1426E46B9C00439934 /* BlurHash.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1236,6 +1286,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		C539FF0F26E46B9C00439934 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C539FF1826E46B9C00439934 /* BlurHash.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C55DC2B52489D2F700C1F8A5 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1295,6 +1353,24 @@
 			productName = sharing;
 			productReference = C5235AF8252D0670002F9CC6 /* sharing.appex */;
 			productType = "com.apple.product-type.app-extension";
+		};
+		C539FF1326E46B9C00439934 /* BlurHash */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C539FF1D26E46B9C00439934 /* Build configuration list for PBXNativeTarget "BlurHash" */;
+			buildPhases = (
+				C539FF0F26E46B9C00439934 /* Headers */,
+				C539FF1026E46B9C00439934 /* Sources */,
+				C539FF1126E46B9C00439934 /* Frameworks */,
+				C539FF1226E46B9C00439934 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BlurHash;
+			productName = BlurHash;
+			productReference = C539FF1426E46B9C00439934 /* BlurHash.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		C55DC2B92489D2F700C1F8A5 /* UUSwift */ = {
 			isa = PBXNativeTarget;
@@ -1388,6 +1464,7 @@
 				C5A1DEB6249066E900B50B54 /* PBXTargetDependency */,
 				C5235B01252D0670002F9CC6 /* PBXTargetDependency */,
 				C5EC4739253BB27600DDE4AC /* PBXTargetDependency */,
+				C539FF1A26E46B9C00439934 /* PBXTargetDependency */,
 			);
 			name = Sunlit;
 			productName = Sunlit;
@@ -1441,6 +1518,9 @@
 				TargetAttributes = {
 					C5235AF7252D0670002F9CC6 = {
 						CreatedOnToolsVersion = 12.0.1;
+					};
+					C539FF1326E46B9C00439934 = {
+						CreatedOnToolsVersion = 12.5.1;
 					};
 					C55DC2B92489D2F700C1F8A5 = {
 						CreatedOnToolsVersion = 11.5;
@@ -1497,6 +1577,7 @@
 				C5B9A71624563E66003EF82B /* Sunlit */,
 				C55DC2B92489D2F700C1F8A5 /* UUSwift */,
 				C55DC3002489D33300C1F8A5 /* Snippets */,
+				C539FF1326E46B9C00439934 /* BlurHash */,
 				C55DC3982489D5CB00C1F8A5 /* NextLevelSessionExporter */,
 				C5EC1291248C33E40032B84D /* Mantis */,
 				C5A1DEAF249066E900B50B54 /* SwiftSoup */,
@@ -1514,6 +1595,14 @@
 				C5235AFE252D0670002F9CC6 /* MainInterface.storyboard in Resources */,
 				C5841CF5253D102A0090B7BD /* Assets.xcassets in Resources */,
 				C5235B0E252D07EE002F9CC6 /* Compose.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C539FF1226E46B9C00439934 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C539FF2226E46BBB00439934 /* BlurHashKit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1625,6 +1714,15 @@
 				C5235B47252D0BE0002F9CC6 /* UIBarButtonItem+Sunlit.swift in Sources */,
 				C5235B30252D0B99002F9CC6 /* HTMLBuilder.swift in Sources */,
 				C5235B31252D0B99002F9CC6 /* Tagmoji.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C539FF1026E46B9C00439934 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C539FF2126E46BAB00439934 /* BlurHashEncode.swift in Sources */,
+				C539FF2026E46BAB00439934 /* BlurHashDecode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1900,6 +1998,11 @@
 			target = C5235AF7252D0670002F9CC6 /* sharing */;
 			targetProxy = C5235B00252D0670002F9CC6 /* PBXContainerItemProxy */;
 		};
+		C539FF1A26E46B9C00439934 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C539FF1326E46B9C00439934 /* BlurHash */;
+			targetProxy = C539FF1926E46B9C00439934 /* PBXContainerItemProxy */;
+		};
 		C55DC498248A152A00C1F8A5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C55DC3002489D33300C1F8A5 /* Snippets */;
@@ -2010,6 +2113,64 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C539FF1E26E46B9C00439934 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = BlurHash/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.silverpine.BlurHash;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C539FF1F26E46B9C00439934 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = BlurHash/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.silverpine.BlurHash;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -2557,6 +2718,15 @@
 			buildConfigurations = (
 				C5235B05252D0670002F9CC6 /* Debug */,
 				C5235B06252D0670002F9CC6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C539FF1D26E46B9C00439934 /* Build configuration list for PBXNativeTarget "BlurHash" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C539FF1E26E46B9C00439934 /* Debug */,
+				C539FF1F26E46B9C00439934 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

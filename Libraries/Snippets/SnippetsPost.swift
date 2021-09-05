@@ -32,6 +32,7 @@ open class SnippetsPost : NSObject
 	@objc public var replies : [SnippetsPost] = []
 	@objc public var isDraft : Bool = false
     @objc public var isBookmark : Bool = false
+	@objc public var blurHashes : [String] = []
 }
 
 
@@ -74,6 +75,9 @@ extension SnippetsPost {
             if let bookmark = microblogDictionary["is_bookmark"] as? NSNumber {
                 self.isBookmark = bookmark.intValue > 0
             }
+			if let blurHashes = microblogDictionary["blurhash"] as? [String] {
+				self.blurHashes = blurHashes
+			}
 		}
 		
 		if let identifier = dictionary["id"] as? String
