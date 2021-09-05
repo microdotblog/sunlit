@@ -47,6 +47,7 @@ class SunlitPost : SnippetsPost {
 
 		// For now, we are going to keep the original snippet object
 		let parsedEntry = SunlitPost()
+		parsedEntry.blurHashes = snippet.blurHashes
 		parsedEntry.identifier = snippet.identifier
 		parsedEntry.owner = snippet.owner
 		parsedEntry.htmlText = snippet.htmlText
