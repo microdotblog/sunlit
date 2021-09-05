@@ -332,12 +332,16 @@ extension BookmarksViewController : UITableViewDelegate, UITableViewDataSource, 
         tableView.deselectRow(at: indexPath, animated: true)
 
         let post = self.tableViewData[indexPath.row]
+		NotificationCenter.default.post(name: .viewConversationNotification, object: post)
+/*
         let imagePath = post.images[0]
         var dictionary : [String : Any] = [:]
         dictionary["imagePath"] = imagePath
         dictionary["post"] = post
 
         NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
+*/
+
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

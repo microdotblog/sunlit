@@ -584,7 +584,8 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		let post = self.posts[indexPath.row]
-		
+		NotificationCenter.default.post(name: .viewConversationNotification, object: post)
+/*
 		if indexPath.item < post.images.count {
 			let imagePath = post.images[indexPath.item]
 			var dictionary : [String : Any] = [:]
@@ -593,6 +594,7 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 			
 			NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
 		}
+*/
 	}
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -625,12 +627,15 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
 		let post = self.posts[indexPath.item]
+		NotificationCenter.default.post(name: .viewConversationNotification, object: post)
+/*
 		let imagePath = post.images[0]
 		var dictionary : [String : Any] = [:]
 		dictionary["imagePath"] = imagePath
 		dictionary["post"] = post
 		
 		NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
+*/
 	}
 	
 	
