@@ -306,6 +306,7 @@
 		C5EDE49524D8E75F009ACF2A /* SunlitMentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EDE49424D8E75F009ACF2A /* SunlitMentions.swift */; };
 		C5EDE49924D9C243009ACF2A /* MentionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EDE49824D9C242009ACF2A /* MentionsViewController.swift */; };
 		C5EDE49B24D9C7E6009ACF2A /* Mentions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */; };
+		C5F5F94726E57ECC0095D5F2 /* BlurHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F5F94626E57ECC0095D5F2 /* BlurHash.swift */; };
 		C5F680EC252C35B300D6987D /* Bookmarks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5F680EB252C35B300D6987D /* Bookmarks.storyboard */; };
 		C5F680F3252C36A800D6987D /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F680F2252C36A800D6987D /* BookmarksViewController.swift */; };
 		C5FBC241254143750070E4DA /* SunlitWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FBC2382541434C0070E4DA /* SunlitWidgetView.swift */; };
@@ -674,6 +675,7 @@
 		C5EDE49424D8E75F009ACF2A /* SunlitMentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SunlitMentions.swift; path = Source/Data/SunlitMentions.swift; sourceTree = "<group>"; };
 		C5EDE49824D9C242009ACF2A /* MentionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MentionsViewController.swift; path = Source/ViewControllers/MentionsViewController.swift; sourceTree = "<group>"; };
 		C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Mentions.storyboard; path = Storyboards/Mentions.storyboard; sourceTree = "<group>"; };
+		C5F5F94626E57ECC0095D5F2 /* BlurHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlurHash.swift; path = Source/Data/BlurHash.swift; sourceTree = "<group>"; };
 		C5F680EB252C35B300D6987D /* Bookmarks.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Bookmarks.storyboard; path = Storyboards/Bookmarks.storyboard; sourceTree = "<group>"; };
 		C5F680F2252C36A800D6987D /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksViewController.swift; path = Source/ViewControllers/BookmarksViewController.swift; sourceTree = "<group>"; };
 		C5FBC2372541430C0070E4DA /* SunlitTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitTimelineProvider.swift; sourceTree = "<group>"; };
@@ -1239,6 +1241,7 @@
 		C5FFB1D22469C7A20015368A /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				C5F5F94626E57ECC0095D5F2 /* BlurHash.swift */,
 				C53375C726C080390084C66F /* LocationQuery.swift */,
 				C5A1DE6124901DBC00B50B54 /* Settings.swift */,
 				C5A1DF3B2491948B00B50B54 /* BlogSettings.swift */,
@@ -1890,6 +1893,7 @@
 				C5A1DE5B24901DAD00B50B54 /* MediaUploader.swift in Sources */,
 				4B556FFA24F1CDF30012C6C7 /* SearchResultTableViewCell.swift in Sources */,
 				4B556FFE24F31AE30012C6C7 /* UsernamesViewController.swift in Sources */,
+				C5F5F94726E57ECC0095D5F2 /* BlurHash.swift in Sources */,
 				C5CF4B3D2533B08900365F7D /* MicropubState.swift in Sources */,
 				C5A1DE6824901DBC00B50B54 /* SunlitMedia.swift in Sources */,
 				C5A1DE9A24901DF500B50B54 /* AppDelegate+Menus.swift in Sources */,

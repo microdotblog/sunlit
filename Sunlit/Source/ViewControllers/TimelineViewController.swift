@@ -164,12 +164,12 @@ class TimelineViewController: ContentViewController {
 			if indexPath.row < self.tableViewData.count {
 				if let visibleCells = self.tableView.indexPathsForVisibleRows {
 					if visibleCells.contains(indexPath) {
-						print("Redrawing \(indexPath.row)")
 						self.tableView.reloadRows(at: [ indexPath ], with: .fade)
 					}
 				}
 			}
 		}
+
 	}
 	
 	@objc func handleViewConversationNotification(_ notification : Notification) {
@@ -217,7 +217,19 @@ class TimelineViewController: ContentViewController {
 		self.keyboardAccessoryView = scrollView
 		self.keyboardAccessoryView.alpha = 0.0
 	}
-	
+
+	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
+		NSLog("Starting blurhash calculation")
+		for object in postObjects {
+			for hash in object.blurHashes {
+				if hash.count > 0 {
+					BlurHash.precalculate(hash)
+				}
+			}
+		}
+		NSLog("Finished blurhash calculation")
+	}
+
 	@objc func loadTimeline() {
 		
         self.noMoreToLoad = false
@@ -233,6 +245,9 @@ class TimelineViewController: ContentViewController {
 		
 		self.loadingData = true
 		Snippets.Microblog.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
+
+			self.setupBlurHashes(postObjects)
+
 			DispatchQueue.main.async {
                 if error == nil && postObjects.count > 0 {
                     self.refreshTableView(postObjects)
@@ -267,6 +282,9 @@ class TimelineViewController: ContentViewController {
 
 			Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters, completion:
 			{ (error, entries : [SnippetsPost]) in
+
+				self.setupBlurHashes(entries)
+
 				DispatchQueue.main.async {
                     
                     if entries.count == 0 {
@@ -289,7 +307,8 @@ class TimelineViewController: ContentViewController {
                             row = row + 1
                         }
 					}
-					
+
+
 					self.tableView.insertRows(at: indexPaths, with: .none)
 					self.loadingData = false
 				}

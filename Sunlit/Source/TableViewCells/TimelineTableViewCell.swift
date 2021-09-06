@@ -172,9 +172,10 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 		if let image = ImageCache.prefetch(imagePath) {
 			cell.postImage.image = image
 		}
-		else if let blurHash = blurHash,
-				let image = UIImage(blurHash: blurHash, size: collectionView.bounds.size) {
-			cell.postImage.image = image
+		else if let blurHash = blurHash {
+			if let image = ImageCache.prefetch(blurHash) {
+				cell.postImage.image = image
+			}
 		}
 
 		let hasVideo = (self.post.videos.count > 0)
