@@ -75,8 +75,10 @@ extension SnippetsPost {
             if let bookmark = microblogDictionary["is_bookmark"] as? NSNumber {
                 self.isBookmark = bookmark.intValue > 0
             }
-			if let blurHashes = microblogDictionary["blurhashes"] as? [String] {
-				self.blurHashes = blurHashes
+			if let defaultImageDictionary = microblogDictionary["default_image"] as? [String : Any] {
+				if let blurhash = defaultImageDictionary["blurhash"] as? String {
+					self.blurHashes = [ blurhash ]
+				}
 			}
 		}
 		
