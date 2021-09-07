@@ -12,9 +12,9 @@ import BlurHash
 
 class BlurHash {
 
-	static func precalculate(_ hash : String) {
+	static func precalculate(_ hash : String, width: Int, height: Int) {
 		if !UUDataCache.shared.dataExists(for: hash) {
-			let size = CGSize(width: 64.0, height: 64.0)
+			let size = CGSize(width: width, height: height)
 			if let image = UIImage(blurHash: hash, size: size) {
 				UURemoteImage.shared.setImage(image, for: hash)
 			}

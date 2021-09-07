@@ -199,6 +199,20 @@ class BookmarksViewController: ContentViewController {
         self.keyboardAccessoryView.alpha = 0.0
     }
 
+	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
+		NSLog("Starting blurhash calculation")
+		for object in postObjects {
+			let defaultPhoto = object.defaultPhoto
+			let hash : String = defaultPhoto["blurhash"] as? String ?? ""
+			let width : Int = (defaultPhoto["width"] as? Int ?? 0) / 10
+			let height : Int = (defaultPhoto["height"] as? Int ?? 0) / 10
+			if hash.count > 0 && width > 0 && height > 0 {
+				BlurHash.precalculate(hash, width: width, height: height)
+			}
+		}
+		NSLog("Finished blurhash calculation")
+	}
+
     @objc func loadTimeline() {
 
         // Safety check for double loads...
@@ -208,7 +222,9 @@ class BookmarksViewController: ContentViewController {
 
         self.loadingData = true
         Snippets.Microblog.fetchCurrentUserFavorites { (error, postObjects) in
-            
+
+			self.setupBlurHashes(postObjects)
+			
             DispatchQueue.main.async {
                 if error == nil && postObjects.count > 0 {
                     self.refreshTableView(postObjects)

@@ -440,25 +440,20 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let imagePath = self.post.images[indexPath.item]
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SunlitPostCollectionViewCell", for: indexPath) as! SunlitPostCollectionViewCell
-		var blurHash : String? = nil
+		let defaultPhoto = self.post.defaultPhoto
+		let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
 		cell.videoPlayIndicator.isHidden = true
 		cell.timeStampLabel.isHidden = true
 		cell.postImage.image = nil
 		cell.timeStampLabel.isHidden = true
 
-		if indexPath.item < self.post.blurHashes.count {
-			blurHash = self.post.blurHashes[indexPath.item]
-		}
-		else if self.post.blurHashes.count > 0 {
-			blurHash = self.post.blurHashes.first
-		}
-
 		if let image = ImageCache.prefetch(imagePath) {
 			cell.postImage.image = image
 		}
-		else if let blurHash = blurHash,
-				let image = UIImage(blurHash: blurHash, size: collectionView.bounds.size) {
-			cell.postImage.image = image
+		else if blurHash.count > 0 {
+			if let image = ImageCache.prefetch(blurHash) {
+				cell.postImage.image = image
+			}
 		}
 
 		let hasVideo = (self.post.videos.count > 0)

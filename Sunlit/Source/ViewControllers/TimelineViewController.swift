@@ -221,10 +221,12 @@ class TimelineViewController: ContentViewController {
 	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
 		NSLog("Starting blurhash calculation")
 		for object in postObjects {
-			for hash in object.blurHashes {
-				if hash.count > 0 {
-					BlurHash.precalculate(hash)
-				}
+			let defaultPhoto = object.defaultPhoto
+			let hash : String = defaultPhoto["blurhash"] as? String ?? ""
+			let width : Int = (defaultPhoto["width"] as? Int ?? 0) / 10
+			let height : Int = (defaultPhoto["height"] as? Int ?? 0) / 10
+			if hash.count > 0 && width > 0 && height > 0 {
+				BlurHash.precalculate(hash, width: width, height: height)
 			}
 		}
 		NSLog("Finished blurhash calculation")
@@ -286,11 +288,11 @@ class TimelineViewController: ContentViewController {
 				self.setupBlurHashes(entries)
 
 				DispatchQueue.main.async {
-                    
+                    print("Preparing to insert rows")
                     if entries.count == 0 {
                         self.noMoreToLoad = true
                         let indexPath = IndexPath(row: self.tableViewData.count, section: 0)
-                        self.tableView.insertRows(at: [indexPath], with: .automatic)
+						self.tableView.insertRows(at: [indexPath], with: .none)
                         return
                     }
 					
@@ -308,8 +310,7 @@ class TimelineViewController: ContentViewController {
                         }
 					}
 
-
-					self.tableView.insertRows(at: indexPaths, with: .none)
+					self.tableView.insertRows(at: indexPaths, with: .automatic)
 					self.loadingData = false
 				}
 			})

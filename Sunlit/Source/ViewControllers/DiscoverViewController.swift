@@ -193,6 +193,20 @@ class DiscoverViewController: ContentViewController {
 		}
 	}
 
+	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
+		NSLog("Starting blurhash calculation")
+		for object in postObjects {
+			let defaultPhoto = object.defaultPhoto
+			let hash : String = defaultPhoto["blurhash"] as? String ?? ""
+			let width : Int = (defaultPhoto["width"] as? Int ?? 0) / 10
+			let height : Int = (defaultPhoto["height"] as? Int ?? 0) / 10
+			if hash.count > 0 && width > 0 && height > 0 {
+				BlurHash.precalculate(hash, width: width, height: height)
+			}
+		}
+		NSLog("Finished blurhash calculation")
+	}
+
 	
 	func loadTimeline() {
 		if self.loadingData == true {
@@ -202,6 +216,9 @@ class DiscoverViewController: ContentViewController {
 		self.loadingData = true
 		
 		Snippets.Microblog.fetchDiscoverTimeline(collection: self.collection) { (error, postObjects, tagmoji) in
+
+			self.setupBlurHashes(postObjects)
+
 			DispatchQueue.main.async {
 				
 				// Default to using the collection view...
@@ -238,7 +255,9 @@ class DiscoverViewController: ContentViewController {
 			parameters["before_id"] = last.identifier
 
 			Snippets.Microblog.fetchDiscoverTimeline(collection: self.collection, parameters: parameters) { (error, entries, tagmoji) in
-				
+
+				self.setupBlurHashes(entries)
+
 				DispatchQueue.main.async {
 					var row = self.posts.count
 					var indexPaths : [IndexPath] = []
