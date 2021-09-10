@@ -205,7 +205,7 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 			return 0
 		}
 		
-		return 3
+		return 4
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -214,7 +214,7 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 			return 0
 		}
 		
-		if section == 0 || section == 1 {
+		if section == 0 || section == 1 || section == 3 {
 			return 1
 		}
 
@@ -231,6 +231,10 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 		else if indexPath.section == 1 {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileBioCollectionViewCell", for: indexPath) as! ProfileBioCollectionViewCell
 			self.configureBioCell(cell)
+			return cell
+		}
+		else if indexPath.section == 3 {
+			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoEntryCollectionViewSpacerCell", for: indexPath)
 			return cell
 		}
 		else {
@@ -276,6 +280,9 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 		}
 		else if indexPath.section == 1 {
 			return ProfileBioCollectionViewCell.sizeOf(self.user, collectionViewWidth:collectionViewWidth)
+		}
+		else if indexPath.section == 3 {
+			return CGSize(width: collectionViewWidth, height: 60.0)
 		}
 		else {
 			return PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: collectionViewWidth)
@@ -327,7 +334,7 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 	func configureBioCell(_ cell : ProfileBioCollectionViewCell) {
 		cell.bio.text = user.bio
 		//cell.bio.attributedText = user.attributedTextBio()
-		//cell.widthConstraint.constant = self.view.bounds.size.width
+		cell.widthConstraint.constant = self.view.bounds.size.width - 16.0
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {

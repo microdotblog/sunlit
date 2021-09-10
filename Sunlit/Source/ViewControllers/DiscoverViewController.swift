@@ -574,8 +574,6 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-		//let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
 		let cell = tableView.dequeueReusableCell(withIdentifier: "TimelineTableViewCell", for: indexPath) as! TimelineTableViewCell
 		if indexPath.row < self.posts.count {
 			let post = self.posts[indexPath.row]
@@ -621,6 +619,17 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 		return TimelineTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 		//return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 	}
+
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 60.0
+	}
+
+	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+		let footer = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 60.0))
+		footer.backgroundColor = .clear
+		return footer
+	}
+
 }
 
 /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -691,12 +700,20 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
 		if indexPath.item < self.posts.count {
 			let post = self.posts[indexPath.item]
+			let defaultPhoto = post.defaultPhoto
+			let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
 			cell.date.text = "@\(post.owner.userName)"
 
 			cell.photo.image = nil
 			if let image = ImageCache.prefetch(post.images.first ?? "") {
 				cell.photo.image = image
 			}
+			else if blurHash.count > 0 {
+				if let image = ImageCache.prefetch(blurHash) {
+					cell.photo.image = image
+				}
+			}
+
 			cell.contentView.clipsToBounds = true
 		}
 	}

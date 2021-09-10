@@ -224,7 +224,7 @@ class BookmarksViewController: ContentViewController {
         Snippets.Microblog.fetchCurrentUserFavorites { (error, postObjects) in
 
 			self.setupBlurHashes(postObjects)
-			
+
             DispatchQueue.main.async {
                 if error == nil && postObjects.count > 0 {
                     self.refreshTableView(postObjects)
@@ -374,6 +374,17 @@ extension BookmarksViewController : UITableViewDelegate, UITableViewDataSource, 
 		return TimelineTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
         //return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
     }
+
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 60.0
+	}
+
+	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+		let footer = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 60.0))
+		footer.backgroundColor = .clear
+		return footer
+	}
+
 }
 
 

@@ -508,7 +508,7 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
                 return self.tableView.bounds.size.height - 60.0
             }
             else {
-                return 215.0
+                return 265.0
             }
         }
         
@@ -517,6 +517,15 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
 		return TimelineTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 	}
 
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 60.0
+	}
+
+	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+		let footer = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 60.0))
+		footer.backgroundColor = .clear
+		return footer
+	}
 }
 
 
