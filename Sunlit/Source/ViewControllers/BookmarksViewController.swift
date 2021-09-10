@@ -200,7 +200,6 @@ class BookmarksViewController: ContentViewController {
     }
 
 	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
-		NSLog("Starting blurhash calculation")
 		for object in postObjects {
 			let defaultPhoto = object.defaultPhoto
 			let hash : String = defaultPhoto["blurhash"] as? String ?? ""
@@ -210,7 +209,6 @@ class BookmarksViewController: ContentViewController {
 				BlurHash.precalculate(hash, width: width, height: height)
 			}
 		}
-		NSLog("Finished blurhash calculation")
 	}
 
     @objc func loadTimeline() {

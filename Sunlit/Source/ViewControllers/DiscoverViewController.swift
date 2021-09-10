@@ -194,7 +194,6 @@ class DiscoverViewController: ContentViewController {
 	}
 
 	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
-		NSLog("Starting blurhash calculation")
 		for object in postObjects {
 			let defaultPhoto = object.defaultPhoto
 			let hash : String = defaultPhoto["blurhash"] as? String ?? ""
@@ -204,7 +203,6 @@ class DiscoverViewController: ContentViewController {
 				BlurHash.precalculate(hash, width: width, height: height)
 			}
 		}
-		NSLog("Finished blurhash calculation")
 	}
 
 	
