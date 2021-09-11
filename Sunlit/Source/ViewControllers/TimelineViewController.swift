@@ -38,7 +38,8 @@ class TimelineViewController: ContentViewController {
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(loadTimeline), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
-		self.loadFrequentlyUsedEmoji()
+		
+//		self.loadFrequentlyUsedEmoji()
 	}
 
     override func navbarTitle() -> String {
@@ -54,10 +55,10 @@ class TimelineViewController: ContentViewController {
 	override func setupNotifications() {
         super.setupNotifications()
 
-		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: .scrollTableViewNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+//		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: .scrollTableViewNotification, object: nil)
+//		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+//		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+//		NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
@@ -163,12 +164,12 @@ class TimelineViewController: ContentViewController {
 			if indexPath.row < self.tableViewData.count {
 				if let visibleCells = self.tableView.indexPathsForVisibleRows {
 					if visibleCells.contains(indexPath) {
-						print("Redrawing \(indexPath.row)")
 						self.tableView.reloadRows(at: [ indexPath ], with: .fade)
 					}
 				}
 			}
 		}
+
 	}
 	
 	@objc func handleViewConversationNotification(_ notification : Notification) {
@@ -216,7 +217,19 @@ class TimelineViewController: ContentViewController {
 		self.keyboardAccessoryView = scrollView
 		self.keyboardAccessoryView.alpha = 0.0
 	}
-	
+
+	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
+		for object in postObjects {
+			let defaultPhoto = object.defaultPhoto
+			let hash : String = defaultPhoto["blurhash"] as? String ?? ""
+			let width : Int = (defaultPhoto["width"] as? Int ?? 0) / 10
+			let height : Int = (defaultPhoto["height"] as? Int ?? 0) / 10
+			if hash.count > 0 && width > 0 && height > 0 {
+				BlurHash.precalculate(hash, width: width, height: height)
+			}
+		}
+	}
+
 	@objc func loadTimeline() {
 		
         self.noMoreToLoad = false
@@ -232,6 +245,9 @@ class TimelineViewController: ContentViewController {
 		
 		self.loadingData = true
 		Snippets.Microblog.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
+
+			self.setupBlurHashes(postObjects)
+
 			DispatchQueue.main.async {
                 if error == nil && postObjects.count > 0 {
                     self.refreshTableView(postObjects)
@@ -266,12 +282,15 @@ class TimelineViewController: ContentViewController {
 
 			Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters, completion:
 			{ (error, entries : [SnippetsPost]) in
+
+				self.setupBlurHashes(entries)
+
 				DispatchQueue.main.async {
-                    
+                    print("Preparing to insert rows")
                     if entries.count == 0 {
                         self.noMoreToLoad = true
                         let indexPath = IndexPath(row: self.tableViewData.count, section: 0)
-                        self.tableView.insertRows(at: [indexPath], with: .automatic)
+						self.tableView.insertRows(at: [indexPath], with: .none)
                         return
                     }
 					
@@ -288,8 +307,8 @@ class TimelineViewController: ContentViewController {
                             row = row + 1
                         }
 					}
-					
-					self.tableView.insertRows(at: indexPaths, with: .none)
+
+					self.tableView.insertRows(at: indexPaths, with: .automatic)
 					self.loadingData = false
 				}
 			})
@@ -440,8 +459,9 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
                 return tableView.dequeueReusableCell(withIdentifier: "TimelineNoMoreCell")!
             }
         }
-        
-		let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
+
+		let cell = tableView.dequeueReusableCell(withIdentifier: "TimelineTableViewCell", for: indexPath) as! TimelineTableViewCell
+		//let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
 		let post = self.tableViewData[indexPath.row]
 		cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
 		return cell
@@ -472,12 +492,12 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		let post = self.tableViewData[indexPath.row]
-		let imagePath = post.images[0]
-		var dictionary : [String : Any] = [:]
-		dictionary["imagePath"] = imagePath
-		dictionary["post"] = post
+		//let imagePath = post.images[0]
+		//var dictionary : [String : Any] = [:]
+		//dictionary["imagePath"] = imagePath
+		//dictionary["post"] = post
 		
-		NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
+		NotificationCenter.default.post(name: .viewConversationNotification, object: post)
 	}
 
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -486,14 +506,24 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
                 return self.tableView.bounds.size.height - 60.0
             }
             else {
-                return 215.0
+                return 265.0
             }
         }
         
 		let post = self.tableViewData[indexPath.row]
-		return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+		//return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+		return TimelineTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 	}
 
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 60.0
+	}
+
+	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+		let footer = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 60.0))
+		footer.backgroundColor = .clear
+		return footer
+	}
 }
 
 

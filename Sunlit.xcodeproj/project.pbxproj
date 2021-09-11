@@ -16,6 +16,9 @@
 		4B55700224F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B55700124F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift */; };
 		4B729B8224BA4F74001D145B /* TabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B729B8124BA4F74001D145B /* TabButton.swift */; };
 		4B9D143624C889BA004E7EAF /* SectionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9D143524C889BA004E7EAF /* SectionTextView.swift */; };
+		4BA1209426BF200800320E80 /* SnippetsLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1209326BF200800320E80 /* SnippetsLocation.swift */; };
+		4BA1209626C069BB00320E80 /* AltTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1209526C069BB00320E80 /* AltTextController.swift */; };
+		4BA1209726C06AF900320E80 /* AltTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1209526C069BB00320E80 /* AltTextController.swift */; };
 		4BE1FFAE251D82BA0037FEFA /* BlogSelectionAddNewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */; };
 		C5235AFB252D0670002F9CC6 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5235AFA252D0670002F9CC6 /* ShareViewController.swift */; };
 		C5235AFE252D0670002F9CC6 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5235AFC252D0670002F9CC6 /* MainInterface.storyboard */; };
@@ -54,6 +57,16 @@
 		C5235B52252D0BFB002F9CC6 /* PostAddPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DE8824901DE600B50B54 /* PostAddPhotoCollectionViewCell.swift */; };
 		C5281B0C251D352800099C6A /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5281B0B251D352800099C6A /* ContentViewController.swift */; };
 		C5309CB724AEABE700551AC7 /* NSAttributedString+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */; };
+		C53375C826C080390084C66F /* LocationQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53375C726C080390084C66F /* LocationQuery.swift */; };
+		C53375CA26C092280084C66F /* NearbyLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53375C926C092280084C66F /* NearbyLocationsViewController.swift */; };
+		C53375CC26C092580084C66F /* NearbyLocationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53375CB26C092580084C66F /* NearbyLocationsTableViewCell.swift */; };
+		C53375CE26C092E20084C66F /* NearbyLocations.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C53375CD26C092E20084C66F /* NearbyLocations.storyboard */; };
+		C539FF1826E46B9C00439934 /* BlurHash.h in Headers */ = {isa = PBXBuildFile; fileRef = C539FF1626E46B9C00439934 /* BlurHash.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C539FF1B26E46B9C00439934 /* BlurHash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C539FF1426E46B9C00439934 /* BlurHash.framework */; };
+		C539FF1C26E46B9C00439934 /* BlurHash.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C539FF1426E46B9C00439934 /* BlurHash.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C539FF2026E46BAB00439934 /* BlurHashDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C539FF0A26E46B6C00439934 /* BlurHashDecode.swift */; };
+		C539FF2126E46BAB00439934 /* BlurHashEncode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C539FF0926E46B6C00439934 /* BlurHashEncode.swift */; };
+		C539FF2226E46BBB00439934 /* BlurHashKit in Resources */ = {isa = PBXBuildFile; fileRef = C539FF0B26E46B6C00439934 /* BlurHashKit */; };
 		C541BE8125059AE7001A6FBD /* Snippets+Microblog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C541BE8025059AE7001A6FBD /* Snippets+Microblog.swift */; };
 		C541BE8325059E0C001A6FBD /* Snippets+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = C541BE8225059E0C001A6FBD /* Snippets+Error.swift */; };
 		C542734F25298B08009E4B39 /* UploadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C542734E25298B08009E4B39 /* UploadsViewController.swift */; };
@@ -70,6 +83,7 @@
 		C5841CED253D0C670090B7BD /* Date+Sunlit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A1DE4D24901D9D00B50B54 /* Date+Sunlit.swift */; };
 		C5841CF5253D102A0090B7BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE9C24901E0B00B50B54 /* Assets.xcassets */; };
 		C5841CFD253D102B0090B7BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE9C24901E0B00B50B54 /* Assets.xcassets */; };
+		C58C753726CC093100F8B269 /* TimelineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58C753626CC093100F8B269 /* TimelineTableViewCell.swift */; };
 		C5A1DE4124901D8C00B50B54 /* Conversation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3824901D8C00B50B54 /* Conversation.storyboard */; };
 		C5A1DE4224901D8C00B50B54 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3924901D8C00B50B54 /* Profile.storyboard */; };
 		C5A1DE4424901D8C00B50B54 /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5A1DE3B24901D8C00B50B54 /* About.storyboard */; };
@@ -292,6 +306,7 @@
 		C5EDE49524D8E75F009ACF2A /* SunlitMentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EDE49424D8E75F009ACF2A /* SunlitMentions.swift */; };
 		C5EDE49924D9C243009ACF2A /* MentionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EDE49824D9C242009ACF2A /* MentionsViewController.swift */; };
 		C5EDE49B24D9C7E6009ACF2A /* Mentions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */; };
+		C5F5F94726E57ECC0095D5F2 /* BlurHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F5F94626E57ECC0095D5F2 /* BlurHash.swift */; };
 		C5F680EC252C35B300D6987D /* Bookmarks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5F680EB252C35B300D6987D /* Bookmarks.storyboard */; };
 		C5F680F3252C36A800D6987D /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F680F2252C36A800D6987D /* BookmarksViewController.swift */; };
 		C5FBC241254143750070E4DA /* SunlitWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FBC2382541434C0070E4DA /* SunlitWidgetView.swift */; };
@@ -306,6 +321,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = C5235AF7252D0670002F9CC6;
 			remoteInfo = sharing;
+		};
+		C539FF1926E46B9C00439934 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5B9A70F24563E66003EF82B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C539FF1326E46B9C00439934;
+			remoteInfo = BlurHash;
 		};
 		C55DC497248A152A00C1F8A5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -371,6 +393,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C5EC12FD248D64A60032B84D /* Mantis.framework in Embed Frameworks */,
+				C539FF1C26E46B9C00439934 /* BlurHash.framework in Embed Frameworks */,
 				C55DC49B248A153000C1F8A5 /* UUSwift.framework in Embed Frameworks */,
 				C5A1DEB8249066E900B50B54 /* SwiftSoup.framework in Embed Frameworks */,
 				C55DC4A3248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Embed Frameworks */,
@@ -391,6 +414,8 @@
 		4B55700124F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationPhotoCollectionViewCell.swift; path = Source/CollectionViewCells/ConversationPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		4B729B8124BA4F74001D145B /* TabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabButton.swift; path = Source/Views/TabButton.swift; sourceTree = "<group>"; };
 		4B9D143524C889BA004E7EAF /* SectionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SectionTextView.swift; path = Source/Views/SectionTextView.swift; sourceTree = "<group>"; };
+		4BA1209326BF200800320E80 /* SnippetsLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsLocation.swift; sourceTree = "<group>"; };
+		4BA1209526C069BB00320E80 /* AltTextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AltTextController.swift; path = Source/ViewControllers/AltTextController.swift; sourceTree = "<group>"; };
 		4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogSelectionAddNewCell.swift; path = Source/TableViewCells/BlogSelectionAddNewCell.swift; sourceTree = "<group>"; };
 		C5235AF8252D0670002F9CC6 /* sharing.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = sharing.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5235AFA252D0670002F9CC6 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -399,6 +424,16 @@
 		C5235B03252D0670002F9CC6 /* sharing.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = sharing.entitlements; sourceTree = "<group>"; };
 		C5281B0B251D352800099C6A /* ContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentViewController.swift; path = Source/ViewControllers/ContentViewController.swift; sourceTree = "<group>"; };
 		C5309CB624AEABE700551AC7 /* NSAttributedString+Sunlit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+Sunlit.swift"; path = "Source/Extensions/NSAttributedString+Sunlit.swift"; sourceTree = "<group>"; };
+		C53375C726C080390084C66F /* LocationQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationQuery.swift; path = Source/Data/LocationQuery.swift; sourceTree = "<group>"; };
+		C53375C926C092280084C66F /* NearbyLocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NearbyLocationsViewController.swift; path = Source/ViewControllers/NearbyLocationsViewController.swift; sourceTree = "<group>"; };
+		C53375CB26C092580084C66F /* NearbyLocationsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NearbyLocationsTableViewCell.swift; path = Source/TableViewCells/NearbyLocationsTableViewCell.swift; sourceTree = "<group>"; };
+		C53375CD26C092E20084C66F /* NearbyLocations.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = NearbyLocations.storyboard; path = Storyboards/NearbyLocations.storyboard; sourceTree = "<group>"; };
+		C539FF0926E46B6C00439934 /* BlurHashEncode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurHashEncode.swift; sourceTree = "<group>"; };
+		C539FF0A26E46B6C00439934 /* BlurHashDecode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurHashDecode.swift; sourceTree = "<group>"; };
+		C539FF0B26E46B6C00439934 /* BlurHashKit */ = {isa = PBXFileReference; lastKnownFileType = folder; path = BlurHashKit; sourceTree = "<group>"; };
+		C539FF1426E46B9C00439934 /* BlurHash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BlurHash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C539FF1626E46B9C00439934 /* BlurHash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlurHash.h; sourceTree = "<group>"; };
+		C539FF1726E46B9C00439934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C541BE8025059AE7001A6FBD /* Snippets+Microblog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Snippets+Microblog.swift"; sourceTree = "<group>"; };
 		C541BE8225059E0C001A6FBD /* Snippets+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Snippets+Error.swift"; sourceTree = "<group>"; };
 		C542734E25298B08009E4B39 /* UploadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UploadsViewController.swift; path = Source/ViewControllers/UploadsViewController.swift; sourceTree = "<group>"; };
@@ -408,6 +443,7 @@
 		C55DC3012489D33300C1F8A5 /* Snippets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Snippets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55DC3992489D5CB00C1F8A5 /* NextLevelSessionExporter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NextLevelSessionExporter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C56316AB2504AE6400CC447C /* BlogSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogSelectionTableViewCell.swift; path = Source/TableViewCells/BlogSelectionTableViewCell.swift; sourceTree = "<group>"; };
+		C58C753626CC093100F8B269 /* TimelineTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TimelineTableViewCell.swift; path = Source/TableViewCells/TimelineTableViewCell.swift; sourceTree = "<group>"; };
 		C5A1DE2C24901D6A00B50B54 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C5A1DE2D24901D6A00B50B54 /* Sunlit.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Sunlit.entitlements; sourceTree = "<group>"; };
 		C5A1DE3824901D8C00B50B54 /* Conversation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Conversation.storyboard; path = Storyboards/Conversation.storyboard; sourceTree = "<group>"; };
@@ -639,6 +675,7 @@
 		C5EDE49424D8E75F009ACF2A /* SunlitMentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SunlitMentions.swift; path = Source/Data/SunlitMentions.swift; sourceTree = "<group>"; };
 		C5EDE49824D9C242009ACF2A /* MentionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MentionsViewController.swift; path = Source/ViewControllers/MentionsViewController.swift; sourceTree = "<group>"; };
 		C5EDE49A24D9C7E6009ACF2A /* Mentions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Mentions.storyboard; path = Storyboards/Mentions.storyboard; sourceTree = "<group>"; };
+		C5F5F94626E57ECC0095D5F2 /* BlurHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlurHash.swift; path = Source/Data/BlurHash.swift; sourceTree = "<group>"; };
 		C5F680EB252C35B300D6987D /* Bookmarks.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Bookmarks.storyboard; path = Storyboards/Bookmarks.storyboard; sourceTree = "<group>"; };
 		C5F680F2252C36A800D6987D /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksViewController.swift; path = Source/ViewControllers/BookmarksViewController.swift; sourceTree = "<group>"; };
 		C5FBC2372541430C0070E4DA /* SunlitTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitTimelineProvider.swift; sourceTree = "<group>"; };
@@ -656,6 +693,13 @@
 				C5235B3E252D0BA9002F9CC6 /* Snippets.framework in Frameworks */,
 				C5235B3D252D0BA5002F9CC6 /* UUSwift.framework in Frameworks */,
 				C5235B3F252D0BAC002F9CC6 /* SwiftSoup.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C539FF1126E46B9C00439934 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -693,6 +737,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5EC12FC248D64A50032B84D /* Mantis.framework in Frameworks */,
+				C539FF1B26E46B9C00439934 /* BlurHash.framework in Frameworks */,
 				C55DC49A248A153000C1F8A5 /* UUSwift.framework in Frameworks */,
 				C5A1DEB7249066E900B50B54 /* SwiftSoup.framework in Frameworks */,
 				C55DC4A2248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Frameworks */,
@@ -756,6 +801,25 @@
 			path = "Sharing Extension";
 			sourceTree = "<group>";
 		};
+		C539FF0826E46B5000439934 /* BlurHash */ = {
+			isa = PBXGroup;
+			children = (
+				C539FF0A26E46B6C00439934 /* BlurHashDecode.swift */,
+				C539FF0926E46B6C00439934 /* BlurHashEncode.swift */,
+				C539FF0B26E46B6C00439934 /* BlurHashKit */,
+			);
+			path = BlurHash;
+			sourceTree = "<group>";
+		};
+		C539FF1526E46B9C00439934 /* BlurHash */ = {
+			isa = PBXGroup;
+			children = (
+				C539FF1626E46B9C00439934 /* BlurHash.h */,
+				C539FF1726E46B9C00439934 /* Info.plist */,
+			);
+			path = BlurHash;
+			sourceTree = "<group>";
+		};
 		C55DC2BB2489D2F700C1F8A5 /* UUSwift */ = {
 			isa = PBXGroup;
 			children = (
@@ -802,6 +866,7 @@
 				C5EC11FE248C30CD0032B84D /* Snippets.swift */,
 				C5EC11FA248C30CD0032B84D /* SnippetsPost.swift */,
 				C5EC11FF248C30CD0032B84D /* SnippetsUser.swift */,
+				4BA1209326BF200800320E80 /* SnippetsLocation.swift */,
 				C5DFE06724FDD9030045C36D /* Snippets+Configuration.swift */,
 				C541BE8025059AE7001A6FBD /* Snippets+Microblog.swift */,
 				C5DFE06924FE07A20045C36D /* Snippets+Micropub.swift */,
@@ -825,6 +890,7 @@
 		C55DC490248A102C00C1F8A5 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				C539FF0826E46B5000439934 /* BlurHash */,
 				C5EC129A248C34010032B84D /* Mantis */,
 				C5A1DEB1249066E900B50B54 /* SwiftSoup */,
 				C55DC2BB2489D2F700C1F8A5 /* UUSwift */,
@@ -887,6 +953,7 @@
 				4B556FFB24F31ABC0012C6C7 /* Usernames.storyboard */,
 				C5E26A35249EADE400F9E158 /* Main.storyboard */,
 				C5E26A33249EAA0900F9E158 /* Main-Phone.storyboard */,
+				C53375CD26C092E20084C66F /* NearbyLocations.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -985,6 +1052,7 @@
 				C5EC472F253BB27400DDE4AC /* Widget */,
 				C5235AF9252D0670002F9CC6 /* Sharing Extension */,
 				C55DC490248A102C00C1F8A5 /* Libraries */,
+				C539FF1526E46B9C00439934 /* BlurHash */,
 				C5B9A71824563E66003EF82B /* Products */,
 				C55DC494248A151000C1F8A5 /* Frameworks */,
 			);
@@ -1001,6 +1069,7 @@
 				C5A1DEB0249066E900B50B54 /* SwiftSoup.framework */,
 				C5235AF8252D0670002F9CC6 /* sharing.appex */,
 				C5EC472A253BB27400DDE4AC /* Sunlit Widget.appex */,
+				C539FF1426E46B9C00439934 /* BlurHash.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1139,14 +1208,16 @@
 		C5FC6ADE2476083D00ACB77E /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */,
+				C56316AB2504AE6400CC447C /* BlogSelectionTableViewCell.swift */,
 				C5A1DE8224901DD800B50B54 /* ConversationTableViewCell.swift */,
+				C53375CB26C092580084C66F /* NearbyLocationsTableViewCell.swift */,
 				C5BEDF5024DA30DA0068CBF1 /* ProfileTableViewCell.swift */,
 				4B556FF924F1CDF30012C6C7 /* SearchResultTableViewCell.swift */,
 				C5A1DE8324901DD800B50B54 /* SunlitPostTableViewCell.swift */,
 				C5482F2B24D9E56400A335DF /* TabletMenuTableViewCell.swift */,
+				C58C753626CC093100F8B269 /* TimelineTableViewCell.swift */,
 				4B556FFF24F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift */,
-				C56316AB2504AE6400CC447C /* BlogSelectionTableViewCell.swift */,
-				4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */,
 			);
 			name = TableViewCells;
 			sourceTree = "<group>";
@@ -1170,6 +1241,8 @@
 		C5FFB1D22469C7A20015368A /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				C5F5F94626E57ECC0095D5F2 /* BlurHash.swift */,
+				C53375C726C080390084C66F /* LocationQuery.swift */,
 				C5A1DE6124901DBC00B50B54 /* Settings.swift */,
 				C5A1DF3B2491948B00B50B54 /* BlogSettings.swift */,
 				C5CF4B3C2533B08900365F7D /* MicropubState.swift */,
@@ -1187,6 +1260,7 @@
 			isa = PBXGroup;
 			children = (
 				C5A1DE7624901DCC00B50B54 /* AboutViewController.swift */,
+				4BA1209526C069BB00320E80 /* AltTextController.swift */,
 				C5F680F2252C36A800D6987D /* BookmarksViewController.swift */,
 				C5A1DE7524901DCC00B50B54 /* ComposeViewController.swift */,
 				C5281B0B251D352800099C6A /* ContentViewController.swift */,
@@ -1202,6 +1276,7 @@
 				C5E26A39249EB85100F9E158 /* MainTabletViewController.swift */,
 				C5EDE49824D9C242009ACF2A /* MentionsViewController.swift */,
 				C5A1DE7324901DCC00B50B54 /* MyProfileViewController.swift */,
+				C53375C926C092280084C66F /* NearbyLocationsViewController.swift */,
 				C5A1DE7124901DCC00B50B54 /* ProfileViewController.swift */,
 				4B556FF524F1C4C10012C6C7 /* SearchViewController.swift */,
 				C5A1DF3424913BDC00B50B54 /* SettingsViewController.swift */,
@@ -1214,6 +1289,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		C539FF0F26E46B9C00439934 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C539FF1826E46B9C00439934 /* BlurHash.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C55DC2B52489D2F700C1F8A5 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1273,6 +1356,24 @@
 			productName = sharing;
 			productReference = C5235AF8252D0670002F9CC6 /* sharing.appex */;
 			productType = "com.apple.product-type.app-extension";
+		};
+		C539FF1326E46B9C00439934 /* BlurHash */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C539FF1D26E46B9C00439934 /* Build configuration list for PBXNativeTarget "BlurHash" */;
+			buildPhases = (
+				C539FF0F26E46B9C00439934 /* Headers */,
+				C539FF1026E46B9C00439934 /* Sources */,
+				C539FF1126E46B9C00439934 /* Frameworks */,
+				C539FF1226E46B9C00439934 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BlurHash;
+			productName = BlurHash;
+			productReference = C539FF1426E46B9C00439934 /* BlurHash.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		C55DC2B92489D2F700C1F8A5 /* UUSwift */ = {
 			isa = PBXNativeTarget;
@@ -1366,6 +1467,7 @@
 				C5A1DEB6249066E900B50B54 /* PBXTargetDependency */,
 				C5235B01252D0670002F9CC6 /* PBXTargetDependency */,
 				C5EC4739253BB27600DDE4AC /* PBXTargetDependency */,
+				C539FF1A26E46B9C00439934 /* PBXTargetDependency */,
 			);
 			name = Sunlit;
 			productName = Sunlit;
@@ -1419,6 +1521,9 @@
 				TargetAttributes = {
 					C5235AF7252D0670002F9CC6 = {
 						CreatedOnToolsVersion = 12.0.1;
+					};
+					C539FF1326E46B9C00439934 = {
+						CreatedOnToolsVersion = 12.5.1;
 					};
 					C55DC2B92489D2F700C1F8A5 = {
 						CreatedOnToolsVersion = 11.5;
@@ -1475,6 +1580,7 @@
 				C5B9A71624563E66003EF82B /* Sunlit */,
 				C55DC2B92489D2F700C1F8A5 /* UUSwift */,
 				C55DC3002489D33300C1F8A5 /* Snippets */,
+				C539FF1326E46B9C00439934 /* BlurHash */,
 				C55DC3982489D5CB00C1F8A5 /* NextLevelSessionExporter */,
 				C5EC1291248C33E40032B84D /* Mantis */,
 				C5A1DEAF249066E900B50B54 /* SwiftSoup */,
@@ -1492,6 +1598,14 @@
 				C5235AFE252D0670002F9CC6 /* MainInterface.storyboard in Resources */,
 				C5841CF5253D102A0090B7BD /* Assets.xcassets in Resources */,
 				C5235B0E252D07EE002F9CC6 /* Compose.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C539FF1226E46B9C00439934 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C539FF2226E46BBB00439934 /* BlurHashKit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1545,6 +1659,7 @@
 				C5E26A36249EADE400F9E158 /* Main.storyboard in Resources */,
 				C5BEDF4D24DA302F0068CBF1 /* Following.storyboard in Resources */,
 				C5A1DF3324906B9D00B50B54 /* LaunchScreen.storyboard in Resources */,
+				C53375CE26C092E20084C66F /* NearbyLocations.storyboard in Resources */,
 				C5E26A34249EAA0900F9E158 /* Main-Phone.storyboard in Resources */,
 				C5A1DE4624901D8C00B50B54 /* Settings.storyboard in Resources */,
 			);
@@ -1582,6 +1697,7 @@
 				C5235B42252D0BE0002F9CC6 /* NSNotification+Sunlit.swift in Sources */,
 				C5235B23252D0B93002F9CC6 /* SunlitComposition.swift in Sources */,
 				C5235B28252D0B93002F9CC6 /* SunlitPost.swift in Sources */,
+				4BA1209726C06AF900320E80 /* AltTextController.swift in Sources */,
 				C5235B43252D0BE0002F9CC6 /* UIButton+Sunlit.swift in Sources */,
 				C5235B24252D0B93002F9CC6 /* SunlitMedia.swift in Sources */,
 				C5235B44252D0BE0002F9CC6 /* UIView+Sunlit.swift in Sources */,
@@ -1601,6 +1717,15 @@
 				C5235B47252D0BE0002F9CC6 /* UIBarButtonItem+Sunlit.swift in Sources */,
 				C5235B30252D0B99002F9CC6 /* HTMLBuilder.swift in Sources */,
 				C5235B31252D0B99002F9CC6 /* Tagmoji.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C539FF1026E46B9C00439934 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C539FF2126E46BAB00439934 /* BlurHashEncode.swift in Sources */,
+				C539FF2026E46BAB00439934 /* BlurHashDecode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1643,6 +1768,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BA1209426BF200800320E80 /* SnippetsLocation.swift in Sources */,
 				C5EC1204248C30CE0032B84D /* Snippets+XMLParsing.swift in Sources */,
 				C5EC1201248C30CE0032B84D /* SnippetsPost.swift in Sources */,
 				C541BE8125059AE7001A6FBD /* Snippets+Microblog.swift in Sources */,
@@ -1738,6 +1864,7 @@
 				C5A1DE6A24901DBC00B50B54 /* SunlitComposition.swift in Sources */,
 				4BE1FFAE251D82BA0037FEFA /* BlogSelectionAddNewCell.swift in Sources */,
 				C5A1DE9324901DE600B50B54 /* PostAddSectionCollectionViewCell.swift in Sources */,
+				4BA1209626C069BB00320E80 /* AltTextController.swift in Sources */,
 				C5A1DE5124901D9D00B50B54 /* UIBarButtonItem+Sunlit.swift in Sources */,
 				C5A1DE8024901DCC00B50B54 /* ComposeViewController.swift in Sources */,
 				C5EC4737253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */,
@@ -1755,6 +1882,7 @@
 				C5A1DE7F24901DCC00B50B54 /* ImageViewerViewController.swift in Sources */,
 				C5A1DE5224901D9D00B50B54 /* Date+Sunlit.swift in Sources */,
 				C5A1DE8E24901DE600B50B54 /* PostTextCollectionViewCell.swift in Sources */,
+				C53375CA26C092280084C66F /* NearbyLocationsViewController.swift in Sources */,
 				C5A1DE5024901D9D00B50B54 /* UIView+Sunlit.swift in Sources */,
 				C5A1DE7E24901DCC00B50B54 /* MyProfileViewController.swift in Sources */,
 				C5A1DE8524901DD800B50B54 /* SunlitPostTableViewCell.swift in Sources */,
@@ -1765,6 +1893,7 @@
 				C5A1DE5B24901DAD00B50B54 /* MediaUploader.swift in Sources */,
 				4B556FFA24F1CDF30012C6C7 /* SearchResultTableViewCell.swift in Sources */,
 				4B556FFE24F31AE30012C6C7 /* UsernamesViewController.swift in Sources */,
+				C5F5F94726E57ECC0095D5F2 /* BlurHash.swift in Sources */,
 				C5CF4B3D2533B08900365F7D /* MicropubState.swift in Sources */,
 				C5A1DE6824901DBC00B50B54 /* SunlitMedia.swift in Sources */,
 				C5A1DE9A24901DF500B50B54 /* AppDelegate+Menus.swift in Sources */,
@@ -1774,6 +1903,7 @@
 				C5A1DE4F24901D9D00B50B54 /* UIButton+Sunlit.swift in Sources */,
 				C5A1DE6724901DBC00B50B54 /* Settings.swift in Sources */,
 				C5EDE49524D8E75F009ACF2A /* SunlitMentions.swift in Sources */,
+				C53375CC26C092580084C66F /* NearbyLocationsTableViewCell.swift in Sources */,
 				4B556FF624F1C4C10012C6C7 /* SearchViewController.swift in Sources */,
 				C5A1DE8124901DCC00B50B54 /* AboutViewController.swift in Sources */,
 				4B729B8224BA4F74001D145B /* TabButton.swift in Sources */,
@@ -1788,8 +1918,10 @@
 				C5A1DE5A24901DAD00B50B54 /* HTMLBuilder.swift in Sources */,
 				C5E26A38249EAE6900F9E158 /* MainPhoneViewController.swift in Sources */,
 				C5A1DE6924901DBC00B50B54 /* SunlitPost.swift in Sources */,
+				C53375C826C080390084C66F /* LocationQuery.swift in Sources */,
 				C5482F2C24D9E56400A335DF /* TabletMenuTableViewCell.swift in Sources */,
 				C5A1DE9524901DE600B50B54 /* ProfileHeaderCollectionViewCell.swift in Sources */,
+				C58C753726CC093100F8B269 /* TimelineTableViewCell.swift in Sources */,
 				C5E26A4024A061AB00F9E158 /* NSNotification+Sunlit.swift in Sources */,
 				C56316AC2504AE6400CC447C /* BlogSelectionTableViewCell.swift in Sources */,
 				4B55700224F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift in Sources */,
@@ -1870,6 +2002,11 @@
 			target = C5235AF7252D0670002F9CC6 /* sharing */;
 			targetProxy = C5235B00252D0670002F9CC6 /* PBXContainerItemProxy */;
 		};
+		C539FF1A26E46B9C00439934 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C539FF1326E46B9C00439934 /* BlurHash */;
+			targetProxy = C539FF1926E46B9C00439934 /* PBXContainerItemProxy */;
+		};
 		C55DC498248A152A00C1F8A5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C55DC3002489D33300C1F8A5 /* Snippets */;
@@ -1940,7 +2077,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Sharing Extension/sharing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 408;
+				CURRENT_PROJECT_VERSION = 421;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = "Sharing Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1949,7 +2086,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.3.2;
+				MARKETING_VERSION = 3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.sharing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1964,7 +2101,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Sharing Extension/sharing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 408;
+				CURRENT_PROJECT_VERSION = 421;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = "Sharing Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1973,13 +2110,71 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.3.2;
+				MARKETING_VERSION = 3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.sharing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C539FF1E26E46B9C00439934 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = BlurHash/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.silverpine.BlurHash;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C539FF1F26E46B9C00439934 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = BlurHash/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.silverpine.BlurHash;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -2352,7 +2547,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sunlit/Sunlit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 408;
+				CURRENT_PROJECT_VERSION = 421;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2364,7 +2559,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.3.2;
+				MARKETING_VERSION = 3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
@@ -2380,7 +2575,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sunlit/Sunlit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 408;
+				CURRENT_PROJECT_VERSION = 421;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2392,7 +2587,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.3.2;
+				MARKETING_VERSION = 3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
@@ -2474,7 +2669,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = widget_background;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 408;
+				CURRENT_PROJECT_VERSION = 421;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -2483,7 +2678,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.3.2;
+				MARKETING_VERSION = 3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.widget;
 				PRODUCT_NAME = "Sunlit Widget";
 				SKIP_INSTALL = YES;
@@ -2500,7 +2695,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = widget_background;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 408;
+				CURRENT_PROJECT_VERSION = 421;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -2509,7 +2704,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.3.2;
+				MARKETING_VERSION = 3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.widget;
 				PRODUCT_NAME = "Sunlit Widget";
 				SKIP_INSTALL = YES;
@@ -2527,6 +2722,15 @@
 			buildConfigurations = (
 				C5235B05252D0670002F9CC6 /* Debug */,
 				C5235B06252D0670002F9CC6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C539FF1D26E46B9C00439934 /* Build configuration list for PBXNativeTarget "BlurHash" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C539FF1E26E46B9C00439934 /* Debug */,
+				C539FF1F26E46B9C00439934 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -303,14 +303,33 @@ extension ConversationViewController : UITextViewDelegate {
 extension ConversationViewController : UITableViewDelegate, UITableViewDataSource {
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationTableViewCell", for: indexPath) as! ConversationTableViewCell
-		let post = self.posts[indexPath.row]
-		cell.setup(post, indexPath)
-		return cell
+
+		if indexPath.row == 0 && self.sourcePost!.images.count > 0 {
+			let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell") as! SunlitPostTableViewCell
+			cell.setup(indexPath.row, self.sourcePost!, parentWidth: tableView.bounds.size.width)
+			return cell
+		}
+		else {
+			let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationTableViewCell", for: indexPath) as! ConversationTableViewCell
+			let post = self.posts[indexPath.row]
+			cell.setup(post, indexPath)
+			return cell
+		}
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return self.posts.count
+	}
+
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		let post = self.sourcePost!
+
+		if indexPath.row == 0 && post.images.count > 0 {
+			 // self.tableViewData[indexPath.row]
+			return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+		}
+
+		return UITableView.automaticDimension
 	}
 
 }

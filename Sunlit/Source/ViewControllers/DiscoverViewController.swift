@@ -42,13 +42,14 @@ class DiscoverViewController: ContentViewController {
         
 		self.setupTableViewAndCollectionView()
 		self.loadFrequentlyUsedEmoji()
-		self.setupSnippets()
 	}
 
     override func prepareToDisplay() {
         super.prepareToDisplay()
 
+		self.setupSnippets()
         self.loadTagmoji()
+		
         self.collectionView.reloadData()
         self.tableView.reloadData()
     }
@@ -192,6 +193,18 @@ class DiscoverViewController: ContentViewController {
 		}
 	}
 
+	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
+		for object in postObjects {
+			let defaultPhoto = object.defaultPhoto
+			let hash : String = defaultPhoto["blurhash"] as? String ?? ""
+			let width : Int = (defaultPhoto["width"] as? Int ?? 0) / 10
+			let height : Int = (defaultPhoto["height"] as? Int ?? 0) / 10
+			if hash.count > 0 && width > 0 && height > 0 {
+				BlurHash.precalculate(hash, width: width, height: height)
+			}
+		}
+	}
+
 	
 	func loadTimeline() {
 		if self.loadingData == true {
@@ -201,6 +214,9 @@ class DiscoverViewController: ContentViewController {
 		self.loadingData = true
 		
 		Snippets.Microblog.fetchDiscoverTimeline(collection: self.collection) { (error, postObjects, tagmoji) in
+
+			self.setupBlurHashes(postObjects)
+
 			DispatchQueue.main.async {
 				
 				// Default to using the collection view...
@@ -237,7 +253,9 @@ class DiscoverViewController: ContentViewController {
 			parameters["before_id"] = last.identifier
 
 			Snippets.Microblog.fetchDiscoverTimeline(collection: self.collection, parameters: parameters) { (error, entries, tagmoji) in
-				
+
+				self.setupBlurHashes(entries)
+
 				DispatchQueue.main.async {
 					var row = self.posts.count
 					var indexPaths : [IndexPath] = []
@@ -467,14 +485,14 @@ class DiscoverViewController: ContentViewController {
 	}
 
 	@objc func keyboardWillHideNotification(_ notification : Notification) {
-		self.keyboardAccessoryView.removeFromSuperview()
-		self.keyboardAccessoryView.alpha = 0.0
+//		self.keyboardAccessoryView.removeFromSuperview()
+//		self.keyboardAccessoryView.alpha = 0.0
 	}
 
 	@objc func keyboardDidShowNotification(_ notification : Notification) {
-		UIView.animate(withDuration: 0.3) {
-			self.keyboardAccessoryView.alpha = 1.0
-		}
+//		UIView.animate(withDuration: 0.3) {
+//			self.keyboardAccessoryView.alpha = 1.0
+//		}
 	}
 
 	@objc func handleKeyboardShowNotification(_ notification : Notification) {
@@ -554,8 +572,7 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
-		let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: "TimelineTableViewCell", for: indexPath) as! TimelineTableViewCell
 		if indexPath.row < self.posts.count {
 			let post = self.posts[indexPath.row]
 			cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
@@ -582,7 +599,8 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		let post = self.posts[indexPath.row]
-		
+		NotificationCenter.default.post(name: .viewConversationNotification, object: post)
+/*
 		if indexPath.item < post.images.count {
 			let imagePath = post.images[indexPath.item]
 			var dictionary : [String : Any] = [:]
@@ -591,12 +609,25 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 			
 			NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
 		}
+*/
 	}
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		let post = self.posts[indexPath.row]
-		return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+		return TimelineTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+		//return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 	}
+
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 60.0
+	}
+
+	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+		let footer = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 60.0))
+		footer.backgroundColor = .clear
+		return footer
+	}
+
 }
 
 /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -622,12 +653,15 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
 		let post = self.posts[indexPath.item]
+		NotificationCenter.default.post(name: .viewConversationNotification, object: post)
+/*
 		let imagePath = post.images[0]
 		var dictionary : [String : Any] = [:]
 		dictionary["imagePath"] = imagePath
 		dictionary["post"] = post
 		
 		NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
+*/
 	}
 	
 	
@@ -664,12 +698,20 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
 		if indexPath.item < self.posts.count {
 			let post = self.posts[indexPath.item]
+			let defaultPhoto = post.defaultPhoto
+			let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
 			cell.date.text = "@\(post.owner.userName)"
 
 			cell.photo.image = nil
 			if let image = ImageCache.prefetch(post.images.first ?? "") {
 				cell.photo.image = image
 			}
+			else if blurHash.count > 0 {
+				if let image = ImageCache.prefetch(blurHash) {
+					cell.photo.image = image
+				}
+			}
+
 			cell.contentView.clipsToBounds = true
 		}
 	}

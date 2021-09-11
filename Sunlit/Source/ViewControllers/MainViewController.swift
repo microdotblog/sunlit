@@ -80,6 +80,10 @@ class MainViewController: UIViewController {
                     self.onUploads()
                 }
 
+//				let checkinAction = UIAction(title: "Check-in", image: UIImage(systemName: "mappin.and.ellipse")) { (action) in
+//					self.onCheckIn()
+//				}
+
                 let menu = UIMenu(children: [libraryAction, filesAction])
                 postButton.menu = menu
             }
@@ -438,6 +442,16 @@ class MainViewController: UIViewController {
 
             self.present(pickerController, animated: true, completion: nil)
         }
+	}
+
+	@IBAction @objc func onCheckIn() {
+		SnippetsLocation.Query.scan()
+
+		let storyBoard: UIStoryboard = UIStoryboard(name: "NearbyLocations", bundle: nil)
+		let locationsViewController = storyBoard.instantiateViewController(withIdentifier: "NearbyLocationsViewController") as! NearbyLocationsViewController
+
+		let navigationController = UINavigationController(rootViewController: locationsViewController)
+		self.present(navigationController, animated: true, completion: nil)
 	}
 
     @IBAction @objc func onUploads() {

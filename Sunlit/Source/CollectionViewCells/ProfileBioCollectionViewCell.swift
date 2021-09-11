@@ -15,7 +15,7 @@ class ProfileBioCollectionViewCell : UICollectionViewCell {
 
 	static func sizeOf(_ user : SnippetsUser?, collectionViewWidth : CGFloat) -> CGSize {
 		
-		var size = CGSize(width: collectionViewWidth - 24.0, height: .greatestFiniteMagnitude)
+		var size = CGSize(width: collectionViewWidth - 16.0, height: .greatestFiniteMagnitude)
 		guard let owner = user else {
 			return CGSize(width: collectionViewWidth, height: 0.0)
 		}

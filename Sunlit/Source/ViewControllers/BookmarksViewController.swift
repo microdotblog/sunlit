@@ -26,8 +26,6 @@ class BookmarksViewController: ContentViewController {
 
         self.setupNavigation()
         self.setupTableView()
-
-        self.loadTimeline()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -37,7 +35,8 @@ class BookmarksViewController: ContentViewController {
     func setupTableView() {
         self.refreshControl.addTarget(self, action: #selector(loadTimeline), for: .valueChanged)
         self.tableView.addSubview(self.refreshControl)
-        self.loadFrequentlyUsedEmoji()
+
+//		self.loadFrequentlyUsedEmoji()
     }
 
     override func navbarTitle() -> String {
@@ -46,7 +45,9 @@ class BookmarksViewController: ContentViewController {
 
     override func prepareToDisplay() {
         super.prepareToDisplay()
-    }
+
+		self.loadTimeline()
+	}
 
     override func setupNotifications() {
         super.setupNotifications()
@@ -198,6 +199,18 @@ class BookmarksViewController: ContentViewController {
         self.keyboardAccessoryView.alpha = 0.0
     }
 
+	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
+		for object in postObjects {
+			let defaultPhoto = object.defaultPhoto
+			let hash : String = defaultPhoto["blurhash"] as? String ?? ""
+			let width : Int = (defaultPhoto["width"] as? Int ?? 0) / 10
+			let height : Int = (defaultPhoto["height"] as? Int ?? 0) / 10
+			if hash.count > 0 && width > 0 && height > 0 {
+				BlurHash.precalculate(hash, width: width, height: height)
+			}
+		}
+	}
+
     @objc func loadTimeline() {
 
         // Safety check for double loads...
@@ -207,7 +220,9 @@ class BookmarksViewController: ContentViewController {
 
         self.loadingData = true
         Snippets.Microblog.fetchCurrentUserFavorites { (error, postObjects) in
-            
+
+			self.setupBlurHashes(postObjects)
+
             DispatchQueue.main.async {
                 if error == nil && postObjects.count > 0 {
                     self.refreshTableView(postObjects)
@@ -303,7 +318,8 @@ extension BookmarksViewController : UITableViewDelegate, UITableViewDataSource, 
             }
         }
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
+		//let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TimelineTableViewCell", for: indexPath) as! TimelineTableViewCell
         let post = self.tableViewData[indexPath.row]
         cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
         return cell
@@ -330,12 +346,16 @@ extension BookmarksViewController : UITableViewDelegate, UITableViewDataSource, 
         tableView.deselectRow(at: indexPath, animated: true)
 
         let post = self.tableViewData[indexPath.row]
+		NotificationCenter.default.post(name: .viewConversationNotification, object: post)
+/*
         let imagePath = post.images[0]
         var dictionary : [String : Any] = [:]
         dictionary["imagePath"] = imagePath
         dictionary["post"] = post
 
         NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
+*/
+
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -349,8 +369,20 @@ extension BookmarksViewController : UITableViewDelegate, UITableViewDataSource, 
         }
 
         let post = self.tableViewData[indexPath.row]
-        return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+		return TimelineTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
+        //return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
     }
+
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 60.0
+	}
+
+	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+		let footer = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 60.0))
+		footer.backgroundColor = .clear
+		return footer
+	}
+
 }
 
 

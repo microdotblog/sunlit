@@ -111,6 +111,16 @@ extension MentionsViewController : UITableViewDelegate, UITableViewDataSource {
 		self.navigationController?.pushViewController(conversationViewController, animated: true)
 	}
 
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 60.0
+	}
+
+	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+		let footer = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 60.0))
+		footer.backgroundColor = .clear
+		return footer
+	}
+
 }
 
 

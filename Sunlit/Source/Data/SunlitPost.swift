@@ -47,6 +47,7 @@ class SunlitPost : SnippetsPost {
 
 		// For now, we are going to keep the original snippet object
 		let parsedEntry = SunlitPost()
+		parsedEntry.defaultPhoto = snippet.defaultPhoto
 		parsedEntry.identifier = snippet.identifier
 		parsedEntry.owner = snippet.owner
 		parsedEntry.htmlText = snippet.htmlText
@@ -83,13 +84,24 @@ class SunlitPost : SnippetsPost {
 			
 				let width = imageTag(tag: "width", image) as NSString
 				let height = imageTag(tag: "height", image) as NSString
-			
+
 				if width.integerValue > 0 && height.integerValue > 0 {
 					let ratio = height.floatValue / width.floatValue
 					if ratio > aspectRatio {
 						aspectRatio = ratio
 					}
 				}
+
+				// Override what's in the HTML if we've already pre-calculated...
+				let defaultPhotoHeight : Float = Float(parsedEntry.defaultPhoto["height"] as? Int ?? 0)
+				let defaultPhotoWidth : Float = Float(parsedEntry.defaultPhoto["width"] as? Int ?? 0)
+				if defaultPhotoWidth > 0 && defaultPhotoHeight > 0 && (width.floatValue != defaultPhotoWidth || height.floatValue != defaultPhotoHeight) {
+					let ratio = defaultPhotoHeight / defaultPhotoWidth
+					if ratio > aspectRatio {
+						aspectRatio = ratio
+					}
+				}
+
 			}
 			
 			for video in videos {

@@ -15,14 +15,13 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 	@IBOutlet var image : UIImageView!
 	@IBOutlet var scrollView : UIScrollView!
 	@IBOutlet var topInfoView : UIView!
-	@IBOutlet var bottomInfoView: UIView!
 	@IBOutlet var userAvatar : UIImageView!
 	@IBOutlet var fullUserName : UILabel!
 	@IBOutlet var userHandle : UILabel!
-	@IBOutlet var postText : UITextView!
     @IBOutlet var deleteButton : UIButton!
     @IBOutlet var previousButton : UIButton!
     @IBOutlet var nextButton : UIButton!
+	@IBOutlet var bookmarkButton : UIButton!
 	
 	var pathToImage = ""
 	var post : SunlitPost!
@@ -53,6 +52,10 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 
 		// This is needed to "lock" the image into place so it won't bounce-scroll when it initially appears
         self.scrollView.zoomScale = 1.0
+
+		if let bookmarkButton = self.bookmarkButton {
+			bookmarkButton.isSelected = self.post.isBookmark
+		}
     }
     
 	override func viewDidLayoutSubviews() {
@@ -127,10 +130,6 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
     }
 
 	func setupPostInfo() {
-		// Recreate the post with white text...
-		self.post = SunlitPost.create(self.post, textColor: .white)
-		
-		self.postText.attributedText = self.post.attributedText
 		self.userHandle.text = "@" + self.post.owner.userName
 		self.fullUserName.text = self.post.owner.fullName
 		
@@ -181,7 +180,6 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 
 		UIView.animate(withDuration: 0.15, delay: 0.35, options: .curveLinear, animations: {
 			self.topInfoView.alpha = alpha
-			self.bottomInfoView.alpha = alpha
             self.nextButton.alpha = buttonAlpha
             self.previousButton.alpha = buttonAlpha
 
@@ -239,7 +237,43 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
         self.setupImage()
         self.updateNavigationButtons()
     }
-	
+
+	@IBAction func onBookmark() {
+		if !self.post.isBookmark {
+			if let bookmarkButton = self.bookmarkButton {
+				bookmarkButton.isSelected = true
+			}
+			Snippets.Microblog.addBookmark(post: self.post) { (error) in
+				if error == nil {
+					self.post.isBookmark = true
+				}
+
+				if let bookmarkButton = self.bookmarkButton {
+					bookmarkButton.isSelected = self.post.isBookmark
+				}
+			}
+		}
+		else {
+			if let bookmarkButton = self.bookmarkButton {
+				bookmarkButton.isSelected = false
+			}
+
+			Snippets.Microblog.removeBookmark(post: self.post) { (error) in
+				if error == nil {
+					self.post.isBookmark = false
+				}
+
+				if let bookmarkButton = self.bookmarkButton {
+					bookmarkButton.isSelected = self.post.isBookmark
+				}
+			}
+		}
+
+		if let bookmarkButton = self.bookmarkButton {
+			bookmarkButton.isSelected = !bookmarkButton.isSelected
+		}
+	}
+
 	@IBAction @objc func onShare() {
 		let url = URL(string: self.post.path)!
 		let items : [Any] = [url]

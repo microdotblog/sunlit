@@ -8,6 +8,10 @@
 
 import UIKit
 
+class PhotoEntryCollectionViewSpacerCell : UICollectionViewCell {
+
+}
+
 class PhotoEntryCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var photo : UIImageView!
 	@IBOutlet var date : UILabel!

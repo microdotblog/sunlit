@@ -313,6 +313,14 @@ class ComposeViewController: UIViewController {
 
     func onEditAltText(_ section : SunlitComposition, _ item : Int) {
 
+
+		let storyboard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
+		let controller = storyboard.instantiateViewController(withIdentifier: "AltTextController") as! AltTextController
+		
+		self.present(controller, animated: true, completion: nil)
+
+		return
+		
         self.altTextSection = section
         self.altTextItem = item
         self.view.bringSubviewToFront(self.altTextDialogView)
