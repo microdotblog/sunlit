@@ -21,7 +21,13 @@ extension Snippets {
         static public func fetchPublishedMedia(_ identity : Snippets.Configuration, completion: @escaping(Error?, [[String : Any]]?)->()) -> UUHttpRequest? {
 
             let fullPath : NSString = identity.micropubMediaEndpoint as NSString
-            let arguments : [ String : String ] = [ "q" : "source" ]
+            var arguments : [ String : String ] = [ "q" : "source" ]
+
+			if let blogUid = identity.micropubUid {
+				if blogUid.count > 0 {
+					arguments["mp-destination"] = blogUid
+				}
+			}
 
             let request = Snippets.secureGet(identity, path: fullPath as String, arguments: arguments)
 
@@ -34,7 +40,7 @@ extension Snippets {
         }
 
         
-        static public func postText(_ identity : Snippets.Configuration, title : String, content : String, isDraft : Bool = false, photos : [String] = [], altTags : [String] = [], videos : [String] = [], videoAltTags : [String] = [], completion: @escaping(Error?, String?) -> ()) -> UUHttpRequest?
+		static public func postText(_ identity : Snippets.Configuration, title : String, content : String, isDraft : Bool = false, photos : [String] = [], altTags : [String] = [], videos : [String] = [], videoAltTags : [String] = [], completion: @escaping(Error?, String?) -> ()) -> UUHttpRequest?
         {
             // Pre-flight check to see if we are even configured...
             if identity.micropubToken.count == 0 {
@@ -85,7 +91,7 @@ extension Snippets {
             })
         }
         
-        static public func postHtml(_ identity : Snippets.Configuration, title : String, content : String, isDraft : Bool = false, completion: @escaping(Error?, String?) -> ()) -> UUHttpRequest?
+        static public func postHtml(_ identity : Snippets.Configuration, title : String, content : String, isDraft : Bool = false, location : SnippetsLocation? = nil, completion: @escaping(Error?, String?) -> ()) -> UUHttpRequest?
         {
             // Pre-flight check to see if we are even configured...
             if identity.micropubToken.count == 0 {
@@ -105,6 +111,33 @@ extension Snippets {
                 properties["post-status"] = [ "published" ]
             }
 
+			if let location = location {
+				if location.name.count > 0 {
+					properties["checkin"] = [
+						[
+							"type": [ "h-card" ],
+							"properties": [
+								"longitude": [ location.longitude ],
+								"latitude": [ location.latitude ],
+								"name": [ location.name ],
+								"url": [ location.url ]
+							]
+						]
+					]
+				}
+				else {
+					properties["location"] = [
+						[
+							"type": [ "h-adr" ],
+							"properties": [
+								"longitude": [ location.longitude ],
+								"latitude": [ location.latitude ]
+							]
+						]
+					]
+				}
+			}
+			
             var arguments : [ String : Any ] =     [    "type" : [ "h-entry" ],
                                                     "properties" : properties
                                                 ]
@@ -198,17 +231,12 @@ extension Snippets {
             }
             
             var resizedImage = image
-			if image.size.width > 1800.0 || image.size.height > 1800.0
+			if image.size.width > 1800.0 && image.size.height > 1800.0
             {
-				if image.size.width > image.size.height {
-					resizedImage = resizedImage.uuScaleToWidth(targetWidth: 1800.0)
-				}
-				else {
-					resizedImage = resizedImage.uuScaleToHeight(targetHeight: 1800.0)
-				}
+				resizedImage = resizedImage.uuScaleSmallestDimensionToSize(size: 1800.0, ignoringScale: true)
             }
 
-            let imageData = resizedImage.uuJpegData(0.9)!
+            let imageData = resizedImage.uuJpegData(0.7)!
             var formData : Data = Data()
             let imageName = "file"
             let boundary = ProcessInfo.processInfo.globallyUniqueString

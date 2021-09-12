@@ -154,7 +154,7 @@ extension Snippets {
         
 
         @objc public static func uploadImage(image : SnippetsImage, request : Snippets.XMLRPC.Request, completion: @escaping(Error?, String?, String?) -> ()) -> UUHttpRequest {
-            let d = image.uuJpegData(0.8)
+            let d = image.uuJpegData(0.7)
             let filename = UUID().uuidString.replacingOccurrences(of: "-", with: "") + ".jpg"
             let params : [Any] = [ request.identity.xmlRpcBlogId,
                                    request.identity.xmlRpcUsername,

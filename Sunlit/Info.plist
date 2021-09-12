@@ -42,8 +42,12 @@
 	<string>Sunlit needs access to your media library to help you create beautiful stories.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Sunlit needs access to your camera to help you create beautiful stories.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Sunlit can use your location to allow you to post check-ins.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Sunlit uses your location to add a check-in to a story.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Sunlit can use your location to allow you to post check-ins.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Sunlit uses your location to add a check-in to a story.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

@@ -9,7 +9,7 @@
 import UIKit
 import AVKit
 import Snippets
-
+import BlurHash
 
 class SunlitPostTableViewCell : UITableViewCell {
 
@@ -55,7 +55,9 @@ class SunlitPostTableViewCell : UITableViewCell {
 	}
     
     static func authorHeight(_ author : SnippetsUser, parentWidth : CGFloat) -> CGFloat {
-        let fullNameFont = UIFont.preferredFont(forTextStyle: .headline)
+		return 65.0
+		/*
+		let fullNameFont = UIFont.preferredFont(forTextStyle: .headline)
         let userNameFont = UIFont.preferredFont(forTextStyle: .subheadline)
         let constrainedSize = CGSize(width: parentWidth, height: .greatestFiniteMagnitude)
         var height : CGFloat = 16.0
@@ -64,23 +66,25 @@ class SunlitPostTableViewCell : UITableViewCell {
         height = height + 16.0
         
         return height
+		*/
     }
     
     static func dateLabelHeight(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
-        let font = UIFont.preferredFont(forTextStyle: .caption1)
+		return 40.0
+        /*let font = UIFont.preferredFont(forTextStyle: .caption1)
         let constrainedSize = CGSize(width: parentWidth, height: .greatestFiniteMagnitude)
         let dateString = "Date"
-        var height : CGFloat = 10.0
+        var height : CGFloat = 14.0
         height = height + dateString.boundingRect(with: constrainedSize, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics], attributes: [NSAttributedString.Key.font: font], context: nil).height
         height = height + 8.0
         
-        return height
+        return height*/
     }
     
     static func textHeight(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
-        let size = CGSize(width: parentWidth - 34.0, height: .greatestFiniteMagnitude)
+        let size = CGSize(width: parentWidth - 40.0, height: .greatestFiniteMagnitude)
         let text = post.attributedText
-        let rect = text.boundingRect(with: size, options: [.usesLineFragmentOrigin, .usesFontLeading, .usesDeviceMetrics] , context: nil)
+        let rect = text.boundingRect(with: size, options: [.usesLineFragmentOrigin, .usesFontLeading] , context: nil)
         return ceil(rect.size.height)
     }
     
@@ -100,9 +104,10 @@ class SunlitPostTableViewCell : UITableViewCell {
 		height = height + SunlitPostTableViewCell.photoHeight(post, parentWidth: parentWidth)
         height = height + SunlitPostTableViewCell.dateLabelHeight(post, parentWidth: parentWidth)
 		height = height + SunlitPostTableViewCell.textHeight(post, parentWidth: parentWidth)
-        height = height + 2.5 * SunlitPostTableViewCell.replyContainerHeight(parentWidth: parentWidth)
 
-        //height = height + 88.0
+		//height = height + 2.5 * SunlitPostTableViewCell.replyContainerHeight(parentWidth: parentWidth)
+
+        height = height + 28.0
 
 		return height
 	}
@@ -435,6 +440,8 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let imagePath = self.post.images[indexPath.item]
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SunlitPostCollectionViewCell", for: indexPath) as! SunlitPostCollectionViewCell
+		let defaultPhoto = self.post.defaultPhoto
+		let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
 		cell.videoPlayIndicator.isHidden = true
 		cell.timeStampLabel.isHidden = true
 		cell.postImage.image = nil
@@ -442,6 +449,11 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 
 		if let image = ImageCache.prefetch(imagePath) {
 			cell.postImage.image = image
+		}
+		else if blurHash.count > 0 {
+			if let image = ImageCache.prefetch(blurHash) {
+				cell.postImage.image = image
+			}
 		}
 
 		let hasVideo = (self.post.videos.count > 0)

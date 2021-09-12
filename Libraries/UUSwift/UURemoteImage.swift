@@ -70,6 +70,11 @@ public class UURemoteImage: NSObject
     {
         return image(for: key, remoteLoadCompletion: nil)
     }
+
+	public func setImage(_ image : UIImage, for key: String)
+	{
+		self.systemImageCache.setObject(image, forKey: key as NSString)
+	}
     
     public func image(for key: String, remoteLoadCompletion: UUImageLoadedCompletionBlock? = nil) -> UUImage?
     {
