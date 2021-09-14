@@ -236,7 +236,7 @@ extension SunlitPost {
         // Setting up our state, which is any partial name that we’re
         // currently parsing, and an array of all names found.
         var partialName: String?
-		var names : [String] = ["@" + owner.userName]
+		var names : [String] = ["@" + owner.username]
 
         // A nested parsing function, that we’ll apply to each
         // character within the string.
@@ -292,3 +292,5 @@ extension SunlitPost {
         Settings.setValue(text, forKey: "\(self.identifier)-DRAFT")
     }
 }
+
+

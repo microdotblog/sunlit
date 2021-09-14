@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import UUSwift
+import UUSwiftCore
 import Snippets
 
 protocol UploadsPickerControllerDelegate : NSObject {

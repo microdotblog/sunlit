@@ -42,7 +42,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
         self.setupImage()
         self.updateNavigationButtons()
         
-        self.deleteButton.isHidden = self.post.owner.userName != SnippetsUser.current()?.userName
+        self.deleteButton.isHidden = self.post.owner.username != SnippetsUser.current()?.username
 		
 		self.navigationController?.setNavigationBarHidden(true, animated: true)
 	}
@@ -130,7 +130,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
     }
 
 	func setupPostInfo() {
-		self.userHandle.text = "@" + self.post.owner.userName
+		self.userHandle.text = "@" + self.post.owner.username
 		self.fullUserName.text = self.post.owner.fullName
 		
 		ImageCache.fetch(self.post.owner.avatarURL) { (image) in
@@ -193,7 +193,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
         
         // They don't need to see their own profile...
         if let current = SnippetsUser.current() {
-            if current.userName == self.post.owner.userName {
+            if current.username == self.post.owner.username {
                 return
             }
         }
@@ -209,7 +209,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
         Snippets.Configuration.publishing = BlogSettings.blogForPublishing().snippetsConfiguration!
 
         Dialog(self).warning(title: nil, question: "Are you sure you want to delete this post? It cannot be undone.", action: "Delete", cancel: "Cancel") {
-            _ = Snippets.shared.delete(post: self.post) { (error) in
+            _ = Snippets.shared.deletePost(post: self.post) { (error) in
                 DispatchQueue.main.async {
                     if let err = error {
                         Dialog(self).information("There was an error trying to delete this post: " + err.localizedDescription)

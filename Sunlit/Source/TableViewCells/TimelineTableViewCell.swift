@@ -64,7 +64,7 @@ class TimelineTableViewCell : UITableViewCell {
 
 		self.post = post
 
-		self.userHandle.text = "@" + post.owner.userName
+		self.userHandle.text = "@" + post.owner.username
 		self.userName.text = post.owner.fullName
 
 		// Configure the photo sizes...

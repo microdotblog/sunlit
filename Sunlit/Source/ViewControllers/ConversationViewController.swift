@@ -114,15 +114,15 @@ class ConversationViewController: UIViewController {
 		if self.allUsers.count == 0 {
 			// default to all users in the conversation
 			for reply in self.posts {
-				if reply.owner.userName != SnippetsUser.current()?.userName {
-					self.allUsers.insert(reply.owner.userName)
-					self.selectedUsers.insert(reply.owner.userName)
+				if reply.owner.username != SnippetsUser.current()?.username {
+					self.allUsers.insert(reply.owner.username)
+					self.selectedUsers.insert(reply.owner.username)
 				}
 			}
 			
 			// if no other users, reply to current user
 			if self.allUsers.count == 0 {
-				if let username = SnippetsUser.current()?.userName {
+				if let username = SnippetsUser.current()?.username {
 					self.allUsers.insert(username)
 					self.selectedUsers.insert(username)
 				}
@@ -253,7 +253,7 @@ class ConversationViewController: UIViewController {
 			
 			if self.selectedUsers.count == 0 {
 				// if cleared all users, still reply to current user
-				if let username = SnippetsUser.current()?.userName {
+				if let username = SnippetsUser.current()?.username {
 					self.allUsers.insert(username)
 					self.selectedUsers.insert(username)
 				}

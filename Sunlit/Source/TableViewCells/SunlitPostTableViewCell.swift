@@ -151,7 +151,7 @@ class SunlitPostTableViewCell : UITableViewCell {
         
 		// Update the text objects
 		self.textView.attributedText = post.attributedText
-		self.userHandle.text = "@" + post.owner.userName
+		self.userHandle.text = "@" + post.owner.username
 		self.userName.text = post.owner.fullName
 		
 		if let date = post.publishedDate {

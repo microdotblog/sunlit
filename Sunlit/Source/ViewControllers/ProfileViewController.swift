@@ -292,7 +292,7 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
             }
 		}
 
-		if self.user.userName == SnippetsUser.current()?.userName {
+		if self.user.username == SnippetsUser.current()?.username {
 			// don't let someone unfollow themselves
 			cell.followButton.isHidden = true
 		}
@@ -301,7 +301,7 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		cell.avatar.layer.cornerRadius = (cell.avatar.bounds.size.height - 1) / 2.0
 			
 		cell.fullName.text = user.fullName
-		cell.userHandle.text = "@" + user.userName
+		cell.userHandle.text = "@" + user.username
 		
 		var address = user.siteURL
 		if address.count > 0 && !address.contains("http") {

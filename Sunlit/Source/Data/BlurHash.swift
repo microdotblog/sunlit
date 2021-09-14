@@ -7,7 +7,9 @@
 //
 
 import UIKit
-import UUSwift
+import UUSwiftCore
+import UUSwiftNetworking
+import UUSwiftImage
 import BlurHash
 
 class BlurHash {
@@ -16,7 +18,7 @@ class BlurHash {
 		if !UUDataCache.shared.dataExists(for: hash) {
 			let size = CGSize(width: width, height: height)
 			if let image = UIImage(blurHash: hash, size: size) {
-				UURemoteImage.shared.setImage(image, for: hash)
+				UURemoteImage.shared.memoryCache().setObject(image, forKey: hash as NSString)
 			}
 		}
 	}

@@ -370,7 +370,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProfileHeaderCollectionViewCell" translatesAutoresizingMaskIntoConstraints="NO" id="ceh-ak-Uo6" customClass="ProfileHeaderCollectionViewCell" customModule="Sunlit" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" reuseIdentifier="ProfileHeaderCollectionViewCell" translatesAutoresizingMaskIntoConstraints="NO" id="ceh-ak-Uo6" customClass="ProfileHeaderCollectionViewCell" customModule="Sunlit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="240"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="twj-PE-Acw">
@@ -470,7 +470,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7YE-FS-GSc">
-                                                    <rect key="frame" x="8" y="7.8333333333332575" width="35" height="17"/>
+                                                    <rect key="frame" x="8" y="8" width="35" height="17"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="35" id="bme-E2-qwg"/>
@@ -569,7 +569,7 @@
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="J3H-mX-yeG">
                                     <size key="itemSize" width="128" height="176"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="60"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
@@ -610,11 +610,6 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="kiQ-uL-X0m">
-                                    <rect key="frame" x="0.0" y="168" width="406" height="60"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="oIs-Z4-tFH" id="CkW-qY-2zq"/>
                                     <outlet property="delegate" destination="oIs-Z4-tFH" id="k9e-BP-rQM"/>

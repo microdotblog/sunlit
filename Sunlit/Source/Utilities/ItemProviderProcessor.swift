@@ -7,16 +7,18 @@
 //
 
 import UIKit
-import UUSwift
+import Snippets
+import UUSwiftNetworking
 import MobileCoreServices
 
 class ItemProviderProcessor : NSObject {
 
     var providers : [NSItemProvider] = []
     var processedMedia : [SunlitMedia] = []
-    var completion : (([SunlitMedia])-> Void)? = nil
+	var processedDescription = ""
+    var completion : (([SunlitMedia], String)-> Void)? = nil
 
-    init(_ completion : @escaping ([SunlitMedia]) -> Void) {
+    init(_ completion : @escaping ([SunlitMedia], String) -> Void) {
         super.init()
         self.completion = completion
     }
@@ -32,7 +34,7 @@ class ItemProviderProcessor : NSObject {
         if self.providers.count <= 0 {
             DispatchQueue.main.async {
                 if let completion = self.completion {
-                    completion(self.processedMedia)
+					completion(self.processedMedia, self.processedDescription)
                 }
             }
             return
@@ -62,10 +64,35 @@ class ItemProviderProcessor : NSObject {
 
     }
 
+	private func specialCaseGlassURL(_ url : URL) {
+		UUHttpSession.get(url: url.absoluteString, completion: { response in
+			if let responseString = response.parsedResponse as? String {
+				let parser = HTMLParser(responseString)
+				let images = parser.findImages()
+				let description = parser.findGlassDescription()
+				self.processedDescription = description
+				
+				UUHttpSession.get(url: images.first!) { imageResponse in
+					if let image = imageResponse.parsedResponse as? UIImage {
+						self.processedMedia.append(SunlitMedia(withImage: image))
+					}
+
+					self.processNextProvider()
+				}
+			}
+		})
+	}
+
     private func processURLProvider(_ provider : NSItemProvider) {
 
         _ = provider.loadObject(ofClass: URL.self, completionHandler: { (urlObject, error) in
             if let url = urlObject {
+
+				if url.host == "glass.photo" {
+					self.specialCaseGlassURL(url)
+					return
+				}
+
                 let request = UUHttpRequest(url: url.absoluteString)
                 request.processMimeTypes = false
 

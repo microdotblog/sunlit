@@ -136,8 +136,8 @@ class MainPhoneViewController: UIViewController {
 		var profileImage : UIImage? = UIImage(systemName: "person.crop.circle")
 		var profileUsername = "Profile"
 		if let current = SnippetsUser.current() {
-			if current.userName.count < 10 {
-				profileUsername = "@" + current.userName
+			if current.username.count < 10 {
+				profileUsername = "@" + current.username
 			}
 			if let image = ImageCache.prefetch(current.avatarURL) {
 				profileImage = image
@@ -165,8 +165,8 @@ class MainPhoneViewController: UIViewController {
 			DispatchQueue.main.async {
                 self.scrollView.isScrollEnabled = true
 
-				if user.userName.count < 10 {
-					self.profileButton.setTitle("@" + user.userName, for: .normal)
+				if user.username.count < 10 {
+					self.profileButton.setTitle("@" + user.username, for: .normal)
 				}
 				else {
 					self.profileButton.setTitle("Profile", for: .normal)

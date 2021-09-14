@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import UUSwift
+import UUSwiftNetworking
 
 class ImageCache {
 	

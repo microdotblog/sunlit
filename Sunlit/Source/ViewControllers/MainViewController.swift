@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import AVFoundation
 import Snippets
-import UUSwift
+import UUSwiftNetworking
 import PhotosUI
 
 class MainViewController: UIViewController {
@@ -175,7 +175,7 @@ class MainViewController: UIViewController {
 	@objc func handleViewUserProfileNotification(_ notification : Notification) {
 		if let owner = notification.object as? SnippetsUser {
             if let profileController = self.navigationController?.topViewController as? ProfileViewController {
-                if profileController.user.userName == owner.userName {
+                if profileController.user.username == owner.username {
                     return
                 }
             }
@@ -579,14 +579,14 @@ extension MainViewController : PHPickerViewControllerDelegate {
             providers.append(result.itemProvider)
         }
 
-        let processor = ItemProviderProcessor { (media) in
-            if media.count > 0 {
-                self.composeWithMedia(media, picker: picker)
-            }
-            else {
-                picker.dismiss(animated: true, completion: nil)
-            }
-        }
+		let processor = ItemProviderProcessor { media, mediaDescription in
+			if media.count > 0 {
+				self.composeWithMedia(media, picker: picker)
+			}
+			else {
+				picker.dismiss(animated: true, completion: nil)
+			}
+		}
 
         processor.process(providers)
     }
@@ -601,7 +601,7 @@ extension MainViewController : UIImagePickerControllerDelegate, UINavigationCont
         postViewController.modalPresentationStyle = .fullScreen
 
         for object in media {
-            postViewController.addMedia(object)
+            postViewController.addMedia(object, "")
         }
 
         picker.dismiss(animated: true) {

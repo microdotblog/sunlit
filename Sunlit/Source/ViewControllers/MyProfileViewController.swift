@@ -42,8 +42,8 @@ class MyProfileViewController: ContentViewController {
         var title = "Profile"
 
         self.user = SnippetsUser.current()
-        if self.user.userName.count < 10 {
-            title = "@" + self.user.userName
+        if self.user.username.count < 10 {
+            title = "@" + self.user.username
         }
 
         return title
@@ -313,7 +313,7 @@ extension MyProfileViewController : UICollectionViewDataSource, UICollectionView
 		cell.avatar.layer.cornerRadius = (cell.avatar.bounds.size.height - 1) / 2.0
 			
 		cell.fullName.text = user.fullName
-		cell.userHandle.text = "@" + user.userName
+		cell.userHandle.text = "@" + user.username
 		
 		var address = user.siteURL
 		if address.count > 0 && !address.contains("http") {
