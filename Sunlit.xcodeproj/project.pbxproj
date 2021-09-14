@@ -2385,7 +2385,7 @@
 			repositoryURL = "https://github.com/microdotblog/snippets";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.1;
+				minimumVersion = 1.1.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

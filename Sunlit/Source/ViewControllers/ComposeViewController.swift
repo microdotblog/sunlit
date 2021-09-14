@@ -320,7 +320,7 @@ class ComposeViewController: UIViewController {
 		self.present(controller, animated: true, completion: nil)
 
 		return
-		
+		/*
         self.altTextSection = section
         self.altTextItem = item
         self.view.bringSubviewToFront(self.altTextDialogView)
@@ -340,6 +340,7 @@ class ComposeViewController: UIViewController {
 
         self.altTextDoneButton.setTitle(saveTitle, for: .normal)
         self.altTextTextView.becomeFirstResponder()
+		*/
     }
 
 

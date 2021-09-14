@@ -50,7 +50,7 @@ class ItemProviderProcessor : NSObject {
             }
 
             if registeredType == "public.image" || registeredType == "public.jpeg" || registeredType == "public.heic" || registeredType == "public.png" || registeredType == "public.gif" {
-                self.processImageProvider(provider)
+                self.processImageProvider(provider, registeredType)
                 return
             }
 
@@ -116,11 +116,11 @@ class ItemProviderProcessor : NSObject {
         })
     }
 
-    private func processImageProvider(_ provider : NSItemProvider) {
+	private func processImageProvider(_ provider : NSItemProvider, _ type : String) {
 
         _ = provider.loadObject(ofClass: UIImage.self, completionHandler: { (image, error) in
             if let image = image as? UIImage{
-                self.processedMedia.append(SunlitMedia(withImage: image))
+                self.processedMedia.append(SunlitMedia(withImage: image, fileType: type))
                 self.processNextProvider()
             }
             else {

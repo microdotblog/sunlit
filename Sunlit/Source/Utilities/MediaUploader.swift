@@ -109,7 +109,12 @@ class MediaUploader {
 	func uploadImage(_ media : SunlitMedia) {
 
         var upload : UUHttpRequest? = nil
-        upload = Snippets.shared.uploadImage(image: media.getImage()) { (error, remotePath) in
+		var type : SnippetsImageFileType = .jpeg
+		if media.fileType == "public.png" {
+			type = .png
+		}
+
+        upload = Snippets.shared.uploadImage(image: SnippetsImage(media.getImage(), type: type)) { (error, remotePath) in
 
             if let path = remotePath {
                 media.publishedPath = path
