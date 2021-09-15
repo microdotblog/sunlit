@@ -700,7 +700,7 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 			let post = self.posts[indexPath.item]
 			let defaultPhoto = post.defaultPhoto
 			let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
-			cell.date.text = "@\(post.owner.userName)"
+			cell.date.text = "@\(post.owner.username)"
 
 			cell.photo.image = nil
 			if let image = ImageCache.prefetch(post.images.first ?? "") {

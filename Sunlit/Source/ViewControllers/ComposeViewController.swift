@@ -9,7 +9,7 @@
 import UIKit
 import Mantis
 import Snippets
-import UUSwift
+import UUSwiftNetworking
 import PhotosUI
 
 
@@ -104,10 +104,10 @@ class ComposeViewController: UIViewController {
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-	func addMedia(_ media : SunlitMedia) {
+	func addMedia(_ media : SunlitMedia, _ description : String) {
 		if self.sectionToAddMedia >= self.sections.count {
 			let section = SunlitComposition()
-			section.text = ""
+			section.text = description
 			section.media.append(media)
 			self.sections.append(section)
 		}
@@ -320,7 +320,7 @@ class ComposeViewController: UIViewController {
 		self.present(controller, animated: true, completion: nil)
 
 		return
-		
+		/*
         self.altTextSection = section
         self.altTextItem = item
         self.view.bringSubviewToFront(self.altTextDialogView)
@@ -340,6 +340,7 @@ class ComposeViewController: UIViewController {
 
         self.altTextDoneButton.setTitle(saveTitle, for: .normal)
         self.altTextTextView.becomeFirstResponder()
+		*/
     }
 
 
@@ -836,13 +837,14 @@ extension ComposeViewController : PHPickerViewControllerDelegate {
             providers.append(result.itemProvider)
         }
 
-        let processor = ItemProviderProcessor { (mediaList) in
+        let processor = ItemProviderProcessor { mediaList, mediaDescription in
             if mediaList.count > 0 {
                 for media in mediaList {
-                    self.addMedia(media)
+					self.addMedia(media, mediaDescription)
                 }
             }
 
+			self.titleField.text = mediaDescription
             picker.dismiss(animated: true, completion: nil)
         }
 
@@ -860,15 +862,15 @@ extension ComposeViewController : UIImagePickerControllerDelegate, UINavigationC
 		
 		if let image = info[.editedImage] as? UIImage {
 			let media = SunlitMedia(withImage: image)
-			self.addMedia(media)
+			self.addMedia(media, "")
 		}
 		else if let image = info[.originalImage] as? UIImage {
 			let media = SunlitMedia(withImage: image)
-			self.addMedia(media)
+			self.addMedia(media, "")
 		}
 		else if let video = info[.mediaURL] as? URL {
 			let media = SunlitMedia(withVideo: video)
-			self.addMedia(media)
+			self.addMedia(media, "")
 		}
 		
 		picker.dismiss(animated: true) {
@@ -931,9 +933,9 @@ extension ComposeViewController {
             }
 
             if items.count > 0 {
-                let processor = ItemProviderProcessor { (mediaObjects) in
+                let processor = ItemProviderProcessor { mediaObjects, mediaDescription in
                     for media in mediaObjects {
-                        self.addMedia(media)
+						self.addMedia(media, mediaDescription)
                     }
                 }
 
@@ -942,22 +944,4 @@ extension ComposeViewController {
         }
 
     }
-    /*
-     - (void) setupAppExtensionElements
-     {
-         if (!self.extensionContext)
-             return;
-
-         // Handle alert views...
-         [UUAlertViewController setActiveViewController:self];
-
-         // Grab the first extension item. We really should only ever have one...
-         NSExtensionItem* extensionItem = self.extensionContext.inputItems.firstObject;
-
-         // Process all the attachements...
-         NSMutableArray* itemsToProcess = [NSMutableArray arrayWithArray:extensionItem.attachments];
-         [self processAppExtensionItems:itemsToProcess];
-     }
-
-     */
 }

@@ -39,7 +39,7 @@ extension AppDelegate {
 			//if let current = user {
 				
 				DispatchQueue.main.async {
-					let profile_username = current.userName
+					let profile_username = current.username
 					var profile_image: UIImage? = ImageCache.prefetch(current.avatarURL)
 					
 					if let image = profile_image {

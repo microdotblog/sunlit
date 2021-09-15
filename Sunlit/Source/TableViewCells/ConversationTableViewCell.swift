@@ -39,7 +39,7 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 		self.replyText.attributedText = post.attributedText
 		self.replyText.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 		self.userName.text = post.owner.fullName
-		self.userHandle.text = "@" + post.owner.userName
+		self.userHandle.text = "@" + post.owner.username
 		self.loadProfilePhoto(post.owner, indexPath)
 
 		if let date = post.publishedDate {

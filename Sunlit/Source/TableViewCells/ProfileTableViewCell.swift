@@ -29,7 +29,7 @@ class ProfileTableViewCell: UITableViewCell {
 
 	func setup(_ user : SnippetsUser, _ indexPath : IndexPath) {
 		self.userName.text = user.fullName
-		self.userHandle.text = "@" + user.userName
+		self.userHandle.text = "@" + user.username
 		//self.bio.attributedText = user.attributedTextBio()
 		
 		self.avatar.image = nil

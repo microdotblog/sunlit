@@ -19,7 +19,7 @@ extension SnippetsUser {
 	var posts : [SnippetsPost] {
 		get {
 			var postArray : [SnippetsPost] = []
-			if let array = Settings.object(forKey: self.userName + "-Posts") as? [[String : Any]] {
+			if let array = Settings.object(forKey: self.username + "-Posts") as? [[String : Any]] {
 				for dictionary in array {
 					let post = SnippetsPost(dictionary)
 					postArray.append(post)
@@ -34,7 +34,7 @@ extension SnippetsUser {
 				dictionaryArray.append(dictionary)
 			}
 			
-            Settings.setValue(dictionaryArray, forKey: self.userName + "-Posts")
+            Settings.setValue(dictionaryArray, forKey: self.username + "-Posts")
 		}
 	}
 	
@@ -49,8 +49,8 @@ extension SnippetsUser {
 			dictionary["full_name"] = self.fullName
 		}
 		
-		if self.userName.count > 0 {
-			dictionary["user_handle"] = self.userName
+		if self.username.count > 0 {
+			dictionary["user_handle"] = self.username
 		}
 			
 		if self.avatarURL.count > 0 {
@@ -114,7 +114,7 @@ extension SnippetsUser {
 	
 	static func save(_ user : SnippetsUser, key : String? = nil) -> SnippetsUser {
 		
-		var saveKey = user.userName
+		var saveKey = user.username
 		if let k = key {
 			saveKey = k
 		}
@@ -133,7 +133,7 @@ extension SnippetsUser {
 		if let dictionary = Settings.object(forKey: userHandle) as? [String : Any] {
 			let user = SnippetsUser()
 			user.fullName = dictionary["full_name"] as? String ?? ""
-			user.userName = dictionary["user_handle"] as? String ?? ""
+			user.username = dictionary["user_handle"] as? String ?? ""
 			user.avatarURL = dictionary["path_to_user_image"] as? String ?? ""
 			user.siteURL = dictionary["path_to_web_site"] as? String ?? ""
 			user.bio = dictionary["bio"] as? String ?? ""

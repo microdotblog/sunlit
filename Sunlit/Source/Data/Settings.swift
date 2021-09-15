@@ -8,7 +8,7 @@
 
 import UIKit
 import Snippets
-import UUSwift
+import UUSwiftCore
 
 class Settings {
 

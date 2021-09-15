@@ -8,7 +8,7 @@
 
 import UIKit
 import Snippets
-import UUSwift
+import UUSwiftNetworking
 import SafariServices
 
 class ExternalBlogConfigurationViewController: UIViewController {

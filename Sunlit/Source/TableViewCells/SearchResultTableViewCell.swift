@@ -27,7 +27,7 @@ class SearchResultTableViewCell: UITableViewCell {
 
 	func setup(_ user : SnippetsUser, _ indexPath : IndexPath) {
 		self.userName.text = user.fullName
-		self.userHandle.text = "@" + user.userName
+		self.userHandle.text = "@" + user.username
 		
 		self.avatar.image = nil
 		

@@ -16,8 +16,9 @@ class SunlitMedia : NSObject {
 		case video
 	}
 	
-	init(withImage: UIImage) {
+	init(withImage: UIImage, fileType: String = "public.jpeg") {
 		super.init()
+		self.fileType = fileType
 		self.type = .image
 		self.image = withImage
 	}
@@ -55,4 +56,5 @@ class SunlitMedia : NSObject {
 	var videoURL : URL = URL(fileURLWithPath: "")
     var publishedPath : String? = nil
     var thumbnailPath : String? = nil
+	var fileType : String = "public.jpeg"
 }
