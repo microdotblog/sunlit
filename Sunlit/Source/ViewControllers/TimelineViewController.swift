@@ -55,10 +55,6 @@ class TimelineViewController: ContentViewController {
 	override func setupNotifications() {
         super.setupNotifications()
 
-//		NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShowNotification(_:)), name: .scrollTableViewNotification, object: nil)
-//		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-//		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-//		NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
@@ -88,71 +84,7 @@ class TimelineViewController: ContentViewController {
 			NotificationCenter.default.post(name: .emojiSelectedNotification, object: emoji)
 		}
 	}
-	
-	@objc func keyboardWillShowNotification(_ notification : Notification) {
-		if let info : [AnyHashable : Any] = notification.userInfo {
-			if let value : NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-				// run later outside of animation context
-				DispatchQueue.main.async {
-					// start at bottom of screen
-					var start_r = self.view.bounds
-					start_r.origin.y = start_r.size.height + self.keyboardAccessoryView.bounds.size.height
-					start_r.size.height = self.keyboardAccessoryView.bounds.size.height
-					self.keyboardAccessoryView.frame = start_r
-					self.view.addSubview(self.keyboardAccessoryView)
-
-					// show it
-					self.keyboardAccessoryView.isHidden = false
-					self.keyboardAccessoryView.alpha = 1.0
-
-					// animate into position
-					let frame = value.cgRectValue
-					let height = self.keyboardAccessoryView.frame.size.height
-					let safeArea : CGFloat = self.view.safeAreaInsets.bottom
-					var offset = frame.origin.y - height
-					
-					if UIDevice.current.userInterfaceIdiom == .phone {
-						offset = offset + safeArea
-					}
-
-					if let duration = info[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double {
-						let curve_default = 7
-						let curve_value = (info[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.intValue ?? curve_default
-						let options = UIView.AnimationOptions(rawValue: UInt(curve_value << 16))
-						UIView.animate(withDuration: duration, delay: 0, options: options, animations: {
-							self.keyboardAccessoryView.frame = CGRect(x: 0, y: offset, width: frame.size.width, height: height)
-						})
-					}
-				}
-			}
-		}
-	}
-
-	@objc func keyboardWillHideNotification(_ notification : Notification) {
-		self.keyboardAccessoryView.removeFromSuperview()
-		self.keyboardAccessoryView.alpha = 0.0
-	}
-
-	@objc func keyboardDidShowNotification(_ notification : Notification) {
-		UIView.animate(withDuration: 0.3) {
-			self.keyboardAccessoryView.alpha = 1.0
-		}
-	}
-
-	@objc func handleKeyboardShowNotification(_ notification : Notification) {
 		
-		if let dictionary = notification.object as? [String : Any] {
-			let keyboardRect = dictionary["keyboardOffset"] as! CGRect
-			var tableViewLocation = dictionary["tableViewLocation"] as! CGFloat
-			let keyboardTop = keyboardRect.origin.y - self.keyboardAccessoryView.frame.size.height
-			tableViewLocation = tableViewLocation - self.keyboardAccessoryView.frame.size.height
-			let screenOffset = self.tableView.frame.origin.y + (tableViewLocation - self.tableView.contentOffset.y)
-			let visibleOffset = self.tableView.contentOffset.y + (screenOffset - keyboardTop) + 60.0
-			
-			self.tableView.setContentOffset(CGPoint(x: 0, y: visibleOffset), animated: true)
-		}
-	}
-	
 	@objc func handleImageLoadedNotification(_ notification : Notification) {
 
 		// Don't do anything if we aren't onscreen...
@@ -326,7 +258,7 @@ class TimelineViewController: ContentViewController {
 						DispatchQueue.main.async {
 							if self.isPresented {
 								if imageSource == post.images.first {
-									NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+									NotificationCenter.default.post(name: .refreshCellNotification, object: self, userInfo: [ "index": indexPath ])
 								}
 							}
 						}

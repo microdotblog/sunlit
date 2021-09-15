@@ -84,7 +84,7 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 			ImageCache.fetch(avatarSource) { (image) in
 				if let _ = image {
 					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+						NotificationCenter.default.post(name: .refreshCellNotification, object: self, userInfo: [ "index": indexPath ])
 					}
 				}
 			}

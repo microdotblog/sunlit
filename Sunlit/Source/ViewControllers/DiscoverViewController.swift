@@ -381,7 +381,7 @@ class DiscoverViewController: ContentViewController {
 				if let _ = image {
 					DispatchQueue.main.async {
 						if self.isPresented {
-							NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+							NotificationCenter.default.post(name: .refreshCellNotification, object: self, userInfo: [ "index": indexPath ])
 						}
 					}
 				}
@@ -394,7 +394,7 @@ class DiscoverViewController: ContentViewController {
 				if let _ = image {
 					DispatchQueue.main.async {
 						if self.isPresented {
-							NotificationCenter.default.post(name: .refreshCellNotification, object: indexPath)
+							NotificationCenter.default.post(name: .refreshCellNotification, object: self, userInfo: [ "index": indexPath ])
 						}
 					}
 				}
