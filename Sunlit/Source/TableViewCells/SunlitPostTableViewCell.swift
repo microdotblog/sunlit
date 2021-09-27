@@ -402,7 +402,10 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 		cell.timeStampLabel.alpha = 0.0
 		cell.timeStampLabel.isHidden = false
 
-		if let url = URL(string: self.post.videos[indexPath.item]) {
+		let thumbnail = self.post.images[indexPath.item]
+		if let path = self.post.videos[thumbnail],
+		   let url = URL(string: path) {
+
 			let playerItem = AVPlayerItem(url: url)
 			let player = AVQueuePlayer(playerItem: playerItem)
 			let playerLayer = AVPlayerLayer(player: player)
@@ -456,7 +459,9 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 			}
 		}
 
-		let hasVideo = (self.post.videos.count > 0)
+		let thumbnail = self.post.images[indexPath.item]
+		let hasVideo = self.post.videos[thumbnail] != nil
+		
 		cell.videoPlayIndicator.isHidden = !hasVideo
 		if hasVideo {
 			self.configureVideoPlayer(cell, indexPath)

@@ -17,7 +17,7 @@ class SunlitPost : SnippetsPost {
 	var aspectRatio : Float = 0.0
 	var altText : [String] = []
 	var images : [String] = []
-	var videos : [String] = []
+	var videos : [String:String] = [:]
 	var htmlString : String = ""
 	var attributedText : NSAttributedString = NSAttributedString(string: "")
 
@@ -112,7 +112,7 @@ class SunlitPost : SnippetsPost {
 				let height = imageTag(tag: "height", video) as NSString
 
 				parsedEntry.altText.append(altText)
-				parsedEntry.videos.append(source)
+				parsedEntry.videos[poster] = source
 				parsedEntry.images.append(poster)
 				if width.floatValue > 0.0 && height.floatValue > 0.0 {
 					let ratio = height.floatValue / width.floatValue
