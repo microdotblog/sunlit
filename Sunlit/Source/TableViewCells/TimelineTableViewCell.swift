@@ -117,15 +117,21 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 		cell.timeStampLabel.text = "00:00"
 		cell.timeStampLabel.alpha = 0.0
 		cell.timeStampLabel.isHidden = false
+		cell.postImage.contentMode = .scaleAspectFill
 
-		if let url = URL(string: self.post.videos[indexPath.item]) {
+		let thumbnail = self.post.images[indexPath.item]
+		if let videoPath = self.post.videos[thumbnail],
+		   let url = URL(string: videoPath) {
+
+			cell.postImage.contentMode = .scaleAspectFit
+			
 			let playerItem = AVPlayerItem(url: url)
 			let player = AVQueuePlayer(playerItem: playerItem)
 			let playerLayer = AVPlayerLayer(player: player)
-			cell.contentView.layer.addSublayer(playerLayer)
+			cell.postImage.layer.addSublayer(playerLayer)
 			cell.contentView.bringSubviewToFront(cell.timeStampLabel)
 
-			playerLayer.frame = self.collectionView.bounds
+			playerLayer.frame = cell.postImage.bounds
 			playerLayer.isHidden = true
 
 			self.player = player
@@ -172,7 +178,8 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 			}
 		}
 
-		let hasVideo = (self.post.videos.count > 0)
+		let thumbnail = self.post.images[indexPath.item]
+		let hasVideo = self.post.videos[thumbnail] != nil
 		cell.videoPlayIndicator.isHidden = !hasVideo
 		if hasVideo {
 			self.configureVideoPlayer(cell, indexPath)
@@ -188,8 +195,10 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 
 		// See if we have a valid player...
-		if let player = self.player,
-		   let playerLayer = self.playerLayer {
+		if let cell = cell as? SunlitPostCollectionViewCell,
+		   let player = self.player,
+		   let playerLayer = self.playerLayer,
+		   cell.postImage.layer == playerLayer.superlayer {
 			player.pause()
 			playerLayer.removeFromSuperlayer()
 		}
@@ -197,13 +206,14 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
-		if self.post.videos.count > 0 {
+		let thumbnail = self.post.images[indexPath.item]
+		if self.post.videos[thumbnail] != nil {
 
 			if let player = self.player,
 			   let playerLayer = self.playerLayer {
 				if player.rate == 0.0 {
-					//playerLayer.frame = collectionView.bounds
 					playerLayer.isHidden = false
+					playerLayer.bounds = CGRect(origin: .zero, size: collectionView.bounds.size)
 					player.play()
 				}
 				else {

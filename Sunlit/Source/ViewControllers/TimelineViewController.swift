@@ -161,10 +161,12 @@ class TimelineViewController: ContentViewController {
 		}
 
         if let indexPath = notification.object as? IndexPath {
-			if indexPath.row < self.tableViewData.count {
+			//if indexPath.row < self.tableViewData.count {
+			if indexPath.row < self.tableView.numberOfRows(inSection: 0) {
 				if let visibleCells = self.tableView.indexPathsForVisibleRows {
 					if visibleCells.contains(indexPath) {
-						self.tableView.reloadRows(at: [ indexPath ], with: .fade)
+						self.tableView.reloadData()
+						//self.tableView.reloadRows(at: [ IndexPath(row: indexPath.row, section: 0) ], with: .fade)
 					}
 				}
 			}
@@ -246,6 +248,7 @@ class TimelineViewController: ContentViewController {
 		self.loadingData = true
 		Snippets.Microblog.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
 
+			self.loadingData = false
 			self.setupBlurHashes(postObjects)
 
 			DispatchQueue.main.async {
@@ -256,7 +259,6 @@ class TimelineViewController: ContentViewController {
                     self.handleTimelineError(error as NSError?)
                 }
 
-				self.loadingData = false
 				self.spinner.stopAnimating()
 			}
 		}
@@ -379,8 +381,7 @@ class TimelineViewController: ContentViewController {
 
             case 408: // Timeout
                 // wait a few seconds before re-trying after an error
-                self.loadingData = false
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
+				DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                     self.loadTimeline()
                 }
 
@@ -399,16 +400,14 @@ class TimelineViewController: ContentViewController {
                  418: // I'm a teapot
 
                 // wait a few seconds before re-trying after an error
-                self.loadingData = false
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                    self.loadTimeline()
+                    //self.loadTimeline()
                 }
 
             default:
                 // wait a few seconds before re-trying after an error
-                self.loadingData = false
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                    self.loadTimeline()
+                    //self.loadTimeline()
                 }
             }
 
