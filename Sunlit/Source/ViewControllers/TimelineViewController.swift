@@ -38,8 +38,6 @@ class TimelineViewController: ContentViewController {
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(loadTimeline), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
-		
-//		self.loadFrequentlyUsedEmoji()
 	}
 
     override func navbarTitle() -> String {
@@ -165,8 +163,8 @@ class TimelineViewController: ContentViewController {
 			if indexPath.row < self.tableView.numberOfRows(inSection: 0) {
 				if let visibleCells = self.tableView.indexPathsForVisibleRows {
 					if visibleCells.contains(indexPath) {
-						self.tableView.reloadData()
-						//self.tableView.reloadRows(at: [ IndexPath(row: indexPath.row, section: 0) ], with: .fade)
+						//self.tableView.reloadData()
+						self.tableView.reloadRows(at: [ IndexPath(row: indexPath.row, section: 0) ], with: .fade)
 					}
 				}
 			}
@@ -246,8 +244,10 @@ class TimelineViewController: ContentViewController {
 		}
 		
 		self.loadingData = true
+		print("Fetching timeline")
 		Snippets.Microblog.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
 
+			print("Finished fetching timeline")
 			self.loadingData = false
 			self.setupBlurHashes(postObjects)
 
@@ -257,6 +257,7 @@ class TimelineViewController: ContentViewController {
                 }
                 else {
                     self.handleTimelineError(error as NSError?)
+					self.refreshControl.endRefreshing()
                 }
 
 				self.spinner.stopAnimating()
@@ -291,6 +292,7 @@ class TimelineViewController: ContentViewController {
                     print("Preparing to insert rows")
                     if entries.count == 0 {
                         self.noMoreToLoad = true
+						self.loadingData = false
                         let indexPath = IndexPath(row: self.tableViewData.count, section: 0)
 						self.tableView.insertRows(at: [indexPath], with: .none)
                         return
@@ -310,7 +312,8 @@ class TimelineViewController: ContentViewController {
                         }
 					}
 
-					self.tableView.insertRows(at: indexPaths, with: .automatic)
+					self.tableView.reloadData()
+					//self.tableView.insertRows(at: indexPaths, with: .automatic)
 					self.loadingData = false
 				}
 			})

@@ -133,7 +133,6 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 			cell.contentView.bringSubviewToFront(cell.timeStampLabel)
 
 			playerLayer.frame = CGRect(origin: .zero, size: self.collectionView.bounds.size)
-			print(playerLayer.frame)
 			playerLayer.isHidden = true
 
 			self.player = player
@@ -216,7 +215,6 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 				if player.rate == 0.0 {
 					playerLayer.isHidden = false
 					playerLayer.frame = CGRect(origin: .zero, size: collectionView.bounds.size)
-					print(playerLayer.frame)
 					player.play()
 				}
 				else {
