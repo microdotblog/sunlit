@@ -31,10 +31,10 @@ class SunlitMedia : NSObject {
 	}
 	
 	func generateVideoThumbnail() -> UIImage? {
-		let asset = AVAsset(url: self.videoURL)
+		let asset = AVURLAsset(url: self.videoURL)
 		let imageGenerator = AVAssetImageGenerator(asset: asset)
 		imageGenerator.appliesPreferredTrackTransform = true
-		let thumbnailTime = CMTimeMake(value: 2, timescale: 1)
+		let thumbnailTime = CMTimeMakeWithSeconds(1.0, preferredTimescale: 600)
 		do {
 			let cgImage = try imageGenerator.copyCGImage(at: thumbnailTime, actualTime: nil)
 			let image = UIImage(cgImage: cgImage)

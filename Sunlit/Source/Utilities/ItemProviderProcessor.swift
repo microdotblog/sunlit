@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AVKit
+import PhotosUI
 import Snippets
 import UUSwiftNetworking
 import MobileCoreServices
@@ -148,7 +150,13 @@ class ItemProviderProcessor : NSObject {
 
     private func processVideoProvider(_ provider : NSItemProvider) {
 
-        _ = provider.loadInPlaceFileRepresentation(forTypeIdentifier: String(kUTTypeMovie), completionHandler: { (url, success, error) in
+		var type = String(kUTTypeMovie)
+		if #available(iOS 14, *) {
+			type = UTType.movie.identifier
+		}
+		//_ = provider.loadItem(forTypeIdentifier: String(kUTTypeMovie), options: nil, completionHandler: { url, error in
+		//_ = provider.loadFileRepresentation(forTypeIdentifier: String(kUTTypeMovie), completionHandler: { url, error in
+		_ = provider.loadInPlaceFileRepresentation(forTypeIdentifier: type, completionHandler: { (url, success, error) in
             if let videoURL = url {
                 self.processedMedia.append(SunlitMedia(withVideo: videoURL))
             }
