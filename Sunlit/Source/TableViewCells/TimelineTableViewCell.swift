@@ -128,10 +128,12 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 			let playerItem = AVPlayerItem(url: url)
 			let player = AVQueuePlayer(playerItem: playerItem)
 			let playerLayer = AVPlayerLayer(player: player)
-			cell.postImage.layer.addSublayer(playerLayer)
+			playerLayer.videoGravity = .resizeAspect
+			cell.contentView.layer.addSublayer(playerLayer)
 			cell.contentView.bringSubviewToFront(cell.timeStampLabel)
 
-			playerLayer.frame = cell.postImage.bounds
+			playerLayer.frame = CGRect(origin: .zero, size: self.collectionView.bounds.size)
+			print(playerLayer.frame)
 			playerLayer.isHidden = true
 
 			self.player = player
@@ -198,7 +200,7 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 		if let cell = cell as? SunlitPostCollectionViewCell,
 		   let player = self.player,
 		   let playerLayer = self.playerLayer,
-		   cell.postImage.layer == playerLayer.superlayer {
+		   cell.contentView.layer == playerLayer.superlayer {
 			player.pause()
 			playerLayer.removeFromSuperlayer()
 		}
@@ -213,7 +215,8 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 			   let playerLayer = self.playerLayer {
 				if player.rate == 0.0 {
 					playerLayer.isHidden = false
-					playerLayer.bounds = CGRect(origin: .zero, size: collectionView.bounds.size)
+					playerLayer.frame = CGRect(origin: .zero, size: collectionView.bounds.size)
+					print(playerLayer.frame)
 					player.play()
 				}
 				else {
