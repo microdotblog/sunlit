@@ -117,7 +117,14 @@ class MainViewController: UIViewController {
 
 		}
 
-		self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+		if let navigationController = navigationController {
+			let appearance = UINavigationBarAppearance()
+			appearance.configureWithDefaultBackground()
+			appearance.backgroundEffect = UIBlurEffect(style: .regular)
+			navigationController.navigationBar.standardAppearance = appearance
+			navigationController.navigationBar.scrollEdgeAppearance = navigationController.navigationBar.standardAppearance
+			navigationController.interactivePopGestureRecognizer?.delegate = nil
+		}
 	}
 
 	
