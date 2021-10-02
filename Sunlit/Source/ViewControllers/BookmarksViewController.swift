@@ -142,7 +142,8 @@ class BookmarksViewController: ContentViewController {
     }
 
     @objc func handleImageLoadedNotification(_ notification : Notification) {
-        if let indexPath = notification.object as? IndexPath {
+		if let userInfo = notification.userInfo,
+		   let indexPath = userInfo["index"] as? IndexPath {
             if indexPath.row < self.tableViewData.count {
                 if let visibleCells = self.tableView.indexPathsForVisibleRows {
                     if visibleCells.contains(indexPath) {

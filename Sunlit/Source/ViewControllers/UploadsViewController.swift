@@ -78,9 +78,12 @@ class UploadsViewController: UIViewController {
     }
 
     @objc func handleImageLoadedNotification(_ notification : Notification) {
-        DispatchQueue.main.async {
-            if let indexPath = notification.object as? IndexPath {
-                let visibleIndexPaths = self.collectionView.indexPathsForVisibleItems
+
+		DispatchQueue.main.async {
+			if let userInfo = notification.userInfo,
+			   let indexPath = userInfo["index"] as? IndexPath {
+
+				let visibleIndexPaths = self.collectionView.indexPathsForVisibleItems
                 if visibleIndexPaths.contains(indexPath) {
                     self.collectionView.reloadData()
                 }

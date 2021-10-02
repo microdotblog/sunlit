@@ -36,7 +36,7 @@ class TimelineViewController: ContentViewController {
     }
 
 	func setupTableView() {
-		self.refreshControl.addTarget(self, action: #selector(loadTimeline), for: .valueChanged)
+		self.refreshControl.addTarget(self, action: #selector(onPullToRefresh), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
 	}
 
@@ -90,15 +90,16 @@ class TimelineViewController: ContentViewController {
 			return
 		}
 
-        if let indexPath = notification.object as? IndexPath {
-			//if indexPath.row < self.tableViewData.count {
-			if indexPath.row < self.tableView.numberOfRows(inSection: 0) {
-				if let visibleCells = self.tableView.indexPathsForVisibleRows {
-					if visibleCells.contains(indexPath) {
-						//self.tableView.reloadData()
-						self.tableView.reloadRows(at: [ IndexPath(row: indexPath.row, section: 0) ], with: .fade)
-					}
-				}
+
+		if let userInfo = notification.userInfo,
+		   let indexPath = userInfo["index"] as? IndexPath,
+		   let visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
+
+			if visibleIndexPaths.contains(indexPath) {
+				//self.tableView.reloadData()
+				self.tableView.beginUpdates()
+				self.tableView.reloadRows(at: [ IndexPath(row: indexPath.row, section: 0) ], with: .fade)
+				self.tableView.endUpdates()
 			}
 		}
 
@@ -162,10 +163,16 @@ class TimelineViewController: ContentViewController {
 		}
 	}
 
-	@objc func loadTimeline() {
-		
-        self.noMoreToLoad = false
-        
+	@objc func onPullToRefresh() {
+		self.noMoreToLoad = false
+		self.loadTimeline()
+	}
+
+
+
+	func loadTimeline() {
+
+		print("loadTimeline called")
 		let token = Settings.snippetsToken()
 		self.loggedOutView.isHidden = (token != nil)
 		self.loggedOutView.superview?.bringSubviewToFront(self.loggedOutView)
@@ -196,7 +203,7 @@ class TimelineViewController: ContentViewController {
 			}
 		}
 	}
-	
+
 	@objc func loadMoreTimeline() {
 		// Safety check for double loads...
 		if self.loadingData == true {
@@ -225,8 +232,10 @@ class TimelineViewController: ContentViewController {
                     if entries.count == 0 {
                         self.noMoreToLoad = true
 						self.loadingData = false
+						self.tableView.beginUpdates()
                         let indexPath = IndexPath(row: self.tableViewData.count, section: 0)
 						self.tableView.insertRows(at: [indexPath], with: .none)
+						self.tableView.endUpdates()
                         return
                     }
 					
@@ -244,8 +253,11 @@ class TimelineViewController: ContentViewController {
                         }
 					}
 
-					self.tableView.reloadData()
-					//self.tableView.insertRows(at: indexPaths, with: .automatic)
+					//self.tableView.reloadData()
+					
+					self.tableView.beginUpdates()
+					self.tableView.insertRows(at: indexPaths, with: .automatic)
+					self.tableView.endUpdates()
 					self.loadingData = false
 				}
 			})
@@ -317,7 +329,7 @@ class TimelineViewController: ContentViewController {
             case 408: // Timeout
                 // wait a few seconds before re-trying after an error
 				DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                    self.loadTimeline()
+                    //self.loadTimeline()
                 }
 
             case 405, // Method not allowed

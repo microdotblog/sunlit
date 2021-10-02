@@ -518,7 +518,8 @@ class DiscoverViewController: ContentViewController {
 
 		DispatchQueue.main.async {
             if !self.tableView.isHidden {
-                if let indexPath = notification.object as? IndexPath,
+				if let userInfo = notification.userInfo,
+				   let indexPath = userInfo["index"] as? IndexPath,
                    let visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
                     
                     if visibleIndexPaths.contains(indexPath) {
@@ -531,7 +532,8 @@ class DiscoverViewController: ContentViewController {
             }
             
             if !self.collectionView.isHidden {
-                if let indexPath = notification.object as? IndexPath {
+				if let userInfo = notification.userInfo,
+				   let indexPath = userInfo["index"] as? IndexPath {
                     
                     let visibleIndexPaths = self.collectionView.indexPathsForVisibleItems
                     if visibleIndexPaths.contains(indexPath) {
