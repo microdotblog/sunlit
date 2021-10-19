@@ -2377,7 +2377,7 @@
 			repositoryURL = "https://github.com/SilverPineSoftware/UUSwift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.7;
+				minimumVersion = 1.1.10;
 			};
 		};
 		C5FA2E0526EEB8590053DE8E /* XCRemoteSwiftPackageReference "snippets" */ = {

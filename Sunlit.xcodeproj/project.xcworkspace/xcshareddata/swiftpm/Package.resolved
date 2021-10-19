@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/SilverPineSoftware/UUSwift",
         "state": {
           "branch": null,
-          "revision": "ab1c75cacaa305335f18649b4bfb35b8330e85a0",
-          "version": "1.1.7"
+          "revision": "69412a5d6965c3cb99410430e6414decc22738dc",
+          "version": "1.1.10"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SilverPineSoftware/UUSwiftCore.git",
         "state": {
           "branch": null,
-          "revision": "028ebae602272ac68c0ae8840b2269f14fd1a58b",
-          "version": "1.0.4"
+          "revision": "9e84e9fabf0c76c7dbf0ea24e91baac75e8ee48c",
+          "version": "1.1.3"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/SilverPineSoftware/UUSwiftImage.git",
         "state": {
           "branch": null,
-          "revision": "bebe821ca37dc13aa0a5900e36ab18f93bff79cb",
-          "version": "1.0.5"
+          "revision": "d84c524b4d00ce6f2b985d1fbfabfc17a7acd41a",
+          "version": "1.1.2"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/SilverPineSoftware/UUSwiftNetworking.git",
         "state": {
           "branch": null,
-          "revision": "8d587368712ffad5ed1b69eac0b2ae84040853df",
-          "version": "1.0.5"
+          "revision": "847daab12fabded9a4906d4280c3117fc8bdca08",
+          "version": "1.1.0"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/SilverPineSoftware/UUSwiftUX.git",
         "state": {
           "branch": null,
-          "revision": "9dcda9ac337360ea9f29e465053ce3fc2c483432",
-          "version": "1.0.5"
+          "revision": "09b25c29e55c49199aa1a8b93503cc873b5f144c",
+          "version": "1.0.7"
         }
       }
     ]
