@@ -155,16 +155,23 @@ class ItemProviderProcessor : NSObject {
 			type = UTType.movie.identifier
 		}
 		//_ = provider.loadItem(forTypeIdentifier: String(kUTTypeMovie), options: nil, completionHandler: { url, error in
-		//_ = provider.loadFileRepresentation(forTypeIdentifier: String(kUTTypeMovie), completionHandler: { url, error in
-		_ = provider.loadInPlaceFileRepresentation(forTypeIdentifier: type, completionHandler: { (url, success, error) in
+		//_ = provider.loadInPlaceFileRepresentation(forTypeIdentifier: type, completionHandler: { (url, success, error) in
+		_ = provider.loadFileRepresentation(forTypeIdentifier: type, completionHandler: { url, error in
             if let videoURL = url {
-                self.processedMedia.append(SunlitMedia(withVideo: videoURL))
+
+				let fm = FileManager.default
+				let name = UUID().uuidString
+				let destination = fm.temporaryDirectory.appendingPathComponent(name + ".mov")
+				try! fm.copyItem(at: videoURL, to: destination)
+
+				DispatchQueue.main.async {
+					self.processedMedia.append(SunlitMedia(withVideo: destination))
+					self.processNextProvider()
+				}
             }
             else {
                 print("*** Unable to process provider of URL type ***")
             }
-
-            self.processNextProvider()
 
         })
 

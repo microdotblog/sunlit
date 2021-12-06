@@ -34,7 +34,7 @@ class SunlitMedia : NSObject {
 		let asset = AVURLAsset(url: self.videoURL)
 		let imageGenerator = AVAssetImageGenerator(asset: asset)
 		imageGenerator.appliesPreferredTrackTransform = true
-		let thumbnailTime = CMTimeMakeWithSeconds(1.0, preferredTimescale: 600)
+		let thumbnailTime = CMTimeMakeWithSeconds(0.0, preferredTimescale: 600)
 		do {
 			let cgImage = try imageGenerator.copyCGImage(at: thumbnailTime, actualTime: nil)
 			let image = UIImage(cgImage: cgImage)
@@ -47,6 +47,11 @@ class SunlitMedia : NSObject {
 	}
 	
 	func getImage() -> UIImage {
+		if image == nil
+		{
+			return UIImage()
+		}
+
 		return image
 	}
 
