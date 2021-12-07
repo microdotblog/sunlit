@@ -231,7 +231,7 @@ class ConversationViewController: UIViewController {
 				self.postButton.alpha = 0.0
 				self.view.layoutIfNeeded()
 				
-				self.replyField.text = ""
+//				self.replyField.text = ""
 				
 				if self.replyField.text.count <= 0 {
 					self.replyFieldPlaceholder.alpha = 1.0
