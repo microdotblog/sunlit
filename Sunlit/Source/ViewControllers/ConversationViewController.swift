@@ -43,8 +43,6 @@ class ConversationViewController: UIViewController {
 		self.setupTable()
 		self.setupNavigation()
 		self.setupGesture()
-
-        self.replyField.text = self.sourcePost?.loadDraftedText()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -187,7 +185,6 @@ class ConversationViewController: UIViewController {
 					Dialog(self).information(err.localizedDescription)
 				}
 				else {
-                    self.sourcePost?.saveDraftedReply("")
 					self.replyField.text = ""
 					self.loadConversation(scrollToBottom: true)
 				}
@@ -230,9 +227,7 @@ class ConversationViewController: UIViewController {
 				//self.tableBottomConstraint.constant = 44
 				self.postButton.alpha = 0.0
 				self.view.layoutIfNeeded()
-				
-//				self.replyField.text = ""
-				
+								
 				if self.replyField.text.count <= 0 {
 					self.replyFieldPlaceholder.alpha = 1.0
 				}
@@ -282,11 +277,6 @@ extension ConversationViewController : UITextViewDelegate {
 			self.replyContainer.updateConstraints()
 			self.replyContainer.layoutIfNeeded()
 		}
-
-        if let currentText = textView.text,
-           let textRange = Range(range, in: currentText) {
-            self.sourcePost?.saveDraftedReply(currentText.replacingCharacters(in: textRange, with: text))
-        }
 		
 		return true
 	}
