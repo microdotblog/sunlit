@@ -184,7 +184,11 @@ class TimelineViewController: ContentViewController {
 		
 		self.loadingData = true
 		print("Fetching timeline")
-		Snippets.Microblog.fetchCurrentUserMediaTimeline { (error, postObjects : [SnippetsPost]) in
+
+		var parameters : [String : String] = [:]
+		parameters["count"] = "10"
+
+		Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters) { (error, postObjects : [SnippetsPost]) in
 
 			print("Finished fetching timeline")
 			self.loadingData = false
