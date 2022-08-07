@@ -16,6 +16,7 @@ class PhotoEntryCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var photo : UIImageView!
 	@IBOutlet var date : UILabel!
     @IBOutlet var selectionIndicator : UIImageView? = nil
+	@IBOutlet var selectionBackgroundView : UIView? = nil
 
 	static func sizeOf(collectionViewWidth : CGFloat) -> CGSize {
 		var sections = Int(collectionViewWidth / 160.0)
@@ -44,6 +45,9 @@ class PhotoEntryCollectionViewCell : UICollectionViewCell {
             if let selectionIndicator = self.selectionIndicator {
                 selectionIndicator.isHidden = !isSelected
             }
+			if let selectionBackgroundView = self.selectionBackgroundView {
+				selectionBackgroundView.isHidden = !isSelected
+			}
         }
     }
 }

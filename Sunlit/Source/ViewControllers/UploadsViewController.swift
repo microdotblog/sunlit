@@ -207,9 +207,9 @@ extension UploadsViewController : UICollectionViewDataSource, UICollectionViewDe
         let item = media[indexPath.item]
         if let url = item["url"] as? String,
            let date = item["published"] as? String {
-
-            if let rawDate = date.uuParseDate(format: UUDate.Formats.rfc3339) {
-                cell.date.text = rawDate.friendlyFormat()
+			
+            if let rawDate = date.uuParseDate(format: "yyyy-MM-dd'T'HH:mm:ss+00:00") {
+				cell.date.text = rawDate.uuFormat(UUDate.Formats.iso8601DateOnly)
             }
             else {
                 cell.date.text = date
