@@ -178,7 +178,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
 		let fullURL = path!
 		
 		let request = UUHttpRequest(url: path!)
-		request.processMimeTypes = false
+		//request.processMimeTypes = false
 		self.busyIndicator.isHidden = false
 
 		_ = UUHttpSession.executeRequest(request) { (response) in

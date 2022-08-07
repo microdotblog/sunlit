@@ -96,7 +96,7 @@ class ItemProviderProcessor : NSObject {
 				}
 
                 let request = UUHttpRequest(url: url.absoluteString)
-                request.processMimeTypes = false
+                //request.processMimeTypes = false
 
                 _ = UUHttpSession.executeRequest(request) { (response) in
 

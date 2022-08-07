@@ -156,6 +156,39 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 		}
 	}
 
+    func reloadImages()
+    {
+        let defaultPhoto = self.post.defaultPhoto
+        let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
+
+        let avatarSource = self.post.owner.avatarURL
+        if let avatar = ImageCache.prefetch(avatarSource)
+        {
+            self.userAvatar.image = avatar
+        }
+
+        
+        for i in 0...self.post.images.count - 1
+        {
+            let imagePath = self.post.images[i]
+            if let image = ImageCache.prefetch(imagePath)
+            {
+                if let cell = self.collectionView.cellForItem(at: IndexPath(item: i, section: 0)) as? SunlitPostCollectionViewCell
+                {
+                    cell.postImage.image = image
+                }
+            }
+            else if blurHash.count > 0
+            {
+                if let image = ImageCache.prefetch(blurHash)
+                {
+                    let cell = self.collectionView.cellForItem(at: IndexPath(item: i, section: 0)) as! SunlitPostCollectionViewCell
+                    cell.postImage.image = image
+                }
+            }
+        }
+    }
+    
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.post.images.count
 	}

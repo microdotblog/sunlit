@@ -96,10 +96,15 @@ class TimelineViewController: ContentViewController {
 		   let visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
 
 			if visibleIndexPaths.contains(indexPath) {
+                if let cell = self.tableView.cellForRow(at: indexPath) as? TimelineTableViewCell
+                {
+                    print("redrawing \(indexPath)")
+                    cell.reloadImages()
+                }
 				//self.tableView.reloadData()
-				self.tableView.beginUpdates()
-				self.tableView.reloadRows(at: [ IndexPath(row: indexPath.row, section: 0) ], with: .fade)
-				self.tableView.endUpdates()
+				//self.tableView.beginUpdates()
+				//self.tableView.reloadRows(at: [ IndexPath(row: indexPath.row, section: 0) ], with: .fade)
+				//self.tableView.endUpdates()
 			}
 		}
 
@@ -419,9 +424,9 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
 
 	func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
 
-		//for indexPath in indexPaths {
-		//	self.prefetchImages(indexPath)
-		//}
+		for indexPath in indexPaths {
+			self.prefetchImages(indexPath)
+		}
 	}
 
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

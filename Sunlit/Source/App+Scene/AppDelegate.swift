@@ -16,6 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        // Disable disk caching...
+        UURemoteImage.useDiskCache = false
+        
         if let token = Settings.snippetsToken() {
             Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: token)
         }
