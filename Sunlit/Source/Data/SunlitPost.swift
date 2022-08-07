@@ -27,7 +27,7 @@ class SunlitPost : SnippetsPost {
 
 	// These are exclusion patterns in the image source that can help remove any images from displaying, like emojis.
 	static let exclusionPatterns : [String] = ["/images/core/emoji"]
-	static let minimumResolution : Float = 100.0
+	static let miniThumbnailsURL = "https://micro.blog/photos/50/"
 	
 	static func create(_ snippet : SnippetsPost, font : UIFont = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body), textColor : UIColor = UIColor.label) -> SunlitPost {
 
@@ -77,8 +77,14 @@ class SunlitPost : SnippetsPost {
 
 			// Store the image paths and the alt-text objects (if they exist)
 			for image in images {
-				let source = imageTag(tag: "src", image)
+				var source = imageTag(tag: "src", image)
 				let altText = imageTag(tag: "alt", image)
+				
+				// expand the mini thumbnails
+				if source.contains(miniThumbnailsURL) {
+					source = source.replaceAll(of: miniThumbnailsURL, with: "")
+				}
+				
 				parsedEntry.images.append(source)
 				parsedEntry.altText.append(altText)
 			
