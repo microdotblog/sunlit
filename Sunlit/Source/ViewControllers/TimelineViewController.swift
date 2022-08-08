@@ -191,7 +191,7 @@ class TimelineViewController: ContentViewController {
 		print("Fetching timeline")
 
 		var parameters : [String : String] = [:]
-		parameters["count"] = "10"
+		parameters["count"] = "30"
 
 		Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters) { (error, postObjects : [SnippetsPost]) in
 
@@ -228,7 +228,7 @@ class TimelineViewController: ContentViewController {
 			self.loadingData = true
 	
 			var parameters : [String : String] = [:]
-			parameters["count"] = "10"
+			parameters["count"] = "20"
 			parameters["before_id"] = last.identifier
 
 			Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters, completion:
@@ -432,7 +432,7 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		self.prefetchImages(indexPath)
 		
-		if indexPath.row > (self.tableViewData.count - 3) {
+		if indexPath.row > (self.tableViewData.count - 10) {
 			self.loadMoreTimeline()
 		}
 	}
