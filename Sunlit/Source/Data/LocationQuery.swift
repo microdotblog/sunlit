@@ -10,7 +10,7 @@ import CoreLocation
 import UUSwift
 import MapKit
 import Snippets
-
+import UUSwiftNetworking
 
 extension SnippetsLocation
 {
@@ -50,16 +50,17 @@ extension SnippetsLocation
 			let location = CLLocation(latitude: SnippetsLocation.currentLatitude, longitude: SnippetsLocation.currentLongitude)
 
 			findNearbyLocations(searchString, location) { venues in
-				let filteredVenues = filterByDistance(distance: SnippetsLocation.Query.locationProximityThreshold, latitude: SnippetsLocation.currentLatitude, longitude: SnippetsLocation.currentLongitude, venues: venues)
-
-				// If there aren't any nearby, then just return the closest...
-				if filteredVenues.count == 0 {
-					let closest = findClosest(latitude: SnippetsLocation.currentLatitude, longitude: SnippetsLocation.currentLongitude, venues: venues)
-					completion([closest])
-				}
-				else {
-					completion(filteredVenues)
-				}
+				completion(venues)
+//				let filteredVenues = filterByDistance(distance: SnippetsLocation.Query.locationProximityThreshold, latitude: SnippetsLocation.currentLatitude, longitude: SnippetsLocation.currentLongitude, venues: venues)
+//
+//				// If there aren't any nearby, then just return the closest...
+//				if filteredVenues.count == 0 {
+//					let closest = findClosest(latitude: SnippetsLocation.currentLatitude, longitude: SnippetsLocation.currentLongitude, venues: venues)
+//					completion([closest])
+//				}
+//				else {
+//					completion(filteredVenues)
+//				}
 			}
 		}
 
@@ -136,43 +137,71 @@ extension SnippetsLocation
 
 		private static func findNearbyLocations(_ type : String, _ location : CLLocation, _ completion: @escaping(([SnippetsLocation]) -> Void))
 		{
-			let request = MKLocalSearch.Request()
-			request.naturalLanguageQuery = type
-			request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: SnippetsLocation.Query.locationProximityThreshold, longitudinalMeters: SnippetsLocation.Query.locationProximityThreshold)
-			let search = MKLocalSearch(request: request)
-			search.start { response, error in
-
-				var foundLocations : [SnippetsLocation] = []
-
-				if let response = response,
-				   response.mapItems.count > 0
-				{
-					for item in response.mapItems
-					{
-						if item.isCurrentLocation
-						{
-							if let name = item.name
-							{
-								SnippetsLocation.currentLocationName = name
-							}
+			// query the Meridian API
+			let url = "https://api.latl.ong/places/nearby"
+			let params = [
+				"latitude": "45.539902",
+				"longitude": "-122.629904"
+			]
+			UUHttpSession.get(url: url, queryArguments: params, completion: { response in
+				var found_locations : [SnippetsLocation] = []
+				
+				if let places = response.parsedResponse as? [Dictionary<String, Any>] {
+					for place in places {
+						let venue = SnippetsLocation()
+						if let latitude = place["latitude"] as? Double {
+							venue.latitude = latitude
 						}
-
-						if let name = item.name
-						{
-							let venueData = SnippetsLocation()
-							venueData.latitude = item.placemark.coordinate.latitude
-							venueData.longitude = item.placemark.coordinate.longitude
-							venueData.name = name
-							venueData.category = item.pointOfInterestCategory
-
-							foundLocations.append(venueData)
+						if let longitude = place["longitude"] as? Double {
+							venue.longitude = longitude
 						}
+						if let name = place["name"] as? String {
+							venue.name = name
+						}
+						
+						found_locations.append(venue)
 					}
-
-					completion(foundLocations)
 				}
-			}
-
+				
+				completion(found_locations)
+			})
+						
+//			let request = MKLocalSearch.Request()
+//			request.naturalLanguageQuery = type
+//			request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: SnippetsLocation.Query.locationProximityThreshold, longitudinalMeters: SnippetsLocation.Query.locationProximityThreshold)
+//			let search = MKLocalSearch(request: request)
+//			search.start { response, error in
+//
+//				var foundLocations : [SnippetsLocation] = []
+//
+//				if let response = response,
+//				   response.mapItems.count > 0
+//				{
+//					for item in response.mapItems
+//					{
+//						if item.isCurrentLocation
+//						{
+//							if let name = item.name
+//							{
+//								SnippetsLocation.currentLocationName = name
+//							}
+//						}
+//
+//						if let name = item.name
+//						{
+//							let venueData = SnippetsLocation()
+//							venueData.latitude = item.placemark.coordinate.latitude
+//							venueData.longitude = item.placemark.coordinate.longitude
+//							venueData.name = name
+//							venueData.category = item.pointOfInterestCategory
+//
+//							foundLocations.append(venueData)
+//						}
+//					}
+//
+//					completion(foundLocations)
+//				}
+//			}
 		}
 
 		static func findAllNearby(_ location : CLLocation, _ finalCompletion: @escaping(([SnippetsLocation])->Void))
