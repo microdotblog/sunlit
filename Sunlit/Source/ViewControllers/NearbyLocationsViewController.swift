@@ -88,9 +88,12 @@ extension NearbyLocationsViewController : UITableViewDataSource, UITableViewDele
 
 		cell.categoryImageView.image = nil
 		if var icon = SnippetsLocation.icons[venue.name] {
+			// temporary fix because of missing icons
 			if icon == "amenity/school" {
-				// temporary fix because of missing icon name
 				icon = "amenity/community_centre"
+			}
+			if icon == "cuisine/pizza" {
+				icon = "amenity/restaurant"
 			}
 			if let img = UIImage(named: "Carto/\(icon)") {
 				cell.categoryImageView.image = img
