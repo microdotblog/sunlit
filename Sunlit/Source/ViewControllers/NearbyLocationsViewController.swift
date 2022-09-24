@@ -21,9 +21,29 @@ class NearbyLocationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-		NotificationCenter.default.addObserver(self, selector: #selector(handleLocationsUpdatedNotification(_:)), name: SnippetsLocation.Query.nearbyVenuesUpdatedNotification, object: nil)
+		self.setupNotifications()
+		self.setupNavigation()
     }
 
+	func setupNotifications() {
+		NotificationCenter.default.addObserver(self, selector: #selector(handleLocationsUpdatedNotification(_:)), name: SnippetsLocation.Query.nearbyVenuesUpdatedNotification, object: nil)
+	}
+	
+	func setupNavigation() {
+		self.navigationItem.title = "New Check-in"
+		self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Continue", style: .plain, target: self, action: #selector(onContinue))
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(onCancel))
+	}
+
+	@objc func onContinue() {
+		// prompt for optional text
+		// ...
+	}
+
+	@objc func onCancel() {
+		self.dismiss(animated: true)
+	}
+	
 	@objc func handleLocationsUpdatedNotification(_ notification : Notification) {
 
 		self.busyIndicator.isHidden = true
@@ -79,7 +99,7 @@ extension NearbyLocationsViewController : UITableViewDataSource, UITableViewDele
 		let objectAnnotation = MKPointAnnotation()
 		objectAnnotation.coordinate = location
 		objectAnnotation.title = ""
-		cell.map.addAnnotation(objectAnnotation)
+//		cell.map.addAnnotation(objectAnnotation)
 
 		return cell
 	}
