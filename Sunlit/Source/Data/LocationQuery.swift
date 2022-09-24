@@ -21,6 +21,10 @@ extension SnippetsLocation
 	static var currentLatitude = 0.0
 	static var currentLongitude = 0.0
 	static var nearbyVenues : [SnippetsLocation] = []
+	
+	// store map of venue name to icon
+	// later would be better as real property on SnippetsLocation with all the Meridian fields
+	static var icons : [ String: String ] = [:]
 
 	class Query : NSObject, CLLocationManagerDelegate
 	{
@@ -158,7 +162,10 @@ extension SnippetsLocation
 						if let name = place["name"] as? String {
 							venue.name = name
 						}
-						
+						if let icon = place["icon_carto"] as? String {
+							SnippetsLocation.icons[venue.name] = icon
+						}
+
 						found_locations.append(venue)
 					}
 				}

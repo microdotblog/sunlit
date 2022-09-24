@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B3584EE28DF77BA0010BBC4 /* Carto in Resources */ = {isa = PBXBuildFile; fileRef = 4B3584ED28DF77BA0010BBC4 /* Carto */; };
 		4B556FF624F1C4C10012C6C7 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FF524F1C4C10012C6C7 /* SearchViewController.swift */; };
 		4B556FF824F1C4F40012C6C7 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B556FF724F1C4F40012C6C7 /* Search.storyboard */; };
 		4B556FFA24F1CDF30012C6C7 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FF924F1CDF30012C6C7 /* SearchResultTableViewCell.swift */; };
@@ -348,6 +349,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4B3584ED28DF77BA0010BBC4 /* Carto */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Carto; path = Resources/Carto; sourceTree = "<group>"; };
 		4B556FF524F1C4C10012C6C7 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = Source/ViewControllers/SearchViewController.swift; sourceTree = "<group>"; };
 		4B556FF724F1C4F40012C6C7 /* Search.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Search.storyboard; path = Storyboards/Search.storyboard; sourceTree = "<group>"; };
 		4B556FF924F1CDF30012C6C7 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchResultTableViewCell.swift; path = Source/TableViewCells/SearchResultTableViewCell.swift; sourceTree = "<group>"; };
@@ -864,6 +866,7 @@
 				C5A1DF36249144D300B50B54 /* Credits */,
 				C5A1DE9C24901E0B00B50B54 /* Assets.xcassets */,
 				C5A1DE3724901D7D00B50B54 /* Storyboards */,
+				4B3584ED28DF77BA0010BBC4 /* Carto */,
 				C5A1DE2C24901D6A00B50B54 /* Info.plist */,
 				C5A1DE2D24901D6A00B50B54 /* Sunlit.entitlements */,
 			);
@@ -1403,6 +1406,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B3584EE28DF77BA0010BBC4 /* Carto in Resources */,
 				C5A1DE4524901D8C00B50B54 /* Login.storyboard in Resources */,
 				C5A1DE4824901D8C00B50B54 /* Compose.storyboard in Resources */,
 				C5A1DE4424901D8C00B50B54 /* About.storyboard in Resources */,

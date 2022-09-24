@@ -86,19 +86,29 @@ extension NearbyLocationsViewController : UITableViewDataSource, UITableViewDele
 		let venue = nearbyVenues[indexPath.row]
 		cell.locationNameLabel.text = venue.name
 
+		cell.categoryImageView.image = nil
+		if var icon = SnippetsLocation.icons[venue.name] {
+			if icon == "amenity/school" {
+				// temporary fix because of missing icon name
+				icon = "amenity/community_centre"
+			}
+			if let img = UIImage(named: "Carto/\(icon)") {
+				cell.categoryImageView.image = img
+			}
+		}
+				
 		cell.map.delegate = self
 		cell.map.isUserInteractionEnabled = false
 
 		let location = CLLocationCoordinate2D(latitude: venue.latitude, longitude: venue.longitude)
 		let region = MKCoordinateRegion( center: location, latitudinalMeters: CLLocationDistance(exactly: 500)!, longitudinalMeters: CLLocationDistance(exactly: 500)!)
 
-		//cell.map.alpha = 0.0000000001
 		cell.map.setRegion(cell.map.regionThatFits(region), animated: false)
 
-		cell.map.removeAnnotations(cell.map.annotations)
-		let objectAnnotation = MKPointAnnotation()
-		objectAnnotation.coordinate = location
-		objectAnnotation.title = ""
+//		cell.map.removeAnnotations(cell.map.annotations)
+//		let objectAnnotation = MKPointAnnotation()
+//		objectAnnotation.coordinate = location
+//		objectAnnotation.title = ""
 //		cell.map.addAnnotation(objectAnnotation)
 
 		return cell
