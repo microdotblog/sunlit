@@ -10,12 +10,18 @@ import UIKit
 
 class AltTextController: UIViewController {
 
-	@IBOutlet var altTextDialogView : UIView!
-	@IBOutlet var altTextTextView : UITextView!
-	@IBOutlet var altTextCancelButton : UIButton!
-	@IBOutlet var altTextDoneButton : UIButton!
+    @IBOutlet var altTextTextView : UITextView!
+    var media : SunlitMedia?
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        altTextTextView.text = media?.altText
+        altTextTextView.becomeFirstResponder()
+    }
 
 	@IBAction func done() {
+        media?.altText = altTextTextView.text
 		self.presentingViewController?.dismiss(animated: true)
 	}
 
