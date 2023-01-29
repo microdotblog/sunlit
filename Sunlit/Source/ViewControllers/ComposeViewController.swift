@@ -23,13 +23,6 @@ class ComposeViewController: UIViewController {
 	@IBOutlet var keyboardAccessoryViewBottomConstraint : NSLayoutConstraint!
 	@IBOutlet var blogSelectorButton : UIButton!
 
-    @IBOutlet var altTextDialogView : UIView!
-    @IBOutlet var altTextTextView : UITextView!
-    @IBOutlet var altTextCancelButton : UIButton!
-    @IBOutlet var altTextDoneButton : UIButton!
-    var altTextSection : SunlitComposition? = nil
-    var altTextItem : Int = 0
-
 	var sections : [SunlitComposition] = []
 	var textViewDictionary : [UITextView : SunlitComposition] = [ : ]
 	var needsInitialFirstResponder = true
@@ -316,56 +309,9 @@ class ComposeViewController: UIViewController {
 
 		let storyboard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
 		let controller = storyboard.instantiateViewController(withIdentifier: "AltTextController") as! AltTextController
-		
+        controller.media = section.media[item]
 		self.present(controller, animated: true, completion: nil)
-
-		return
-		/*
-        self.altTextSection = section
-        self.altTextItem = item
-        self.view.bringSubviewToFront(self.altTextDialogView)
-        self.altTextDialogView.alpha = 0.0
-        self.altTextDialogView.isHidden = false
-        self.altTextTextView.text = section.media[item].altText
-
-        UIView.animate(withDuration: 0.15) {
-            self.altTextDialogView.alpha = 1.0
-        }
-
-        let currentAltText = section.media[item].altText
-        var saveTitle = "Add"
-        if currentAltText.count > 0 {
-            saveTitle = "Update"
-        }
-
-        self.altTextDoneButton.setTitle(saveTitle, for: .normal)
-        self.altTextTextView.becomeFirstResponder()
-		*/
     }
-
-
-
-    @IBAction func onAltTextCancel() {
-        UIView.animate(withDuration: 0.15) {
-            self.altTextDialogView.alpha = 0.0
-        }
-
-        self.altTextTextView.resignFirstResponder()
-    }
-
-    @IBAction func onAltTextDone() {
-
-        if let section = self.altTextSection {
-            section.media[self.altTextItem].altText = self.altTextTextView.text
-        }
-
-        UIView.animate(withDuration: 0.15) {
-            self.altTextDialogView.alpha = 0.0
-        }
-
-        self.altTextTextView.resignFirstResponder()
-    }
-
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
