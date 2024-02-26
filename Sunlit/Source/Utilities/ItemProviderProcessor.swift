@@ -126,13 +126,13 @@ class ItemProviderProcessor : NSObject {
                 self.processNextProvider()
             }
             else {
-                provider.loadItem(forTypeIdentifier: String(kUTTypeImage), options: nil) { (object, error) in
+                provider.loadItem(forTypeIdentifier: String(UTType.image.identifier), options: nil) { (object, error) in
                     if let image = object as? UIImage {
                         self.processedMedia.append(SunlitMedia(withImage: image))
                         self.processNextProvider()
                     }
                     else {
-                        provider.loadInPlaceFileRepresentation(forTypeIdentifier: String(kUTTypeImage)) { (url, success, error) in
+                        provider.loadInPlaceFileRepresentation(forTypeIdentifier: String(UTType.image.identifier)) { (url, success, error) in
                             if let url = url {
                                 if let data = try? Data(contentsOf: url) {
                                     if let image = UIImage(data: data) {
@@ -150,7 +150,7 @@ class ItemProviderProcessor : NSObject {
 
     private func processVideoProvider(_ provider : NSItemProvider) {
 
-		var type = String(kUTTypeMovie)
+        var type = String(UTType.movie.identifier)
 		if #available(iOS 14, *) {
 			type = UTType.movie.identifier
 		}

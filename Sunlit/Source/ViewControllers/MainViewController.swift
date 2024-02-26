@@ -397,7 +397,7 @@ class MainViewController: UIViewController {
 			NotificationCenter.default.post(name: .splitViewWillExpandNotification, object: nil)
 
 			UIView.animate(withDuration: 0.15) {
-				splitViewController.preferredDisplayMode = .allVisible
+                splitViewController.preferredDisplayMode = UISplitViewController.DisplayMode.oneBesideSecondary
 			}
 		}
 	}

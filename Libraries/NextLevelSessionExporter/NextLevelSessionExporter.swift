@@ -649,7 +649,7 @@ extension NextLevelSessionExporter {
     }
     
     // subclass and add more checks, if needed
-    open func validateVideoOutputConfiguration() -> Bool {
+    public func validateVideoOutputConfiguration() -> Bool {
         guard let videoOutputConfiguration = self.videoOutputConfiguration else {
             return false
         }

@@ -230,7 +230,7 @@ extension MainTabletViewController : UISplitViewControllerDelegate {
 
     func splitViewControllerDidExpand(_ svc: UISplitViewController) {
         self.updateNavigationControls()
-        svc.preferredDisplayMode = .allVisible
+        svc.preferredDisplayMode = UISplitViewController.DisplayMode.oneBesideSecondary
     }
     
 	@objc func onCollapseMenu() {
@@ -239,7 +239,7 @@ extension MainTabletViewController : UISplitViewControllerDelegate {
 			NotificationCenter.default.post(name: .splitViewWillCollapseNotification, object: nil)
 			
 			UIView.animate(withDuration: 0.15) {
-				splitView.preferredDisplayMode = .primaryHidden
+                splitView.preferredDisplayMode = UISplitViewController.DisplayMode.secondaryOnly
 			}
 		}
 	}

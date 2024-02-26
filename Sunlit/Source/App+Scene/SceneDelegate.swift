@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 	
 	func setupSplitView() {
-		guard let splitViewController = UIApplication.shared.windows[0].rootViewController
+        guard let splitViewController =  window?.rootViewController // UIApplication.shared.windows[0].rootViewController
 		  as? UISplitViewController else {
 		  fatalError("Missing SplitViewController")
 		}
@@ -39,7 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         menuViewController.contentViewController = contentNavigationController
         
-		splitViewController.preferredDisplayMode = .allVisible
+        splitViewController.preferredDisplayMode = UISplitViewController.DisplayMode.oneBesideSecondary
 		splitViewController.presentsWithGesture = false
 		
 		if UIDevice.current.userInterfaceIdiom == .phone {

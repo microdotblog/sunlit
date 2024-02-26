@@ -25,8 +25,8 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 	
 	var pathToImage = ""
 	var post : SunlitPost!
-    var swipeNextGesture = UISwipeGestureRecognizer(target: self, action: #selector(onNextButton))
-    var swipePreviousGesture = UISwipeGestureRecognizer(target: self, action: #selector(onPreviousButton))
+    var swipeNextGesture : UISwipeGestureRecognizer!
+    var swipePreviousGesture : UISwipeGestureRecognizer!
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -34,6 +34,9 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.swipeNextGesture = UISwipeGestureRecognizer(target: self, action: #selector(onNextButton))
+        self.swipePreviousGesture = UISwipeGestureRecognizer(target: self, action: #selector(onPreviousButton))
 
 		self.setupNavigationBar()
 		self.setupScrollView()

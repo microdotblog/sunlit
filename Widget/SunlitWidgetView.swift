@@ -268,10 +268,11 @@ struct SunlitWidgetView : TimelineEntry, View {
 //                let index = (configuration.random == true) ? Int.random(in: 0..<posts.count) : 0
 				let index = 0
 
-                if let post = posts[index],
-                   let path = post.images.first {
+                if index < posts.count,
+                   let path = posts[index].images.first
+                {
                     SunlitImage(path: path, size: 200.0, contentMode: .fill)
-                        .widgetURL(URL(string: "sunlit://show?id=\(post.identifier)"))
+                        .widgetURL(URL(string: "sunlit://show?id=\(posts[index].identifier)"))
                 }
             }
             else {
@@ -284,8 +285,10 @@ struct SunlitWidgetView : TimelineEntry, View {
         HStack {
 //            let index = (configuration.random == true) ? Int.random(in: 0..<posts.count) : 0
 			let index = 0
-
-            if let post = posts[index] {
+            
+            if index < posts.count
+            {
+                let post = posts[index]
                 Link(destination: URL(string: "sunlit://show?id=\(post.identifier)")!) {
                     Spacer()
                         .frame(width: 12.0)

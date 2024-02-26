@@ -614,18 +614,7 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			}
 			
 			// Otherwise, we are good to move it...
-			var intent : UICollectionViewDropProposal.Intent = .unspecified
-			
-			// On iOS 14.0, .insertAtDestinationIndexPath causes the collection view to crash while dragging the cell around (only enable on iOS 13/14.2)
-			if #available(iOS 14.2, *) {
-				intent = .insertAtDestinationIndexPath
-			}
-			else if #available(iOS 14.0, *) {
-				intent = .unspecified
-			}
-            else { // if #available(iOS 13.0, *) {
-				intent = .insertAtDestinationIndexPath
-			}
+			let intent : UICollectionViewDropProposal.Intent = .insertAtDestinationIndexPath
 			
 			let proposal = UICollectionViewDropProposal(operation: .move, intent: intent)
 			return proposal
