@@ -18,14 +18,14 @@ class MainPhoneViewController: UIViewController {
 	@IBOutlet var tabBar : UIView!
 	@IBOutlet var timelineButton : TabButton!
 	@IBOutlet var discoverButton : TabButton!
-    @IBOutlet var bookmarksButton : TabButton!
+    //@IBOutlet var bookmarksButton : TabButton!
 	@IBOutlet var mentionsButton : TabButton!
-	@IBOutlet var profileButton : TabButton!
+	//@IBOutlet var profileButton : TabButton!
 
 	var discoverViewController : DiscoverViewController!
-    var bookmarksViewController : BookmarksViewController!
+//    var bookmarksViewController : BookmarksViewController!
 	var timelineViewController : TimelineViewController!
-	var profileViewController : MyProfileViewController!
+//	var profileViewController : MyProfileViewController!
 	var mentionsViewController : MentionsViewController!
 	var currentViewController : ContentViewController? = nil
 
@@ -60,11 +60,11 @@ class MainPhoneViewController: UIViewController {
 		frame.origin.x += frame.size.width
 		self.discoverViewController.view.frame = frame
 
-        frame.origin.x += frame.size.width
-        self.bookmarksViewController.view.frame = frame
+//        frame.origin.x += frame.size.width
+//        self.bookmarksViewController.view.frame = frame
 				
-		frame.origin.x += frame.size.width
-		self.profileViewController.view.frame = frame
+//		frame.origin.x += frame.size.width
+//		self.profileViewController.view.frame = frame
 		
 		let contentSize = CGSize(width: frame.size.width * 5.0, height: 0.0)
 		self.scrollView.contentSize = contentSize
@@ -91,8 +91,8 @@ class MainPhoneViewController: UIViewController {
 		self.addChild(self.timelineViewController)
 		self.addChild(self.mentionsViewController)
 		self.addChild(self.discoverViewController)
-        self.addChild(self.bookmarksViewController)
-		self.addChild(self.profileViewController)
+//        self.addChild(self.bookmarksViewController)
+//		self.addChild(self.profileViewController)
 
 		var frame = self.scrollView.bounds
 		self.scrollView.addSubview(self.timelineViewController.view)
@@ -107,13 +107,13 @@ class MainPhoneViewController: UIViewController {
 		self.discoverViewController.view.frame = frame
 		frame.origin.x += frame.size.width
 
-        self.scrollView.addSubview(self.bookmarksViewController.view)
-        self.bookmarksViewController.view.frame = frame
-        frame.origin.x += frame.size.width
-		
-		self.scrollView.addSubview(self.profileViewController.view)
-		self.profileViewController.view.frame = frame
-		frame.origin.x += frame.size.width
+//        self.scrollView.addSubview(self.bookmarksViewController.view)
+//        self.bookmarksViewController.view.frame = frame
+//        frame.origin.x += frame.size.width
+//		
+//		self.scrollView.addSubview(self.profileViewController.view)
+//		self.profileViewController.view.frame = frame
+//		frame.origin.x += frame.size.width
 
 		self.scrollView.isUserInteractionEnabled = true
 		self.scrollView.contentSize = CGSize(width: frame.origin.x, height: 0)
@@ -127,72 +127,72 @@ class MainPhoneViewController: UIViewController {
 		self.timelineViewController.tableView.reloadData()
 		self.discoverViewController.tableView.reloadData()
 		self.discoverViewController.collectionView.reloadData()
-        self.bookmarksViewController.tableView.reloadData()
-		self.profileViewController.collectionView.reloadData()
+//        self.bookmarksViewController.tableView.reloadData()
+//		self.profileViewController.collectionView.reloadData()
 		self.mentionsViewController.tableView.reloadData()
 	}
 	
 	func setupProfileButton() {
-		var profileImage : UIImage? = UIImage(systemName: "person.crop.circle")
-		var profileUsername = "Profile"
-		if let current = SnippetsUser.current() {
-			if current.username.count < 10 {
-				profileUsername = "@" + current.username
-			}
-			if let image = ImageCache.prefetch(current.avatarURL) {
-				profileImage = image
-			}
-		}
-
-		if let image = profileImage {
-			profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 26, height: 26)).withRenderingMode(.alwaysOriginal)
-		}
-
-		self.profileButton.setTitle(profileUsername, for: .normal)
-		self.profileButton.setImage(profileImage, for: .normal)
-		self.profileButton.setImage(profileImage, for: .selected)
-		self.profileButton.setCornerRadius(13)
-
-		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
-		self.profileButton.addGestureRecognizer(longpressGesture)
+//		var profileImage : UIImage? = UIImage(systemName: "person.crop.circle")
+//		var profileUsername = "Profile"
+//		if let current = SnippetsUser.current() {
+//			if current.username.count < 10 {
+//				profileUsername = "@" + current.username
+//			}
+//			if let image = ImageCache.prefetch(current.avatarURL) {
+//				profileImage = image
+//			}
+//		}
+//
+//		if let image = profileImage {
+//			profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 26, height: 26)).withRenderingMode(.alwaysOriginal)
+//		}
+//
+//		self.profileButton.setTitle(profileUsername, for: .normal)
+//		self.profileButton.setImage(profileImage, for: .normal)
+//		self.profileButton.setImage(profileImage, for: .selected)
+//		self.profileButton.setCornerRadius(13)
+//
+//		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
+//		self.profileButton.addGestureRecognizer(longpressGesture)
 	}
 
 	func updateInterfaceForLogin() {
 		
-		if let user = SnippetsUser.current() {
-			
-			// Update the user name...
-			DispatchQueue.main.async {
-                self.scrollView.isScrollEnabled = true
-
-				if user.username.count < 10 {
-					self.profileButton.setTitle("@" + user.username, for: .normal)
-				}
-				else {
-					self.profileButton.setTitle("Profile", for: .normal)
-				}
-			}
+//		if let user = SnippetsUser.current() {
+//			
+//			// Update the user name...
+//			DispatchQueue.main.async {
+//                self.scrollView.isScrollEnabled = true
+//
+//				if user.username.count < 10 {
+//					self.profileButton.setTitle("@" + user.username, for: .normal)
+//				}
+//				else {
+//					self.profileButton.setTitle("Profile", for: .normal)
+//				}
+//			}
 			
 			// Go ahead and go get the avatar for the logged in user
-			ImageCache.fetch(user.avatarURL) { (image) in
-				
-				if let image = image {
-					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 26, height: 26)).withRenderingMode(.alwaysOriginal)
-					DispatchQueue.main.async {
-						self.profileButton.setImage(profileImage, for: .normal)
-						self.profileButton.setImage(profileImage, for: .selected)
-						self.profileButton.setCornerRadius(13)
-						self.view.layoutIfNeeded()
-					}
-				}
-			}
-		}
-		else {
-			self.profileButton.setImage(UIImage(systemName: "person.crop.circle"), for: .normal)
-			self.profileButton.setTitle("Profile", for: .normal)
-			self.onTabBarButtonPressed(self.timelineButton)
-            self.scrollView.isScrollEnabled = false
-		}
+//			ImageCache.fetch(user.avatarURL) { (image) in
+//				
+//				if let image = image {
+//					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 26, height: 26)).withRenderingMode(.alwaysOriginal)
+//					DispatchQueue.main.async {
+//						self.profileButton.setImage(profileImage, for: .normal)
+//						self.profileButton.setImage(profileImage, for: .selected)
+//						self.profileButton.setCornerRadius(13)
+//						self.view.layoutIfNeeded()
+//					}
+//				}
+//			}
+//		}
+//		else {
+//			self.profileButton.setImage(UIImage(systemName: "person.crop.circle"), for: .normal)
+//			self.profileButton.setTitle("Profile", for: .normal)
+//			self.onTabBarButtonPressed(self.timelineButton)
+//            self.scrollView.isScrollEnabled = false
+//		}
 	}
 
 	@objc func handleCurrentUserUpdatedNotification() {
@@ -233,18 +233,18 @@ class MainPhoneViewController: UIViewController {
             }
         }
         
-        if button == self.profileButton {
-            self.onShowProfile()
-		}
+//        if button == self.profileButton {
+//            self.onShowProfile()
+//		}
 		if button == self.timelineButton {
 			self.onShowTimeline()
 		}
 		if button == self.discoverButton {
 			self.onShowDiscover()
 		}
-        if button == self.bookmarksButton {
-            self.onShowBookmarks()
-        }
+//        if button == self.bookmarksButton {
+//            self.onShowBookmarks()
+//        }
 		if button == self.mentionsButton {
 			self.onShowMentions()
 		}
@@ -305,52 +305,13 @@ class MainPhoneViewController: UIViewController {
         }
 
         var animate = false
-        if self.currentViewController == self.mentionsViewController ||
-            self.currentViewController == self.bookmarksViewController{
+        if self.currentViewController == self.mentionsViewController
+        {
             animate = true
         }
 
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 2.0
-		self.scrollView.setContentOffset(offset, animated: animate)
-        self.updateTabBar(self.scrollView)
-        self.updateCurrentViewController(self.scrollView)
-	}
-
-    func onShowBookmarks() {
-
-        if self.currentViewController == self.bookmarksViewController {
-            self.bookmarksViewController.handleScrollToTopGesture()
-            return
-        }
-
-        var animate = false
-        if self.currentViewController == self.discoverViewController ||
-            self.currentViewController == self.profileViewController{
-            animate = true
-        }
-
-        var offset =  self.scrollView.contentOffset
-        offset.x = self.scrollView.bounds.size.width * 3.0
-        self.scrollView.setContentOffset(offset, animated: animate)
-        self.updateTabBar(self.scrollView)
-        self.updateCurrentViewController(self.scrollView)
-    }
-	
-	func onShowProfile() {
-
-        if self.currentViewController == self.profileViewController {
-            self.profileViewController.handleScrollToTopGesture()
-            return
-        }
-
-        var animate = false
-        if self.currentViewController == self.bookmarksViewController {
-            animate = true
-        }
-
-		var offset =  self.scrollView.contentOffset
-		offset.x = self.scrollView.bounds.size.width * 4.0
 		self.scrollView.setContentOffset(offset, animated: animate)
         self.updateTabBar(self.scrollView)
         self.updateCurrentViewController(self.scrollView)
@@ -370,9 +331,9 @@ extension MainPhoneViewController : UIScrollViewDelegate {
         let frameSize = scrollView.bounds.size.width
 
         self.timelineButton.isSelected = false
-        self.profileButton.isSelected = false
+//        self.profileButton.isSelected = false
         self.discoverButton.isSelected = false
-        self.bookmarksButton.isSelected = false
+//        self.bookmarksButton.isSelected = false
         self.mentionsButton.isSelected = false
         
         if offset < (frameSize / 2.0) {
@@ -384,12 +345,12 @@ extension MainPhoneViewController : UIScrollViewDelegate {
         else if offset < (frameSize * 2.0 + (frameSize / 2.0)) {
             self.discoverButton.isSelected = true
         }
-        else if offset < (frameSize * 3.0 + (frameSize / 2.0)) {
-            self.bookmarksButton.isSelected = true
-        }
-        else {
-            self.profileButton.isSelected = true
-        }
+//        else if offset < (frameSize * 3.0 + (frameSize / 2.0)) {
+//            self.bookmarksButton.isSelected = true
+//        }
+//        else {
+//            self.profileButton.isSelected = true
+//        }
     }
 
     
@@ -406,12 +367,6 @@ extension MainPhoneViewController : UIScrollViewDelegate {
         }
         else if offset < (frameSize * 2.0 + (frameSize / 2.0)) {
             self.currentViewController = self.discoverViewController
-        }
-        else if offset < (frameSize * 3.0 + (frameSize / 2.0)) {
-            self.currentViewController = self.bookmarksViewController
-        }
-        else {
-            self.currentViewController = self.profileViewController
         }
         
         if !(previousViewController === self.currentViewController) {

@@ -23,7 +23,7 @@ class MainViewController: UIViewController {
 	var phoneViewController : MainPhoneViewController?
 	var discoverViewController : DiscoverViewController!
 	var timelineViewController : TimelineViewController!
-	var profileViewController : MyProfileViewController!
+	var myProfileViewController : MyProfileViewController!
 	var mentionsViewController : MentionsViewController!
     var bookmarksViewController : BookmarksViewController!
 
@@ -80,28 +80,40 @@ class MainViewController: UIViewController {
                     self.onUploads()
                 }
 
-//				let checkinAction = UIAction(title: "Check-in", image: UIImage(systemName: "mappin.and.ellipse")) { (action) in
-//					self.onCheckIn()
-//				}
-
                 let menu = UIMenu(children: [libraryAction, filesAction])
                 postButton.menu = menu
             }
 
-            var settingsSymbol = "gear"
-			if #available(iOS 14, *) {
-				settingsSymbol = "gearshape"
-			}
-			let settingsButton = UIBarButtonItem(image: UIImage(systemName: settingsSymbol), style: .plain, target: self, action: #selector(onSettings))
-			self.navigationItem.title = "Timeline"
-            
-            if SnippetsUser.current() != nil {
+
+            var profileImage : UIImage? = UIImage(systemName: "person.crop.circle")
+            if let current = SnippetsUser.current() 
+            {
                 self.navigationItem.rightBarButtonItem = postButton
-                self.navigationItem.leftBarButtonItem = settingsButton
+
+                ImageCache.fetch(current.avatarURL) { image in
+                    if let image = image
+                    {
+                        profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 26, height: 26)).withRenderingMode(.alwaysOriginal)
+                    }
+                    
+                    let button = UIButton()
+                    button.clipsToBounds = true
+                    button.setImage(profileImage, for: .normal)
+                    button.translatesAutoresizingMaskIntoConstraints = false
+                    button.widthAnchor.constraint(equalToConstant: 26.0).isActive = true
+                    button.heightAnchor.constraint(equalToConstant: 26.0).isActive = true
+                    button.layer.cornerRadius = 13
+                    button.addTarget(self, action: #selector(self.onProfile), for: .touchUpInside)
+                    
+                    let userProfileButton = UIBarButtonItem(customView: button)
+                    //let userProfileButton = UIBarButtonItem(image: profileImage, style: .plain, target: self, action: #selector(self.onProfile))
+                    self.navigationItem.leftBarButtonItem = userProfileButton
+                }
             }
-            else {
-                self.navigationItem.rightBarButtonItem = nil
-                self.navigationItem.leftBarButtonItem = nil
+            else
+            {
+                let userProfileButton = UIBarButtonItem(image: profileImage, style: .plain, target: self, action: #selector(self.onProfile))
+                self.navigationItem.leftBarButtonItem = userProfileButton
             }
 		}
 		else if UIDevice.current.userInterfaceIdiom == .pad {
@@ -128,10 +140,17 @@ class MainViewController: UIViewController {
 	}
 
 	
+    @objc func onProfile()
+    {
+        let navigationController = UINavigationController(rootViewController: self.myProfileViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        self.present(navigationController, animated: true)
+    }
+    
 	func loadContentViews() {
 		let storyboard = UIStoryboard(name: "Content", bundle: nil)
 		self.timelineViewController = storyboard.instantiateViewController(identifier: "TimelineViewController")
-		self.profileViewController = storyboard.instantiateViewController(identifier: "MyProfileViewController")
+		self.myProfileViewController = storyboard.instantiateViewController(identifier: "MyProfileViewController")
 		self.discoverViewController = storyboard.instantiateViewController(identifier: "DiscoverViewController")
 
         let bookmarksStoryBoard: UIStoryboard = UIStoryboard(name: "Bookmarks", bundle: nil)
@@ -343,7 +362,7 @@ class MainViewController: UIViewController {
             self.onTabletShowProfile()
         }
         else {
-            self.phoneViewController!.onShowProfile()
+            //self.phoneViewController!.onShowProfile()
         }
 	}
 
@@ -370,7 +389,7 @@ class MainViewController: UIViewController {
             self.onTabletShowBookmarks()
         }
         else {
-            self.phoneViewController!.onShowBookmarks()
+            //self.phoneViewController!.onShowBookmarks()
         }
     }
 
@@ -529,7 +548,7 @@ class MainViewController: UIViewController {
     }
 
 	func onTabletShowProfile() {
-		self.activateContentViewController(self.profileViewController)
+		//self.activateContentViewController(self.profileViewController)
 	}
 
 	func onTabletShowMentions() {
@@ -547,8 +566,8 @@ class MainViewController: UIViewController {
 			self.phoneViewController = phoneViewController
 			phoneViewController.timelineViewController = self.timelineViewController
 			phoneViewController.discoverViewController = self.discoverViewController
-            phoneViewController.bookmarksViewController = self.bookmarksViewController
-			phoneViewController.profileViewController = self.profileViewController
+//            phoneViewController.bookmarksViewController = self.bookmarksViewController
+//			phoneViewController.profileViewController = self.profileViewController
 			phoneViewController.mentionsViewController = self.mentionsViewController
 
 			self.addChild(phoneViewController)

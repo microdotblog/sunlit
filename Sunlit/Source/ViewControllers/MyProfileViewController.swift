@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import Snippets
 
-class MyProfileViewController: ContentViewController {
+class MyProfileViewController: UIViewController {
 		
 	var user : SnippetsUser!
 	var updatedUserInfo : SnippetsUser? = nil
@@ -28,40 +28,25 @@ class MyProfileViewController: ContentViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		
-		if let user = SnippetsUser.current() {
-			self.user = user
-			self.navigationItem.title = user.fullName
-		}
-		
-		self.refreshControl.addTarget(self, action: #selector(fetchUserInfo), for: .valueChanged)
-		self.collectionView.addSubview(self.refreshControl)
-    }
-
-    override func navbarTitle() -> String {
-        var title = "Profile"
-
-        self.user = SnippetsUser.current()
-        if self.user.username.count < 10 {
-            title = "@" + self.user.username
+        
+        if let user = SnippetsUser.current() {
+            self.user = user
+            self.navigationItem.title = "My Profile"
         }
-
-        return title
+        
+        self.refreshControl.addTarget(self, action: #selector(fetchUserInfo), for: .valueChanged)
+        self.collectionView.addSubview(self.refreshControl)
+        
+        self.setupNavigation()
+        self.setupNotifications()
+        self.prepareToDisplay()
     }
 
-    @objc override func handleScrollToTopGesture() {
-        self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
-    }
-
-    override func setupNotifications() {
-        super.setupNotifications()
-
+    func setupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
     }
 
-    override func prepareToDisplay() {
-        super.prepareToDisplay()
-
+    func prepareToDisplay() {
         self.collectionView.reloadData()
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
@@ -71,7 +56,25 @@ class MyProfileViewController: ContentViewController {
 
         self.fetchUserInfo()
     }
+    
+    func setupNavigation() {
+        let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(onSettings))
+        self.navigationItem.rightBarButtonItem = settingsButton
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(onClose))
+    }
 		
+    @objc func onSettings() {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Settings", bundle: nil)
+        let settingsViewController = storyBoard.instantiateViewController(withIdentifier: "SettingsViewController")
+        let navigationController = UINavigationController(rootViewController: settingsViewController)
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
+    @objc func onClose()
+    {
+        self.dismiss(animated: true)
+    }
+    
 	@objc func handleCurrentUserUpdatedNotification() {
 		if let user = SnippetsUser.current() {
 			self.user = user
