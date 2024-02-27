@@ -81,6 +81,18 @@ class ConversationViewController: UIViewController {
 		// need to keep listening for this one
 		NotificationCenter.default.addObserver(self, selector: #selector(handleUsernamesChangedNotification(_:)), name: .selectedUsernamesChangedNotification, object: nil)
 	}
+    
+    @objc func onShare()
+    {
+        if let post = self.sourcePost,
+           let url = URL(string: post.path)
+        {
+            let items = [url]
+            let activities = [SafariShareActivity()]
+            let viewController = UIActivityViewController(activityItems: items, applicationActivities: activities)
+            self.present(viewController, animated: true)
+        }
+    }
 
 	@IBAction func back() {
 		self.navigationController?.popViewController(animated: true)
@@ -97,10 +109,11 @@ class ConversationViewController: UIViewController {
 		self.tableView.addSubview(self.tableViewRefreshControl)
 	}
 	
-	func setupNavigation() {
-		self.navigationItem.title = "Conversation"
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back))
-	}
+    func setupNavigation() {
+        self.navigationItem.title = "Conversation"
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(back))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(onShare))
+    }
 	
 	func setupGesture() {
 		let gesture = UISwipeGestureRecognizer(target: self, action: #selector(back))

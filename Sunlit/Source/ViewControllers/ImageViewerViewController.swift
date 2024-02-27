@@ -280,7 +280,7 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 	@IBAction @objc func onShare() {
 		let url = URL(string: self.post.path)!
 		let items : [Any] = [url]
-		let activities : [UIActivity]? = nil
+		let activities : [UIActivity]? = [SafariShareActivity()]
 		let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: activities)
 		self.present(activityViewController, animated: true, completion: nil)
 	}
