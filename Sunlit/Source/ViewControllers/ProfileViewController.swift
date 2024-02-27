@@ -49,9 +49,10 @@ class ProfileViewController: UIViewController {
 		self.setupGesture()
     }
 	
-	func setupNavigation() {
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(dismissViewController))
-	}
+    func setupNavigation() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(dismissViewController))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(onShare))
+    }
 	
 	func setupGesture() {
 		let gesture = UISwipeGestureRecognizer(target: self, action: #selector(dismissViewController))
@@ -63,6 +64,17 @@ class ProfileViewController: UIViewController {
 		self.navigationController?.popViewController(animated: true)
 	}
 	
+    @objc func onShare()
+    {
+        if let url = URL(string: self.user.siteURL)
+        {
+            let items = [url]
+            let activities = [SafariShareActivity()]
+            let viewController = UIActivityViewController(activityItems: items, applicationActivities: activities)
+            self.present(viewController, animated: true)
+        }
+    }
+    
 	@objc func fetchUserInfo() {
         
         if self.loadInProgress == true {
