@@ -13,7 +13,7 @@ import Snippets
 import UUSwiftNetworking
 import PhotosUI
 
-class MainViewController: UIViewController {
+class MainViewController: ContentViewController {
 	
 
 	@IBOutlet var menuVersionLabel : UILabel!
@@ -160,7 +160,8 @@ class MainViewController: UIViewController {
 		self.mentionsViewController = mentionsStoryBoard.instantiateViewController(identifier: "MentionsViewController")
 	}
 	
-	func setupNotifications() {
+	override func setupNotifications() {
+        super.setupNotifications()
         NotificationCenter.default.addObserver(self, selector: #selector(handleUserUpdatedNotification(_:)), name: .currentUserUpdatedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: .temporaryTokenReceivedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleMicropubTokenReceivedNotification(_:)), name: .micropubTokenReceivedNotification, object: nil)
@@ -548,7 +549,7 @@ class MainViewController: UIViewController {
     }
 
 	func onTabletShowProfile() {
-		//self.activateContentViewController(self.profileViewController)
+		self.activateContentViewController(self.myProfileViewController)
 	}
 
 	func onTabletShowMentions() {

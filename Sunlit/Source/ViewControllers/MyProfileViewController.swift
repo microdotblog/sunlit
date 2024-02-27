@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import Snippets
 
-class MyProfileViewController: UIViewController {
+class MyProfileViewController: ContentViewController {
 		
 	var user : SnippetsUser!
 	var updatedUserInfo : SnippetsUser? = nil
@@ -42,11 +42,13 @@ class MyProfileViewController: UIViewController {
         self.prepareToDisplay()
     }
 
-    func setupNotifications() {
+    override func setupNotifications() {
+        super.setupNotifications()
         NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
     }
 
-    func prepareToDisplay() {
+    override func prepareToDisplay() {
+        super.prepareToDisplay()
         self.collectionView.reloadData()
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
@@ -57,7 +59,8 @@ class MyProfileViewController: UIViewController {
         self.fetchUserInfo()
     }
     
-    func setupNavigation() {
+    override func setupNavigation() {
+        super.setupNavigation()
         let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(onSettings))
         self.navigationItem.rightBarButtonItem = settingsButton
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(onClose))

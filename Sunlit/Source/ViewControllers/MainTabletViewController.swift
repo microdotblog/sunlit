@@ -16,7 +16,7 @@ class MainTabletViewController: UIViewController {
 	
     var contentViewController : UIViewController!
     
-	var menuTitles = [ "Timeline", "Mentions", "Discover", "Bookmarks", "Profile", "Settings" ]
+	var menuTitles = [ "Timeline", "Mentions", "Discover", "Profile", "Settings" ]
 	var menuIcons = [ "bubble.left.and.bubble.right", "at", "magnifyingglass.circle", "star", "person.crop.circle",  "gear" ]
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,7 +59,7 @@ class MainTabletViewController: UIViewController {
 			menuTitles = [ "Timeline", "Discover" ]
 		}
 		else {
-			menuTitles = [ "Timeline", "Mentions", "Discover", "Bookmarks", "Profile", "Settings"]
+			menuTitles = [ "Timeline", "Mentions", "Discover", "Profile", "Settings"]
 		}
 		
 		self.tableView.reloadData()
@@ -195,11 +195,11 @@ extension MainTabletViewController: UITableViewDelegate, UITableViewDataSource {
 			}
 		case 2:
 			self.onDiscover()
-        case 3:
-            self.onBookmarks()
-		case 4:
+//        case 3:
+//            self.onBookmarks()
+		case 3:
 			self.onProfile()
-		case 5:
+		case 4:
 			self.onSettings()
 		default:
 			self.onTimeLine()
