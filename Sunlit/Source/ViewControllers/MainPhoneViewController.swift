@@ -262,14 +262,9 @@ class MainPhoneViewController: UIViewController {
             return
         }
 
-        var animate = false
-        if self.currentViewController == self.mentionsViewController {
-            animate = true
-        }
-
 		var offset =  self.scrollView.contentOffset
 		offset.x = 0.0
-		self.scrollView.setContentOffset(offset, animated: animate)
+		self.scrollView.setContentOffset(offset, animated: false)
 		self.timelineViewController.loadTimeline()
         self.updateTabBar(self.scrollView)
         self.updateCurrentViewController(self.scrollView)
@@ -282,19 +277,11 @@ class MainPhoneViewController: UIViewController {
             return
         }
 
-        var animate = false
-        if self.currentViewController == self.timelineViewController ||
-            self.currentViewController == self.discoverViewController {
-            animate = true
-        }
-        
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 1.0
-		self.scrollView.setContentOffset(offset, animated: animate)
-        if !animate {
-            self.updateTabBar(self.scrollView)
-            self.updateCurrentViewController(self.scrollView)
-        }
+		self.scrollView.setContentOffset(offset, animated: false)
+		self.updateTabBar(self.scrollView)
+		self.updateCurrentViewController(self.scrollView)
 	}
 
 	func onShowDiscover() {
@@ -304,15 +291,9 @@ class MainPhoneViewController: UIViewController {
             return
         }
 
-        var animate = false
-        if self.currentViewController == self.mentionsViewController
-        {
-            animate = true
-        }
-
 		var offset =  self.scrollView.contentOffset
 		offset.x = self.scrollView.bounds.size.width * 2.0
-		self.scrollView.setContentOffset(offset, animated: animate)
+		self.scrollView.setContentOffset(offset, animated: false)
         self.updateTabBar(self.scrollView)
         self.updateCurrentViewController(self.scrollView)
 	}
