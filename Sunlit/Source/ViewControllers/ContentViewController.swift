@@ -21,11 +21,16 @@ class ContentViewController : UIViewController {
     }
 
     dynamic func setupNavigation() {
-
         let button = UIButton(type: .custom)
         button.backgroundColor = .clear
-        button.setTitle(self.navbarTitle(), for: .normal)
-        button.setTitleColor(.label, for: .normal)
+
+		var title = self.navigationItem.title
+		if (title == nil) || (title?.count == 0) {
+			title = self.navbarTitle()
+		}
+		button.setTitle(title, for: .normal)
+
+		button.setTitleColor(.label, for: .normal)
         button.addTarget(self, action: #selector(handleScrollToTopGesture), for: .touchUpInside)
         self.navigationController?.navigationBar.topItem?.titleView = button
         self.navigationController?.navigationItem.titleView = button

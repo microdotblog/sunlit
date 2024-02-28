@@ -28,19 +28,19 @@ class MyProfileViewController: ContentViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if let user = SnippetsUser.current() {
-            self.user = user
-            self.navigationItem.title = "My Profile"
-        }
-        
+
+		if let user = SnippetsUser.current() {
+			self.user = user
+			self.navigationItem.title = "Profile"
+		}
+
         self.refreshControl.addTarget(self, action: #selector(fetchUserInfo), for: .valueChanged)
         self.collectionView.addSubview(self.refreshControl)
         
         self.setupNavigation()
         self.setupNotifications()
         self.prepareToDisplay()
-    }
+	}
 
     override func setupNotifications() {
         super.setupNotifications()
