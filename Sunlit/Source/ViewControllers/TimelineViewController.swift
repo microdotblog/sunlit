@@ -194,14 +194,18 @@ class TimelineViewController: ContentViewController {
 		parameters["count"] = "30"
 
 		Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters) { (error, postObjects : [SnippetsPost]) in
-
+			// remove non-JPEGs
+			let photos = postObjects.filter { post in
+				return post.htmlText.contains(".jpg") || post.htmlText.contains(".jpeg")
+			}
+			
 			print("Finished fetching timeline")
 			self.loadingData = false
-			self.setupBlurHashes(postObjects)
+			self.setupBlurHashes(photos)
 
 			DispatchQueue.main.async {
-                if error == nil && postObjects.count > 0 {
-                    self.refreshTableView(postObjects)
+                if error == nil && photos.count > 0 {
+                    self.refreshTableView(photos)
                 }
                 else {
                     self.handleTimelineError(error as NSError?)
@@ -233,12 +237,16 @@ class TimelineViewController: ContentViewController {
 
 			Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters, completion:
 			{ (error, entries : [SnippetsPost]) in
+				// remove non-JPEGs
+				let photos = entries.filter { post in
+					return post.htmlText.contains(".jpg") || post.htmlText.contains(".jpeg")
+				}
 
-				self.setupBlurHashes(entries)
+				self.setupBlurHashes(photos)
 
 				DispatchQueue.main.async {
                     print("Preparing to insert rows")
-                    if entries.count == 0 {
+                    if photos.count == 0 {
                         self.noMoreToLoad = true
 						self.loadingData = false
 						self.tableView.beginUpdates()
@@ -250,7 +258,7 @@ class TimelineViewController: ContentViewController {
 					
 					var row = self.tableViewData.count
 					var indexPaths : [IndexPath] = []
-					for entry in entries {
+					for entry in photos {
 						let post = SunlitPost.create(entry)
                         
                         if post.images.count > 0 {
