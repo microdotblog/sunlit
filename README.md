@@ -1,38 +1,67 @@
-<img src = "https://github.com/microdotblog/sunlit/blob/master/Screenshots/SunlitStripe.png?raw=true" alt = "">
+![Stripe](Screenshots/SunlitStripe.png)
 
 # Sunlit 3.0
 
+[![App Store](https://img.shields.io/badge/App%20Store-Download-blue?logo=apple)](https://apps.apple.com/app/sunlit/id1334727769)
+[![TestFlight](https://img.shields.io/badge/TestFlight-Join-blue?logo=testflight)](https://testflight.apple.com/join/vAQQbw8J)
+![Version](https://img.shields.io/badge/Version-3.0-blue)
+![Platform](https://img.shields.io/badge/Platform-iPhone%20%7C%20iPad-orange?logo=apple)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+---
+
 ## Overview
-Publish photos to your own blog — hosted by Micro.blog or compatible blogs using WordPress or Micropub — and discover beautiful photos from other users. Sunlit 3.0 is a complete rewrite, improving the UI for discovery and creating blog posts with multiple photos and blocks of text.
+Sunlit makes it easy to **publish photos to your own blog**, whether hosted on **Micro.blog**, **WordPress**, or any Micropub-compatible service and discover beautiful photography from others.  
 
-For the current shipping version of Sunlit available in the App Store, please see [sunlit.io](https://sunlit.io/).
+Version 3.0 is a **complete rewrite**, introducing a refreshed UI for discovery and a more powerful editor that supports **multiple photos and text blocks** in each post.
 
-## Beta Installation Link
-[https://testflight.apple.com/join/vAQQbw8J](https://testflight.apple.com/join/vAQQbw8J)
+- For the current shipping version on the App Store, visit [sunlit.io](https://sunlit.io/).
 
-## License
-Sunlit is available under the MIT license. See [`LICENSE.md`](https://github.com/microdotblog/sunlit/blob/develop/LICENSE.md) for more information.
+---
 
-## Third Party Components included in Sunlit:
-* [Snippets](https://github.com/microdotblog/snippets)
-* [UUSwift](https://github.com/SilverPineSoftware/UUSwift)
-* [SwiftSoup](https://github.com/scinfu/SwiftSoup)
-* [NextLevel Session Exporter](https://github.com/NextLevel/NextLevelSessionExporter)
+## Installation
+
+- **[Download on the App Store](https://apps.apple.com/app/sunlit/id1334727769)**  
+- **[Join the TestFlight Beta](https://testflight.apple.com/join/vAQQbw8J)**  
+
+---
+
+## Features
+
+- Publish rich photo posts with multiple images + text blocks  
+- Seamless integration with Micro.blog, WordPress, and other Micropub blogs  
+- Beautiful discovery feed to browse photography from the community  
+- Written entirely in Swift  
+- Requires iOS **13.0+**
+
+---
 
 ## Screenshots
-![Screenshot 1](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot01.jpeg?raw=true)
-![Screenshot 2](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot02.jpeg?raw=true)
-![Screenshot 3](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot03.jpeg?raw=true)
-![Screenshot 4](https://github.com/microdotblog/sunlit/blob/master/Screenshots/Screenshot04.jpeg?raw=true)
 
-## Requirements
-This app requires a minimum target of iOS 13.0 or greater
+<p align="center">
+  <img src="Screenshots/Screenshot01.jpeg?raw=true" alt="Screenshot 1" width="23%"/>
+  <img src="Screenshots/Screenshot02.jpeg?raw=true" alt="Screenshot 3" width="23%"/>
+  <img src="Screenshots/Screenshot03.jpeg?raw=true" alt="Screenshot 3" width="23%"/>
+  <img src="Screenshots/Screenshot04.jpeg?raw=true" alt="Screenshot 4" width="23%"/>
+</p>
 
-Micropub endpoints must provide a [media endpoint](https://micropub.spec.indieweb.org/#media-endpoint) for Sunlit to publish photos. 
+---
 
+## Third-Party Components
 
-### Roadmap
-For information on future plans and features, please see [the development roadmap](https://github.com/microdotblog/sunlit/blob/master/ROADMAP.md).
+- [Snippets](https://github.com/microdotblog/snippets)  
+- [UUSwift](https://github.com/SilverPineSoftware/UUSwift)  
+- [SwiftSoup](https://github.com/scinfu/SwiftSoup)  
+- [NextLevel Session Exporter](https://github.com/NextLevel/NextLevelSessionExporter)  
 
-### Swift
-This app is written entirely in Swift.
+---
+
+## Roadmap
+
+Future plans and upcoming features are documented in the [Roadmap](https://github.com/microdotblog/sunlit/blob/master/ROADMAP.md).
+
+---
+
+## License
+
+Sunlit is available under the **MIT License**. See the [LICENSE.md](https://github.com/microdotblog/sunlit/blob/develop/LICENSE.md) file for details.
