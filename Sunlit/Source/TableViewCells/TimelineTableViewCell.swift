@@ -23,6 +23,7 @@ class TimelineTableViewCell : UITableViewCell {
 	@IBOutlet var collectionViewWidthConstraint : NSLayoutConstraint!
 
 	var post : SunlitPost!
+	private var avatarSource: String?
 
 	// Video playback interface...
 	var player : AVQueuePlayer? = nil
@@ -60,6 +61,28 @@ class TimelineTableViewCell : UITableViewCell {
 		self.userAvatar.layer.cornerRadius = (self.userAvatar.bounds.size.height - 1) / 2.0
 	}
 
+	private func setPreparedAvatar(_ image: UIImage, source: String) {
+		self.avatarSource = source
+
+		image.prepareForDisplay { [weak self] preparedImage in
+			DispatchQueue.main.async {
+				guard let self = self, self.avatarSource == source else { return }
+				self.userAvatar.image = preparedImage ?? image
+			}
+		}
+	}
+
+	private func setPreparedPostImage(_ image: UIImage, source: String, in cell: SunlitPostCollectionViewCell) {
+		cell.representedImagePath = source
+
+		image.prepareForDisplay { [weak cell] preparedImage in
+			DispatchQueue.main.async {
+				guard let cell = cell, cell.representedImagePath == source else { return }
+				cell.postImage.image = preparedImage ?? image
+			}
+		}
+	}
+
 	func setup(_ index: Int, _ post : SunlitPost, parentWidth : CGFloat) {
 
 		self.post = post
@@ -89,8 +112,9 @@ class TimelineTableViewCell : UITableViewCell {
 	func setupAvatar() {
 		self.userAvatar.image = nil
 		let avatarSource = self.post.owner.avatarURL
+		self.avatarSource = avatarSource
 		if let avatar = ImageCache.prefetch(avatarSource) {
-			self.userAvatar.image = avatar
+			self.setPreparedAvatar(avatar, source: avatarSource)
 		}
 	}
 
@@ -162,9 +186,10 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
         let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
 
         let avatarSource = self.post.owner.avatarURL
+		self.avatarSource = avatarSource
         if let avatar = ImageCache.prefetch(avatarSource)
         {
-            self.userAvatar.image = avatar
+            self.setPreparedAvatar(avatar, source: avatarSource)
         }
 
         
@@ -175,7 +200,7 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
             {
                 if let cell = self.collectionView.cellForItem(at: IndexPath(item: i, section: 0)) as? SunlitPostCollectionViewCell
                 {
-                    cell.postImage.image = image
+                    self.setPreparedPostImage(image, source: imagePath, in: cell)
                 }
             }
             else if blurHash.count > 0
@@ -183,7 +208,7 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
                 if let image = ImageCache.prefetch(blurHash)
                 {
                     let cell = self.collectionView.cellForItem(at: IndexPath(item: i, section: 0)) as! SunlitPostCollectionViewCell
-                    cell.postImage.image = image
+                    self.setPreparedPostImage(image, source: imagePath, in: cell)
                 }
             }
         }
@@ -202,13 +227,14 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 		cell.timeStampLabel.isHidden = true
 		cell.postImage.image = nil
 		cell.timeStampLabel.isHidden = true
+		cell.representedImagePath = imagePath
 
 		if let image = ImageCache.prefetch(imagePath) {
-			cell.postImage.image = image
+			self.setPreparedPostImage(image, source: imagePath, in: cell)
 		}
 		else if blurHash.count > 0 {
 			if let image = ImageCache.prefetch(blurHash) {
-				cell.postImage.image = image
+				self.setPreparedPostImage(image, source: imagePath, in: cell)
 			}
 		}
 
