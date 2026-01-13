@@ -193,22 +193,23 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
         }
 
         
-        for i in 0...self.post.images.count - 1
-        {
-            let imagePath = self.post.images[i]
-            if let image = ImageCache.prefetch(imagePath)
-            {
-                if let cell = self.collectionView.cellForItem(at: IndexPath(item: i, section: 0)) as? SunlitPostCollectionViewCell
-                {
+        let visibleIndexPaths = self.collectionView.indexPathsForVisibleItems
+        for indexPath in visibleIndexPaths {
+            if indexPath.item >= self.post.images.count {
+                continue
+            }
+
+            let imagePath = self.post.images[indexPath.item]
+            if let image = ImageCache.prefetch(imagePath) {
+                if let cell = self.collectionView.cellForItem(at: indexPath) as? SunlitPostCollectionViewCell {
                     self.setPreparedPostImage(image, source: imagePath, in: cell)
                 }
             }
-            else if blurHash.count > 0
-            {
-                if let image = ImageCache.prefetch(blurHash)
-                {
-                    let cell = self.collectionView.cellForItem(at: IndexPath(item: i, section: 0)) as! SunlitPostCollectionViewCell
-                    self.setPreparedPostImage(image, source: imagePath, in: cell)
+            else if blurHash.count > 0 {
+                if let image = ImageCache.prefetch(blurHash) {
+                    if let cell = self.collectionView.cellForItem(at: indexPath) as? SunlitPostCollectionViewCell {
+                        self.setPreparedPostImage(image, source: imagePath, in: cell)
+                    }
                 }
             }
         }
