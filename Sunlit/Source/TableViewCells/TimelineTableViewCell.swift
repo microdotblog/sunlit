@@ -23,6 +23,7 @@ class TimelineTableViewCell : UITableViewCell {
 	@IBOutlet var collectionViewWidthConstraint : NSLayoutConstraint!
 
 	var post : SunlitPost!
+	private var avatarSource: String?
 
 	// Video playback interface...
 	var player : AVQueuePlayer? = nil
@@ -46,7 +47,7 @@ class TimelineTableViewCell : UITableViewCell {
 	}
 
 	static func height(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
-		return photoHeight(post, parentWidth: parentWidth) + 40.0 + 16.0
+		return photoHeight(post, parentWidth: parentWidth) + 40.0 + 5.0
 	}
 
 	override func awakeFromNib() {
@@ -58,6 +59,28 @@ class TimelineTableViewCell : UITableViewCell {
 		// Configure the user avatar
 		self.userAvatar.clipsToBounds = true
 		self.userAvatar.layer.cornerRadius = (self.userAvatar.bounds.size.height - 1) / 2.0
+	}
+
+	private func setPreparedAvatar(_ image: UIImage, source: String) {
+		self.avatarSource = source
+
+		image.prepareForDisplay { [weak self] preparedImage in
+			DispatchQueue.main.async {
+				guard let self = self, self.avatarSource == source else { return }
+				self.userAvatar.image = preparedImage ?? image
+			}
+		}
+	}
+
+	private func setPreparedPostImage(_ image: UIImage, source: String, in cell: SunlitPostCollectionViewCell) {
+		cell.representedImagePath = source
+
+		image.prepareForDisplay { [weak cell] preparedImage in
+			DispatchQueue.main.async {
+				guard let cell = cell, cell.representedImagePath == source else { return }
+				cell.postImage.image = preparedImage ?? image
+			}
+		}
 	}
 
 	func setup(_ index: Int, _ post : SunlitPost, parentWidth : CGFloat) {
@@ -89,8 +112,9 @@ class TimelineTableViewCell : UITableViewCell {
 	func setupAvatar() {
 		self.userAvatar.image = nil
 		let avatarSource = self.post.owner.avatarURL
+		self.avatarSource = avatarSource
 		if let avatar = ImageCache.prefetch(avatarSource) {
-			self.userAvatar.image = avatar
+			self.setPreparedAvatar(avatar, source: avatarSource)
 		}
 	}
 
@@ -162,28 +186,30 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
         let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
 
         let avatarSource = self.post.owner.avatarURL
+		self.avatarSource = avatarSource
         if let avatar = ImageCache.prefetch(avatarSource)
         {
-            self.userAvatar.image = avatar
+            self.setPreparedAvatar(avatar, source: avatarSource)
         }
 
         
-        for i in 0...self.post.images.count - 1
-        {
-            let imagePath = self.post.images[i]
-            if let image = ImageCache.prefetch(imagePath)
-            {
-                if let cell = self.collectionView.cellForItem(at: IndexPath(item: i, section: 0)) as? SunlitPostCollectionViewCell
-                {
-                    cell.postImage.image = image
+        let visibleIndexPaths = self.collectionView.indexPathsForVisibleItems
+        for indexPath in visibleIndexPaths {
+            if indexPath.item >= self.post.images.count {
+                continue
+            }
+
+            let imagePath = self.post.images[indexPath.item]
+            if let image = ImageCache.prefetch(imagePath) {
+                if let cell = self.collectionView.cellForItem(at: indexPath) as? SunlitPostCollectionViewCell {
+                    self.setPreparedPostImage(image, source: imagePath, in: cell)
                 }
             }
-            else if blurHash.count > 0
-            {
-                if let image = ImageCache.prefetch(blurHash)
-                {
-                    let cell = self.collectionView.cellForItem(at: IndexPath(item: i, section: 0)) as! SunlitPostCollectionViewCell
-                    cell.postImage.image = image
+            else if blurHash.count > 0 {
+                if let image = ImageCache.prefetch(blurHash) {
+                    if let cell = self.collectionView.cellForItem(at: indexPath) as? SunlitPostCollectionViewCell {
+                        self.setPreparedPostImage(image, source: imagePath, in: cell)
+                    }
                 }
             }
         }
@@ -202,13 +228,14 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 		cell.timeStampLabel.isHidden = true
 		cell.postImage.image = nil
 		cell.timeStampLabel.isHidden = true
+		cell.representedImagePath = imagePath
 
 		if let image = ImageCache.prefetch(imagePath) {
-			cell.postImage.image = image
+			self.setPreparedPostImage(image, source: imagePath, in: cell)
 		}
 		else if blurHash.count > 0 {
 			if let image = ImageCache.prefetch(blurHash) {
-				cell.postImage.image = image
+				self.setPreparedPostImage(image, source: imagePath, in: cell)
 			}
 		}
 

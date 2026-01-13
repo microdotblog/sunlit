@@ -12,4 +12,6 @@ class SunlitPostCollectionViewCell: UICollectionViewCell {
 	@IBOutlet var postImage : UIImageView!
 	@IBOutlet var timeStampLabel : UILabel!
 	@IBOutlet var videoPlayIndicator : UIImageView!
+
+	var representedImagePath: String?
 }

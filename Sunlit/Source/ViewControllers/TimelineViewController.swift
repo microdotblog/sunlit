@@ -96,9 +96,7 @@ class TimelineViewController: ContentViewController {
 		   let visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
 
 			if visibleIndexPaths.contains(indexPath) {
-                if let cell = self.tableView.cellForRow(at: indexPath) as? TimelineTableViewCell
-                {
-                    print("redrawing \(indexPath)")
+                if let cell = self.tableView.cellForRow(at: indexPath) as? TimelineTableViewCell {
                     cell.reloadImages()
                 }
 				//self.tableView.reloadData()
@@ -291,9 +289,7 @@ class TimelineViewController: ContentViewController {
 					if let _ = image {
 						DispatchQueue.main.async {
 							if self.isPresented {
-								if imageSource == post.images.first {
-									NotificationCenter.default.post(name: .refreshCellNotification, object: self, userInfo: [ "index": indexPath ])
-								}
+								NotificationCenter.default.post(name: .refreshCellNotification, object: self, userInfo: [ "index": indexPath ])
 							}
 						}
 					}
@@ -512,7 +508,6 @@ extension TimelineViewController : UITextViewDelegate {
 	}
 
 }
-
 
 
 
