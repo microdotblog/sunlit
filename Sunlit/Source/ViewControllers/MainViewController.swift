@@ -13,6 +13,25 @@ import Snippets
 import UUSwiftNetworking
 import PhotosUI
 
+private final class ProfileAvatarButton: UIButton {
+	override func layoutSubviews() {
+		super.layoutSubviews()
+
+		let radius = min(bounds.size.width, bounds.size.height) / 2.0
+		layer.cornerRadius = radius
+		layer.cornerCurve = .continuous
+		clipsToBounds = true
+
+		if let imageView = imageView {
+			let imageRadius = min(imageView.bounds.size.width, imageView.bounds.size.height) / 2.0
+			imageView.layer.cornerRadius = imageRadius
+			imageView.layer.cornerCurve = .continuous
+			imageView.clipsToBounds = true
+			imageView.contentMode = .scaleAspectFill
+		}
+	}
+}
+
 class MainViewController: ContentViewController {
 	
 
@@ -96,13 +115,11 @@ class MainViewController: ContentViewController {
                         profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 26, height: 26)).withRenderingMode(.alwaysOriginal)
                     }
                     
-                    let button = UIButton()
-                    button.clipsToBounds = true
+                    let button = ProfileAvatarButton()
                     button.setImage(profileImage, for: .normal)
                     button.translatesAutoresizingMaskIntoConstraints = false
                     button.widthAnchor.constraint(equalToConstant: 26.0).isActive = true
                     button.heightAnchor.constraint(equalToConstant: 26.0).isActive = true
-                    button.layer.cornerRadius = 13
                     button.addTarget(self, action: #selector(self.onProfile), for: .touchUpInside)
                     
                     let userProfileButton = UIBarButtonItem(customView: button)
@@ -681,4 +698,3 @@ extension MainViewController : UISplitViewControllerDelegate {
 	}
 	
 }
-
