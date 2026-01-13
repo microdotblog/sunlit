@@ -184,9 +184,9 @@
                                                 <constraint firstItem="6Qu-FG-1nV" firstAttribute="leading" secondItem="bxp-RE-Xjw" secondAttribute="leading" id="Rds-oc-9bD"/>
                                                 <constraint firstAttribute="trailing" secondItem="6Qu-FG-1nV" secondAttribute="trailing" id="VeB-Lr-G5b"/>
                                                 <constraint firstAttribute="trailing" secondItem="dGu-9q-7lW" secondAttribute="trailing" id="VjV-1Q-BDH"/>
-                                                <constraint firstAttribute="bottom" secondItem="jnV-wM-eaY" secondAttribute="bottom" constant="18" id="gLs-Es-379"/>
+                                                <constraint firstAttribute="bottom" secondItem="jnV-wM-eaY" secondAttribute="bottom" constant="5" id="gLs-Es-379"/>
                                                 <constraint firstItem="dGu-9q-7lW" firstAttribute="leading" secondItem="bxp-RE-Xjw" secondAttribute="leading" id="ioR-lP-fN5"/>
-                                                <constraint firstAttribute="bottom" secondItem="dGu-9q-7lW" secondAttribute="bottom" constant="16" id="rzo-py-oTb"/>
+                                                <constraint firstAttribute="bottom" secondItem="dGu-9q-7lW" secondAttribute="bottom" constant="5" id="rzo-py-oTb"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="color_timeline_header"/>
