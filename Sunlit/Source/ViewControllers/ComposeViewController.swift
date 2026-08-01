@@ -12,6 +12,135 @@ import Snippets
 import UUSwiftNetworking
 import PhotosUI
 
+enum ComposeCollectionViewMetrics {
+	static let sectionHorizontalInset: CGFloat = 12.0
+	static let textVerticalInset: CGFloat = 16.0
+	static let sectionBackgroundOverlap: CGFloat = 10.0
+	static let textContainerInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 6)
+	static let textLineFragmentPadding: CGFloat = 5.0
+
+	static func mediaItemSize(_ collectionViewWidth: CGFloat) -> CGSize {
+		let availableWidth = collectionViewWidth - (sectionHorizontalInset * 2.0)
+		let length = min(200.0, floor(availableWidth / 3.0))
+		return CGSize(width: length, height: length)
+	}
+}
+
+private final class ComposeMediaBackgroundView: UICollectionReusableView {
+	private let topGradientLayer = CAGradientLayer()
+
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+		self.configureAppearance()
+	}
+
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		self.configureAppearance()
+	}
+
+	private func configureAppearance() {
+		self.backgroundColor = .secondarySystemBackground
+		self.layer.cornerRadius = 12.0
+		self.layer.cornerCurve = .continuous
+		self.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+		self.clipsToBounds = true
+
+		self.topGradientLayer.colors = [
+			UIColor.black.withAlphaComponent(0.14).cgColor,
+			UIColor.black.withAlphaComponent(0.05).cgColor,
+			UIColor.clear.cgColor
+		]
+		self.topGradientLayer.locations = [0.0, 0.45, 1.0]
+		self.topGradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+		self.topGradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+		self.layer.addSublayer(self.topGradientLayer)
+	}
+
+	override func layoutSubviews() {
+		super.layoutSubviews()
+
+		self.topGradientLayer.frame = CGRect(x: 0.0, y: 0.0, width: self.bounds.width, height: 18.0)
+	}
+}
+
+private final class ComposeCollectionViewLayout: UICollectionViewFlowLayout {
+	private static let mediaBackgroundKind = "ComposeMediaBackground"
+	private var mediaBackgroundAttributes: [IndexPath: UICollectionViewLayoutAttributes] = [:]
+
+	override init() {
+		super.init()
+		self.register(ComposeMediaBackgroundView.self, forDecorationViewOfKind: Self.mediaBackgroundKind)
+	}
+
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		self.register(ComposeMediaBackgroundView.self, forDecorationViewOfKind: Self.mediaBackgroundKind)
+	}
+
+	override func prepare() {
+		super.prepare()
+		self.mediaBackgroundAttributes.removeAll()
+
+		guard let collectionView else {
+			return
+		}
+
+		for section in 0..<collectionView.numberOfSections {
+			let itemCount = collectionView.numberOfItems(inSection: section)
+			let mediaCount = itemCount - 2
+			guard mediaCount > 0,
+				let textAttributes = super.layoutAttributesForItem(at: IndexPath(item: 0, section: section)) else {
+				continue
+			}
+
+			let mediaAttributes = (1...mediaCount).compactMap {
+				super.layoutAttributesForItem(at: IndexPath(item: $0, section: section))
+			}
+			guard let mediaBottom = mediaAttributes.map(\.frame.maxY).max() else {
+				continue
+			}
+
+			let backgroundTop = textAttributes.frame.maxY
+				- ComposeCollectionViewMetrics.textVerticalInset
+				- ComposeCollectionViewMetrics.sectionBackgroundOverlap
+			let indexPath = IndexPath(item: 0, section: section)
+			let attributes = UICollectionViewLayoutAttributes(
+				forDecorationViewOfKind: Self.mediaBackgroundKind,
+				with: indexPath
+			)
+			attributes.frame = CGRect(
+				x: ComposeCollectionViewMetrics.sectionHorizontalInset,
+				y: backgroundTop,
+				width: collectionView.bounds.width - (ComposeCollectionViewMetrics.sectionHorizontalInset * 2.0),
+				height: mediaBottom - backgroundTop
+			)
+			attributes.zIndex = -1
+			self.mediaBackgroundAttributes[indexPath] = attributes
+		}
+	}
+
+	override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+		var attributes = super.layoutAttributesForElements(in: rect) ?? []
+		attributes.append(contentsOf: self.mediaBackgroundAttributes.values.filter { $0.frame.intersects(rect) })
+		return attributes
+	}
+
+	override func layoutAttributesForDecorationView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+		guard elementKind == Self.mediaBackgroundKind else {
+			return super.layoutAttributesForDecorationView(ofKind: elementKind, at: indexPath)
+		}
+		return self.mediaBackgroundAttributes[indexPath]
+	}
+
+	override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+		guard let collectionView else {
+			return false
+		}
+		return collectionView.bounds.width != newBounds.width
+	}
+}
+
 
 class ComposeViewController: UIViewController {
 
@@ -56,10 +185,11 @@ class ComposeViewController: UIViewController {
 	}
 	
 	func configureCollectionView() {
-		if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-			flowLayout.estimatedItemSize = CGSize(width: self.view.bounds.size.width / 3.0, height:  self.view.bounds.size.width / 3.0)
-			flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-		}
+		let flowLayout = ComposeCollectionViewLayout()
+		flowLayout.estimatedItemSize = .zero
+		flowLayout.minimumLineSpacing = 0.0
+		flowLayout.minimumInteritemSpacing = 0.0
+		self.collectionView.collectionViewLayout = flowLayout
 		self.collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 		self.collectionView.dragInteractionEnabled = true
 	}
@@ -490,7 +620,8 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			return UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
 		}
 		else {
-			return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+			let horizontalInset = ComposeCollectionViewMetrics.sectionHorizontalInset
+			return UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
 		}
 	}
 
@@ -499,10 +630,6 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		// Special case for the "Add new section" button cell...
 		if indexPath.section >= self.sections.count {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostAddSectionCollectionViewCell", for: indexPath) as! PostAddSectionCollectionViewCell
-			let size = PostAddSectionCollectionViewCell.size(collectionView.bounds.size.width)
-			cell.widthConstraint.constant = size.width - 32.0
-			cell.layoutIfNeeded()
-			
 			return cell
 		}
 		
@@ -515,7 +642,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			self.textViewDictionary[cell.postText] = sectionData
 			
 			cell.postText.text = sectionData.text
-			cell.widthConstraint.constant = collectionView.bounds.size.width
+			cell.widthConstraint.constant = PostTextCollectionViewCell.size(collectionView.bounds.size.width, sectionData.text).width
 			
 			// This is somewhat of a hack, however we want the keyboard to be up and the text view to have focus when we very first come into
 			// the compose view. This is the simplest/safest way to ensure that there is a "one time" focus activation.
@@ -740,19 +867,11 @@ extension ComposeViewController : UITextViewDelegate {
 		if let sectionData = self.textViewDictionary[textView] {
 			sectionData.text = textView.text
 		}
-	}
-	
-	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-			UIView.setAnimationsEnabled(false)
-			self.collectionView.performBatchUpdates({
-			}) { (complete) in
-			}
-			UIView.setAnimationsEnabled(true)
+
+		UIView.performWithoutAnimation {
+			self.collectionView.collectionViewLayout.invalidateLayout()
+			self.collectionView.layoutIfNeeded()
 		}
-			
-		return true
 	}
 }
 
