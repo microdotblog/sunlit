@@ -15,7 +15,7 @@ import PhotosUI
 enum ComposeCollectionViewMetrics {
 	static let sectionHorizontalInset: CGFloat = 12.0
 	static let textCellTopInset: CGFloat = 12.0
-	static let textCellBottomInset: CGFloat = 16.0
+	static let textCellBottomInset: CGFloat = 8.0
 	static let sectionBackgroundOverlap: CGFloat = 10.0
 	static let textContainerInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 6)
 	static let textLineFragmentPadding: CGFloat = 5.0
@@ -270,52 +270,27 @@ class ComposeViewController: UIViewController {
 		}
 	}
 	
-	func onImageTapped(_ section : Int, _ item : Int) {
+	func imageOptionsMenu(_ sectionData : SunlitComposition, item : Int, section : Int) -> UIMenu {
+		let media = sectionData.media[item]
+		var actions : [UIMenuElement] = []
 
-		self.view.endEditing(true)
-
-		let sectionData = self.sections[section]
-
-		var editTextTitle = "Add Description"
-		if sectionData.media[item].altText.count > 0 {
-			editTextTitle = "Edit Description"
-		}
-		
-		let altTextAction = UIAlertAction(title: editTextTitle, style: .default) { (action) in
-			self.onEditAltText(sectionData, item)
-		}
-		
-		let cropAction = UIAlertAction(title: "Crop", style: .default) { (action) in
-			self.onCropImage(sectionData, item: item, section: section)
+		// We can't crop media that has already been published...
+		if media.publishedPath == nil {
+			actions.append(UIAction(title: "Crop", image: UIImage(systemName: "crop")) { [weak self] _ in
+				self?.onCropImage(sectionData, item: item, section: section)
+			})
 		}
 
-		let deleteAction = UIAlertAction(title: "Remove", style: .default) { (action) in
-			self.onRemoveImage(sectionData, item: item, section: section)
-		}
-		
-		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-		}
+		let descriptionTitle = media.altText.isEmpty ? "Add Description" : "Edit Description"
+		actions.append(UIAction(title: descriptionTitle, image: UIImage(systemName: "text.bubble")) { [weak self] _ in
+			self?.onEditAltText(sectionData, item)
+		})
 
-        let media = sectionData.media[item]
+		actions.append(UIAction(title: "Remove", image: UIImage(systemName: "trash"), attributes: .destructive) { [weak self] _ in
+			self?.onRemoveImage(sectionData, item: item, section: section)
+		})
 
-		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        // We can't crop media that has already been published...
-        if media.publishedPath == nil {
-            alertController.addAction(cropAction)
-        }
-
-		alertController.addAction(deleteAction)
-		alertController.addAction(altTextAction)
-		alertController.addAction(cancelAction)
-		
-		if let popoverController = alertController.popoverPresentationController {
-			popoverController.sourceView = self.view
-			popoverController.sourceRect = CGRect(x: self.view.center.x, y: self.view.center.y, width: 0, height: 0)
-			popoverController.permittedArrowDirections = []
-		}
-		
-		self.present(alertController, animated: true, completion: nil)
+		return UIMenu(children: actions)
 	}
 
     @available(iOS 14, *)
@@ -680,9 +655,14 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		}
 		else {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostImageCollectionViewCell", for: indexPath) as! PostImageCollectionViewCell
-			cell.postImage.image = sectionData.media[indexPath.item - 1].getImage()
+			let mediaIndex = indexPath.item - 1
+			cell.postImage.image = sectionData.media[mediaIndex].getImage()
 			let size = PostImageCollectionViewCell.size(collectionView.bounds.size.width)
 			cell.widthConstraint.constant = size.width
+			let menu = self.imageOptionsMenu(sectionData, item: mediaIndex, section: indexPath.section)
+			cell.configureOptionsMenu(menu) { [weak self] in
+				self?.view.endEditing(true)
+			}
 			return cell
 		}
 	}
@@ -699,9 +679,6 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			let sectionData = self.sections[indexPath.section]
 			if indexPath.item > sectionData.media.count {
 				self.onAddPhoto(indexPath.section)
-			}
-			else if indexPath.item > 0 {
-				self.onImageTapped(indexPath.section, indexPath.item - 1)
 			}
 		}
 		

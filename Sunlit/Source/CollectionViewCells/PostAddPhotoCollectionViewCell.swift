@@ -18,7 +18,7 @@ class PostAddPhotoCollectionViewCell: UICollectionViewCell {
 		super.awakeFromNib()
 
 		self.addIcon.backgroundColor = .clear
-		self.symbolFillView.backgroundColor = .systemBackground
+		self.symbolFillView.backgroundColor = .systemGray6
 		self.symbolFillView.layer.cornerRadius = 9.0
 		self.symbolFillView.isUserInteractionEnabled = false
 		self.symbolFillView.translatesAutoresizingMaskIntoConstraints = false

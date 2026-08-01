@@ -102,7 +102,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="412" id="HSD-uo-sTe"/>
-                                                <constraint firstAttribute="bottom" secondItem="I1E-IH-CG2" secondAttribute="bottom" constant="16" id="JUj-sj-tFK"/>
+                                                <constraint firstAttribute="bottom" secondItem="I1E-IH-CG2" secondAttribute="bottom" constant="8" id="JUj-sj-tFK"/>
                                                 <constraint firstAttribute="trailing" secondItem="I1E-IH-CG2" secondAttribute="trailing" id="S4B-e7-lQG"/>
                                                 <constraint firstItem="I1E-IH-CG2" firstAttribute="leading" secondItem="jdC-70-3Nt" secondAttribute="leading" id="wbJ-nc-i7O"/>
                                                 <constraint firstItem="I1E-IH-CG2" firstAttribute="top" secondItem="jdC-70-3Nt" secondAttribute="top" constant="12" id="wp8-TN-ntS"/>
@@ -122,16 +122,16 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="n5S-Q4-UNQ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
+                                                    <rect key="frame" x="10" y="8" width="100" height="104"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="120" id="0N2-QS-0lX"/>
-                                                <constraint firstItem="n5S-Q4-UNQ" firstAttribute="top" secondItem="Zi2-Jg-TIo" secondAttribute="top" id="JXH-C5-Ar1"/>
+                                                <constraint firstItem="n5S-Q4-UNQ" firstAttribute="top" secondItem="Zi2-Jg-TIo" secondAttribute="top" constant="8" id="JXH-C5-Ar1"/>
                                                 <constraint firstAttribute="width" secondItem="Zi2-Jg-TIo" secondAttribute="height" multiplier="1:1" id="fwI-oH-3wL"/>
                                                 <constraint firstAttribute="trailing" secondItem="n5S-Q4-UNQ" secondAttribute="trailing" constant="10" id="nxf-YF-Jne"/>
-                                                <constraint firstAttribute="bottom" secondItem="n5S-Q4-UNQ" secondAttribute="bottom" id="ruK-kx-DvL"/>
+                                                <constraint firstAttribute="bottom" secondItem="n5S-Q4-UNQ" secondAttribute="bottom" constant="8" id="ruK-kx-DvL"/>
                                                 <constraint firstItem="n5S-Q4-UNQ" firstAttribute="leading" secondItem="Zi2-Jg-TIo" secondAttribute="leading" constant="10" id="xSK-zG-hXX"/>
                                             </constraints>
                                         </collectionViewCellContentView>
@@ -200,6 +200,9 @@
                                                 <constraint firstItem="GdF-Ro-omh" firstAttribute="centerX" secondItem="Jk2-ua-Mpd" secondAttribute="centerX" id="xIY-ld-Jqf"/>
                                             </constraints>
                                         </collectionViewCellContentView>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="GdF-Ro-omh" id="c2Q-oS-WRc"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
