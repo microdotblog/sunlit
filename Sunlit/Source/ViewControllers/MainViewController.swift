@@ -578,20 +578,18 @@ class MainViewController: ContentViewController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 	func constructPhoneInterface() {
-		let storyBoard: UIStoryboard = UIStoryboard(name: "Main-Phone", bundle: nil)
-		
-		if let phoneViewController = storyBoard.instantiateViewController(withIdentifier: "MainPhoneViewController") as? MainPhoneViewController{
-			self.phoneViewController = phoneViewController
-			phoneViewController.timelineViewController = self.timelineViewController
-			phoneViewController.discoverViewController = self.discoverViewController
-//            phoneViewController.bookmarksViewController = self.bookmarksViewController
-//			phoneViewController.profileViewController = self.profileViewController
-			phoneViewController.mentionsViewController = self.mentionsViewController
+		let phoneViewController = MainPhoneViewController(
+			timelineViewController: self.timelineViewController,
+			mentionsViewController: self.mentionsViewController,
+			discoverViewController: self.discoverViewController
+		)
+		self.phoneViewController = phoneViewController
 
-			self.addChild(phoneViewController)
-			self.view.addSubview(phoneViewController.view)
-			phoneViewController.view.bounds = self.view.bounds
-		}
+		self.addChild(phoneViewController)
+		self.view.addSubview(phoneViewController.view)
+		phoneViewController.view.translatesAutoresizingMaskIntoConstraints = false
+		phoneViewController.view.constrainAllSides(self.view)
+		phoneViewController.didMove(toParent: self)
 	}
 	
 	
