@@ -14,7 +14,8 @@ import PhotosUI
 
 enum ComposeCollectionViewMetrics {
 	static let sectionHorizontalInset: CGFloat = 12.0
-	static let textVerticalInset: CGFloat = 16.0
+	static let textCellTopInset: CGFloat = 12.0
+	static let textCellBottomInset: CGFloat = 16.0
 	static let sectionBackgroundOverlap: CGFloat = 10.0
 	static let textContainerInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 6)
 	static let textLineFragmentPadding: CGFloat = 5.0
@@ -40,7 +41,7 @@ private final class ComposeMediaBackgroundView: UICollectionReusableView {
 	}
 
 	private func configureAppearance() {
-		self.backgroundColor = .secondarySystemBackground
+		self.backgroundColor = .systemGray5
 		self.layer.cornerRadius = 12.0
 		self.layer.cornerCurve = .continuous
 		self.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -102,7 +103,7 @@ private final class ComposeCollectionViewLayout: UICollectionViewFlowLayout {
 			}
 
 			let backgroundTop = textAttributes.frame.maxY
-				- ComposeCollectionViewMetrics.textVerticalInset
+				- ComposeCollectionViewMetrics.textCellBottomInset
 				- ComposeCollectionViewMetrics.sectionBackgroundOverlap
 			let indexPath = IndexPath(item: 0, section: section)
 			let attributes = UICollectionViewLayoutAttributes(
@@ -181,6 +182,7 @@ class ComposeViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		self.updateBlogSelectorButton()
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
 	}
 	
@@ -215,8 +217,25 @@ class ComposeViewController: UIViewController {
             }
         }
 
-        self.blogSelectorButton.setTitle(BlogSettings.blogForPublishing().blogName, for: .normal)
-        self.blogSelectorButton.isEnabled = BlogSettings.publishedBlogs().count > 1
+		self.updateBlogSelectorButton()
+	}
+
+	private func updateBlogSelectorButton() {
+		var configuration = UIButton.Configuration.plain()
+		configuration.title = BlogSettings.blogForPublishing().blogName
+		let chevronConfiguration = UIImage.SymbolConfiguration(pointSize: 10.0, weight: .regular)
+		configuration.image = UIImage(systemName: "chevron.down", withConfiguration: chevronConfiguration)
+		configuration.imagePlacement = .trailing
+		configuration.imagePadding = 5.0
+		configuration.baseForegroundColor = .label
+		configuration.contentInsets = .zero
+		configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+			var attributes = attributes
+			attributes.font = .systemFont(ofSize: 15.0, weight: .regular)
+			return attributes
+		}
+		self.blogSelectorButton.configuration = configuration
+		self.blogSelectorButton.isUserInteractionEnabled = BlogSettings.publishedBlogs().count > 1
 	}
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -358,7 +377,7 @@ class ComposeViewController: UIViewController {
 	
 	@IBAction func onSelectBlogConfiguration() {
 		Dialog(self).selectBlog {
-            self.blogSelectorButton.setTitle(BlogSettings.blogForPublishing().blogName, for: .normal)
+			self.updateBlogSelectorButton()
 		}
 	}
 	

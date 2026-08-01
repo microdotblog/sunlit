@@ -105,7 +105,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="I1E-IH-CG2" secondAttribute="bottom" constant="16" id="JUj-sj-tFK"/>
                                                 <constraint firstAttribute="trailing" secondItem="I1E-IH-CG2" secondAttribute="trailing" id="S4B-e7-lQG"/>
                                                 <constraint firstItem="I1E-IH-CG2" firstAttribute="leading" secondItem="jdC-70-3Nt" secondAttribute="leading" id="wbJ-nc-i7O"/>
-                                                <constraint firstItem="I1E-IH-CG2" firstAttribute="top" secondItem="jdC-70-3Nt" secondAttribute="top" constant="16" id="wp8-TN-ntS"/>
+                                                <constraint firstItem="I1E-IH-CG2" firstAttribute="top" secondItem="jdC-70-3Nt" secondAttribute="top" constant="12" id="wp8-TN-ntS"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="128" height="128"/>
@@ -163,6 +163,7 @@
                                         </collectionViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
+                                            <outlet property="addIcon" destination="9GI-cb-AlC" id="zyF-S7-q6Q"/>
                                             <outlet property="widthConstraint" destination="ZkB-ho-1cp" id="6Mp-UH-UHK"/>
                                         </connections>
                                     </collectionViewCell>
@@ -213,8 +214,8 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UN1-6s-Ep7">
                                         <rect key="frame" x="12" y="7" width="168" height="30"/>
-                                        <state key="normal" title="cheesemaker.micro.blog">
-                                            <color key="titleColor" name="color_highlight"/>
+                                        <state key="normal">
+                                            <color key="titleColor" systemColor="labelColor"/>
                                         </state>
                                         <state key="disabled">
                                             <color key="titleColor" systemColor="labelColor"/>
@@ -237,7 +238,7 @@
                                     <constraint firstItem="kxE-Nr-1Qe" firstAttribute="centerY" secondItem="grM-1V-fO8" secondAttribute="centerY" id="3bb-33-E1U"/>
                                     <constraint firstAttribute="trailing" secondItem="kxE-Nr-1Qe" secondAttribute="trailing" constant="12" id="4rS-FR-G9D"/>
                                     <constraint firstItem="UN1-6s-Ep7" firstAttribute="centerY" secondItem="grM-1V-fO8" secondAttribute="centerY" id="f7a-Ib-TJa"/>
-                                    <constraint firstItem="UN1-6s-Ep7" firstAttribute="leading" secondItem="grM-1V-fO8" secondAttribute="leading" constant="12" id="ihA-3m-kSQ"/>
+                                    <constraint firstItem="UN1-6s-Ep7" firstAttribute="centerX" secondItem="grM-1V-fO8" secondAttribute="centerX" id="ihA-3m-kSQ"/>
                                     <constraint firstAttribute="height" constant="44" id="vvt-Wm-tWc"/>
                                 </constraints>
                             </view>

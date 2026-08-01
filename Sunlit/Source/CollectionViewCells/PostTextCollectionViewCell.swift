@@ -30,7 +30,9 @@ class PostTextCollectionViewCell: UICollectionViewCell {
 		)
 		let textHeight = max(font.lineHeight, ceil(textRect.height))
 		let textViewHeight = textHeight + textInsets.top + textInsets.bottom
-		let cellHeight = ceil(textViewHeight) + 32.0
+		let cellHeight = ceil(textViewHeight)
+			+ ComposeCollectionViewMetrics.textCellTopInset
+			+ ComposeCollectionViewMetrics.textCellBottomInset
 		return CGSize(width: cellWidth, height: cellHeight)
 	}
 }
