@@ -17,9 +17,9 @@
 		4B9D143624C889BA004E7EAF /* SectionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9D143524C889BA004E7EAF /* SectionTextView.swift */; };
 		4BA1209626C069BB00320E80 /* AltTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1209526C069BB00320E80 /* AltTextController.swift */; };
 		4BA1209726C06AF900320E80 /* AltTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1209526C069BB00320E80 /* AltTextController.swift */; };
+		4BE1FFAE251D82BA0037FEFA /* BlogSelectionAddNewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */; };
 		A15F00012C5D000100000001 /* BlogChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F00032C5D000100000001 /* BlogChooserViewController.swift */; };
 		A15F00022C5D000100000001 /* BlogChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F00032C5D000100000001 /* BlogChooserViewController.swift */; };
-		4BE1FFAE251D82BA0037FEFA /* BlogSelectionAddNewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */; };
 		C51051DA26F05CB100533E31 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51051D926F05CB100533E31 /* HTMLParser.swift */; };
 		C51051DB26F05CD000533E31 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51051D926F05CB100533E31 /* HTMLParser.swift */; };
 		C5235AFB252D0670002F9CC6 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5235AFA252D0670002F9CC6 /* ShareViewController.swift */; };
@@ -358,8 +358,8 @@
 		4B55700124F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationPhotoCollectionViewCell.swift; path = Source/CollectionViewCells/ConversationPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		4B9D143524C889BA004E7EAF /* SectionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SectionTextView.swift; path = Source/Views/SectionTextView.swift; sourceTree = "<group>"; };
 		4BA1209526C069BB00320E80 /* AltTextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AltTextController.swift; path = Source/ViewControllers/AltTextController.swift; sourceTree = "<group>"; };
-		A15F00032C5D000100000001 /* BlogChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogChooserViewController.swift; path = Source/ViewControllers/BlogChooserViewController.swift; sourceTree = "<group>"; };
 		4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogSelectionAddNewCell.swift; path = Source/TableViewCells/BlogSelectionAddNewCell.swift; sourceTree = "<group>"; };
+		A15F00032C5D000100000001 /* BlogChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogChooserViewController.swift; path = Source/ViewControllers/BlogChooserViewController.swift; sourceTree = "<group>"; };
 		C51051D926F05CB100533E31 /* HTMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HTMLParser.swift; path = Source/Utilities/HTMLParser.swift; sourceTree = "<group>"; };
 		C5235AF8252D0670002F9CC6 /* sharing.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = sharing.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5235AFA252D0670002F9CC6 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -1782,7 +1782,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Sharing Extension/sharing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 500;
+				CURRENT_PROJECT_VERSION = 505;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = "Sharing Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -1791,7 +1791,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.sharing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1806,7 +1806,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Sharing Extension/sharing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 500;
+				CURRENT_PROJECT_VERSION = 505;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = "Sharing Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -1815,7 +1815,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.sharing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2156,7 +2156,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sunlit/Sunlit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 504;
+				CURRENT_PROJECT_VERSION = 505;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2168,7 +2168,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
@@ -2184,7 +2184,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sunlit/Sunlit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 504;
+				CURRENT_PROJECT_VERSION = 505;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2196,7 +2196,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
@@ -2286,7 +2286,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = widget_background;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 500;
+				CURRENT_PROJECT_VERSION = 505;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -2295,7 +2295,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.widget;
 				PRODUCT_NAME = "Sunlit Widget";
 				SKIP_INSTALL = YES;
@@ -2312,7 +2312,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = widget_background;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 500;
+				CURRENT_PROJECT_VERSION = 505;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -2321,7 +2321,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.widget;
 				PRODUCT_NAME = "Sunlit Widget";
 				SKIP_INSTALL = YES;
