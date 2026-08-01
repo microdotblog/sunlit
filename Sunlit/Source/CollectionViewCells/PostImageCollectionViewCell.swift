@@ -13,15 +13,14 @@ class PostImageCollectionViewCell: UICollectionViewCell {
 	@IBOutlet var widthConstraint : NSLayoutConstraint!
 
 	private let optionsButton = UIButton(type: .custom)
-	private var onOptionsButtonTouchDown : (() -> Void)?
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
 
 		self.optionsButton.accessibilityLabel = "Photo options"
 		self.optionsButton.showsMenuAsPrimaryAction = true
+		self.optionsButton.isUserInteractionEnabled = false
 		self.optionsButton.translatesAutoresizingMaskIntoConstraints = false
-		self.optionsButton.addTarget(self, action: #selector(onOptionsTouchDown), for: .touchDown)
 		self.contentView.addSubview(self.optionsButton)
 		NSLayoutConstraint.activate([
 			self.optionsButton.leadingAnchor.constraint(equalTo: self.postImage.leadingAnchor),
@@ -34,16 +33,15 @@ class PostImageCollectionViewCell: UICollectionViewCell {
 	override func prepareForReuse() {
 		super.prepareForReuse()
 		self.optionsButton.menu = nil
-		self.onOptionsButtonTouchDown = nil
 	}
 
-	func configureOptionsMenu(_ menu : UIMenu, onTouchDown : @escaping () -> Void) {
+	func configureOptionsMenu(_ menu : UIMenu) {
 		self.optionsButton.menu = menu
-		self.onOptionsButtonTouchDown = onTouchDown
 	}
 
-	@objc private func onOptionsTouchDown() {
-		self.onOptionsButtonTouchDown?()
+	@available(iOS 17.4, *)
+	func showOptionsMenu() {
+		self.optionsButton.performPrimaryAction()
 	}
 
 	static func size(_ collectionViewWidth : CGFloat) -> CGSize {

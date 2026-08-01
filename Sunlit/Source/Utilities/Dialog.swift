@@ -118,30 +118,21 @@ class Dialog {
 	}
 	
 	private func selectBlogConfiguration(_ blogList : [BlogSettings]) {
-
-		let actionSheet = UIAlertController(title: nil, message: "Please select which Micro.blog to use when publishing.", preferredStyle: .actionSheet)
-
-		for blog in blogList {
-            let action = UIAlertAction(title: blog.blogName, style: .default) { (action) in
-
-                BlogSettings.setBlogForPublishing(blog)
-
-                if let completion = self.completion {
-                    completion()
-                }
-            }
-            
-            actionSheet.addAction(action)
+		let chooser = BlogChooserViewController(blogs: blogList) { _ in
+			self.completion?()
 		}
-		
-		if let popoverController = actionSheet.popoverPresentationController {
-			popoverController.sourceView = self.viewController.view
-			popoverController.sourceRect = CGRect(x: self.viewController.view.center.x, y: self.viewController.view.center.y, width: 0, height: 0)
-			popoverController.permittedArrowDirections = [] 
+		let navigationController = UINavigationController(rootViewController: chooser)
+		navigationController.modalPresentationStyle = .pageSheet
+		navigationController.preferredContentSize = CGSize(width: 420.0, height: 520.0)
+
+		if let sheet = navigationController.sheetPresentationController {
+			sheet.detents = [.medium()]
+			sheet.prefersGrabberVisible = false
+			sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+			sheet.preferredCornerRadius = 24.0
 		}
-		
-		self.viewController.present(actionSheet, animated: true) {
-		}
+
+		self.viewController.present(navigationController, animated: true)
 
 	}
 	

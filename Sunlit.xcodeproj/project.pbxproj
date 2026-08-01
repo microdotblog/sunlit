@@ -17,6 +17,8 @@
 		4B9D143624C889BA004E7EAF /* SectionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9D143524C889BA004E7EAF /* SectionTextView.swift */; };
 		4BA1209626C069BB00320E80 /* AltTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1209526C069BB00320E80 /* AltTextController.swift */; };
 		4BA1209726C06AF900320E80 /* AltTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1209526C069BB00320E80 /* AltTextController.swift */; };
+		A15F00012C5D000100000001 /* BlogChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F00032C5D000100000001 /* BlogChooserViewController.swift */; };
+		A15F00022C5D000100000001 /* BlogChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F00032C5D000100000001 /* BlogChooserViewController.swift */; };
 		4BE1FFAE251D82BA0037FEFA /* BlogSelectionAddNewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */; };
 		C51051DA26F05CB100533E31 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51051D926F05CB100533E31 /* HTMLParser.swift */; };
 		C51051DB26F05CD000533E31 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51051D926F05CB100533E31 /* HTMLParser.swift */; };
@@ -356,6 +358,7 @@
 		4B55700124F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationPhotoCollectionViewCell.swift; path = Source/CollectionViewCells/ConversationPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		4B9D143524C889BA004E7EAF /* SectionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SectionTextView.swift; path = Source/Views/SectionTextView.swift; sourceTree = "<group>"; };
 		4BA1209526C069BB00320E80 /* AltTextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AltTextController.swift; path = Source/ViewControllers/AltTextController.swift; sourceTree = "<group>"; };
+		A15F00032C5D000100000001 /* BlogChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogChooserViewController.swift; path = Source/ViewControllers/BlogChooserViewController.swift; sourceTree = "<group>"; };
 		4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogSelectionAddNewCell.swift; path = Source/TableViewCells/BlogSelectionAddNewCell.swift; sourceTree = "<group>"; };
 		C51051D926F05CB100533E31 /* HTMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HTMLParser.swift; path = Source/Utilities/HTMLParser.swift; sourceTree = "<group>"; };
 		C5235AF8252D0670002F9CC6 /* sharing.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = sharing.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1082,6 +1085,7 @@
 			children = (
 				C5A1DE7624901DCC00B50B54 /* AboutViewController.swift */,
 				4BA1209526C069BB00320E80 /* AltTextController.swift */,
+				A15F00032C5D000100000001 /* BlogChooserViewController.swift */,
 				C5F680F2252C36A800D6987D /* BookmarksViewController.swift */,
 				C5A1DE7524901DCC00B50B54 /* ComposeViewController.swift */,
 				C5281B0B251D352800099C6A /* ContentViewController.swift */,
@@ -1472,6 +1476,7 @@
 				C5235B33252D0B99002F9CC6 /* VideoTranscoder.swift in Sources */,
 				C5235B26252D0B93002F9CC6 /* SnippetsPost+Sunlit.swift in Sources */,
 				C5235B15252D0B80002F9CC6 /* ComposeViewController.swift in Sources */,
+				A15F00022C5D000100000001 /* BlogChooserViewController.swift in Sources */,
 				C5235B51252D0BFB002F9CC6 /* PostImageCollectionViewCell.swift in Sources */,
 				C5235B32252D0B99002F9CC6 /* Dialog.swift in Sources */,
 				C5235B47252D0BE0002F9CC6 /* UIBarButtonItem+Sunlit.swift in Sources */,
@@ -1576,6 +1581,7 @@
 				C5A1DE5124901D9D00B50B54 /* UIBarButtonItem+Sunlit.swift in Sources */,
 				C5A0830B2B8D613300FF3EC3 /* SafariShareActivity.swift in Sources */,
 				C5A1DE8024901DCC00B50B54 /* ComposeViewController.swift in Sources */,
+				A15F00012C5D000100000001 /* BlogChooserViewController.swift in Sources */,
 				C5EC4737253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */,
 				C5A1DE9224901DE600B50B54 /* PostImageCollectionViewCell.swift in Sources */,
 				C5A1DE6B24901DBC00B50B54 /* SnippetsUser+Sunlit.swift in Sources */,

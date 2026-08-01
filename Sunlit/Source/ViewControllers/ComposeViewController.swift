@@ -293,6 +293,34 @@ class ComposeViewController: UIViewController {
 		return UIMenu(children: actions)
 	}
 
+	func showLegacyImageOptions(_ sectionData : SunlitComposition, item : Int, section : Int, sourceView : UIView) {
+		let media = sectionData.media[item]
+		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+		if media.publishedPath == nil {
+			alertController.addAction(UIAlertAction(title: "Crop", style: .default) { [weak self] _ in
+				self?.onCropImage(sectionData, item: item, section: section)
+			})
+		}
+
+		let descriptionTitle = media.altText.isEmpty ? "Add Description" : "Edit Description"
+		alertController.addAction(UIAlertAction(title: descriptionTitle, style: .default) { [weak self] _ in
+			self?.onEditAltText(sectionData, item)
+		})
+
+		alertController.addAction(UIAlertAction(title: "Remove", style: .destructive) { [weak self] _ in
+			self?.onRemoveImage(sectionData, item: item, section: section)
+		})
+		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+		if let popoverController = alertController.popoverPresentationController {
+			popoverController.sourceView = sourceView
+			popoverController.sourceRect = sourceView.bounds
+		}
+
+		self.present(alertController, animated: true)
+	}
+
     @available(iOS 14, *)
     func iOS14PhotoPicker() -> UIViewController {
         var configuration = PHPickerConfiguration()
@@ -660,9 +688,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			let size = PostImageCollectionViewCell.size(collectionView.bounds.size.width)
 			cell.widthConstraint.constant = size.width
 			let menu = self.imageOptionsMenu(sectionData, item: mediaIndex, section: indexPath.section)
-			cell.configureOptionsMenu(menu) { [weak self] in
-				self?.view.endEditing(true)
-			}
+			cell.configureOptionsMenu(menu)
 			return cell
 		}
 	}
@@ -679,6 +705,16 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			let sectionData = self.sections[indexPath.section]
 			if indexPath.item > sectionData.media.count {
 				self.onAddPhoto(indexPath.section)
+			}
+			else if indexPath.item > 0,
+				let cell = collectionView.cellForItem(at: indexPath) as? PostImageCollectionViewCell {
+				let mediaIndex = indexPath.item - 1
+				if #available(iOS 17.4, *) {
+					cell.showOptionsMenu()
+				}
+				else {
+					self.showLegacyImageOptions(sectionData, item: mediaIndex, section: indexPath.section, sourceView: cell)
+				}
 			}
 		}
 		
