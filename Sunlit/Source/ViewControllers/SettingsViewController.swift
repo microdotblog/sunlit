@@ -48,8 +48,9 @@ class SettingsViewController: UIViewController {
 		self.tableView.estimatedSectionHeaderHeight = 0.0
 		self.tableView.contentInset.top = -24.0
 		self.tableView.backgroundColor = .clear
-		let versionString : String = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
-		self.settingsLabel.text = versionString
+		let versionString = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+		let buildString = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+		self.settingsLabel.text = buildString.isEmpty ? versionString : "\(versionString) (\(buildString))"
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

@@ -42,7 +42,7 @@ class MainViewController: ContentViewController {
 	var phoneViewController : MainPhoneViewController?
 	var discoverViewController : DiscoverViewController!
 	var timelineViewController : TimelineViewController!
-	var myProfileViewController : MyProfileViewController!
+	var myProfileViewController : ProfileViewController!
 	var mentionsViewController : MentionsViewController!
     var bookmarksViewController : BookmarksViewController!
 
@@ -172,8 +172,12 @@ class MainViewController: ContentViewController {
 	func loadContentViews() {
 		let storyboard = UIStoryboard(name: "Content", bundle: nil)
 		self.timelineViewController = storyboard.instantiateViewController(identifier: "TimelineViewController")
-		self.myProfileViewController = storyboard.instantiateViewController(identifier: "MyProfileViewController")
 		self.discoverViewController = storyboard.instantiateViewController(identifier: "DiscoverViewController")
+
+		let profileStoryboard = UIStoryboard(name: "Profile", bundle: nil)
+		self.myProfileViewController = profileStoryboard.instantiateViewController(identifier: "ProfileViewController")
+		self.myProfileViewController.isCurrentUserProfile = true
+		self.myProfileViewController.user = SnippetsUser.current()
 
         let bookmarksStoryBoard: UIStoryboard = UIStoryboard(name: "Bookmarks", bundle: nil)
         self.bookmarksViewController = bookmarksStoryBoard.instantiateViewController(identifier: "BookmarksViewController")
