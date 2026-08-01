@@ -118,8 +118,6 @@ class MainViewController: ContentViewController {
                     let button = ProfileAvatarButton()
                     button.setImage(profileImage, for: .normal)
                     button.translatesAutoresizingMaskIntoConstraints = false
-                    button.widthAnchor.constraint(equalToConstant: 26.0).isActive = true
-                    button.heightAnchor.constraint(equalToConstant: 26.0).isActive = true
                     button.addTarget(self, action: #selector(self.onProfile), for: .touchUpInside)
                     
                     let userProfileButton = UIBarButtonItem(customView: button)

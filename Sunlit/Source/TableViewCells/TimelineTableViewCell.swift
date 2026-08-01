@@ -73,6 +73,10 @@ class TimelineTableViewCell : UITableViewCell {
 			constraint.secondItem as? UIView === self.userHandle
 		} ?? []
 		NSLayoutConstraint.deactivate(headerConstraints)
+		let avatarSizeConstraints = self.userAvatar.constraints.filter { constraint in
+			constraint.firstAttribute == .width || constraint.firstAttribute == .height
+		}
+		NSLayoutConstraint.deactivate(avatarSizeConstraints)
 
 		self.userAvatar.removeFromSuperview()
 		self.userHandle.removeFromSuperview()
