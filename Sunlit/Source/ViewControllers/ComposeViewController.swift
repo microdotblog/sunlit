@@ -729,6 +729,40 @@ MARK: -
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 extension ComposeViewController : UICollectionViewDropDelegate, UICollectionViewDragDelegate {
 
+	private func imagePreviewParameters(_ collectionView : UICollectionView, _ indexPath : IndexPath) -> UIDragPreviewParameters? {
+		guard let cell = collectionView.cellForItem(at: indexPath) as? PostImageCollectionViewCell else {
+			return nil
+		}
+
+		let parameters = UIDragPreviewParameters()
+		parameters.backgroundColor = .clear
+		var visibleImageBounds = cell.postImage.bounds
+		if let image = cell.postImage.image, image.size.width > 0.0, image.size.height > 0.0 {
+			let scale = min(
+				cell.postImage.bounds.width / image.size.width,
+				cell.postImage.bounds.height / image.size.height
+			)
+			let imageSize = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+			visibleImageBounds = CGRect(
+				x: (cell.postImage.bounds.width - imageSize.width) / 2.0,
+				y: (cell.postImage.bounds.height - imageSize.height) / 2.0,
+				width: imageSize.width,
+				height: imageSize.height
+			)
+		}
+		let imageFrame = cell.postImage.convert(visibleImageBounds, to: cell)
+		parameters.visiblePath = UIBezierPath(rect: imageFrame)
+		return parameters
+	}
+
+	func collectionView(_ collectionView: UICollectionView, dragPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+		return self.imagePreviewParameters(collectionView, indexPath)
+	}
+
+	func collectionView(_ collectionView: UICollectionView, dropPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+		return self.imagePreviewParameters(collectionView, indexPath)
+	}
+
 	func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
 
 		// A fail safe/defensive coding...

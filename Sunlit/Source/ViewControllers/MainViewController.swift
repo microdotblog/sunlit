@@ -91,11 +91,11 @@ class MainViewController: ContentViewController {
             if #available(iOS 14, *) {
                 postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: nil)
 
-                let libraryAction = UIAction(title: "Photo Library", image: UIImage(systemName: "photo")) { (action) in
+                let libraryAction = UIAction(title: "Photo Library", image: UIImage(systemName: "photo.stack")) { (action) in
                     self.onNewPost()
                 }
 
-                let filesAction = UIAction(title: "Uploads", image: UIImage(systemName: "folder")) { (action) in
+                let filesAction = UIAction(title: "Micro.blog Uploads", image: UIImage(systemName: "photo.on.rectangle")) { (action) in
                     self.onUploads()
                 }
 

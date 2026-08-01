@@ -24,7 +24,7 @@ class TimelineTableViewCell : UITableViewCell {
 
 	var post : SunlitPost!
 	private var avatarSource: String?
-	private let identityBubble = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
+	private let identityBubble = UIView()
 
 	// Video playback interface...
 	var player : AVQueuePlayer? = nil
@@ -54,6 +54,13 @@ class TimelineTableViewCell : UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 
+		self.collectionView.showsHorizontalScrollIndicator = false
+		self.contentView.constraints.first(where: { constraint in
+			constraint.firstItem as? UIView === self.contentView &&
+			constraint.firstAttribute == .bottom &&
+			constraint.secondItem as? UIView === self.pageViewIndicatorContainer &&
+			constraint.secondAttribute == .bottom
+		})?.constant = 10.0
 		self.setupIdentityBubble()
 	}
 
@@ -73,6 +80,7 @@ class TimelineTableViewCell : UITableViewCell {
 		headerView?.isHidden = true
 
 		self.identityBubble.isUserInteractionEnabled = false
+		self.identityBubble.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.6)
 		self.identityBubble.clipsToBounds = true
 		self.identityBubble.layer.cornerRadius = 20.0
 		self.identityBubble.layer.cornerCurve = .continuous
@@ -89,22 +97,22 @@ class TimelineTableViewCell : UITableViewCell {
 		self.userHandle.translatesAutoresizingMaskIntoConstraints = false
 
 		self.contentView.addSubview(self.identityBubble)
-		self.identityBubble.contentView.addSubview(self.userAvatar)
-		self.identityBubble.contentView.addSubview(self.userHandle)
+		self.identityBubble.addSubview(self.userAvatar)
+		self.identityBubble.addSubview(self.userHandle)
 
 		NSLayoutConstraint.activate([
 			self.identityBubble.leadingAnchor.constraint(equalTo: self.collectionView.leadingAnchor, constant: 8.0),
 			self.identityBubble.topAnchor.constraint(equalTo: self.collectionView.topAnchor, constant: 8.0),
 
-			self.userAvatar.leadingAnchor.constraint(equalTo: self.identityBubble.contentView.leadingAnchor, constant: 6.0),
-			self.userAvatar.topAnchor.constraint(equalTo: self.identityBubble.contentView.topAnchor, constant: 6.0),
-			self.userAvatar.bottomAnchor.constraint(equalTo: self.identityBubble.contentView.bottomAnchor, constant: -6.0),
+			self.userAvatar.leadingAnchor.constraint(equalTo: self.identityBubble.leadingAnchor, constant: 6.0),
+			self.userAvatar.topAnchor.constraint(equalTo: self.identityBubble.topAnchor, constant: 6.0),
+			self.userAvatar.bottomAnchor.constraint(equalTo: self.identityBubble.bottomAnchor, constant: -6.0),
 			self.userAvatar.widthAnchor.constraint(equalToConstant: 28.0),
 			self.userAvatar.heightAnchor.constraint(equalToConstant: 28.0),
 
-			self.userHandle.leadingAnchor.constraint(equalTo: self.userAvatar.trailingAnchor, constant: 8.0),
-			self.userHandle.trailingAnchor.constraint(equalTo: self.identityBubble.contentView.trailingAnchor, constant: -12.0),
-			self.userHandle.centerYAnchor.constraint(equalTo: self.identityBubble.contentView.centerYAnchor)
+			self.userHandle.leadingAnchor.constraint(equalTo: self.userAvatar.trailingAnchor, constant: 6.0),
+			self.userHandle.trailingAnchor.constraint(equalTo: self.identityBubble.trailingAnchor, constant: -12.0),
+			self.userHandle.centerYAnchor.constraint(equalTo: self.identityBubble.centerYAnchor)
 		])
 	}
 

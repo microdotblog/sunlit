@@ -24,27 +24,22 @@ final class BlogChooserViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		self.title = "Choose Blog"
+		self.title = "Blogs"
 		self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-			image: UIImage(systemName: "chevron.backward"),
+			image: UIImage(systemName: "xmark"),
 			style: .plain,
 			target: self,
-			action: #selector(onBack)
+			action: #selector(onClose)
 		)
-		self.navigationItem.leftBarButtonItem?.accessibilityLabel = "Back"
+		self.navigationItem.leftBarButtonItem?.accessibilityLabel = "Close"
 
 		self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.cellIdentifier)
 		self.tableView.rowHeight = 52.0
+		self.tableView.sectionHeaderTopPadding = 8.0
+		self.tableView.sectionHeaderHeight = .leastNormalMagnitude
+		self.tableView.estimatedSectionHeaderHeight = 0.0
+		self.tableView.contentInset.top = -24.0
 		self.tableView.backgroundColor = .systemGroupedBackground
-	}
-
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-
-		let selectedName = BlogSettings.blogForPublishing().blogName
-		if let selectedRow = self.blogs.firstIndex(where: { $0.blogName == selectedName }) {
-			self.tableView.scrollToRow(at: IndexPath(row: selectedRow, section: 0), at: .middle, animated: false)
-		}
 	}
 
 	override func numberOfSections(in tableView: UITableView) -> Int {
@@ -72,7 +67,7 @@ final class BlogChooserViewController: UITableViewController {
 		self.dismiss(animated: true)
 	}
 
-	@objc private func onBack() {
+	@objc private func onClose() {
 		self.dismiss(animated: true)
 	}
 }

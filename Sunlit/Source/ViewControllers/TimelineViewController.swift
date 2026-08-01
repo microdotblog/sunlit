@@ -174,8 +174,6 @@ class TimelineViewController: ContentViewController {
 
 
 	func loadTimeline() {
-
-		print("loadTimeline called")
 		let token = Settings.snippetsToken()
 		self.loggedOutView.isHidden = (token != nil)
 		self.loggedOutView.superview?.bringSubviewToFront(self.loggedOutView)
@@ -186,10 +184,9 @@ class TimelineViewController: ContentViewController {
 		}
 		
 		self.loadingData = true
-		print("Fetching timeline")
 
 		var parameters : [String : String] = [:]
-		parameters["count"] = "30"
+		parameters["count"] = "20"
 
 		Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters) { (error, postObjects : [SnippetsPost]) in
 			// remove non-JPEGs
@@ -508,7 +505,6 @@ extension TimelineViewController : UITextViewDelegate {
 	}
 
 }
-
 
 
 
