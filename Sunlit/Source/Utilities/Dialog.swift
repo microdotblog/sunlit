@@ -118,22 +118,9 @@ class Dialog {
 	}
 	
 	private func selectBlogConfiguration(_ blogList : [BlogSettings]) {
-		let chooser = BlogChooserViewController(blogs: blogList) { _ in
+		BlogChooserViewController.present(from: self.viewController, blogs: blogList) { _ in
 			self.completion?()
 		}
-		let navigationController = UINavigationController(rootViewController: chooser)
-		navigationController.modalPresentationStyle = .pageSheet
-		navigationController.preferredContentSize = CGSize(width: 420.0, height: 520.0)
-
-		if let sheet = navigationController.sheetPresentationController {
-			sheet.detents = [.medium()]
-			sheet.prefersGrabberVisible = false
-			sheet.prefersScrollingExpandsWhenScrolledToEdge = false
-			sheet.preferredCornerRadius = 24.0
-		}
-
-		self.viewController.present(navigationController, animated: true)
-
 	}
 	
 	private var viewController : UIViewController!

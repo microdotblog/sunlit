@@ -11,6 +11,22 @@ final class BlogChooserViewController: UITableViewController {
 	private let onSelection : (BlogSettings) -> Void
 	private let cellIdentifier = "BlogCell"
 
+	static func present(from viewController : UIViewController, blogs : [BlogSettings], onSelection : @escaping (BlogSettings) -> Void) {
+		let chooser = BlogChooserViewController(blogs: blogs, onSelection: onSelection)
+		let navigationController = UINavigationController(rootViewController: chooser)
+		navigationController.modalPresentationStyle = .pageSheet
+		navigationController.preferredContentSize = CGSize(width: 420.0, height: 520.0)
+
+		if let sheet = navigationController.sheetPresentationController {
+			sheet.detents = [.medium()]
+			sheet.prefersGrabberVisible = false
+			sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+			sheet.preferredCornerRadius = 24.0
+		}
+
+		viewController.present(navigationController, animated: true)
+	}
+
 	init(blogs : [BlogSettings], onSelection : @escaping (BlogSettings) -> Void) {
 		self.blogs = blogs
 		self.onSelection = onSelection

@@ -38,6 +38,9 @@ class TimelineViewController: ContentViewController {
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(onPullToRefresh), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
+		if #available(iOS 26.0, *) {
+			self.tableView.topEdgeEffect.isHidden = true
+		}
 	}
 
     override func navbarTitle() -> String {
@@ -194,7 +197,6 @@ class TimelineViewController: ContentViewController {
 				return post.htmlText.contains(".jpg") || post.htmlText.contains(".jpeg")
 			}
 			
-			print("Finished fetching timeline")
 			self.loadingData = false
 			self.setupBlurHashes(photos)
 
@@ -240,7 +242,6 @@ class TimelineViewController: ContentViewController {
 				self.setupBlurHashes(photos)
 
 				DispatchQueue.main.async {
-                    print("Preparing to insert rows")
                     if photos.count == 0 {
                         self.noMoreToLoad = true
 						self.loadingData = false
@@ -505,7 +506,6 @@ extension TimelineViewController : UITextViewDelegate {
 	}
 
 }
-
 
 
 

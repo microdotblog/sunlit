@@ -146,14 +146,21 @@ class MainViewController: ContentViewController {
 
 		}
 
-		if let navigationController = navigationController {
-			let appearance = UINavigationBarAppearance()
-			appearance.configureWithDefaultBackground()
-			appearance.backgroundEffect = UIBlurEffect(style: .regular)
-			navigationController.navigationBar.standardAppearance = appearance
-			navigationController.navigationBar.scrollEdgeAppearance = navigationController.navigationBar.standardAppearance
-			navigationController.interactivePopGestureRecognizer?.delegate = nil
-		}
+			if let navigationController = navigationController {
+				let appearance = UINavigationBarAppearance()
+				appearance.configureWithOpaqueBackground()
+				appearance.backgroundColor = .systemBackground
+				appearance.backgroundEffect = nil
+				appearance.titleTextAttributes = [.foregroundColor: UIColor.label]
+				appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label]
+				navigationController.navigationBar.tintColor = .label
+				navigationController.navigationBar.isTranslucent = false
+				navigationController.navigationBar.standardAppearance = appearance
+				navigationController.navigationBar.scrollEdgeAppearance = appearance
+				navigationController.navigationBar.compactAppearance = appearance
+				navigationController.navigationBar.compactScrollEdgeAppearance = appearance
+				navigationController.interactivePopGestureRecognizer?.delegate = nil
+			}
 	}
 
 	
