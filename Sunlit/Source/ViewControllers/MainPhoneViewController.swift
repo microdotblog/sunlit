@@ -76,7 +76,7 @@ class MainPhoneViewController: UITabBarController {
 		)
 		self.discoverViewController.tabBarItem = UITabBarItem(
 			title: "Discover",
-			image: UIImage(systemName: "magnifyingglass.circle"),
+			image: UIImage(systemName: "magnifyingglass"),
 			selectedImage: nil
 		)
 
