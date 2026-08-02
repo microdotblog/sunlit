@@ -56,9 +56,14 @@ class ExternalBlogConfigurationViewController: UIViewController {
 	func interrogateWordPressURL() {
 		
 		self.busyIndicator.isHidden = false
+		let accountGeneration = Settings.accountGeneration
 
 		let request = SnippetsRPCDiscovery(url: self.wordpressRsdPath)
 		request.discoverEndpointWithCompletion { (xmlrpcEndpoint, blogId) in
+			guard accountGeneration == Settings.accountGeneration else {
+				return
+			}
+
 			let username = self.usernameText
 			let password = self.passwordText
 			let methodName = "blogger.getUsersBlogs"
@@ -78,10 +83,17 @@ class ExternalBlogConfigurationViewController: UIViewController {
             let request = Snippets.XMLRPC.Request(identity: identity, method: methodName)
 			
 			_ = Snippets.XMLRPC.execute(request: request, params: params) { (error, responseData) in
+				guard accountGeneration == Settings.accountGeneration else {
+					return
+				}
 				
 				if let data = responseData {
 					SnippetsXMLRPCParser.parsedResponseFromData(data) { (responseFault, responseParams) in
 						DispatchQueue.main.async {
+							guard accountGeneration == Settings.accountGeneration else {
+								return
+							}
+
 							self.busyIndicator.isHidden = true
 
 							if let fault = responseFault {
@@ -174,14 +186,19 @@ class ExternalBlogConfigurationViewController: UIViewController {
 			path = "http://" + path!
 		}
 
-        self.externalServerPath = path!
+		self.externalServerPath = path!
 		let fullURL = path!
+		let accountGeneration = Settings.accountGeneration
 		
 		let request = UUHttpRequest(url: path!)
 		//request.processMimeTypes = false
 		self.busyIndicator.isHidden = false
 
 		_ = UUHttpSession.executeRequest(request) { (response) in
+			guard accountGeneration == Settings.accountGeneration else {
+				return
+			}
+
 			if let rawResponse = response.rawResponse {
 				// uncomment to force Micropub testing
 //				self.interrogateMicropubURL(path: fullURL, rawResponse)
@@ -192,6 +209,10 @@ class ExternalBlogConfigurationViewController: UIViewController {
 					
 					self.wordpressRsdPath = link
 					DispatchQueue.main.async {
+						guard accountGeneration == Settings.accountGeneration else {
+							return
+						}
+
 						self.busyIndicator.isHidden = true
 						self.accountEntryView.isHidden = false
 						self.accountEntryView.alpha = 0.0

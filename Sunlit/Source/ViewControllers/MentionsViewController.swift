@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Snippets
 
 class MentionsViewController: ContentViewController {
 
@@ -35,10 +36,16 @@ class MentionsViewController: ContentViewController {
         }
     }
 
-    override func prepareToDisplay() {
-        super.prepareToDisplay()
+	override func prepareToDisplay() {
+		super.prepareToDisplay()
 
-        SunlitMentions.shared.allMentionsViewed()
+		guard SnippetsUser.current() != nil && Settings.snippetsToken() != nil else {
+			self.posts = []
+			self.tableView.reloadData()
+			return
+		}
+
+		SunlitMentions.shared.allMentionsViewed()
 
         self.posts = SunlitMentions.shared.allMentions()
         self.tableView.reloadData()
@@ -122,5 +129,3 @@ extension MentionsViewController : UITableViewDelegate, UITableViewDataSource {
 	}
 
 }
-
-

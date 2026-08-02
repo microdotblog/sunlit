@@ -87,9 +87,54 @@ class BlogSettings : NSObject {
         Settings.removeObject(forKey: BlogSettings.savedTimelineKey)
     }
     
-    static func deletePublishingInfo() {
-        Settings.removeObject(forKey: BlogSettings.savedPublishingKey)
-    }
+	static func deletePublishingInfo() {
+		Settings.removeObject(forKey: BlogSettings.savedPublishingKey)
+	}
+
+	static func deleteAllAccountInfo() {
+		var blogNames = Set<String>()
+
+		if let list = Settings.object(forKey: BlogSettings.listOfPublishingBlogsKey) as? [String] {
+			blogNames.formUnion(list)
+		}
+		if let timelineName = Settings.object(forKey: BlogSettings.savedTimelineKey) as? String {
+			blogNames.insert(timelineName)
+		}
+		if let publishingName = Settings.object(forKey: BlogSettings.savedPublishingKey) as? String {
+			blogNames.insert(publishingName)
+		}
+
+		blogNames.formUnion(["https://micro.blog", "Micro.blog"])
+		for blogName in blogNames {
+			Settings.removeObject(forKey: BlogSettings.publishingSettingsKey + blogName)
+		}
+
+		Settings.removeObject(forKey: BlogSettings.listOfPublishingBlogsKey)
+		Settings.removeObject(forKey: BlogSettings.savedTimelineKey)
+		Settings.removeObject(forKey: BlogSettings.savedPublishingKey)
+
+		let legacyKeys = [
+			BlogSettings.xmlRPCBlogUsernameKey,
+			BlogSettings.xmlRPCBlogURLKey,
+			BlogSettings.xmlRPCBlogEndpointKey,
+			BlogSettings.xmlRPCBlogIDKey,
+			BlogSettings.xmlRPCBlogAppKey,
+			BlogSettings.micropubPostingEndpointKey,
+			BlogSettings.micropubAuthEndpointKey,
+			BlogSettings.micropubTokenEndpointKey,
+			BlogSettings.micropubMediaEndpointKey,
+			BlogSettings.micropubUserKey,
+			BlogSettings.micropubStateKey,
+			BlogSettings.snippetsConfigurationKey,
+			BlogSettings.externalBlogPreferenceKey
+		]
+		for key in legacyKeys {
+			Settings.removeObject(forKey: key)
+		}
+
+		Settings.deleteSecureString(forKey: BlogSettings.xmlRPCBlogUsernameKey)
+		Settings.deleteSecureString(forKey: BlogSettings.micropubAccessTokenKey)
+	}
 
     private static var publishingName : String {
         get {
@@ -304,6 +349,7 @@ class BlogSettings : NSObject {
 	}
 
 	static func migrateMicroblogSettings(usesExternalBlog : Bool) {
+		let accountGeneration = Settings.accountGeneration
 
 		if let permanentToken = Settings.snippetsToken() {
 			Snippets.Configuration.timeline.micropubToken = permanentToken
@@ -315,6 +361,9 @@ class BlogSettings : NSObject {
 		}
 
 		Snippets.Microblog.fetchCurrentUserConfiguration { (error, configuration) in
+			guard accountGeneration == Settings.accountGeneration else {
+				return
+			}
 
 			// Check for a media endpoint definition...
 			let mediaEndPoint : String = configuration["media-endpoint"] as? String ?? ""
@@ -453,5 +502,3 @@ class BlogSettings : NSObject {
 
 	private static let externalBlogPreferenceKey = "ExternalBlogIsPreferred"
 }
-
-

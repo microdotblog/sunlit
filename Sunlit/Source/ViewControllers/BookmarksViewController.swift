@@ -163,9 +163,27 @@ class BookmarksViewController: ContentViewController {
         }
     }
 
-    @objc func handleCurrentUserUpdatedNotification() {
-        self.loadTimeline()
-    }
+	@objc func handleCurrentUserUpdatedNotification() {
+		if Settings.snippetsToken() == nil {
+			self.resetForLogout()
+			return
+		}
+
+		self.loadTimeline()
+	}
+
+	func resetForLogout() {
+		self.loadingData = false
+		self.tableViewData = []
+
+		guard self.isViewLoaded else {
+			return
+		}
+
+		self.refreshControl.endRefreshing()
+		self.spinner.stopAnimating()
+		self.tableView.reloadData()
+	}
 
     /* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     MARK: -
@@ -212,27 +230,41 @@ class BookmarksViewController: ContentViewController {
 		}
 	}
 
-    @objc func loadTimeline() {
+	@objc func loadTimeline() {
+		guard Settings.snippetsToken() != nil else {
+			self.resetForLogout()
+			return
+		}
 
-        // Safety check for double loads...
+		// Safety check for double loads...
         if self.loadingData == true {
             return
         }
 
-        self.loadingData = true
-        Snippets.Microblog.fetchCurrentUserFavorites { (error, postObjects) in
+		self.loadingData = true
+		let accountGeneration = Settings.accountGeneration
+		Snippets.Microblog.fetchCurrentUserFavorites { (error, postObjects) in
+			guard accountGeneration == Settings.accountGeneration else {
+				return
+			}
 
 			self.setupBlurHashes(postObjects)
 
-            DispatchQueue.main.async {
-                if error == nil && postObjects.count > 0 {
+			DispatchQueue.main.async {
+				guard accountGeneration == Settings.accountGeneration else {
+					return
+				}
+
+				if error == nil && postObjects.count > 0 {
                     self.refreshTableView(postObjects)
                 }
                 else if let _ = error {
 					// wait a few seconds before re-trying after an error
-                    self.loadingData = false
+					self.loadingData = false
 					DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-						self.loadTimeline()
+						if accountGeneration == Settings.accountGeneration && Settings.snippetsToken() != nil {
+							self.loadTimeline()
+						}
 					}
                 }
                 self.loadingData = false
@@ -385,5 +417,4 @@ extension BookmarksViewController : UITableViewDelegate, UITableViewDataSource, 
 	}
 
 }
-
 

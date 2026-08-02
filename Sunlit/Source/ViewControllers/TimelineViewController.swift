@@ -121,7 +121,28 @@ class TimelineViewController: ContentViewController {
 	}
 		
 	@objc func handleCurrentUserUpdatedNotification() {
+		if Settings.snippetsToken() == nil {
+			self.resetForLogout()
+			return
+		}
+
 		self.loadTimeline()
+	}
+
+	func resetForLogout() {
+		self.loadingData = false
+		self.noMoreToLoad = false
+		self.tableViewData = []
+
+		guard self.isViewLoaded else {
+			return
+		}
+
+		self.refreshControl.endRefreshing()
+		self.spinner.stopAnimating()
+		self.loggedOutView.isHidden = false
+		self.loggedOutView.superview?.bringSubviewToFront(self.loggedOutView)
+		self.tableView.reloadData()
 	}
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,8 +198,12 @@ class TimelineViewController: ContentViewController {
 
 
 	func loadTimeline() {
-		let token = Settings.snippetsToken()
-		self.loggedOutView.isHidden = (token != nil)
+		guard Settings.snippetsToken() != nil else {
+			self.resetForLogout()
+			return
+		}
+
+		self.loggedOutView.isHidden = true
 		self.loggedOutView.superview?.bringSubviewToFront(self.loggedOutView)
 
 		// Safety check for double loads...
@@ -187,21 +212,30 @@ class TimelineViewController: ContentViewController {
 		}
 		
 		self.loadingData = true
+		let accountGeneration = Settings.accountGeneration
 
 		var parameters : [String : String] = [:]
 		parameters["count"] = "20"
 
 		Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters) { (error, postObjects : [SnippetsPost]) in
+			guard accountGeneration == Settings.accountGeneration else {
+				return
+			}
+
 			// remove non-JPEGs
 			let photos = postObjects.filter { post in
 				return post.htmlText.contains(".jpg") || post.htmlText.contains(".jpeg")
 			}
 			
-			self.loadingData = false
 			self.setupBlurHashes(photos)
 
 			DispatchQueue.main.async {
-                if error == nil && photos.count > 0 {
+				guard accountGeneration == Settings.accountGeneration else {
+					return
+				}
+
+				self.loadingData = false
+				if error == nil && photos.count > 0 {
                     self.refreshTableView(photos)
                 }
                 else {
@@ -215,6 +249,11 @@ class TimelineViewController: ContentViewController {
 	}
 
 	@objc func loadMoreTimeline() {
+		guard Settings.snippetsToken() != nil else {
+			self.resetForLogout()
+			return
+		}
+
 		// Safety check for double loads...
 		if self.loadingData == true {
 			return
@@ -227,6 +266,7 @@ class TimelineViewController: ContentViewController {
 
 		if let last = self.tableViewData.last {
 			self.loadingData = true
+			let accountGeneration = Settings.accountGeneration
 	
 			var parameters : [String : String] = [:]
 			parameters["count"] = "20"
@@ -234,6 +274,10 @@ class TimelineViewController: ContentViewController {
 
 			Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters, completion:
 			{ (error, entries : [SnippetsPost]) in
+				guard accountGeneration == Settings.accountGeneration else {
+					return
+				}
+
 				// remove non-JPEGs
 				let photos = entries.filter { post in
 					return post.htmlText.contains(".jpg") || post.htmlText.contains(".jpeg")
@@ -242,6 +286,10 @@ class TimelineViewController: ContentViewController {
 				self.setupBlurHashes(photos)
 
 				DispatchQueue.main.async {
+					guard accountGeneration == Settings.accountGeneration else {
+						return
+					}
+
                     if photos.count == 0 {
                         self.noMoreToLoad = true
 						self.loadingData = false
@@ -506,6 +554,5 @@ extension TimelineViewController : UITextViewDelegate {
 	}
 
 }
-
 
 

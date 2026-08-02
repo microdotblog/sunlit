@@ -33,6 +33,8 @@
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>SunlitKeychainAccessGroup</key>
+	<string>$(DEVELOPMENT_TEAM).blog.micro.sunlit</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

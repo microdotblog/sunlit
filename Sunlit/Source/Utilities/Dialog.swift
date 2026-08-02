@@ -69,8 +69,12 @@ class Dialog {
 	func selectBlog(completion: (()->Void)? = nil) {
 		
 		self.completion = completion
-		
+		let accountGeneration = Settings.accountGeneration
+
 		Snippets.Microblog.fetchCurrentUserConfiguration { (error, configuration) in
+			guard accountGeneration == Settings.accountGeneration else {
+				return
+			}
 			
 			// Check for a media endpoint definition...
             let mediaEndPoint : String = configuration["media-endpoint"] as? String ?? ""
@@ -78,6 +82,9 @@ class Dialog {
             let micropubToken = Snippets.Configuration.timeline.micropubToken
 			
 			DispatchQueue.main.async {
+				guard accountGeneration == Settings.accountGeneration else {
+					return
+				}
 
 				if let destinations = configuration["destination"] as? [[String : Any]] {
 					

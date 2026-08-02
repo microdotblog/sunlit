@@ -118,7 +118,27 @@ class ProfileViewController: ContentViewController {
 
 	@objc func handleCurrentUserUpdatedNotification() {
 		self.user = SnippetsUser.current()
+		if self.user == nil {
+			self.resetForLogout()
+			return
+		}
+
 		self.fetchUserInfo()
+	}
+
+	func resetForLogout() {
+		self.user = nil
+		self.userPosts = []
+		self.followingUsers = []
+		self.followingUsersLoaded = false
+		self.loadInProgress = false
+
+		guard self.isViewLoaded else {
+			return
+		}
+
+		self.refreshControl.endRefreshing()
+		self.collectionView.reloadData()
 	}
 
 	@objc func handleFollowingButtonClickedNotification() {
@@ -148,22 +168,27 @@ class ProfileViewController: ContentViewController {
             return
         }
         
-        self.loadInProgress = true
+		self.loadInProgress = true
+		let accountGeneration = Settings.accountGeneration
 
 		if self.isCurrentUserProfile {
 			self.followingUsersLoaded = false
 			Snippets.Microblog.fetchCurrentUserInfo { [weak self] (error, updatedUser) in
-				self?.finishFetchingUser(updatedUser)
+				self?.finishFetchingUser(updatedUser, accountGeneration: accountGeneration)
 			}
 		}
 		else {
 			Snippets.Microblog.fetchUserDetails(user: self.user) { [weak self] (error, updatedUser, posts : [SnippetsPost]) in
-				self?.finishFetchingUser(updatedUser)
+				self?.finishFetchingUser(updatedUser, accountGeneration: accountGeneration)
 			}
 		}
 	}
 
-	private func finishFetchingUser(_ updatedUser : SnippetsUser?) {
+	private func finishFetchingUser(_ updatedUser : SnippetsUser?, accountGeneration : Int) {
+		guard accountGeneration == Settings.accountGeneration else {
+			return
+		}
+
 		guard let updatedUser = updatedUser else {
 			DispatchQueue.main.async {
 				self.loadInProgress = false
@@ -175,13 +200,25 @@ class ProfileViewController: ContentViewController {
 		self.user = self.isCurrentUserProfile ? SnippetsUser.saveAsCurrent(updatedUser) : SnippetsUser.save(updatedUser)
 
 		DispatchQueue.main.async {
+			guard accountGeneration == Settings.accountGeneration else {
+				return
+			}
+
 			self.collectionView.reloadData()
 		}
 
 		Snippets.Microblog.fetchUserMediaPosts(user: updatedUser) { (error, snippets : [SnippetsPost]) in
+			guard accountGeneration == Settings.accountGeneration else {
+				return
+			}
+
 			let posts = snippets.map { SunlitPost.create($0) }
 
 			DispatchQueue.main.async {
+				guard accountGeneration == Settings.accountGeneration else {
+					return
+				}
+
 				self.loadInProgress = false
 				self.userPosts = posts
 				self.collectionView.reloadData()
@@ -191,12 +228,20 @@ class ProfileViewController: ContentViewController {
 
 		if self.isCurrentUserProfile {
 			Snippets.Microblog.listFollowing(user: updatedUser, completeList: true) { (error, users) in
+				guard accountGeneration == Settings.accountGeneration else {
+					return
+				}
+
 				self.followingUsers = users
 				self.followingUsersLoaded = true
 				self.user.followingCount = users.count
 				self.user = SnippetsUser.saveAsCurrent(self.user)
 
 				DispatchQueue.main.async {
+					guard accountGeneration == Settings.accountGeneration else {
+						return
+					}
+
 					self.collectionView.reloadData()
 				}
 			}
@@ -473,5 +518,3 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	}
 	
 }
-
-

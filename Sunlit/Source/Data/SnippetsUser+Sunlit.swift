@@ -98,7 +98,13 @@ extension SnippetsUser {
 			completion(user)
 		}
 		else {
-            Snippets.Microblog.fetchCurrentUserInfo { (error, user) in
+			let accountGeneration = Settings.accountGeneration
+			Snippets.Microblog.fetchCurrentUserInfo { (error, user) in
+				guard accountGeneration == Settings.accountGeneration else {
+					completion(nil)
+					return
+				}
+
 				if let current = user {
 					_ = SnippetsUser.saveAsCurrent(current)
 				}
@@ -147,4 +153,3 @@ extension SnippetsUser {
 		return nil
 	}
 }
-

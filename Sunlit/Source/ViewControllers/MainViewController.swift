@@ -85,6 +85,7 @@ class MainViewController: ContentViewController {
 	func setupNavigationBar() {
 
 		if UIDevice.current.userInterfaceIdiom == .phone {
+			self.navigationItem.rightBarButtonItem = nil
 
             var postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
 
@@ -109,8 +110,13 @@ class MainViewController: ContentViewController {
             {
                 self.navigationItem.rightBarButtonItem = postButton
 
-                ImageCache.fetch(current.avatarURL) { image in
-                    if let image = image
+				let currentUsername = current.username
+				ImageCache.fetch(current.avatarURL) { image in
+					guard SnippetsUser.current()?.username == currentUsername else {
+						return
+					}
+
+					if let image = image
                     {
                         profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 26, height: 26)).withRenderingMode(.alwaysOriginal)
                     }
@@ -122,8 +128,13 @@ class MainViewController: ContentViewController {
                     
                     let userProfileButton = UIBarButtonItem(customView: button)
                     //let userProfileButton = UIBarButtonItem(image: profileImage, style: .plain, target: self, action: #selector(self.onProfile))
-                    self.navigationItem.leftBarButtonItem = userProfileButton
-                }
+					DispatchQueue.main.async {
+						guard SnippetsUser.current()?.username == currentUsername else {
+							return
+						}
+						self.navigationItem.leftBarButtonItem = userProfileButton
+					}
+				}
             }
             else
             {
@@ -221,9 +232,30 @@ class MainViewController: ContentViewController {
 		}
 	}
 	
-    @objc func handleUserUpdatedNotification(_ notification : Notification) {
-        self.setupNavigationBar()
-    }
+	@objc func handleUserUpdatedNotification(_ notification : Notification) {
+		self.setupNavigationBar()
+
+		guard SnippetsUser.current() == nil else {
+			return
+		}
+
+		SunlitMentions.shared.reset()
+		self.timelineViewController.resetForLogout()
+		self.bookmarksViewController.resetForLogout()
+		self.myProfileViewController.resetForLogout()
+		self.mentionsViewController.posts = []
+		if self.mentionsViewController.isViewLoaded {
+			self.mentionsViewController.tableView.reloadData()
+		}
+
+		self.navigationController?.popToRootViewController(animated: false)
+		if UIDevice.current.userInterfaceIdiom == .pad {
+			self.onTabletShowTimeline()
+		}
+		else {
+			self.phoneViewController?.onShowTimeline()
+		}
+	}
     
 	@objc func handleViewUserProfileNotification(_ notification : Notification) {
 		if let owner = notification.object as? SnippetsUser {
@@ -281,7 +313,12 @@ class MainViewController: ContentViewController {
 	@objc func handleTemporaryTokenReceivedNotification(_ notification : Notification) {
 		if let temporaryToken = notification.object as? String
 		{
+			let accountGeneration = Settings.accountGeneration
 			Snippets.Microblog.requestPermanentTokenFromTemporaryToken(token: temporaryToken) { (error, token) in
+				guard accountGeneration == Settings.accountGeneration else {
+					return
+				}
+
                 if let err = error {
                     DispatchQueue.main.async {
                         Dialog(self).information("Error - " + err.localizedDescription)
@@ -305,16 +342,27 @@ class MainViewController: ContentViewController {
 
 					// We can hide the login view now...
 					DispatchQueue.main.async {
+						guard accountGeneration == Settings.accountGeneration else {
+							return
+						}
+
 						self.loginViewController?.dismiss(animated: true, completion: nil)
 						self.timelineViewController.prepareToDisplay()
 					}
 					
 					Snippets.Microblog.fetchCurrentUserInfo { (error, updatedUser) in
+						guard accountGeneration == Settings.accountGeneration else {
+							return
+						}
 						
 						if let user = updatedUser {
 							_ = SnippetsUser.saveAsCurrent(user)
 							
 							DispatchQueue.main.async {
+								guard accountGeneration == Settings.accountGeneration else {
+									return
+								}
+
 								Dialog(self).selectBlog()
 								NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
 							}
@@ -346,7 +394,8 @@ class MainViewController: ContentViewController {
 
                 let blogName : String = MicropubState.lookupBlogName(from: state) ?? ""
 
-                if (code.count > 0) && (state.count > 0) && (blogName.count > 0){
+				if (code.count > 0) && (state.count > 0) && (blogName.count > 0){
+					let accountGeneration = Settings.accountGeneration
 
                     let blogSettings = BlogSettings(blogName)
                     let me = "https://" + blogName
@@ -361,9 +410,16 @@ class MainViewController: ContentViewController {
                     let d = params.data(using: .utf8)
 
 					UUHttpSession.post(url: token_endpoint, queryArguments: [ : ], body: d, contentType: "application/x-www-form-urlencoded") { (parsedServerResponse) in
+						guard accountGeneration == Settings.accountGeneration else {
+							return
+						}
+
 						if let dictionary = parsedServerResponse.parsedResponse as? [ String : Any ] {
 							if let access_token = dictionary["access_token"] as? String {
 								DispatchQueue.main.async {
+									guard accountGeneration == Settings.accountGeneration else {
+										return
+									}
 
                                     blogSettings.microblogToken = access_token
                                     blogSettings.snippetsConfiguration = Snippets.Configuration.micropubConfiguration(token: access_token, endpoint: blogSettings.blogPublishingAddress)

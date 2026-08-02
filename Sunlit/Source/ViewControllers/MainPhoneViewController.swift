@@ -123,12 +123,21 @@ class MainPhoneViewController: UITabBarController {
 	private func handleLoggedOutSelection() {
 		if Settings.snippetsToken() != nil {
 			self.onShowTimeline()
+			let accountGeneration = Settings.accountGeneration
 
 			Snippets.Microblog.fetchCurrentUserInfo { (error, updatedUser) in
+				guard accountGeneration == Settings.accountGeneration else {
+					return
+				}
+
 				if let user = updatedUser {
 					_ = SnippetsUser.saveAsCurrent(user)
 
 					DispatchQueue.main.async {
+						guard accountGeneration == Settings.accountGeneration else {
+							return
+						}
+
 						Dialog(self).selectBlog()
 						NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
 					}
