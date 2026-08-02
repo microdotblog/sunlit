@@ -59,16 +59,23 @@ class SunlitMentions {
 		let accountGeneration = Settings.accountGeneration
 		Snippets.Microblog.fetchCurrentUserMentions { (error, posts) in
 			guard accountGeneration == Settings.accountGeneration else {
+				DispatchQueue.main.async {
+					callback()
+				}
 				return
 			}
 		
             // We don't want to do anything if there is an error
             if error != nil {
+				DispatchQueue.main.async {
+					callback()
+				}
                 return
             }
             
 			DispatchQueue.main.async {
 				guard accountGeneration == Settings.accountGeneration else {
+					callback()
 					return
 				}
 
