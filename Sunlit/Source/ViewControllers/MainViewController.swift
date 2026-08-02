@@ -47,6 +47,7 @@ class MainViewController: ContentViewController {
     var bookmarksViewController : BookmarksViewController!
 
 	var currentContentViewController : ContentViewController? = nil
+	private var signInInProgress = false
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -201,6 +202,7 @@ class MainViewController: ContentViewController {
         super.setupNotifications()
         NotificationCenter.default.addObserver(self, selector: #selector(handleUserUpdatedNotification(_:)), name: .currentUserUpdatedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleTemporaryTokenReceivedNotification(_:)), name: .temporaryTokenReceivedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handlePermanentTokenReceivedNotification(_:)), name: .permanentTokenReceivedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleMicropubTokenReceivedNotification(_:)), name: .micropubTokenReceivedNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowLoginNotification), name: .showLoginNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleOpenURLNotification(_:)), name: .openURLNotification, object: nil)
@@ -311,65 +313,128 @@ class MainViewController: ContentViewController {
 	}
 
 	@objc func handleTemporaryTokenReceivedNotification(_ notification : Notification) {
-		if let temporaryToken = notification.object as? String
-		{
-			let accountGeneration = Settings.accountGeneration
-			Snippets.Microblog.requestPermanentTokenFromTemporaryToken(token: temporaryToken) { (error, token) in
+		guard let temporaryToken = notification.object as? String else {
+			return
+		}
+
+		DispatchQueue.main.async {
+			self.exchangeTemporaryToken(temporaryToken)
+		}
+	}
+
+	@objc func handlePermanentTokenReceivedNotification(_ notification : Notification) {
+		guard let permanentToken = notification.object as? String else {
+			return
+		}
+
+		DispatchQueue.main.async {
+			self.beginPermanentTokenSignIn(permanentToken)
+		}
+	}
+
+	private func exchangeTemporaryToken(_ temporaryToken : String) {
+		guard self.beginSignInAttempt() else {
+			return
+		}
+
+		let accountGeneration = Settings.accountGeneration
+		Snippets.Microblog.requestPermanentTokenFromTemporaryToken(token: temporaryToken) { (error, token) in
+			DispatchQueue.main.async {
 				guard accountGeneration == Settings.accountGeneration else {
+					self.signInInProgress = false
 					return
 				}
 
-                if let err = error {
-                    DispatchQueue.main.async {
-                        Dialog(self).information("Error - " + err.localizedDescription)
-                    }
-
-                    return
-                }
-                
-                if let permanentToken = token
-				{
-					// Save our info and setup Snippets
-					Settings.saveSnippetsToken(permanentToken)
-                    
-                    // Save to user prefs...
-                    let blogSettings = BlogSettings.blogForTimeline()
-                    blogSettings.snippetsConfiguration = Snippets.Configuration.microblogConfiguration(token: permanentToken)
-                    blogSettings.save()
-                    
-                    // Update the Snippets library...
-                    Snippets.Configuration.timeline = blogSettings.snippetsConfiguration!
-
-					// We can hide the login view now...
-					DispatchQueue.main.async {
-						guard accountGeneration == Settings.accountGeneration else {
-							return
-						}
-
-						self.loginViewController?.dismiss(animated: true, completion: nil)
-						self.timelineViewController.prepareToDisplay()
-					}
-					
-					Snippets.Microblog.fetchCurrentUserInfo { (error, updatedUser) in
-						guard accountGeneration == Settings.accountGeneration else {
-							return
-						}
-						
-						if let user = updatedUser {
-							_ = SnippetsUser.saveAsCurrent(user)
-							
-							DispatchQueue.main.async {
-								guard accountGeneration == Settings.accountGeneration else {
-									return
-								}
-
-								Dialog(self).selectBlog()
-								NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
-							}
-						}
-					}
+				if let error = error {
+					self.failSignIn("Error - " + error.localizedDescription)
+					return
 				}
+
+				guard let permanentToken = token, !permanentToken.isEmpty else {
+					self.failSignIn("The sign-in token was not valid.")
+					return
+				}
+
+				self.completeSignIn(permanentToken: permanentToken, accountGeneration: accountGeneration)
 			}
+		}
+	}
+
+	private func beginPermanentTokenSignIn(_ permanentToken : String) {
+		guard !permanentToken.isEmpty, self.beginSignInAttempt() else {
+			return
+		}
+
+		self.completeSignIn(permanentToken: permanentToken, accountGeneration: Settings.accountGeneration)
+	}
+
+	private func beginSignInAttempt() -> Bool {
+		guard !self.signInInProgress else {
+			return false
+		}
+
+		guard Settings.snippetsToken() == nil else {
+			self.showSignInError("Sunlit is already signed in. Sign out before signing in to another account.")
+			return false
+		}
+
+		self.signInInProgress = true
+		return true
+	}
+
+	private func completeSignIn(permanentToken : String, accountGeneration : Int) {
+		let configuration = Snippets.Configuration.microblogConfiguration(token: permanentToken)
+		Snippets.Configuration.timeline = configuration
+
+		Snippets.Microblog.fetchCurrentUserInfo { (error, updatedUser) in
+			DispatchQueue.main.async {
+				guard accountGeneration == Settings.accountGeneration else {
+					self.signInInProgress = false
+					return
+				}
+
+				guard error == nil, let user = updatedUser else {
+					let message = error?.localizedDescription ?? "Sunlit could not load the account. Please try signing in again."
+					self.failSignIn(message)
+					return
+				}
+
+				guard Settings.saveSnippetsToken(permanentToken) else {
+					Settings.deleteSnippetsToken()
+					self.failSignIn("Sunlit could not securely save the account token. Please try signing in again.")
+					return
+				}
+
+				let blogSettings = BlogSettings.blogForTimeline()
+				blogSettings.snippetsConfiguration = configuration
+				Snippets.Configuration.timeline = configuration
+				_ = SnippetsUser.saveAsCurrent(user)
+				Settings.cancelPendingSnippetsSignIn()
+				self.signInInProgress = false
+
+				self.loginViewController?.dismiss(animated: true, completion: nil)
+				self.loginViewController = nil
+				self.timelineViewController.prepareToDisplay()
+				Dialog(self).selectBlog()
+				NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
+			}
+		}
+	}
+
+	private func failSignIn(_ message : String) {
+		Settings.cancelPendingSnippetsSignIn()
+		Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: "")
+		self.signInInProgress = false
+		self.showSignInError(message)
+	}
+
+	private func showSignInError(_ message : String) {
+		if let loginViewController = self.loginViewController,
+		   loginViewController.viewIfLoaded?.window != nil {
+			Dialog(loginViewController).information(message)
+		}
+		else {
+			Dialog(self).information(message)
 		}
 	}
 

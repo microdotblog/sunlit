@@ -19,6 +19,7 @@ extension NSNotification.Name {
 	static let showComposeNotification = NSNotification.Name(rawValue: "Show Compose Notification")
 	static let showSettingsNotification = NSNotification.Name(rawValue: "Show Settings Notification")
 	static let temporaryTokenReceivedNotification = NSNotification.Name(rawValue: "Temporary Token Received Notification")
+	static let permanentTokenReceivedNotification = NSNotification.Name(rawValue: "Permanent Token Received Notification")
 	static let micropubTokenReceivedNotification = NSNotification.Name(rawValue: "Micropub Token Received Notification")
 	static let finishedExternalConfigNotification = NSNotification.Name(rawValue: "Finished External Config Notification")
 	static let openURLNotification = NSNotification.Name("Open URL Notification")

@@ -16,6 +16,8 @@ class Settings {
 	static private let shared = UserDefaults(suiteName: "group.blog.micro.sunlit")!
 	static private let snippetsKeychainService = "blog.micro.sunlit.account"
 	static private let snippetsKeychainAccount = "Snippets"
+	static private let pendingSnippetsSignInDateKey = "Pending Micro.blog Sign In Date"
+	static private let pendingSnippetsSignInLifetime: TimeInterval = 15.0 * 60.0
 	static private let legacySnippetsKeychainServices = [
 		"blog.micro.sunlit-UUKeychain",
 		"blog.micro.sunlit.sharing-UUKeychain",
@@ -132,6 +134,24 @@ class Settings {
 
 		Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: "")
 		Snippets.Configuration.publishing = Snippets.Configuration.timeline
+	}
+
+	static func beginSnippetsSignIn() {
+		Settings.setValue(Date(), forKey: pendingSnippetsSignInDateKey)
+	}
+
+	static func cancelPendingSnippetsSignIn() {
+		Settings.removeObject(forKey: pendingSnippetsSignInDateKey)
+	}
+
+	static func consumePendingSnippetsSignIn() -> Bool {
+		guard let requestedAt = Settings.object(forKey: pendingSnippetsSignInDateKey) as? Date else {
+			return false
+		}
+
+		Settings.removeObject(forKey: pendingSnippetsSignInDateKey)
+		let age = Date().timeIntervalSince(requestedAt)
+		return age >= 0.0 && age <= pendingSnippetsSignInLifetime
 	}
 	
 	@discardableResult

@@ -24,10 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
 		if let options = launchOptions,
-		   let url = options[.url] as? URL,
-		   url.host == "show" {
+		   let url = options[.url] as? URL {
 			DispatchQueue.main.async {
-				SceneDelegate.handleShowURL(url)
+				SceneDelegate.handleURL(url)
 			}
 		}
 
@@ -64,12 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-		if url.host == "show" {
-			DispatchQueue.main.async {
-				SceneDelegate.handleShowURL(url)
-			}
-		}
-		return true
+		return SceneDelegate.handleURL(url)
 	}
 	
 	func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
