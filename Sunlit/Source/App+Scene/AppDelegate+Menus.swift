@@ -8,6 +8,7 @@
 
 import UIKit
 import Snippets
+import WidgetKit
 
 extension AppDelegate {
 
@@ -73,6 +74,19 @@ extension AppDelegate {
 	}
 
 	@objc func signOut() {
+		self.performSignOut()
+	}
+
+	func performSignOut() {
+		Settings.logout()
+		NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
+
+		UIApplication.shared.applicationIconBadgeNumber = 0
+		UIApplication.shared.unregisterForRemoteNotifications()
+		UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+		UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+		WidgetCenter.shared.reloadTimelines(ofKind: "blog.micro.sunlit.widget")
+		UIMenuSystem.main.setNeedsRebuild()
 	}
 
 	@objc func showTimeline() {

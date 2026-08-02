@@ -38,11 +38,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 			self.lockUserInterface()
 
 			if email.uuIsValidEmail() {
+				Settings.beginSnippetsSignIn()
 				Snippets.Microblog.requestUserLoginEmail(email: email, appName: "Sunlit", redirect: "https://sunlit.io/microblog/redirect/")
 				{ error in
 					self.unlockUserInterface()
 
 					if let err = error {
+						Settings.cancelPendingSnippetsSignIn()
 						Dialog(self).information(err.localizedDescription)
 					}
 					else {
@@ -53,7 +55,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 				}
 			}
 			else {
-                // TODO: Need to verify this code path with respect to the micropub path
 				Snippets.Microblog.requestPermanentTokenFromTemporaryToken(token: email) { error, token in
 					self.unlockUserInterface()
 					if let err = error {
@@ -63,7 +64,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 						Dialog(self).information("The token was not valid.")
 					}
 					else {
-						NotificationCenter.default.post(name: .temporaryTokenReceivedNotification, object: token)
+						Settings.cancelPendingSnippetsSignIn()
+						DispatchQueue.main.async {
+							NotificationCenter.default.post(name: .permanentTokenReceivedNotification, object: token)
+						}
 					}
 				}
 			}
@@ -97,4 +101,3 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	}
 
 }
-

@@ -81,12 +81,7 @@ class SettingsViewController: UIViewController {
 	@IBAction func onSignout() {
 
 		Dialog(self).question(title: nil, question: "Are you sure you want to sign out of your Micro.blog account?", accept: "Sign Out", cancel: "Cancel") {
-			Settings.logout()
-
-            UIApplication.shared.applicationIconBadgeNumber = 0
-
-			NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
-			self.dismiss(animated: true, completion: nil)
+			(UIApplication.shared.delegate as? AppDelegate)?.performSignOut()
 		}
 	}
 	

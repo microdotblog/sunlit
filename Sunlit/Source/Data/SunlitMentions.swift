@@ -33,6 +33,13 @@ class SunlitMentions {
 		return self.mentions
 	}
 
+	func reset() {
+		self.mentions = []
+		Settings.removeObject(forKey: self.cachedMentionDateKey)
+		UIApplication.shared.applicationIconBadgeNumber = 0
+		NotificationCenter.default.post(name: .mentionsUpdatedNotification, object: nil)
+	}
+
 	func allMentionsViewed() {
 
         // This only matters if the user is logged in...
@@ -44,14 +51,34 @@ class SunlitMentions {
 	}
 
 	func update(_ callback : @escaping () -> () ) {
+		guard Settings.snippetsToken() != nil else {
+			callback()
+			return
+		}
+
+		let accountGeneration = Settings.accountGeneration
 		Snippets.Microblog.fetchCurrentUserMentions { (error, posts) in
+			guard accountGeneration == Settings.accountGeneration else {
+				DispatchQueue.main.async {
+					callback()
+				}
+				return
+			}
 		
             // We don't want to do anything if there is an error
             if error != nil {
+				DispatchQueue.main.async {
+					callback()
+				}
                 return
             }
             
 			DispatchQueue.main.async {
+				guard accountGeneration == Settings.accountGeneration else {
+					callback()
+					return
+				}
+
 				self.mentions = []
 				
 				for post in posts {

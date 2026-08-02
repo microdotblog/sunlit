@@ -61,6 +61,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 		self.setupColor()
 		self.setupSplitView()
+		self.window?.rootViewController?.loadViewIfNeeded()
+
+		let launchURLs = connectionOptions.urlContexts.map(\.url)
+		DispatchQueue.main.async {
+			for url in launchURLs {
+				SceneDelegate.handleURL(url)
+			}
+		}
 	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {
@@ -86,32 +94,60 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 	
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-		if let urlContext = URLContexts.first {
-			let url = urlContext.url
-            if url.host == "show" {
-				SceneDelegate.handleShowURL(url)
-                return
-            }
-            else if url.absoluteString.contains("notification") {
-                MainPhoneViewController.needsMentionsSwitch = true
+		for urlContext in URLContexts {
+			SceneDelegate.handleURL(urlContext.url)
+		}
+	}
 
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: .showMentionsNotification, object: nil)
-                }
-            }
-			else if url.absoluteString.contains("micropub?code=") {
+	@discardableResult
+	static func handleURL(_ url : URL) -> Bool {
+		guard url.scheme?.lowercased() == "sunlit",
+			  let host = url.host?.lowercased() else {
+			return false
+		}
+
+		switch host {
+		case "show":
+			handleShowURL(url)
+			return true
+
+		case "notification":
+			MainPhoneViewController.needsMentionsSwitch = true
+			DispatchQueue.main.async {
+				NotificationCenter.default.post(name: .showMentionsNotification, object: nil)
+			}
+			return true
+
+		case "micropub":
+			let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+			let queryItems = components?.queryItems ?? []
+			if queryItems.contains(where: { $0.name == "code" }) {
 				DispatchQueue.main.async {
 					NotificationCenter.default.post(name: .micropubTokenReceivedNotification, object: url)
 				}
+				return true
 			}
-			else {
-				let token = url.lastPathComponent
-				if token.count > 0 {
-					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: .temporaryTokenReceivedNotification, object: token)
-					}
-				}
+
+			let pathComponents = url.path.split(separator: "/", omittingEmptySubsequences: true)
+			guard pathComponents.count == 1,
+				  queryItems.isEmpty,
+				  Settings.snippetsToken() == nil,
+				  Settings.consumePendingSnippetsSignIn() else {
+				return false
 			}
+
+			let token = String(pathComponents[0])
+			guard !token.isEmpty else {
+				return false
+			}
+
+			DispatchQueue.main.async {
+				NotificationCenter.default.post(name: .temporaryTokenReceivedNotification, object: token)
+			}
+			return true
+
+		default:
+			return false
 		}
 	}
 
