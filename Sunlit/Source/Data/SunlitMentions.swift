@@ -52,6 +52,7 @@ class SunlitMentions {
 
 	func update(_ callback : @escaping () -> () ) {
 		guard Settings.snippetsToken() != nil else {
+			callback()
 			return
 		}
 

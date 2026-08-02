@@ -415,6 +415,7 @@ class MainViewController: ContentViewController {
 				self.timelineViewController.prepareToDisplay()
 				Dialog(self).selectBlog()
 				NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
+				UIApplication.shared.registerForRemoteNotifications()
 			}
 		}
 	}
