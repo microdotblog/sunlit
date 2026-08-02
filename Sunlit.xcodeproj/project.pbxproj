@@ -14,11 +14,12 @@
 		4B556FFE24F31AE30012C6C7 /* UsernamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FFD24F31AE30012C6C7 /* UsernamesViewController.swift */; };
 		4B55700024F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FFF24F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift */; };
 		4B55700224F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B55700124F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift */; };
-		4B729B8224BA4F74001D145B /* TabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B729B8124BA4F74001D145B /* TabButton.swift */; };
 		4B9D143624C889BA004E7EAF /* SectionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9D143524C889BA004E7EAF /* SectionTextView.swift */; };
 		4BA1209626C069BB00320E80 /* AltTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1209526C069BB00320E80 /* AltTextController.swift */; };
 		4BA1209726C06AF900320E80 /* AltTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1209526C069BB00320E80 /* AltTextController.swift */; };
 		4BE1FFAE251D82BA0037FEFA /* BlogSelectionAddNewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */; };
+		A15F00012C5D000100000001 /* BlogChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F00032C5D000100000001 /* BlogChooserViewController.swift */; };
+		A15F00022C5D000100000001 /* BlogChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F00032C5D000100000001 /* BlogChooserViewController.swift */; };
 		C51051DA26F05CB100533E31 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51051D926F05CB100533E31 /* HTMLParser.swift */; };
 		C51051DB26F05CD000533E31 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51051D926F05CB100533E31 /* HTMLParser.swift */; };
 		C5235AFB252D0670002F9CC6 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5235AFA252D0670002F9CC6 /* ShareViewController.swift */; };
@@ -196,7 +197,6 @@
 		C5BEDF4F24DA305F0068CBF1 /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BEDF4E24DA305F0068CBF1 /* FollowingViewController.swift */; };
 		C5BEDF5124DA30DA0068CBF1 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BEDF5024DA30DA0068CBF1 /* ProfileTableViewCell.swift */; };
 		C5CF4B3D2533B08900365F7D /* MicropubState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CF4B3C2533B08900365F7D /* MicropubState.swift */; };
-		C5E26A34249EAA0900F9E158 /* Main-Phone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5E26A33249EAA0900F9E158 /* Main-Phone.storyboard */; };
 		C5E26A36249EADE400F9E158 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5E26A35249EADE400F9E158 /* Main.storyboard */; };
 		C5E26A38249EAE6900F9E158 /* MainPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E26A37249EAE6900F9E158 /* MainPhoneViewController.swift */; };
 		C5E26A3A249EB85100F9E158 /* MainTabletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E26A39249EB85100F9E158 /* MainTabletViewController.swift */; };
@@ -356,10 +356,10 @@
 		4B556FFD24F31AE30012C6C7 /* UsernamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsernamesViewController.swift; path = Source/ViewControllers/UsernamesViewController.swift; sourceTree = "<group>"; };
 		4B556FFF24F31CEF0012C6C7 /* UsernameCheckmarkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UsernameCheckmarkTableViewCell.swift; path = Source/TableViewCells/UsernameCheckmarkTableViewCell.swift; sourceTree = "<group>"; };
 		4B55700124F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationPhotoCollectionViewCell.swift; path = Source/CollectionViewCells/ConversationPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
-		4B729B8124BA4F74001D145B /* TabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TabButton.swift; path = Source/Views/TabButton.swift; sourceTree = "<group>"; };
 		4B9D143524C889BA004E7EAF /* SectionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SectionTextView.swift; path = Source/Views/SectionTextView.swift; sourceTree = "<group>"; };
 		4BA1209526C069BB00320E80 /* AltTextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AltTextController.swift; path = Source/ViewControllers/AltTextController.swift; sourceTree = "<group>"; };
 		4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogSelectionAddNewCell.swift; path = Source/TableViewCells/BlogSelectionAddNewCell.swift; sourceTree = "<group>"; };
+		A15F00032C5D000100000001 /* BlogChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogChooserViewController.swift; path = Source/ViewControllers/BlogChooserViewController.swift; sourceTree = "<group>"; };
 		C51051D926F05CB100533E31 /* HTMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HTMLParser.swift; path = Source/Utilities/HTMLParser.swift; sourceTree = "<group>"; };
 		C5235AF8252D0670002F9CC6 /* sharing.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = sharing.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5235AFA252D0670002F9CC6 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -507,7 +507,6 @@
 		C5BEDF4E24DA305F0068CBF1 /* FollowingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FollowingViewController.swift; path = Source/ViewControllers/FollowingViewController.swift; sourceTree = "<group>"; };
 		C5BEDF5024DA30DA0068CBF1 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileTableViewCell.swift; path = Source/TableViewCells/ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		C5CF4B3C2533B08900365F7D /* MicropubState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MicropubState.swift; path = Source/Data/MicropubState.swift; sourceTree = "<group>"; };
-		C5E26A33249EAA0900F9E158 /* Main-Phone.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Main-Phone.storyboard"; path = "Storyboards/Main-Phone.storyboard"; sourceTree = "<group>"; };
 		C5E26A35249EADE400F9E158 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Storyboards/Main.storyboard; sourceTree = "<group>"; };
 		C5E26A37249EAE6900F9E158 /* MainPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainPhoneViewController.swift; path = Source/ViewControllers/MainPhoneViewController.swift; sourceTree = "<group>"; };
 		C5E26A39249EB85100F9E158 /* MainTabletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabletViewController.swift; path = Source/ViewControllers/MainTabletViewController.swift; sourceTree = "<group>"; };
@@ -656,7 +655,6 @@
 		4B729B8024BA4E76001D145B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4B729B8124BA4F74001D145B /* TabButton.swift */,
 				4B9D143524C889BA004E7EAF /* SectionTextView.swift */,
 			);
 			name = Views;
@@ -781,7 +779,6 @@
 				C542735525298B44009E4B39 /* Uploads.storyboard */,
 				4B556FFB24F31ABC0012C6C7 /* Usernames.storyboard */,
 				C5E26A35249EADE400F9E158 /* Main.storyboard */,
-				C5E26A33249EAA0900F9E158 /* Main-Phone.storyboard */,
 				C53375CD26C092E20084C66F /* NearbyLocations.storyboard */,
 			);
 			name = Storyboards;
@@ -1088,6 +1085,7 @@
 			children = (
 				C5A1DE7624901DCC00B50B54 /* AboutViewController.swift */,
 				4BA1209526C069BB00320E80 /* AltTextController.swift */,
+				A15F00032C5D000100000001 /* BlogChooserViewController.swift */,
 				C5F680F2252C36A800D6987D /* BookmarksViewController.swift */,
 				C5A1DE7524901DCC00B50B54 /* ComposeViewController.swift */,
 				C5281B0B251D352800099C6A /* ContentViewController.swift */,
@@ -1426,7 +1424,6 @@
 				C5BEDF4D24DA302F0068CBF1 /* Following.storyboard in Resources */,
 				C5A1DF3324906B9D00B50B54 /* LaunchScreen.storyboard in Resources */,
 				C53375CE26C092E20084C66F /* NearbyLocations.storyboard in Resources */,
-				C5E26A34249EAA0900F9E158 /* Main-Phone.storyboard in Resources */,
 				C5A1DE4624901D8C00B50B54 /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1479,6 +1476,7 @@
 				C5235B33252D0B99002F9CC6 /* VideoTranscoder.swift in Sources */,
 				C5235B26252D0B93002F9CC6 /* SnippetsPost+Sunlit.swift in Sources */,
 				C5235B15252D0B80002F9CC6 /* ComposeViewController.swift in Sources */,
+				A15F00022C5D000100000001 /* BlogChooserViewController.swift in Sources */,
 				C5235B51252D0BFB002F9CC6 /* PostImageCollectionViewCell.swift in Sources */,
 				C5235B32252D0B99002F9CC6 /* Dialog.swift in Sources */,
 				C5235B47252D0BE0002F9CC6 /* UIBarButtonItem+Sunlit.swift in Sources */,
@@ -1583,6 +1581,7 @@
 				C5A1DE5124901D9D00B50B54 /* UIBarButtonItem+Sunlit.swift in Sources */,
 				C5A0830B2B8D613300FF3EC3 /* SafariShareActivity.swift in Sources */,
 				C5A1DE8024901DCC00B50B54 /* ComposeViewController.swift in Sources */,
+				A15F00012C5D000100000001 /* BlogChooserViewController.swift in Sources */,
 				C5EC4737253BB27600DDE4AC /* SunlitFeedConfiguration.intentdefinition in Sources */,
 				C5A1DE9224901DE600B50B54 /* PostImageCollectionViewCell.swift in Sources */,
 				C5A1DE6B24901DBC00B50B54 /* SnippetsUser+Sunlit.swift in Sources */,
@@ -1623,7 +1622,6 @@
 				C53375CC26C092580084C66F /* NearbyLocationsTableViewCell.swift in Sources */,
 				4B556FF624F1C4C10012C6C7 /* SearchViewController.swift in Sources */,
 				C5A1DE8124901DCC00B50B54 /* AboutViewController.swift in Sources */,
-				4B729B8224BA4F74001D145B /* TabButton.swift in Sources */,
 				C5F680F3252C36A800D6987D /* BookmarksViewController.swift in Sources */,
 				C5A1DE5C24901DAD00B50B54 /* Tagmoji.swift in Sources */,
 				C5A1DE9924901DF500B50B54 /* AppDelegate.swift in Sources */,
@@ -1784,7 +1782,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Sharing Extension/sharing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 500;
+				CURRENT_PROJECT_VERSION = 506;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = "Sharing Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -1793,7 +1791,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.sharing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1808,7 +1806,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Sharing Extension/sharing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 500;
+				CURRENT_PROJECT_VERSION = 506;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = "Sharing Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -1817,7 +1815,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.sharing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2158,7 +2156,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sunlit/Sunlit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 504;
+				CURRENT_PROJECT_VERSION = 506;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2170,7 +2168,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
@@ -2186,7 +2184,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sunlit/Sunlit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 504;
+				CURRENT_PROJECT_VERSION = 506;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2198,7 +2196,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
@@ -2288,7 +2286,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = widget_background;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 500;
+				CURRENT_PROJECT_VERSION = 506;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -2297,7 +2295,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.widget;
 				PRODUCT_NAME = "Sunlit Widget";
 				SKIP_INSTALL = YES;
@@ -2314,7 +2312,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = widget_background;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 500;
+				CURRENT_PROJECT_VERSION = 506;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -2323,7 +2321,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.widget;
 				PRODUCT_NAME = "Sunlit Widget";
 				SKIP_INSTALL = YES;

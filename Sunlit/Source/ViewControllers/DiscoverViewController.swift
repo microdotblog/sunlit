@@ -670,17 +670,18 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
 		var collectionViewWidth = collectionView.bounds.size.width
-		
-		if let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout {
-			collectionViewWidth = collectionViewWidth - flowLayout.sectionInset.left
-			collectionViewWidth = collectionViewWidth - flowLayout.sectionInset.right
-			
-			collectionViewWidth = collectionViewWidth - collectionView.contentInset.left
-			collectionViewWidth = collectionViewWidth - collectionView.contentInset.right
-		}
+		let sectionInset = self.collectionView(collectionView, layout: collectionViewLayout, insetForSectionAt: indexPath.section)
+		collectionViewWidth = collectionViewWidth - sectionInset.left
+		collectionViewWidth = collectionViewWidth - sectionInset.right
+		collectionViewWidth = collectionViewWidth - collectionView.contentInset.left
+		collectionViewWidth = collectionViewWidth - collectionView.contentInset.right
 		
 		let size = PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: collectionViewWidth)
 		return size
+	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+		return UIEdgeInsets(top: 0.0, left: 16.0, bottom: 0.0, right: 16.0)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -714,10 +715,12 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 				}
 			}
 
+			cell.photo.layer.cornerRadius = 6.0
+			cell.photo.layer.cornerCurve = .continuous
+			cell.photo.clipsToBounds = true
 			cell.contentView.clipsToBounds = true
 		}
 	}
 	
 }
-
 

@@ -118,31 +118,9 @@ class Dialog {
 	}
 	
 	private func selectBlogConfiguration(_ blogList : [BlogSettings]) {
-
-		let actionSheet = UIAlertController(title: nil, message: "Please select which Micro.blog to use when publishing.", preferredStyle: .actionSheet)
-
-		for blog in blogList {
-            let action = UIAlertAction(title: blog.blogName, style: .default) { (action) in
-
-                BlogSettings.setBlogForPublishing(blog)
-
-                if let completion = self.completion {
-                    completion()
-                }
-            }
-            
-            actionSheet.addAction(action)
+		BlogChooserViewController.present(from: self.viewController, blogs: blogList) { _ in
+			self.completion?()
 		}
-		
-		if let popoverController = actionSheet.popoverPresentationController {
-			popoverController.sourceView = self.viewController.view
-			popoverController.sourceRect = CGRect(x: self.viewController.view.center.x, y: self.viewController.view.center.y, width: 0, height: 0)
-			popoverController.permittedArrowDirections = [] 
-		}
-		
-		self.viewController.present(actionSheet, animated: true) {
-		}
-
 	}
 	
 	private var viewController : UIViewController!

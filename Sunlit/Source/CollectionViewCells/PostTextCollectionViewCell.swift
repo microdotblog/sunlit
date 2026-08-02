@@ -13,14 +13,26 @@ class PostTextCollectionViewCell: UICollectionViewCell {
 	@IBOutlet var widthConstraint : NSLayoutConstraint!
 
 	static func size(_ collectionViewWidth : CGFloat, _ text : String) -> CGSize {
-		var size = CGSize(width: collectionViewWidth - 24.0, height: 0)
-		let rect = text.boundingRect(with: size, options: .usesLineFragmentOrigin , context: nil)
-		size.height = rect.size.height
-		size.height = size.height + 32.0
-		size.width = collectionViewWidth
-		if size.height < 60.0 {
-			size.height = 60.0
-		}
-		return size
+		let horizontalInsets = ComposeCollectionViewMetrics.sectionHorizontalInset * 2.0
+		let cellWidth = collectionViewWidth - horizontalInsets
+		let textInsets = ComposeCollectionViewMetrics.textContainerInsets
+		let textWidth = cellWidth
+			- textInsets.left
+			- textInsets.right
+			- (ComposeCollectionViewMetrics.textLineFragmentPadding * 2.0)
+		let font = UIFont.preferredFont(forTextStyle: .body)
+		let measuredText = text.isEmpty ? " " : text
+		let textRect = measuredText.boundingRect(
+			with: CGSize(width: textWidth, height: .greatestFiniteMagnitude),
+			options: [.usesLineFragmentOrigin, .usesFontLeading],
+			attributes: [.font: font],
+			context: nil
+		)
+		let textHeight = max(font.lineHeight, ceil(textRect.height))
+		let textViewHeight = textHeight + textInsets.top + textInsets.bottom
+		let cellHeight = ceil(textViewHeight)
+			+ ComposeCollectionViewMetrics.textCellTopInset
+			+ ComposeCollectionViewMetrics.textCellBottomInset
+		return CGSize(width: cellWidth, height: cellHeight)
 	}
 }

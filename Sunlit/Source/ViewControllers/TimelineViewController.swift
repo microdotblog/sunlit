@@ -38,6 +38,9 @@ class TimelineViewController: ContentViewController {
 	func setupTableView() {
 		self.refreshControl.addTarget(self, action: #selector(onPullToRefresh), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
+		if #available(iOS 26.0, *) {
+			self.tableView.topEdgeEffect.isHidden = true
+		}
 	}
 
     override func navbarTitle() -> String {
@@ -174,8 +177,6 @@ class TimelineViewController: ContentViewController {
 
 
 	func loadTimeline() {
-
-		print("loadTimeline called")
 		let token = Settings.snippetsToken()
 		self.loggedOutView.isHidden = (token != nil)
 		self.loggedOutView.superview?.bringSubviewToFront(self.loggedOutView)
@@ -186,10 +187,9 @@ class TimelineViewController: ContentViewController {
 		}
 		
 		self.loadingData = true
-		print("Fetching timeline")
 
 		var parameters : [String : String] = [:]
-		parameters["count"] = "30"
+		parameters["count"] = "20"
 
 		Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters) { (error, postObjects : [SnippetsPost]) in
 			// remove non-JPEGs
@@ -197,7 +197,6 @@ class TimelineViewController: ContentViewController {
 				return post.htmlText.contains(".jpg") || post.htmlText.contains(".jpeg")
 			}
 			
-			print("Finished fetching timeline")
 			self.loadingData = false
 			self.setupBlurHashes(photos)
 
@@ -243,7 +242,6 @@ class TimelineViewController: ContentViewController {
 				self.setupBlurHashes(photos)
 
 				DispatchQueue.main.async {
-                    print("Preparing to insert rows")
                     if photos.count == 0 {
                         self.noMoreToLoad = true
 						self.loadingData = false
@@ -508,8 +506,6 @@ extension TimelineViewController : UITextViewDelegate {
 	}
 
 }
-
-
 
 
 

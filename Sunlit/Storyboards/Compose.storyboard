@@ -92,7 +92,7 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="uuCornerRadius">
-                                                            <real key="value" value="5"/>
+                                                            <real key="value" value="12"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                     <connections>
@@ -102,10 +102,10 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="412" id="HSD-uo-sTe"/>
-                                                <constraint firstAttribute="bottom" secondItem="I1E-IH-CG2" secondAttribute="bottom" constant="16" id="JUj-sj-tFK"/>
-                                                <constraint firstAttribute="trailing" secondItem="I1E-IH-CG2" secondAttribute="trailing" constant="12" id="S4B-e7-lQG"/>
-                                                <constraint firstItem="I1E-IH-CG2" firstAttribute="leading" secondItem="jdC-70-3Nt" secondAttribute="leading" constant="12" id="wbJ-nc-i7O"/>
-                                                <constraint firstItem="I1E-IH-CG2" firstAttribute="top" secondItem="jdC-70-3Nt" secondAttribute="top" constant="16" id="wp8-TN-ntS"/>
+                                                <constraint firstAttribute="bottom" secondItem="I1E-IH-CG2" secondAttribute="bottom" constant="8" id="JUj-sj-tFK"/>
+                                                <constraint firstAttribute="trailing" secondItem="I1E-IH-CG2" secondAttribute="trailing" id="S4B-e7-lQG"/>
+                                                <constraint firstItem="I1E-IH-CG2" firstAttribute="leading" secondItem="jdC-70-3Nt" secondAttribute="leading" id="wbJ-nc-i7O"/>
+                                                <constraint firstItem="I1E-IH-CG2" firstAttribute="top" secondItem="jdC-70-3Nt" secondAttribute="top" constant="12" id="wp8-TN-ntS"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="128" height="128"/>
@@ -122,20 +122,17 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="n5S-Q4-UNQ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
+                                                    <rect key="frame" x="10" y="8" width="100" height="104"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="n5S-Q4-UNQ" secondAttribute="height" multiplier="1:1" id="LQj-hi-Sdj"/>
-                                                    </constraints>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="120" id="0N2-QS-0lX"/>
-                                                <constraint firstItem="n5S-Q4-UNQ" firstAttribute="top" secondItem="Zi2-Jg-TIo" secondAttribute="top" id="JXH-C5-Ar1"/>
+                                                <constraint firstItem="n5S-Q4-UNQ" firstAttribute="top" secondItem="Zi2-Jg-TIo" secondAttribute="top" constant="8" id="JXH-C5-Ar1"/>
                                                 <constraint firstAttribute="width" secondItem="Zi2-Jg-TIo" secondAttribute="height" multiplier="1:1" id="fwI-oH-3wL"/>
-                                                <constraint firstAttribute="trailing" secondItem="n5S-Q4-UNQ" secondAttribute="trailing" id="nxf-YF-Jne"/>
-                                                <constraint firstAttribute="bottom" secondItem="n5S-Q4-UNQ" secondAttribute="bottom" id="ruK-kx-DvL"/>
-                                                <constraint firstItem="n5S-Q4-UNQ" firstAttribute="leading" secondItem="Zi2-Jg-TIo" secondAttribute="leading" id="xSK-zG-hXX"/>
+                                                <constraint firstAttribute="trailing" secondItem="n5S-Q4-UNQ" secondAttribute="trailing" constant="10" id="nxf-YF-Jne"/>
+                                                <constraint firstAttribute="bottom" secondItem="n5S-Q4-UNQ" secondAttribute="bottom" constant="8" id="ruK-kx-DvL"/>
+                                                <constraint firstItem="n5S-Q4-UNQ" firstAttribute="leading" secondItem="Zi2-Jg-TIo" secondAttribute="leading" constant="10" id="xSK-zG-hXX"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <connections>
@@ -166,6 +163,7 @@
                                         </collectionViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
+                                            <outlet property="addIcon" destination="9GI-cb-AlC" id="zyF-S7-q6Q"/>
                                             <outlet property="widthConstraint" destination="ZkB-ho-1cp" id="6Mp-UH-UHK"/>
                                         </connections>
                                     </collectionViewCell>
@@ -179,12 +177,9 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jk2-ua-Mpd">
                                                     <rect key="frame" x="16" y="16" width="382" height="96"/>
                                                     <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="382" id="sZg-yR-dOY"/>
-                                                    </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="uuCornerRadius">
-                                                            <real key="value" value="8"/>
+                                                            <real key="value" value="20"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
@@ -195,18 +190,18 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="GdF-Ro-omh" firstAttribute="centerY" secondItem="TQf-ma-uGc" secondAttribute="centerY" id="4Ks-81-XOw"/>
+                                                <constraint firstItem="GdF-Ro-omh" firstAttribute="centerY" secondItem="Jk2-ua-Mpd" secondAttribute="centerY" id="4Ks-81-XOw"/>
                                                 <constraint firstItem="Jk2-ua-Mpd" firstAttribute="centerY" secondItem="TQf-ma-uGc" secondAttribute="centerY" id="AOe-Q4-fur"/>
                                                 <constraint firstItem="Jk2-ua-Mpd" firstAttribute="top" secondItem="TQf-ma-uGc" secondAttribute="top" constant="16" id="BAp-9W-OLs"/>
-                                                <constraint firstAttribute="trailing" secondItem="Jk2-ua-Mpd" secondAttribute="trailing" constant="16" id="dYV-7j-vMn"/>
-                                                <constraint firstItem="Jk2-ua-Mpd" firstAttribute="leading" secondItem="TQf-ma-uGc" secondAttribute="leading" constant="16" id="eb5-d6-R3R"/>
+                                                <constraint firstItem="GdF-Ro-omh" firstAttribute="leading" secondItem="Jk2-ua-Mpd" secondAttribute="leading" constant="20" id="dYV-7j-vMn"/>
+                                                <constraint firstItem="Jk2-ua-Mpd" firstAttribute="trailing" secondItem="GdF-Ro-omh" secondAttribute="trailing" constant="20" id="eb5-d6-R3R"/>
                                                 <constraint firstItem="Jk2-ua-Mpd" firstAttribute="centerX" secondItem="TQf-ma-uGc" secondAttribute="centerX" id="hAB-XR-ali"/>
                                                 <constraint firstAttribute="bottom" secondItem="Jk2-ua-Mpd" secondAttribute="bottom" constant="16" id="tmA-ed-aTc"/>
-                                                <constraint firstItem="GdF-Ro-omh" firstAttribute="centerX" secondItem="TQf-ma-uGc" secondAttribute="centerX" id="xIY-ld-Jqf"/>
+                                                <constraint firstItem="GdF-Ro-omh" firstAttribute="centerX" secondItem="Jk2-ua-Mpd" secondAttribute="centerX" id="xIY-ld-Jqf"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <connections>
-                                            <outlet property="widthConstraint" destination="sZg-yR-dOY" id="nQ6-Rn-cj2"/>
+                                            <outlet property="titleLabel" destination="GdF-Ro-omh" id="c2Q-oS-WRc"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -222,8 +217,8 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UN1-6s-Ep7">
                                         <rect key="frame" x="12" y="7" width="168" height="30"/>
-                                        <state key="normal" title="cheesemaker.micro.blog">
-                                            <color key="titleColor" name="color_highlight"/>
+                                        <state key="normal">
+                                            <color key="titleColor" systemColor="labelColor"/>
                                         </state>
                                         <state key="disabled">
                                             <color key="titleColor" systemColor="labelColor"/>
@@ -246,7 +241,7 @@
                                     <constraint firstItem="kxE-Nr-1Qe" firstAttribute="centerY" secondItem="grM-1V-fO8" secondAttribute="centerY" id="3bb-33-E1U"/>
                                     <constraint firstAttribute="trailing" secondItem="kxE-Nr-1Qe" secondAttribute="trailing" constant="12" id="4rS-FR-G9D"/>
                                     <constraint firstItem="UN1-6s-Ep7" firstAttribute="centerY" secondItem="grM-1V-fO8" secondAttribute="centerY" id="f7a-Ib-TJa"/>
-                                    <constraint firstItem="UN1-6s-Ep7" firstAttribute="leading" secondItem="grM-1V-fO8" secondAttribute="leading" constant="12" id="ihA-3m-kSQ"/>
+                                    <constraint firstItem="UN1-6s-Ep7" firstAttribute="centerX" secondItem="grM-1V-fO8" secondAttribute="centerX" id="ihA-3m-kSQ"/>
                                     <constraint firstAttribute="height" constant="44" id="vvt-Wm-tWc"/>
                                 </constraints>
                             </view>

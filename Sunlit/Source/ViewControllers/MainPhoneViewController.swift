@@ -9,372 +9,197 @@
 import UIKit
 import Snippets
 
-class MainPhoneViewController: UIViewController {
+class MainPhoneViewController: UITabBarController {
 
-    static var needsMentionsSwitch = false
+	static var needsMentionsSwitch = false
 
-	@IBOutlet var contentView : UIView!
-	@IBOutlet var scrollView : UIScrollView!
-	@IBOutlet var tabBar : UIView!
-	@IBOutlet var timelineButton : TabButton!
-	@IBOutlet var discoverButton : TabButton!
-    //@IBOutlet var bookmarksButton : TabButton!
-	@IBOutlet var mentionsButton : TabButton!
-	//@IBOutlet var profileButton : TabButton!
+	let discoverViewController: DiscoverViewController
+	let timelineViewController: TimelineViewController
+	let mentionsViewController: MentionsViewController
+	var currentViewController: ContentViewController?
+	private var didPrepareInitialTab = false
 
-	var discoverViewController : DiscoverViewController!
-//    var bookmarksViewController : BookmarksViewController!
-	var timelineViewController : TimelineViewController!
-//	var profileViewController : MyProfileViewController!
-	var mentionsViewController : MentionsViewController!
-	var currentViewController : ContentViewController? = nil
+	init(timelineViewController: TimelineViewController, mentionsViewController: MentionsViewController, discoverViewController: DiscoverViewController) {
+		self.timelineViewController = timelineViewController
+		self.mentionsViewController = mentionsViewController
+		self.discoverViewController = discoverViewController
+		super.init(nibName: nil, bundle: nil)
+	}
 
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+	@available(*, unavailable)
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 
-	
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
 
-		self.setupProfileButton()
-		self.loadContentViews()
-		self.updateInterfaceForLogin()
-		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
+		self.delegate = self
+		self.setupTabs()
 		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
 	}
-    
-	override func viewDidLayoutSubviews() {
-		
-		super.viewDidLayoutSubviews()
-				
-		var frame = self.scrollView.frame
-		frame.size.width = self.view.frame.size.width
-		self.scrollView.frame = frame
 
-		self.timelineViewController.view.frame = frame
-		
-		frame.origin.x += frame.size.width
-		self.mentionsViewController.view.frame = frame
+	override func didMove(toParent parent: UIViewController?) {
+		super.didMove(toParent: parent)
 
-		frame.origin.x += frame.size.width
-		self.discoverViewController.view.frame = frame
-
-//        frame.origin.x += frame.size.width
-//        self.bookmarksViewController.view.frame = frame
-				
-//		frame.origin.x += frame.size.width
-//		self.profileViewController.view.frame = frame
-		
-		let contentSize = CGSize(width: frame.size.width * 5.0, height: 0.0)
-		self.scrollView.contentSize = contentSize
+		if parent != nil {
+			self.prepareInitialTabIfNeeded()
+		}
 	}
-	
+
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
+
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
 		self.reloadTabs()
 	}
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
 
-        if MainPhoneViewController.needsMentionsSwitch {
-            MainPhoneViewController.needsMentionsSwitch = false
-            self.onShowMentions()
-        }
-    }
+		if MainPhoneViewController.needsMentionsSwitch {
+			MainPhoneViewController.needsMentionsSwitch = false
+			self.onShowMentions()
+		}
+	}
 
-	func loadContentViews() {
-		
-		self.addChild(self.timelineViewController)
-		self.addChild(self.mentionsViewController)
-		self.addChild(self.discoverViewController)
-//        self.addChild(self.bookmarksViewController)
-//		self.addChild(self.profileViewController)
+	private func setupTabs() {
+		self.timelineViewController.tabBarItem = UITabBarItem(
+			title: "Timeline",
+			image: UIImage(systemName: "bubble.left.and.bubble.right"),
+			selectedImage: nil
+		)
+		self.mentionsViewController.tabBarItem = UITabBarItem(
+			title: "Mentions",
+			image: UIImage(systemName: "at"),
+			selectedImage: nil
+		)
+		self.discoverViewController.tabBarItem = UITabBarItem(
+			title: "Discover",
+			image: UIImage(systemName: "magnifyingglass"),
+			selectedImage: nil
+		)
 
-		var frame = self.scrollView.bounds
-		self.scrollView.addSubview(self.timelineViewController.view)
-		self.timelineViewController.view.frame = frame
-		frame.origin.x += frame.size.width
+		self.tabBar.tintColor = UIColor(named: "color_tab_selected")
+		self.tabBar.unselectedItemTintColor = UIColor(named: "color_tab_normal")
+		self.setViewControllers([
+			self.timelineViewController,
+			self.mentionsViewController,
+			self.discoverViewController
+		], animated: false)
+	}
 
-		self.scrollView.addSubview(self.mentionsViewController.view)
-		self.mentionsViewController.view.frame = frame
-		frame.origin.x += frame.size.width
+	private func prepareInitialTabIfNeeded() {
+		guard !self.didPrepareInitialTab else {
+			return
+		}
 
-		self.scrollView.addSubview(self.discoverViewController.view)
-		self.discoverViewController.view.frame = frame
-		frame.origin.x += frame.size.width
-
-//        self.scrollView.addSubview(self.bookmarksViewController.view)
-//        self.bookmarksViewController.view.frame = frame
-//        frame.origin.x += frame.size.width
-//		
-//		self.scrollView.addSubview(self.profileViewController.view)
-//		self.profileViewController.view.frame = frame
-//		frame.origin.x += frame.size.width
-
-		self.scrollView.isUserInteractionEnabled = true
-		self.scrollView.contentSize = CGSize(width: frame.origin.x, height: 0)
-
-		self.timelineButton.isSelected = true
+		self.didPrepareInitialTab = true
+		self.viewControllers?.forEach { $0.loadViewIfNeeded() }
+		self.selectedViewController = self.timelineViewController
 		self.currentViewController = self.timelineViewController
 		self.timelineViewController.prepareToDisplay()
+		self.updateMentionsBadge()
 	}
-	
+
 	func reloadTabs() {
 		self.timelineViewController.tableView.reloadData()
 		self.discoverViewController.tableView.reloadData()
 		self.discoverViewController.collectionView.reloadData()
-//        self.bookmarksViewController.tableView.reloadData()
-//		self.profileViewController.collectionView.reloadData()
 		self.mentionsViewController.tableView.reloadData()
 	}
-	
-	func setupProfileButton() {
-//		var profileImage : UIImage? = UIImage(systemName: "person.crop.circle")
-//		var profileUsername = "Profile"
-//		if let current = SnippetsUser.current() {
-//			if current.username.count < 10 {
-//				profileUsername = "@" + current.username
-//			}
-//			if let image = ImageCache.prefetch(current.avatarURL) {
-//				profileImage = image
-//			}
-//		}
-//
-//		if let image = profileImage {
-//			profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 26, height: 26)).withRenderingMode(.alwaysOriginal)
-//		}
-//
-//		self.profileButton.setTitle(profileUsername, for: .normal)
-//		self.profileButton.setImage(profileImage, for: .normal)
-//		self.profileButton.setImage(profileImage, for: .selected)
-//		self.profileButton.setCornerRadius(13)
-//
-//		let longpressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onSelectBlogConfiguration))
-//		self.profileButton.addGestureRecognizer(longpressGesture)
-	}
 
-	func updateInterfaceForLogin() {
-		
-//		if let user = SnippetsUser.current() {
-//			
-//			// Update the user name...
-//			DispatchQueue.main.async {
-//                self.scrollView.isScrollEnabled = true
-//
-//				if user.username.count < 10 {
-//					self.profileButton.setTitle("@" + user.username, for: .normal)
-//				}
-//				else {
-//					self.profileButton.setTitle("Profile", for: .normal)
-//				}
-//			}
-			
-			// Go ahead and go get the avatar for the logged in user
-//			ImageCache.fetch(user.avatarURL) { (image) in
-//				
-//				if let image = image {
-//					let	profileImage = image.uuScaleAndCropToSize(targetSize: CGSize(width: 26, height: 26)).withRenderingMode(.alwaysOriginal)
-//					DispatchQueue.main.async {
-//						self.profileButton.setImage(profileImage, for: .normal)
-//						self.profileButton.setImage(profileImage, for: .selected)
-//						self.profileButton.setCornerRadius(13)
-//						self.view.layoutIfNeeded()
-//					}
-//				}
-//			}
-//		}
-//		else {
-//			self.profileButton.setImage(UIImage(systemName: "person.crop.circle"), for: .normal)
-//			self.profileButton.setTitle("Profile", for: .normal)
-//			self.onTabBarButtonPressed(self.timelineButton)
-//            self.scrollView.isScrollEnabled = false
-//		}
-	}
-
-	@objc func handleCurrentUserUpdatedNotification() {
-		self.updateInterfaceForLogin()
-	}
-	
 	@objc func handleUserMentionsUpdated() {
-        let mentionCount = SunlitMentions.shared.newMentionCount()
-        self.mentionsButton.shouldDisplayNotificationDot = mentionCount > 0
+		DispatchQueue.main.async {
+			self.updateMentionsBadge()
+		}
 	}
 
-	@IBAction func onTabBarButtonPressed(_ button : UIButton) {
+	private func updateMentionsBadge() {
+		let mentionCount = SunlitMentions.shared.newMentionCount()
+		self.mentionsViewController.tabBarItem.badgeValue = mentionCount > 0 ? String(mentionCount) : nil
+	}
 
-        // If not logged in, show the login screen...
-        if button != self.discoverButton {
-            if SnippetsUser.current() == nil {
-                if Settings.snippetsToken() != nil {
+	private func handleLoggedOutSelection() {
+		if Settings.snippetsToken() != nil {
+			self.onShowTimeline()
 
-                    self.onShowTimeline()
-                    
-                    Snippets.Microblog.fetchCurrentUserInfo { (error, updatedUser) in
+			Snippets.Microblog.fetchCurrentUserInfo { (error, updatedUser) in
+				if let user = updatedUser {
+					_ = SnippetsUser.saveAsCurrent(user)
 
-                        if let user = updatedUser {
-                            _ = SnippetsUser.saveAsCurrent(user)
-
-                            DispatchQueue.main.async {
-                                Dialog(self).selectBlog()
-                                NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
-                            }
-                        }
-                    }
-                }
-                else {
-                    NotificationCenter.default.post(name: .showLoginNotification, object: nil)
-                    self.onShowTimeline()
-                }
-                return
-            }
-        }
-        
-//        if button == self.profileButton {
-//            self.onShowProfile()
-//		}
-		if button == self.timelineButton {
+					DispatchQueue.main.async {
+						Dialog(self).selectBlog()
+						NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
+					}
+				}
+			}
+		}
+		else {
+			NotificationCenter.default.post(name: .showLoginNotification, object: nil)
 			self.onShowTimeline()
 		}
-		if button == self.discoverButton {
-			self.onShowDiscover()
-		}
-//        if button == self.bookmarksButton {
-//            self.onShowBookmarks()
-//        }
-		if button == self.mentionsButton {
-			self.onShowMentions()
-		}
-		
 	}
-	
-	@objc func onSelectBlogConfiguration() {
-		Dialog(self).selectBlog()
+
+	private func transition(to viewController: ContentViewController) {
+		let previousViewController = self.currentViewController
+		guard previousViewController !== viewController else {
+			return
+		}
+
+		previousViewController?.prepareToHide()
+		self.currentViewController = viewController
+		viewController.loadViewIfNeeded()
+
+		if viewController === self.timelineViewController {
+			self.timelineViewController.loadTimeline()
+		}
+
+		viewController.prepareToDisplay()
 	}
-				
+
+	private func select(_ viewController: ContentViewController) {
+		if self.currentViewController === viewController {
+			viewController.handleScrollToTopGesture()
+			return
+		}
+
+		self.selectedViewController = viewController
+		self.transition(to: viewController)
+	}
+
 	func onShowTimeline() {
-
-        if self.currentViewController == self.timelineViewController {
-            self.timelineViewController.handleScrollToTopGesture()
-            return
-        }
-
-		var offset =  self.scrollView.contentOffset
-		offset.x = 0.0
-		self.scrollView.setContentOffset(offset, animated: false)
-		self.timelineViewController.loadTimeline()
-        self.updateTabBar(self.scrollView)
-        self.updateCurrentViewController(self.scrollView)
+		self.select(self.timelineViewController)
 	}
 
 	func onShowMentions() {
-
-        if self.currentViewController == self.mentionsViewController {
-            self.mentionsViewController.handleScrollToTopGesture()
-            return
-        }
-
-		var offset =  self.scrollView.contentOffset
-		offset.x = self.scrollView.bounds.size.width * 1.0
-		self.scrollView.setContentOffset(offset, animated: false)
-		self.updateTabBar(self.scrollView)
-		self.updateCurrentViewController(self.scrollView)
+		self.select(self.mentionsViewController)
 	}
 
 	func onShowDiscover() {
-
-        if self.currentViewController == self.discoverViewController {
-            self.discoverViewController.handleScrollToTopGesture()
-            return
-        }
-
-		var offset =  self.scrollView.contentOffset
-		offset.x = self.scrollView.bounds.size.width * 2.0
-		self.scrollView.setContentOffset(offset, animated: false)
-        self.updateTabBar(self.scrollView)
-        self.updateCurrentViewController(self.scrollView)
+		self.select(self.discoverViewController)
 	}
-
 }
 
+extension MainPhoneViewController: UITabBarControllerDelegate {
 
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+	func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+		if viewController !== self.discoverViewController && SnippetsUser.current() == nil {
+			self.handleLoggedOutSelection()
+			return false
+		}
 
-extension MainPhoneViewController : UIScrollViewDelegate {
+		if viewController === self.currentViewController {
+			self.currentViewController?.handleScrollToTopGesture()
+			return false
+		}
 
-    func updateTabBar(_ scrollView: UIScrollView) {
-        let offset = scrollView.contentOffset.x
-        let frameSize = scrollView.bounds.size.width
-
-        self.timelineButton.isSelected = false
-//        self.profileButton.isSelected = false
-        self.discoverButton.isSelected = false
-//        self.bookmarksButton.isSelected = false
-        self.mentionsButton.isSelected = false
-        
-        if offset < (frameSize / 2.0) {
-            self.timelineButton.isSelected = true
-        }
-        else if offset < (frameSize + (frameSize / 2.0)) {
-            self.mentionsButton.isSelected = true
-        }
-        else if offset < (frameSize * 2.0 + (frameSize / 2.0)) {
-            self.discoverButton.isSelected = true
-        }
-//        else if offset < (frameSize * 3.0 + (frameSize / 2.0)) {
-//            self.bookmarksButton.isSelected = true
-//        }
-//        else {
-//            self.profileButton.isSelected = true
-//        }
-    }
-
-    
-    func updateCurrentViewController(_ scrollView: UIScrollView) {
-        let offset = scrollView.contentOffset.x
-        let frameSize = scrollView.bounds.size.width
-
-        let previousViewController = self.currentViewController
-        if offset < (frameSize / 2.0) {
-            self.currentViewController = self.timelineViewController
-        }
-        else if offset < (frameSize + (frameSize / 2.0)) {
-            self.currentViewController = self.mentionsViewController
-        }
-        else if offset < (frameSize * 2.0 + (frameSize / 2.0)) {
-            self.currentViewController = self.discoverViewController
-        }
-        
-        if !(previousViewController === self.currentViewController) {
-            previousViewController?.prepareToHide()
-            self.currentViewController?.prepareToDisplay()
-        }
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            self.updateCurrentViewController(scrollView)
-            self.updateCurrentViewController(self.scrollView)
-        }
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        self.updateCurrentViewController(scrollView)
-        self.updateCurrentViewController(self.scrollView)
-    }
-    
-	func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.updateTabBar(scrollView)
+		return true
 	}
-    
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        self.updateTabBar(scrollView)
-        self.updateCurrentViewController(self.scrollView)
-    }
-}
 
+	func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+		if let contentViewController = viewController as? ContentViewController {
+			self.transition(to: contentViewController)
+		}
+	}
+}

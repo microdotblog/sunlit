@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import Snippets
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: ContentViewController {
 
     /* Include bios */
     static let headerSection = 0
@@ -30,29 +30,70 @@ class ProfileViewController: UIViewController {
 	var user : SnippetsUser!
 	var userPosts : [SunlitPost] = []
 	var loadInProgress = false
+	var isCurrentUserProfile = false
+	private var followingUsers : [SnippetsUser] = []
+	private var followingUsersLoaded = false
     var refreshControl = UIRefreshControl()
+	private let profileSectionInset : CGFloat = 8.0
+	private let photoSectionInset : CGFloat = 16.0
 
 	@IBOutlet var collectionView : UICollectionView!
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		
-		// Merge if we can/need to from the user cache...
-		self.user = SnippetsUser.save(self.user)
-		self.navigationItem.title = self.user.fullName
+
+		if self.isCurrentUserProfile {
+			self.user = SnippetsUser.current()
+			self.navigationItem.title = "Profile"
+		}
+		else {
+			// Merge if we can/need to from the user cache...
+			self.user = SnippetsUser.save(self.user)
+			self.navigationItem.title = self.user.fullName
+		}
         self.fetchUserInfo()
 
         self.refreshControl.addTarget(self, action: #selector(fetchUserInfo), for: .valueChanged)
         self.collectionView.addSubview(self.refreshControl)
 
 		self.setupNavigation()
-		self.setupGesture()
+		self.setupNotifications()
+		if !self.isCurrentUserProfile {
+			self.setupGesture()
+		}
     }
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+
+		if self.isCurrentUserProfile {
+			self.user = SnippetsUser.current()
+			self.fetchUserInfo()
+		}
+	}
 	
-    func setupNavigation() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(dismissViewController))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(onShare))
+    override func setupNavigation() {
+		if self.isCurrentUserProfile {
+			super.setupNavigation()
+			self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(onClose))
+			self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(onSettings))
+		}
+		else {
+			self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(dismissViewController))
+			self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(onShare))
+		}
     }
+
+	override func setupNotifications() {
+		super.setupNotifications()
+
+		guard self.isCurrentUserProfile else {
+			return
+		}
+
+		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleFollowingButtonClickedNotification), name: .followingButtonClickedNotification, object: nil)
+	}
 	
 	func setupGesture() {
 		let gesture = UISwipeGestureRecognizer(target: self, action: #selector(dismissViewController))
@@ -62,6 +103,29 @@ class ProfileViewController: UIViewController {
 
 	@objc func dismissViewController() {
 		self.navigationController?.popViewController(animated: true)
+	}
+
+	@objc func onClose() {
+		self.dismiss(animated: true)
+	}
+
+	@objc func onSettings() {
+		let storyboard = UIStoryboard(name: "Settings", bundle: nil)
+		let settingsViewController = storyboard.instantiateViewController(withIdentifier: "SettingsViewController")
+		let navigationController = UINavigationController(rootViewController: settingsViewController)
+		self.present(navigationController, animated: true)
+	}
+
+	@objc func handleCurrentUserUpdatedNotification() {
+		self.user = SnippetsUser.current()
+		self.fetchUserInfo()
+	}
+
+	@objc func handleFollowingButtonClickedNotification() {
+		let storyboard = UIStoryboard(name: "Following", bundle: nil)
+		let followingViewController = storyboard.instantiateViewController(withIdentifier: "FollowingViewController") as! FollowingViewController
+		followingViewController.following = self.followingUsers
+		self.navigationController?.pushViewController(followingViewController, animated: true)
 	}
 	
     @objc func onShare()
@@ -76,38 +140,65 @@ class ProfileViewController: UIViewController {
     }
     
 	@objc func fetchUserInfo() {
-        
+		guard self.user != nil else {
+			return
+		}
+
         if self.loadInProgress == true {
             return
         }
         
         self.loadInProgress = true
-        
-        Snippets.Microblog.fetchUserDetails(user: self.user) { (error, updatedUser, posts : [SnippetsPost]) in
-			
-			if let snippetsUser = updatedUser {
-				self.user = SnippetsUser.save(snippetsUser)
-				
+
+		if self.isCurrentUserProfile {
+			self.followingUsersLoaded = false
+			Snippets.Microblog.fetchCurrentUserInfo { [weak self] (error, updatedUser) in
+				self?.finishFetchingUser(updatedUser)
+			}
+		}
+		else {
+			Snippets.Microblog.fetchUserDetails(user: self.user) { [weak self] (error, updatedUser, posts : [SnippetsPost]) in
+				self?.finishFetchingUser(updatedUser)
+			}
+		}
+	}
+
+	private func finishFetchingUser(_ updatedUser : SnippetsUser?) {
+		guard let updatedUser = updatedUser else {
+			DispatchQueue.main.async {
+				self.loadInProgress = false
+				self.refreshControl.endRefreshing()
+			}
+			return
+		}
+
+		self.user = self.isCurrentUserProfile ? SnippetsUser.saveAsCurrent(updatedUser) : SnippetsUser.save(updatedUser)
+
+		DispatchQueue.main.async {
+			self.collectionView.reloadData()
+		}
+
+		Snippets.Microblog.fetchUserMediaPosts(user: updatedUser) { (error, snippets : [SnippetsPost]) in
+			let posts = snippets.map { SunlitPost.create($0) }
+
+			DispatchQueue.main.async {
+				self.loadInProgress = false
+				self.userPosts = posts
+				self.collectionView.reloadData()
+				self.refreshControl.endRefreshing()
+			}
+		}
+
+		if self.isCurrentUserProfile {
+			Snippets.Microblog.listFollowing(user: updatedUser, completeList: true) { (error, users) in
+				self.followingUsers = users
+				self.followingUsersLoaded = true
+				self.user.followingCount = users.count
+				self.user = SnippetsUser.saveAsCurrent(self.user)
+
 				DispatchQueue.main.async {
 					self.collectionView.reloadData()
 				}
-                
-                Snippets.Microblog.fetchUserMediaPosts(user: self.user) { (error, snippets: [SnippetsPost]) in
-
-                    DispatchQueue.main.async {
-
-                        var posts : [SunlitPost] = []
-                        for snippet in snippets {
-                            let post = SunlitPost.create(snippet)
-                            posts.append(post)
-                        }
-
-                        self.loadInProgress = false
-                        self.userPosts = posts
-                        self.collectionView.reloadData()
-                        self.refreshControl.endRefreshing()
-                    }
-                }
 			}
 		}
 	}
@@ -189,7 +280,10 @@ MARK: -
 extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
 	
 	func numberOfSections(in collectionView: UICollectionView) -> Int {
-		
+		guard self.user != nil else {
+			return 0
+		}
+
         return ProfileViewController.sectionCount
 	}
 	
@@ -245,13 +339,11 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 
 		var collectionViewWidth = collectionView.bounds.size.width
 		
-		if let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout {
-			collectionViewWidth = collectionViewWidth - flowLayout.sectionInset.left
-			collectionViewWidth = collectionViewWidth - flowLayout.sectionInset.right
-			
-			collectionViewWidth = collectionViewWidth - collectionView.contentInset.left
-			collectionViewWidth = collectionViewWidth - collectionView.contentInset.right
-		}
+		let sectionInset = self.collectionView(collectionView, layout: collectionViewLayout, insetForSectionAt: indexPath.section)
+		collectionViewWidth = collectionViewWidth - sectionInset.left
+		collectionViewWidth = collectionViewWidth - sectionInset.right
+		collectionViewWidth = collectionViewWidth - collectionView.contentInset.left
+		collectionViewWidth = collectionViewWidth - collectionView.contentInset.right
 		
         if indexPath.section == ProfileViewController.headerSection {
 			return ProfileHeaderCollectionViewCell.sizeOf(self.user, collectionViewWidth: collectionViewWidth)
@@ -262,6 +354,11 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		else {
 			return PhotoEntryCollectionViewCell.sizeOf(collectionViewWidth: collectionViewWidth)
 		}
+	}
+
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+		let horizontalInset = section == ProfileViewController.photoSection ? self.photoSectionInset : self.profileSectionInset
+		return UIEdgeInsets(top: 0.0, left: horizontalInset, bottom: 0.0, right: horizontalInset)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -284,30 +381,48 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	
 	func configureHeaderCell(_ cell : ProfileHeaderCollectionViewCell, _ indexPath : IndexPath) {
 		cell.followButton.clipsToBounds = true
-		cell.followButton.layer.cornerRadius = (cell.followButton.bounds.size.height - 1) / 2.0
 		cell.followButton.isHidden = true
-                		
-		cell.followButton.addTarget(self, action: #selector(onFollowUser), for: .touchUpInside)
-		
-		if self.loadInProgress {
-			cell.busyIndicator.startAnimating()
+		cell.followButton.removeTarget(nil, action: nil, for: .allEvents)
+
+		if self.isCurrentUserProfile {
+			if self.followingUsersLoaded {
+				cell.busyIndicator.stopAnimating()
+				cell.followButton.setTitle("Following \(self.followingUsers.count)", for: .normal)
+				let trailingInset = cell.contentView.bounds.width - cell.followButton.frame.maxX
+				let centerY = cell.followButton.center.y
+				cell.followButton.contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 18.0, bottom: 0.0, right: 18.0)
+				cell.followButton.sizeToFit()
+				cell.followButton.frame.size.width = max(cell.followButton.frame.width, 100.0)
+				cell.followButton.frame.size.height = 40.0
+				cell.followButton.frame.origin.x = cell.contentView.bounds.width - trailingInset - cell.followButton.frame.width
+				cell.followButton.center.y = centerY
+				cell.followButton.isHidden = false
+				cell.followButton.addTarget(self, action: #selector(handleFollowingButtonClickedNotification), for: .touchUpInside)
+			}
+			else {
+				cell.busyIndicator.startAnimating()
+			}
 		}
 		else {
-			cell.busyIndicator.stopAnimating()
-            cell.followButton.isHidden = false
+			cell.followButton.contentEdgeInsets = .zero
+			cell.followButton.addTarget(self, action: #selector(onFollowUser), for: .touchUpInside)
 
-			if self.user.isFollowing {
-				cell.followButton.setTitle("Unfollow", for: .normal)
+			if self.loadInProgress {
+				cell.busyIndicator.startAnimating()
 			}
-            else {
-                cell.followButton.setTitle("Follow", for: .normal)
-            }
+			else {
+				cell.busyIndicator.stopAnimating()
+				cell.followButton.isHidden = false
+				cell.followButton.setTitle(self.user.isFollowing ? "Unfollow" : "Follow", for: .normal)
+			}
+
+			if self.user.username == SnippetsUser.current()?.username {
+				// don't let someone unfollow themselves
+				cell.followButton.isHidden = true
+			}
 		}
 
-		if self.user.username == SnippetsUser.current()?.username {
-			// don't let someone unfollow themselves
-			cell.followButton.isHidden = true
-		}
+		cell.followButton.layer.cornerRadius = (cell.followButton.bounds.size.height - 1) / 2.0
 
 		cell.avatar.clipsToBounds = true
 		cell.avatar.layer.cornerRadius = (cell.avatar.bounds.size.height - 1) / 2.0
@@ -351,14 +466,12 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 			}
 		}
 
+		cell.photo.layer.cornerRadius = 6.0
+		cell.photo.layer.cornerCurve = .continuous
+		cell.photo.clipsToBounds = true
 		cell.contentView.clipsToBounds = true
 	}
 	
 }
-
-
-
-
-
 
 

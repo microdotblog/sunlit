@@ -13,6 +13,7 @@ class SectionTextView: UITextView {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
-		self.textContainerInset = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 6)
+		self.textContainerInset = ComposeCollectionViewMetrics.textContainerInsets
+		self.textContainer.lineFragmentPadding = ComposeCollectionViewMetrics.textLineFragmentPadding
 	}
 }

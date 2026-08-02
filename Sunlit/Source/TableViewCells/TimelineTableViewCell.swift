@@ -24,6 +24,7 @@ class TimelineTableViewCell : UITableViewCell {
 
 	var post : SunlitPost!
 	private var avatarSource: String?
+	private let identityBubble = UIView()
 
 	// Video playback interface...
 	var player : AVQueuePlayer? = nil
@@ -47,18 +48,76 @@ class TimelineTableViewCell : UITableViewCell {
 	}
 
 	static func height(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
-		return photoHeight(post, parentWidth: parentWidth) + 40.0 + 5.0
+		return photoHeight(post, parentWidth: parentWidth) + 5.0
 	}
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
 
-		self.userName.font = UIFont.preferredFont(forTextStyle: .caption1)
-		self.userHandle.font = UIFont.preferredFont(forTextStyle: .caption2)
+		self.collectionView.showsHorizontalScrollIndicator = false
+		self.contentView.constraints.first(where: { constraint in
+			constraint.firstItem as? UIView === self.contentView &&
+			constraint.firstAttribute == .bottom &&
+			constraint.secondItem as? UIView === self.pageViewIndicatorContainer &&
+			constraint.secondAttribute == .bottom
+		})?.constant = 10.0
+		self.setupIdentityBubble()
+	}
 
-		// Configure the user avatar
+	private func setupIdentityBubble() {
+		let headerView = self.userAvatar.superview
+		let headerConstraints = headerView?.constraints.filter { constraint in
+			constraint.firstItem as? UIView === self.userAvatar ||
+			constraint.secondItem as? UIView === self.userAvatar ||
+			constraint.firstItem as? UIView === self.userHandle ||
+			constraint.secondItem as? UIView === self.userHandle
+		} ?? []
+		NSLayoutConstraint.deactivate(headerConstraints)
+		let avatarSizeConstraints = self.userAvatar.constraints.filter { constraint in
+			constraint.firstAttribute == .width || constraint.firstAttribute == .height
+		}
+		NSLayoutConstraint.deactivate(avatarSizeConstraints)
+
+		self.userAvatar.removeFromSuperview()
+		self.userHandle.removeFromSuperview()
+		headerView?.constraints.first(where: { $0.firstAttribute == .height })?.constant = 0.0
+		headerView?.isHidden = true
+
+		self.identityBubble.isUserInteractionEnabled = false
+		self.identityBubble.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.6)
+		self.identityBubble.clipsToBounds = true
+		self.identityBubble.layer.cornerRadius = 20.0
+		self.identityBubble.layer.cornerCurve = .continuous
+		self.identityBubble.translatesAutoresizingMaskIntoConstraints = false
+
+		self.userAvatar.contentMode = .scaleAspectFill
 		self.userAvatar.clipsToBounds = true
-		self.userAvatar.layer.cornerRadius = (self.userAvatar.bounds.size.height - 1) / 2.0
+		self.userAvatar.layer.cornerRadius = 14.0
+		self.userAvatar.translatesAutoresizingMaskIntoConstraints = false
+
+		self.userHandle.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
+		self.userHandle.textColor = .label
+		self.userHandle.numberOfLines = 1
+		self.userHandle.translatesAutoresizingMaskIntoConstraints = false
+
+		self.contentView.addSubview(self.identityBubble)
+		self.identityBubble.addSubview(self.userAvatar)
+		self.identityBubble.addSubview(self.userHandle)
+
+		NSLayoutConstraint.activate([
+			self.identityBubble.leadingAnchor.constraint(equalTo: self.collectionView.leadingAnchor, constant: 8.0),
+			self.identityBubble.topAnchor.constraint(equalTo: self.collectionView.topAnchor, constant: 8.0),
+
+			self.userAvatar.leadingAnchor.constraint(equalTo: self.identityBubble.leadingAnchor, constant: 6.0),
+			self.userAvatar.topAnchor.constraint(equalTo: self.identityBubble.topAnchor, constant: 6.0),
+			self.userAvatar.bottomAnchor.constraint(equalTo: self.identityBubble.bottomAnchor, constant: -6.0),
+			self.userAvatar.widthAnchor.constraint(equalToConstant: 28.0),
+			self.userAvatar.heightAnchor.constraint(equalToConstant: 28.0),
+
+			self.userHandle.leadingAnchor.constraint(equalTo: self.userAvatar.trailingAnchor, constant: 6.0),
+			self.userHandle.trailingAnchor.constraint(equalTo: self.identityBubble.trailingAnchor, constant: -12.0),
+			self.userHandle.centerYAnchor.constraint(equalTo: self.identityBubble.centerYAnchor)
+		])
 	}
 
 	private func setPreparedAvatar(_ image: UIImage, source: String) {

@@ -12,6 +12,136 @@ import Snippets
 import UUSwiftNetworking
 import PhotosUI
 
+enum ComposeCollectionViewMetrics {
+	static let sectionHorizontalInset: CGFloat = 12.0
+	static let textCellTopInset: CGFloat = 12.0
+	static let textCellBottomInset: CGFloat = 8.0
+	static let sectionBackgroundOverlap: CGFloat = 10.0
+	static let textContainerInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 6)
+	static let textLineFragmentPadding: CGFloat = 5.0
+
+	static func mediaItemSize(_ collectionViewWidth: CGFloat) -> CGSize {
+		let availableWidth = collectionViewWidth - (sectionHorizontalInset * 2.0)
+		let length = min(200.0, floor(availableWidth / 3.0))
+		return CGSize(width: length, height: length)
+	}
+}
+
+private final class ComposeMediaBackgroundView: UICollectionReusableView {
+	private let topGradientLayer = CAGradientLayer()
+
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+		self.configureAppearance()
+	}
+
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		self.configureAppearance()
+	}
+
+	private func configureAppearance() {
+		self.backgroundColor = .systemGray5
+		self.layer.cornerRadius = 12.0
+		self.layer.cornerCurve = .continuous
+		self.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+		self.clipsToBounds = true
+
+		self.topGradientLayer.colors = [
+			UIColor.black.withAlphaComponent(0.14).cgColor,
+			UIColor.black.withAlphaComponent(0.05).cgColor,
+			UIColor.clear.cgColor
+		]
+		self.topGradientLayer.locations = [0.0, 0.45, 1.0]
+		self.topGradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+		self.topGradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+		self.layer.addSublayer(self.topGradientLayer)
+	}
+
+	override func layoutSubviews() {
+		super.layoutSubviews()
+
+		self.topGradientLayer.frame = CGRect(x: 0.0, y: 0.0, width: self.bounds.width, height: 18.0)
+	}
+}
+
+private final class ComposeCollectionViewLayout: UICollectionViewFlowLayout {
+	private static let mediaBackgroundKind = "ComposeMediaBackground"
+	private var mediaBackgroundAttributes: [IndexPath: UICollectionViewLayoutAttributes] = [:]
+
+	override init() {
+		super.init()
+		self.register(ComposeMediaBackgroundView.self, forDecorationViewOfKind: Self.mediaBackgroundKind)
+	}
+
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		self.register(ComposeMediaBackgroundView.self, forDecorationViewOfKind: Self.mediaBackgroundKind)
+	}
+
+	override func prepare() {
+		super.prepare()
+		self.mediaBackgroundAttributes.removeAll()
+
+		guard let collectionView else {
+			return
+		}
+
+		for section in 0..<collectionView.numberOfSections {
+			let itemCount = collectionView.numberOfItems(inSection: section)
+			let mediaCount = itemCount - 2
+			guard mediaCount > 0,
+				let textAttributes = super.layoutAttributesForItem(at: IndexPath(item: 0, section: section)) else {
+				continue
+			}
+
+			let mediaAttributes = (1...mediaCount).compactMap {
+				super.layoutAttributesForItem(at: IndexPath(item: $0, section: section))
+			}
+			guard let mediaBottom = mediaAttributes.map(\.frame.maxY).max() else {
+				continue
+			}
+
+			let backgroundTop = textAttributes.frame.maxY
+				- ComposeCollectionViewMetrics.textCellBottomInset
+				- ComposeCollectionViewMetrics.sectionBackgroundOverlap
+			let indexPath = IndexPath(item: 0, section: section)
+			let attributes = UICollectionViewLayoutAttributes(
+				forDecorationViewOfKind: Self.mediaBackgroundKind,
+				with: indexPath
+			)
+			attributes.frame = CGRect(
+				x: ComposeCollectionViewMetrics.sectionHorizontalInset,
+				y: backgroundTop,
+				width: collectionView.bounds.width - (ComposeCollectionViewMetrics.sectionHorizontalInset * 2.0),
+				height: mediaBottom - backgroundTop
+			)
+			attributes.zIndex = -1
+			self.mediaBackgroundAttributes[indexPath] = attributes
+		}
+	}
+
+	override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+		var attributes = super.layoutAttributesForElements(in: rect) ?? []
+		attributes.append(contentsOf: self.mediaBackgroundAttributes.values.filter { $0.frame.intersects(rect) })
+		return attributes
+	}
+
+	override func layoutAttributesForDecorationView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+		guard elementKind == Self.mediaBackgroundKind else {
+			return super.layoutAttributesForDecorationView(ofKind: elementKind, at: indexPath)
+		}
+		return self.mediaBackgroundAttributes[indexPath]
+	}
+
+	override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+		guard let collectionView else {
+			return false
+		}
+		return collectionView.bounds.width != newBounds.width
+	}
+}
+
 
 class ComposeViewController: UIViewController {
 
@@ -52,14 +182,16 @@ class ComposeViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		self.updateBlogSelectorButton()
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
 	}
 	
 	func configureCollectionView() {
-		if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-			flowLayout.estimatedItemSize = CGSize(width: self.view.bounds.size.width / 3.0, height:  self.view.bounds.size.width / 3.0)
-			flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-		}
+		let flowLayout = ComposeCollectionViewLayout()
+		flowLayout.estimatedItemSize = .zero
+		flowLayout.minimumLineSpacing = 0.0
+		flowLayout.minimumInteritemSpacing = 0.0
+		self.collectionView.collectionViewLayout = flowLayout
 		self.collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 		self.collectionView.dragInteractionEnabled = true
 	}
@@ -85,8 +217,25 @@ class ComposeViewController: UIViewController {
             }
         }
 
-        self.blogSelectorButton.setTitle(BlogSettings.blogForPublishing().blogName, for: .normal)
-        self.blogSelectorButton.isEnabled = BlogSettings.publishedBlogs().count > 1
+		self.updateBlogSelectorButton()
+	}
+
+	private func updateBlogSelectorButton() {
+		var configuration = UIButton.Configuration.plain()
+		configuration.title = BlogSettings.blogForPublishing().blogName
+		let chevronConfiguration = UIImage.SymbolConfiguration(pointSize: 10.0, weight: .regular)
+		configuration.image = UIImage(systemName: "chevron.down", withConfiguration: chevronConfiguration)
+		configuration.imagePlacement = .trailing
+		configuration.imagePadding = 5.0
+		configuration.baseForegroundColor = .label
+		configuration.contentInsets = .zero
+		configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+			var attributes = attributes
+			attributes.font = .systemFont(ofSize: 15.0, weight: .regular)
+			return attributes
+		}
+		self.blogSelectorButton.configuration = configuration
+		self.blogSelectorButton.isUserInteractionEnabled = BlogSettings.publishedBlogs().count > 1
 	}
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -121,52 +270,55 @@ class ComposeViewController: UIViewController {
 		}
 	}
 	
-	func onImageTapped(_ section : Int, _ item : Int) {
+	func imageOptionsMenu(_ sectionData : SunlitComposition, item : Int, section : Int) -> UIMenu {
+		let media = sectionData.media[item]
+		var actions : [UIMenuElement] = []
 
-		self.view.endEditing(true)
-
-		let sectionData = self.sections[section]
-
-		var editTextTitle = "Add Description"
-		if sectionData.media[item].altText.count > 0 {
-			editTextTitle = "Edit Description"
-		}
-		
-		let altTextAction = UIAlertAction(title: editTextTitle, style: .default) { (action) in
-			self.onEditAltText(sectionData, item)
-		}
-		
-		let cropAction = UIAlertAction(title: "Crop", style: .default) { (action) in
-			self.onCropImage(sectionData, item: item, section: section)
+		// We can't crop media that has already been published...
+		if media.publishedPath == nil {
+			actions.append(UIAction(title: "Crop", image: UIImage(systemName: "crop")) { [weak self] _ in
+				self?.onCropImage(sectionData, item: item, section: section)
+			})
 		}
 
-		let deleteAction = UIAlertAction(title: "Remove", style: .default) { (action) in
-			self.onRemoveImage(sectionData, item: item, section: section)
-		}
-		
-		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-		}
+		let descriptionTitle = media.altText.isEmpty ? "Add Description" : "Edit Description"
+		actions.append(UIAction(title: descriptionTitle, image: UIImage(systemName: "text.bubble")) { [weak self] _ in
+			self?.onEditAltText(sectionData, item)
+		})
 
-        let media = sectionData.media[item]
+		actions.append(UIAction(title: "Remove", image: UIImage(systemName: "trash"), attributes: .destructive) { [weak self] _ in
+			self?.onRemoveImage(sectionData, item: item, section: section)
+		})
 
+		return UIMenu(children: actions)
+	}
+
+	func showLegacyImageOptions(_ sectionData : SunlitComposition, item : Int, section : Int, sourceView : UIView) {
+		let media = sectionData.media[item]
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        // We can't crop media that has already been published...
-        if media.publishedPath == nil {
-            alertController.addAction(cropAction)
-        }
-
-		alertController.addAction(deleteAction)
-		alertController.addAction(altTextAction)
-		alertController.addAction(cancelAction)
-		
-		if let popoverController = alertController.popoverPresentationController {
-			popoverController.sourceView = self.view
-			popoverController.sourceRect = CGRect(x: self.view.center.x, y: self.view.center.y, width: 0, height: 0)
-			popoverController.permittedArrowDirections = []
+		if media.publishedPath == nil {
+			alertController.addAction(UIAlertAction(title: "Crop", style: .default) { [weak self] _ in
+				self?.onCropImage(sectionData, item: item, section: section)
+			})
 		}
-		
-		self.present(alertController, animated: true, completion: nil)
+
+		let descriptionTitle = media.altText.isEmpty ? "Add Description" : "Edit Description"
+		alertController.addAction(UIAlertAction(title: descriptionTitle, style: .default) { [weak self] _ in
+			self?.onEditAltText(sectionData, item)
+		})
+
+		alertController.addAction(UIAlertAction(title: "Remove", style: .destructive) { [weak self] _ in
+			self?.onRemoveImage(sectionData, item: item, section: section)
+		})
+		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+		if let popoverController = alertController.popoverPresentationController {
+			popoverController.sourceView = sourceView
+			popoverController.sourceRect = sourceView.bounds
+		}
+
+		self.present(alertController, animated: true)
 	}
 
     @available(iOS 14, *)
@@ -228,7 +380,7 @@ class ComposeViewController: UIViewController {
 	
 	@IBAction func onSelectBlogConfiguration() {
 		Dialog(self).selectBlog {
-            self.blogSelectorButton.setTitle(BlogSettings.blogForPublishing().blogName, for: .normal)
+			self.updateBlogSelectorButton()
 		}
 	}
 	
@@ -490,7 +642,8 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			return UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
 		}
 		else {
-			return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+			let horizontalInset = ComposeCollectionViewMetrics.sectionHorizontalInset
+			return UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
 		}
 	}
 
@@ -499,10 +652,6 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		// Special case for the "Add new section" button cell...
 		if indexPath.section >= self.sections.count {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostAddSectionCollectionViewCell", for: indexPath) as! PostAddSectionCollectionViewCell
-			let size = PostAddSectionCollectionViewCell.size(collectionView.bounds.size.width)
-			cell.widthConstraint.constant = size.width - 32.0
-			cell.layoutIfNeeded()
-			
 			return cell
 		}
 		
@@ -515,7 +664,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			self.textViewDictionary[cell.postText] = sectionData
 			
 			cell.postText.text = sectionData.text
-			cell.widthConstraint.constant = collectionView.bounds.size.width
+			cell.widthConstraint.constant = PostTextCollectionViewCell.size(collectionView.bounds.size.width, sectionData.text).width
 			
 			// This is somewhat of a hack, however we want the keyboard to be up and the text view to have focus when we very first come into
 			// the compose view. This is the simplest/safest way to ensure that there is a "one time" focus activation.
@@ -534,9 +683,12 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		}
 		else {
 			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostImageCollectionViewCell", for: indexPath) as! PostImageCollectionViewCell
-			cell.postImage.image = sectionData.media[indexPath.item - 1].getImage()
+			let mediaIndex = indexPath.item - 1
+			cell.postImage.image = sectionData.media[mediaIndex].getImage()
 			let size = PostImageCollectionViewCell.size(collectionView.bounds.size.width)
 			cell.widthConstraint.constant = size.width
+			let menu = self.imageOptionsMenu(sectionData, item: mediaIndex, section: indexPath.section)
+			cell.configureOptionsMenu(menu)
 			return cell
 		}
 	}
@@ -554,8 +706,15 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			if indexPath.item > sectionData.media.count {
 				self.onAddPhoto(indexPath.section)
 			}
-			else if indexPath.item > 0 {
-				self.onImageTapped(indexPath.section, indexPath.item - 1)
+			else if indexPath.item > 0,
+				let cell = collectionView.cellForItem(at: indexPath) as? PostImageCollectionViewCell {
+				let mediaIndex = indexPath.item - 1
+				if #available(iOS 17.4, *) {
+					cell.showOptionsMenu()
+				}
+				else {
+					self.showLegacyImageOptions(sectionData, item: mediaIndex, section: indexPath.section, sourceView: cell)
+				}
 			}
 		}
 		
@@ -569,6 +728,40 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 MARK: -
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 extension ComposeViewController : UICollectionViewDropDelegate, UICollectionViewDragDelegate {
+
+	private func imagePreviewParameters(_ collectionView : UICollectionView, _ indexPath : IndexPath) -> UIDragPreviewParameters? {
+		guard let cell = collectionView.cellForItem(at: indexPath) as? PostImageCollectionViewCell else {
+			return nil
+		}
+
+		let parameters = UIDragPreviewParameters()
+		parameters.backgroundColor = .clear
+		var visibleImageBounds = cell.postImage.bounds
+		if let image = cell.postImage.image, image.size.width > 0.0, image.size.height > 0.0 {
+			let scale = min(
+				cell.postImage.bounds.width / image.size.width,
+				cell.postImage.bounds.height / image.size.height
+			)
+			let imageSize = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+			visibleImageBounds = CGRect(
+				x: (cell.postImage.bounds.width - imageSize.width) / 2.0,
+				y: (cell.postImage.bounds.height - imageSize.height) / 2.0,
+				width: imageSize.width,
+				height: imageSize.height
+			)
+		}
+		let imageFrame = cell.postImage.convert(visibleImageBounds, to: cell)
+		parameters.visiblePath = UIBezierPath(rect: imageFrame)
+		return parameters
+	}
+
+	func collectionView(_ collectionView: UICollectionView, dragPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+		return self.imagePreviewParameters(collectionView, indexPath)
+	}
+
+	func collectionView(_ collectionView: UICollectionView, dropPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+		return self.imagePreviewParameters(collectionView, indexPath)
+	}
 
 	func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
 
@@ -740,19 +933,11 @@ extension ComposeViewController : UITextViewDelegate {
 		if let sectionData = self.textViewDictionary[textView] {
 			sectionData.text = textView.text
 		}
-	}
-	
-	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-			UIView.setAnimationsEnabled(false)
-			self.collectionView.performBatchUpdates({
-			}) { (complete) in
-			}
-			UIView.setAnimationsEnabled(true)
+
+		UIView.performWithoutAnimation {
+			self.collectionView.collectionViewLayout.invalidateLayout()
+			self.collectionView.layoutIfNeeded()
 		}
-			
-		return true
 	}
 }
 

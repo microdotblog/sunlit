@@ -12,24 +12,51 @@ class SettingsViewController: UIViewController {
 
 	@IBOutlet var signOutButton : UIButton!
     @IBOutlet var tableView : UITableView!
-    @IBOutlet var settingsLabel : UILabel!
+	@IBOutlet var settingsLabel : UILabel!
 	
-    var tableData : [BlogSettings] = []
+	var tableData : [BlogSettings] = []
+	private let currentBlogCellIdentifier = "CurrentBlogCell"
+	private let addExternalBlogCellIdentifier = "AddExternalBlogCell"
+	private lazy var addExternalBlogButton : UIButton = {
+		var configuration = UIButton.Configuration.gray()
+		configuration.title = "Add External Blog"
+		configuration.baseBackgroundColor = .systemGray5
+		configuration.cornerStyle = .capsule
+		configuration.contentInsets = NSDirectionalEdgeInsets(top: 8.0, leading: 18.0, bottom: 8.0, trailing: 18.0)
+		configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { attributes in
+			var attributes = attributes
+			attributes.font = .preferredFont(forTextStyle: .subheadline)
+			return attributes
+		}
+
+		let button = UIButton(configuration: configuration)
+		button.translatesAutoresizingMaskIntoConstraints = false
+		button.addTarget(self, action: #selector(onAddBlog), for: .touchUpInside)
+		return button
+	}()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 	
 		self.setupNavigation()
 		self.setupNotifications()
-		let versionString : String = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
-		self.settingsLabel.text = versionString
+		self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.currentBlogCellIdentifier)
+		self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.addExternalBlogCellIdentifier)
+		self.tableView.rowHeight = 52.0
+		self.tableView.sectionHeaderTopPadding = 8.0
+		self.tableView.sectionHeaderHeight = .leastNormalMagnitude
+		self.tableView.estimatedSectionHeaderHeight = 0.0
+		self.tableView.contentInset.top = -24.0
+		self.tableView.backgroundColor = .clear
+		let versionString = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+		let buildString = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+		self.settingsLabel.text = buildString.isEmpty ? versionString : "\(versionString) (\(buildString))"
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
         self.tableData = BlogSettings.publishedBlogs()
         self.tableView.reloadData()
-        self.updateSelection()
 	}
 	
 	func setupNavigation() {
@@ -45,21 +72,7 @@ class SettingsViewController: UIViewController {
 	@objc func finishedExternalConfigNotification(_ notification: Notification) {
         self.tableData = BlogSettings.publishedBlogs()
         self.tableView.reloadData()
-        self.updateSelection()
 	}
-    
-    func updateSelection() {
-        
-        let selectedName = BlogSettings.blogForPublishing().blogName
-        
-        var index = 0
-        for settings in self.tableData {
-            if settings.blogName == selectedName {
-                self.tableView.selectRow(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .none)
-            }
-            index = index + 1
-        }
-    }
 	
 	@IBAction func onDismiss() {
 		self.dismiss(animated: true, completion: nil)
@@ -93,47 +106,60 @@ class SettingsViewController: UIViewController {
 }
 
 extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
+
+	func numberOfSections(in tableView: UITableView) -> Int {
+		return 2
+	}
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.tableData.count + 1
+		return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row >= self.tableData.count {
-            return tableView.dequeueReusableCell(withIdentifier: "BlogSelectionAddNewCell")!
-        }
-        
-        let blogInfo = self.tableData[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BlogSelectionTableViewCell", for: indexPath) as! BlogSelectionTableViewCell
-        cell.blogTitle.text = blogInfo.blogName
+		if indexPath.section == 1 {
+			let cell = tableView.dequeueReusableCell(withIdentifier: self.addExternalBlogCellIdentifier, for: indexPath)
+			cell.textLabel?.text = nil
+			cell.backgroundColor = .clear
+			cell.selectionStyle = .none
+			cell.accessoryType = .none
+			cell.accessoryView = nil
+
+			if self.addExternalBlogButton.superview == nil {
+				cell.contentView.addSubview(self.addExternalBlogButton)
+				NSLayoutConstraint.activate([
+					self.addExternalBlogButton.centerXAnchor.constraint(equalTo: cell.contentView.centerXAnchor),
+					self.addExternalBlogButton.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor)
+				])
+			}
+			return cell
+		}
+
+		let cell = tableView.dequeueReusableCell(withIdentifier: self.currentBlogCellIdentifier, for: indexPath)
+		cell.textLabel?.text = BlogSettings.blogForPublishing().blogName
+		cell.textLabel?.font = .preferredFont(forTextStyle: .body)
+		cell.textLabel?.textColor = .label
+		cell.textLabel?.textAlignment = .natural
+		let symbolConfiguration = UIImage.SymbolConfiguration(pointSize: 12.0, weight: .regular)
+		let chevron = UIImageView(image: UIImage(systemName: "chevron.down", withConfiguration: symbolConfiguration))
+		chevron.tintColor = .secondaryLabel
+		cell.accessoryType = .none
+		cell.accessoryView = chevron
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if indexPath.row >= self.tableData.count {
-            self.onAddBlog()
-            self.updateSelection()
-        }
-        else {
-            let blogInfo = self.tableData[indexPath.row]
-            BlogSettings.setBlogForPublishing(blogInfo)
-        }
+		tableView.deselectRow(at: indexPath, animated: true)
+		if indexPath.section == 1 {
+			return
+		}
+
+		BlogChooserViewController.present(from: self, blogs: self.tableData) { [weak self] _ in
+			self?.tableView.reloadData()
+		}
     }
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return self.tableData.count > 1
-    }
-
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let blogInfo = self.tableData[indexPath.row]
-        Dialog(self).question(title: nil, question: "Are you sure you want to delete the settings for \(blogInfo.blogName)?", accept: "Delete", cancel: "Cancel") {
-            BlogSettings.deletePublishedBlog(blogInfo)
-
-            self.tableData = BlogSettings.publishedBlogs()
-            self.tableView.reloadData()
-            self.updateSelection()
-        }
+		return false
     }
     
 }

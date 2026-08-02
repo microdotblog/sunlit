@@ -18,8 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gpr-fc-7bF">
-                                <rect key="frame" x="0.0" y="104.5" width="414" height="708.5"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gpr-fc-7bF">
+                                <rect key="frame" x="0.0" y="96.5" width="414" height="716.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="BlogSelectionTableViewCell" rowHeight="80" id="J6r-mN-fiv" customClass="BlogSelectionTableViewCell" customModule="Sunlit" customModuleProvider="target">
@@ -99,8 +99,8 @@
                                     <outlet property="delegate" destination="kWB-by-1xh" id="QGG-iZ-syK"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When writing a new post, publish to:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="20l-ij-qN6">
-                                <rect key="frame" x="20" y="64" width="276" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Publish new blog posts to:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="20l-ij-qN6">
+                                <rect key="frame" x="20" y="64" width="201" height="20.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -121,7 +121,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O5g-Bm-d3v">
-                                <rect key="frame" x="349" y="835" width="57" height="21"/>
+                                <rect key="frame" x="337" y="835" width="57" height="21"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <color key="textColor" systemColor="systemGray2Color"/>
                                 <nil key="highlightedColor"/>
@@ -134,11 +134,11 @@
                             <constraint firstItem="rQs-dT-iWL" firstAttribute="top" secondItem="gpr-fc-7bF" secondAttribute="bottom" constant="16" id="4Gp-yg-tNp"/>
                             <constraint firstItem="uWo-2e-B1A" firstAttribute="bottom" secondItem="gpr-fc-7bF" secondAttribute="bottom" id="6jy-14-t6u"/>
                             <constraint firstItem="rQs-dT-iWL" firstAttribute="bottom" secondItem="fJk-9g-EBE" secondAttribute="bottom" id="Euy-m1-hWS"/>
-                            <constraint firstItem="fJk-9g-EBE" firstAttribute="trailing" secondItem="O5g-Bm-d3v" secondAttribute="trailing" constant="8" id="MeS-p2-d1f"/>
+                            <constraint firstItem="fJk-9g-EBE" firstAttribute="trailing" secondItem="O5g-Bm-d3v" secondAttribute="trailing" constant="20" id="MeS-p2-d1f"/>
                             <constraint firstItem="20l-ij-qN6" firstAttribute="top" secondItem="fJk-9g-EBE" secondAttribute="top" constant="20" id="Tpl-N2-HeB"/>
-                            <constraint firstItem="gpr-fc-7bF" firstAttribute="top" secondItem="20l-ij-qN6" secondAttribute="bottom" constant="20" id="Vjf-dl-RzV"/>
+                            <constraint firstItem="gpr-fc-7bF" firstAttribute="top" secondItem="20l-ij-qN6" secondAttribute="bottom" constant="12" id="Vjf-dl-RzV"/>
                             <constraint firstItem="O5g-Bm-d3v" firstAttribute="centerY" secondItem="rQs-dT-iWL" secondAttribute="centerY" id="WhC-fL-j74"/>
-                            <constraint firstItem="rQs-dT-iWL" firstAttribute="centerX" secondItem="Zju-dZ-sT1" secondAttribute="centerX" id="dDS-xC-4ga"/>
+                            <constraint firstItem="rQs-dT-iWL" firstAttribute="leading" secondItem="fJk-9g-EBE" secondAttribute="leading" constant="20" id="dDS-xC-4ga"/>
                             <constraint firstItem="uWo-2e-B1A" firstAttribute="trailing" secondItem="fJk-9g-EBE" secondAttribute="trailing" id="eL6-hK-Fbj"/>
                             <constraint firstItem="20l-ij-qN6" firstAttribute="leading" secondItem="fJk-9g-EBE" secondAttribute="leading" constant="20" id="glV-c9-LSZ"/>
                             <constraint firstItem="gpr-fc-7bF" firstAttribute="trailing" secondItem="fJk-9g-EBE" secondAttribute="trailing" id="iAl-to-FhP"/>
