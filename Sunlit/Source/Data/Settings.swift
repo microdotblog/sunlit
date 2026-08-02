@@ -13,7 +13,7 @@ import UUSwiftCore
 
 class Settings {
 
-	static private let shared = UserDefaults(suiteName: "group.blog.micro.sunlit")!
+	static private let shared = UserDefaults(suiteName: "group.blog.micro.sunlit") ?? .standard
 	static private let snippetsKeychainService = "blog.micro.sunlit.account"
 	static private let snippetsKeychainAccount = "Snippets"
 	static private let pendingSnippetsSignInDateKey = "Pending Micro.blog Sign In Date"

@@ -36,36 +36,32 @@ extension AppDelegate {
 		builder.insertChild(signout_menu, atEndOfMenu: .file)
 
 		if let current = SnippetsUser.current() {
-		//SnippetsUser.fetchCurrent { (user) in
-			//if let current = user {
-				
-				DispatchQueue.main.async {
-					let profile_username = current.username
-					var profile_image: UIImage? = ImageCache.prefetch(current.avatarURL)
-					
-					if let image = profile_image {
-						profile_image = image.withRenderingMode(.alwaysOriginal)
+			let profile_username = current.username
+			var profile_image: UIImage? = ImageCache.prefetch(current.avatarURL)
+
+			if let image = profile_image {
+				profile_image = image.withRenderingMode(.alwaysOriginal)
+			}
+
+			// add View -> Timeline, Discover, profile
+			let timeline_item = UIKeyCommand(title: "Timeline", action: #selector(AppDelegate.showTimeline), input: "1", modifierFlags: .command)
+			let discover_item = UIKeyCommand(title: "Discover", action: #selector(AppDelegate.showDiscover), input: "2", modifierFlags: .command)
+			let profile_item = UIKeyCommand(title: "@\(profile_username)", image: profile_image, action: #selector(AppDelegate.showProfile), input: "3", modifierFlags: .command)
+
+			let view_menu = UIMenu(title: "", options: .displayInline, children: [ timeline_item, discover_item, profile_item ])
+			builder.insertChild(view_menu, atStartOfMenu: .view)
+
+			if profile_image == nil {
+				ImageCache.fetch(current.avatarURL) { (image) in
+					guard image != nil else {
+						return
 					}
 
-					// add View -> Timeline, Discover, profile
-					let timeline_item = UIKeyCommand(title: "Timeline", action: #selector(AppDelegate.showTimeline), input: "1", modifierFlags: .command)
-					let discover_item = UIKeyCommand(title: "Discover", action: #selector(AppDelegate.showDiscover), input: "2", modifierFlags: .command)
-					let profile_item = UIKeyCommand(title: "@\(profile_username)", image: profile_image, action: #selector(AppDelegate.showProfile), input: "3", modifierFlags: .command)
-
-					let view_menu = UIMenu(title: "", options: .displayInline, children: [ timeline_item, discover_item, profile_item ])
-					builder.insertChild(view_menu, atStartOfMenu: .view)
-					
-					if profile_image == nil {
-						ImageCache.fetch(current.avatarURL) { (image) in
-							if let profile_image = image {
-								DispatchQueue.main.async {
-									profile_item.image = profile_image.withRenderingMode(.alwaysOriginal)
-								}
-							}
-						}
+					DispatchQueue.main.async {
+						UIMenuSystem.main.setNeedsRebuild()
 					}
 				}
-			//}
+			}
 		}
 		
 	}

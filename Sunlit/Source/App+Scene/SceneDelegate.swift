@@ -18,39 +18,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	func setupColor() {
 		self.window?.tintColor = UIColor(named: "color_tab_selected")
 	}
+
+	private func setupStandaloneMainView() {
+		let storyboard = UIStoryboard(name: "Main", bundle: nil)
+		let mainViewController = storyboard.instantiateViewController(withIdentifier: "MainViewController")
+		let navigationController = UINavigationController(rootViewController: mainViewController)
+		self.window?.rootViewController = navigationController
+	}
 	
-	func setupSplitView() {
-        guard let splitViewController =  window?.rootViewController // UIApplication.shared.windows[0].rootViewController
-		  as? UISplitViewController else {
-		  fatalError("Missing SplitViewController")
-		}
-		
-		if UIDevice.current.userInterfaceIdiom == .phone {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let mainViewController = storyboard.instantiateViewController(withIdentifier: "MainViewController")
-            let phoneNavigationController = UINavigationController(rootViewController: mainViewController)
-            self.window?.rootViewController = phoneNavigationController
-            return
+	func setupMainView() {
+		if let navigationController = self.window?.rootViewController as? UINavigationController,
+		   navigationController.viewControllers.first is MainViewController {
+			return
 		}
 
-		guard let contentNavigationController = splitViewController.viewControllers.last as? UINavigationController
-			//let mainViewController = navigationController.topViewController as? MainViewController
-			else {
-				fatalError("Missing Main View Controller")
-			}
-
-        splitViewController.preferredDisplayMode = UISplitViewController.DisplayMode.oneBesideSecondary
-		splitViewController.presentsWithGesture = false
-
-        guard let menuNavigationController = splitViewController.viewControllers.first as? UINavigationController else {
-            fatalError("Missing Main View Controller")
-        }
-
-        guard let menuViewController = menuNavigationController.visibleViewController as? MainTabletViewController else {
-            fatalError("Storyboard corrupted")
-        }
-
-        menuViewController.contentViewController = contentNavigationController
+		self.setupStandaloneMainView()
 	}
 	
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -60,7 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		guard let _ = (scene as? UIWindowScene) else { return }
 
 		self.setupColor()
-		self.setupSplitView()
+		self.setupMainView()
 		self.window?.rootViewController?.loadViewIfNeeded()
 
 		let launchURLs = connectionOptions.urlContexts.map(\.url)
