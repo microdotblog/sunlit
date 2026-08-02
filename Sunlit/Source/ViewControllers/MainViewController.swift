@@ -87,6 +87,7 @@ class MainViewController: ContentViewController {
 
 		if UIDevice.current.userInterfaceIdiom == .phone {
 			self.navigationItem.rightBarButtonItem = nil
+			self.navigationItem.leftBarButtonItem = nil
 
             var postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
 
@@ -104,11 +105,9 @@ class MainViewController: ContentViewController {
                 let menu = UIMenu(children: [libraryAction, filesAction])
                 postButton.menu = menu
             }
-
-
-            var profileImage : UIImage? = UIImage(systemName: "person.crop.circle")
             if let current = SnippetsUser.current() 
             {
+                var profileImage : UIImage? = UIImage(systemName: "person.crop.circle")
                 self.navigationItem.rightBarButtonItem = postButton
 
 				let currentUsername = current.username
@@ -136,12 +135,7 @@ class MainViewController: ContentViewController {
 						self.navigationItem.leftBarButtonItem = userProfileButton
 					}
 				}
-            }
-            else
-            {
-                let userProfileButton = UIBarButtonItem(image: profileImage, style: .plain, target: self, action: #selector(self.onProfile))
-                self.navigationItem.leftBarButtonItem = userProfileButton
-            }
+			}
 		}
 		else if UIDevice.current.userInterfaceIdiom == .pad {
 			self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -239,6 +233,10 @@ class MainViewController: ContentViewController {
 
 		guard SnippetsUser.current() == nil else {
 			return
+		}
+
+		if self.presentedViewController != nil {
+			self.dismiss(animated: true)
 		}
 
 		SunlitMentions.shared.reset()

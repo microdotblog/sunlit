@@ -82,7 +82,6 @@ class SettingsViewController: UIViewController {
 
 		Dialog(self).question(title: nil, question: "Are you sure you want to sign out of your Micro.blog account?", accept: "Sign Out", cancel: "Cancel") {
 			(UIApplication.shared.delegate as? AppDelegate)?.performSignOut()
-			self.dismiss(animated: true, completion: nil)
 		}
 	}
 	
