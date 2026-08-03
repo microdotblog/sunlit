@@ -46,7 +46,6 @@ class MainViewController: ContentViewController {
 	var mentionsViewController : MentionsViewController!
     var bookmarksViewController : BookmarksViewController!
 
-	var currentContentViewController : ContentViewController? = nil
 	private var signInInProgress = false
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,20 +59,37 @@ class MainViewController: ContentViewController {
 		self.setupNavigationBar()
 		self.setupSnippets()
 		self.loadContentViews()
-		
-		if UIDevice.current.userInterfaceIdiom == .pad {
-			self.onTabletShowTimeline()
-		}
-		else {
-			self.constructPhoneInterface()
-		}
+		self.constructPhoneInterface()
 	}
 		
 	func setupSnippets() {
 		if let token = Settings.snippetsToken() {
             Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: token)
+			self.recoverCurrentUserIfNeeded(token: token)
 			
 			SunlitMentions.shared.update {
+			}
+		}
+	}
+
+	private func recoverCurrentUserIfNeeded(token : String) {
+		guard SnippetsUser.current() == nil else {
+			return
+		}
+
+		let accountGeneration = Settings.accountGeneration
+		Snippets.Microblog.fetchCurrentUserInfo { [weak self] (error, updatedUser) in
+			DispatchQueue.main.async {
+				guard accountGeneration == Settings.accountGeneration,
+					  Settings.snippetsToken() == token,
+					  error == nil,
+					  let user = updatedUser else {
+					return
+				}
+
+				_ = SnippetsUser.saveAsCurrent(user)
+				self?.myProfileViewController.user = user
+				NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
 			}
 		}
 	}
@@ -84,10 +100,8 @@ class MainViewController: ContentViewController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 	func setupNavigationBar() {
-
-		if UIDevice.current.userInterfaceIdiom == .phone {
-			self.navigationItem.rightBarButtonItem = nil
-			self.navigationItem.leftBarButtonItem = nil
+		self.navigationItem.rightBarButtonItem = nil
+		self.navigationItem.leftBarButtonItem = nil
 
             var postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
 
@@ -135,22 +149,9 @@ class MainViewController: ContentViewController {
 						self.navigationItem.leftBarButtonItem = userProfileButton
 					}
 				}
-			}
-		}
-		else if UIDevice.current.userInterfaceIdiom == .pad {
-			self.navigationController?.setNavigationBarHidden(false, animated: false)
-			
-			let postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
-			if SnippetsUser.current() != nil {
-				self.navigationItem.rightBarButtonItem = postButton
-			}
-			else {
-				self.navigationItem.rightBarButtonItem = nil
-			}
-
 		}
 
-			if let navigationController = navigationController {
+		if let navigationController = navigationController {
 				let appearance = UINavigationBarAppearance()
 				appearance.configureWithOpaqueBackground()
 				appearance.backgroundColor = .systemBackground
@@ -164,7 +165,7 @@ class MainViewController: ContentViewController {
 				navigationController.navigationBar.compactAppearance = appearance
 				navigationController.navigationBar.compactScrollEdgeAppearance = appearance
 				navigationController.interactivePopGestureRecognizer?.delegate = nil
-			}
+		}
 	}
 
 	
@@ -210,8 +211,6 @@ class MainViewController: ContentViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewPostNotification(_:)), name: .viewPostNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewUserProfileNotification(_:)), name: .viewUserProfileNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleReplyResponseNotification(_:)), name: .notifyReplyPostedNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleSplitViewWillCollapseNotification(_:)), name: .splitViewWillCollapseNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleSplitViewWillExpandNotification(_:)), name: .splitViewWillExpandNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleShowFollowingNotification(_:)), name: .showFollowingNotification, object: nil)
 	}
 
@@ -249,12 +248,7 @@ class MainViewController: ContentViewController {
 		}
 
 		self.navigationController?.popToRootViewController(animated: false)
-		if UIDevice.current.userInterfaceIdiom == .pad {
-			self.onTabletShowTimeline()
-		}
-		else {
-			self.phoneViewController?.onShowTimeline()
-		}
+		self.phoneViewController?.onShowTimeline()
 	}
     
 	@objc func handleViewUserProfileNotification(_ notification : Notification) {
@@ -371,7 +365,7 @@ class MainViewController: ContentViewController {
 			return false
 		}
 
-		guard Settings.snippetsToken() == nil else {
+		guard !Settings.isSignedIn else {
 			self.showSignInError("Sunlit is already signed in. Sign out before signing in to another account.")
 			return false
 		}
@@ -505,39 +499,18 @@ class MainViewController: ContentViewController {
 	}
 
 	@objc func handleShowCurrentUserProfileNotification() {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            self.onTabletShowProfile()
-        }
-        else {
-            //self.phoneViewController!.onShowProfile()
-        }
+		self.onProfile()
 	}
 
 	@objc func handleShowTimelineNotification() {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            self.onTabletShowTimeline()
-        }
-        else {
-            self.phoneViewController!.onShowTimeline()
-        }
+		self.phoneViewController?.onShowTimeline()
 	}
 
 	@objc func handleShowDiscoverNotification() {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            self.onTabletShowDiscover()
-        }
-        else {
-            self.phoneViewController!.onShowDiscover()
-        }
+		self.phoneViewController?.onShowDiscover()
 	}
 
     @objc func handleShowBookmarksNotification() {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            self.onTabletShowBookmarks()
-        }
-        else {
-            //self.phoneViewController!.onShowBookmarks()
-        }
     }
 
 	@objc func handleShowComposeNotification() {
@@ -549,34 +522,7 @@ class MainViewController: ContentViewController {
 	}
 	
 	@objc func handleShowMentionsNotification() {
-		if UIDevice.current.userInterfaceIdiom == .phone {
-            self.phoneViewController?.onShowMentions()
-		}
-		else {
-			self.onTabletShowMentions()
-		}
-	}
-
-	@objc func onExpandSplitViewController() {
-		if let splitViewController = self.splitViewController {
-
-			NotificationCenter.default.post(name: .splitViewWillExpandNotification, object: nil)
-
-			UIView.animate(withDuration: 0.15) {
-                splitViewController.preferredDisplayMode = UISplitViewController.DisplayMode.oneBesideSecondary
-			}
-		}
-	}
-	
-	@objc func handleSplitViewWillCollapseNotification(_ notification : Notification) {
-		self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(onExpandSplitViewController))
-		self.navigationController?.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(onExpandSplitViewController))
-	}
-
-	@objc func handleSplitViewWillExpandNotification(_ notification : Notification) {
-		self.navigationItem.leftBarButtonItem = nil
-		self.navigationController?.navigationItem.leftBarButtonItem = nil
-		
+		self.phoneViewController?.onShowMentions()
 	}
 
     @available(iOS 14, *)
@@ -653,54 +599,6 @@ class MainViewController: ContentViewController {
 		self.present(navigationController, animated: true, completion: nil)
 	}
 	
-	
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-	func activateContentViewController(_ viewController : ContentViewController) {
-		
-		self.navigationController?.popToRootViewController(animated: false)
-		self.deactivateContentViewController(self.currentContentViewController)
-
-        self.addChild(viewController)
-        self.view.addSubview(viewController.view)
-        viewController.view.translatesAutoresizingMaskIntoConstraints = false
-        viewController.view.constrainAllSides(self.view)
-        viewController.view.setNeedsLayout()
-
-		self.currentContentViewController = viewController
-		self.currentContentViewController?.prepareToDisplay()
-	}
-	
-	func deactivateContentViewController(_ viewController : ContentViewController?) {
-		
-		if let previousViewController = viewController {
-			previousViewController.removeFromParent()
-			previousViewController.view.removeFromSuperview()
-			viewController!.prepareToHide()
-		}
-	}
-	
-	func onTabletShowTimeline() {
-		self.activateContentViewController(self.timelineViewController)
-	}
-	
-	func onTabletShowDiscover() {
-		self.activateContentViewController(self.discoverViewController)
-	}
-
-    func onTabletShowBookmarks() {
-        self.activateContentViewController(self.bookmarksViewController)
-    }
-
-	func onTabletShowProfile() {
-		self.activateContentViewController(self.myProfileViewController)
-	}
-
-	func onTabletShowMentions() {
-		self.activateContentViewController(self.mentionsViewController)
-	}
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -803,25 +701,4 @@ extension MainViewController : UIImagePickerControllerDelegate, UINavigationCont
 			picker.dismiss(animated: true, completion: nil)
 		}
 	}
-}
-
-
-
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-extension MainViewController : UISplitViewControllerDelegate {
-	func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
-		return nil
-	}
-
-	func primaryViewController(forExpanding splitViewController: UISplitViewController) -> UIViewController? {
-		return nil
-	}
-	
-	func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
-		return true
-	}
-	
 }

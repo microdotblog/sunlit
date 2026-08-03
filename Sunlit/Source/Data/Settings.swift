@@ -13,7 +13,7 @@ import UUSwiftCore
 
 class Settings {
 
-	static private let shared = UserDefaults(suiteName: "group.blog.micro.sunlit")!
+	static private let shared = UserDefaults(suiteName: "group.blog.micro.sunlit") ?? .standard
 	static private let snippetsKeychainService = "blog.micro.sunlit.account"
 	static private let snippetsKeychainAccount = "Snippets"
 	static private let pendingSnippetsSignInDateKey = "Pending Micro.blog Sign In Date"
@@ -24,6 +24,10 @@ class Settings {
 		"blog.micro.sunlit.widget-UUKeychain"
 	]
 	static private(set) var accountGeneration = 0
+
+	static var isSignedIn: Bool {
+		return self.snippetsToken() != nil
+	}
 
     static func bool(forKey key: String) -> Bool {
         return self.object(forKey: key) as? Bool ?? false

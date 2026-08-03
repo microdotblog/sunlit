@@ -68,7 +68,7 @@ class TimelineViewController: ContentViewController {
     }
 	
 	func updateLoggedInStatus() {
-		self.loggedOutView.isHidden = (SnippetsUser.current() != nil)
+		self.loggedOutView.isHidden = Settings.isSignedIn
 		self.loggedOutView.superview?.bringSubviewToFront(self.loggedOutView)
 	}
 	
@@ -121,7 +121,7 @@ class TimelineViewController: ContentViewController {
 	}
 		
 	@objc func handleCurrentUserUpdatedNotification() {
-		if Settings.snippetsToken() == nil {
+		if !Settings.isSignedIn {
 			self.resetForLogout()
 			return
 		}
@@ -198,7 +198,7 @@ class TimelineViewController: ContentViewController {
 
 
 	func loadTimeline() {
-		guard Settings.snippetsToken() != nil else {
+		guard Settings.isSignedIn else {
 			self.resetForLogout()
 			return
 		}
@@ -249,7 +249,7 @@ class TimelineViewController: ContentViewController {
 	}
 
 	@objc func loadMoreTimeline() {
-		guard Settings.snippetsToken() != nil else {
+		guard Settings.isSignedIn else {
 			self.resetForLogout()
 			return
 		}
@@ -554,5 +554,4 @@ extension TimelineViewController : UITextViewDelegate {
 	}
 
 }
-
 
