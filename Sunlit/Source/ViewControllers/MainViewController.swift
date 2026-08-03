@@ -65,8 +65,31 @@ class MainViewController: ContentViewController {
 	func setupSnippets() {
 		if let token = Settings.snippetsToken() {
             Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: token)
+			self.recoverCurrentUserIfNeeded(token: token)
 			
 			SunlitMentions.shared.update {
+			}
+		}
+	}
+
+	private func recoverCurrentUserIfNeeded(token : String) {
+		guard SnippetsUser.current() == nil else {
+			return
+		}
+
+		let accountGeneration = Settings.accountGeneration
+		Snippets.Microblog.fetchCurrentUserInfo { [weak self] (error, updatedUser) in
+			DispatchQueue.main.async {
+				guard accountGeneration == Settings.accountGeneration,
+					  Settings.snippetsToken() == token,
+					  error == nil,
+					  let user = updatedUser else {
+					return
+				}
+
+				_ = SnippetsUser.saveAsCurrent(user)
+				self?.myProfileViewController.user = user
+				NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
 			}
 		}
 	}
@@ -342,7 +365,7 @@ class MainViewController: ContentViewController {
 			return false
 		}
 
-		guard Settings.snippetsToken() == nil else {
+		guard !Settings.isSignedIn else {
 			self.showSignInError("Sunlit is already signed in. Sign out before signing in to another account.")
 			return false
 		}

@@ -82,6 +82,14 @@ class MainPhoneViewController: UITabBarController {
 
 		self.tabBar.tintColor = UIColor(named: "color_tab_selected")
 		self.tabBar.unselectedItemTintColor = UIColor(named: "color_tab_normal")
+
+//		let appearance = UITabBarAppearance()
+//		appearance.configureWithDefaultBackground()
+//		appearance.backgroundEffect = UIBlurEffect(style: .systemChromeMaterial)
+//		appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.35)
+//		self.tabBar.standardAppearance = appearance
+//		self.tabBar.scrollEdgeAppearance = appearance
+
 		self.updateAvailableTabs()
 	}
 
