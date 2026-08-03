@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Snippets
 
 class MainPhoneViewController: UITabBarController {
 
@@ -37,6 +36,7 @@ class MainPhoneViewController: UITabBarController {
 		self.delegate = self
 		self.setupTabs()
 		NotificationCenter.default.addObserver(self, selector: #selector(handleUserMentionsUpdated), name: .mentionsUpdatedNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdated), name: .currentUserUpdatedNotification, object: nil)
 	}
 
 	override func didMove(toParent parent: UIViewController?) {
@@ -82,11 +82,32 @@ class MainPhoneViewController: UITabBarController {
 
 		self.tabBar.tintColor = UIColor(named: "color_tab_selected")
 		self.tabBar.unselectedItemTintColor = UIColor(named: "color_tab_normal")
-		self.setViewControllers([
-			self.timelineViewController,
-			self.mentionsViewController,
-			self.discoverViewController
-		], animated: false)
+		self.updateAvailableTabs()
+	}
+
+	private func updateAvailableTabs() {
+		let isSignedIn = Settings.isSignedIn
+		if !isSignedIn && self.currentViewController === self.mentionsViewController {
+			self.select(self.timelineViewController)
+		}
+
+		let availableViewControllers: [UIViewController]
+		if isSignedIn {
+			availableViewControllers = [
+				self.timelineViewController,
+				self.mentionsViewController,
+				self.discoverViewController
+			]
+		}
+		else {
+			availableViewControllers = [
+				self.timelineViewController,
+				self.discoverViewController
+			]
+			self.mentionsViewController.tabBarItem.badgeValue = nil
+		}
+
+		self.setViewControllers(availableViewControllers, animated: false)
 	}
 
 	private func prepareInitialTabIfNeeded() {
@@ -106,7 +127,15 @@ class MainPhoneViewController: UITabBarController {
 		self.timelineViewController.tableView.reloadData()
 		self.discoverViewController.tableView.reloadData()
 		self.discoverViewController.collectionView.reloadData()
-		self.mentionsViewController.tableView.reloadData()
+		if self.mentionsViewController.isViewLoaded {
+			self.mentionsViewController.tableView.reloadData()
+		}
+	}
+
+	@objc func handleCurrentUserUpdated() {
+		DispatchQueue.main.async {
+			self.updateAvailableTabs()
+		}
 	}
 
 	@objc func handleUserMentionsUpdated() {
@@ -116,38 +145,13 @@ class MainPhoneViewController: UITabBarController {
 	}
 
 	private func updateMentionsBadge() {
+		guard Settings.isSignedIn else {
+			self.mentionsViewController.tabBarItem.badgeValue = nil
+			return
+		}
+
 		let mentionCount = SunlitMentions.shared.newMentionCount()
 		self.mentionsViewController.tabBarItem.badgeValue = mentionCount > 0 ? String(mentionCount) : nil
-	}
-
-	private func handleLoggedOutSelection() {
-		if Settings.snippetsToken() != nil {
-			self.onShowTimeline()
-			let accountGeneration = Settings.accountGeneration
-
-			Snippets.Microblog.fetchCurrentUserInfo { (error, updatedUser) in
-				guard accountGeneration == Settings.accountGeneration else {
-					return
-				}
-
-				if let user = updatedUser {
-					_ = SnippetsUser.saveAsCurrent(user)
-
-					DispatchQueue.main.async {
-						guard accountGeneration == Settings.accountGeneration else {
-							return
-						}
-
-						Dialog(self).selectBlog()
-						NotificationCenter.default.post(name: .currentUserUpdatedNotification, object: nil)
-					}
-				}
-			}
-		}
-		else {
-			NotificationCenter.default.post(name: .showLoginNotification, object: nil)
-			self.onShowTimeline()
-		}
 	}
 
 	private func transition(to viewController: ContentViewController) {
@@ -182,6 +186,14 @@ class MainPhoneViewController: UITabBarController {
 	}
 
 	func onShowMentions() {
+		guard Settings.isSignedIn else {
+			self.onShowTimeline()
+			return
+		}
+
+		if self.viewControllers?.contains(where: { $0 === self.mentionsViewController }) != true {
+			self.updateAvailableTabs()
+		}
 		self.select(self.mentionsViewController)
 	}
 
@@ -193,11 +205,6 @@ class MainPhoneViewController: UITabBarController {
 extension MainPhoneViewController: UITabBarControllerDelegate {
 
 	func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-		if viewController !== self.discoverViewController && SnippetsUser.current() == nil {
-			self.handleLoggedOutSelection()
-			return false
-		}
-
 		if viewController === self.currentViewController {
 			self.currentViewController?.handleScrollToTopGesture()
 			return false

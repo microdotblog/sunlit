@@ -25,6 +25,10 @@ class Settings {
 	]
 	static private(set) var accountGeneration = 0
 
+	static var isSignedIn: Bool {
+		return self.snippetsToken() != nil && SnippetsUser.current() != nil
+	}
+
     static func bool(forKey key: String) -> Bool {
         return self.object(forKey: key) as? Bool ?? false
     }
