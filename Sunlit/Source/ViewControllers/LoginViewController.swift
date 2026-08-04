@@ -39,7 +39,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
 			if email.uuIsValidEmail() {
 				Settings.beginSnippetsSignIn()
-				Snippets.Microblog.requestUserLoginEmail(email: email, appName: "Sunlit", redirect: "https://sunlit.io/microblog/redirect/")
+				Snippets.Microblog.requestUserLoginEmail(email: email, appName: "Sunlit", redirect: "sunlit://micropub/")
 				{ error in
 					self.unlockUserInterface()
 
