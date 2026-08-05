@@ -368,14 +368,21 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 	
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
-        if indexPath.section == ProfileViewController.photoSection {
+		if indexPath.section == ProfileViewController.photoSection {
 			let post = self.userPosts[indexPath.item]
 			let imagePath = post.images[0]
 			var dictionary : [String : Any] = [:]
 			dictionary["imagePath"] = imagePath
 			dictionary["post"] = post
-			
-			NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
+
+			if self.isCurrentUserProfile {
+				self.dismiss(animated: true) {
+					NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
+				}
+			}
+			else {
+				NotificationCenter.default.post(name: .viewPostNotification, object: dictionary)
+			}
 		}
 	}
 	
