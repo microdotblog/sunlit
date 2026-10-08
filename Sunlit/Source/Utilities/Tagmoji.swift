@@ -24,26 +24,22 @@ class Tagmoji {
 	func updateFromServerResponse(_ tagmoji : [[String : Any]]) -> Bool {
 		var newDictionary : [String : Any] = [:]
 		var newEmoji : [String] = []
-		var changed = false
 		
 		for d in tagmoji {
 			if let symbol = d["emoji"] as? String {
+				// Keep the photos collection when another category uses the same emoji.
+				if let existing = newDictionary[symbol] as? [String: Any],
+					existing["name"] as? String == "photos" {
+					continue
+				}
+				if newDictionary[symbol] == nil {
+					newEmoji.append(symbol)
+				}
 				newDictionary[symbol] = d
-				newEmoji.append(symbol)
 			}
 		}
 		
-		if newDictionary.count != self.dictionary.count {
-			changed = true
-		}
-		else {
-			let keys = newDictionary.keys
-			for key in keys {
-				if self.dictionary[key] == nil {
-					changed = true
-				}
-			}
-		}
+		let changed = newEmoji != self.emoji || !NSDictionary(dictionary: newDictionary).isEqual(to: self.dictionary)
 		
 		self.dictionary = newDictionary
 		self.emoji = newEmoji
