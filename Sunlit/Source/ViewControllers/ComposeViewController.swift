@@ -270,46 +270,45 @@ class ComposeViewController: UIViewController {
 		}
 	}
 	
-	func imageOptionsMenu(_ sectionData : SunlitComposition, item : Int, section : Int) -> UIMenu {
-		let media = sectionData.media[item]
+	func imageOptionsMenu(_ media : SunlitMedia) -> UIMenu {
+		// Keep actions tied to the photo when drag/drop changes its position or section.
 		var actions : [UIMenuElement] = []
 
 		// We can't crop media that has already been published...
 		if media.publishedPath == nil {
 			actions.append(UIAction(title: "Crop", image: UIImage(systemName: "crop")) { [weak self] _ in
-				self?.onCropImage(sectionData, item: item, section: section)
+				self?.onCropImage(media)
 			})
 		}
 
 		let descriptionTitle = media.altText.isEmpty ? "Add Description" : "Edit Description"
 		actions.append(UIAction(title: descriptionTitle, image: UIImage(systemName: "text.bubble")) { [weak self] _ in
-			self?.onEditAltText(sectionData, item)
+			self?.onEditAltText(media)
 		})
 
 		actions.append(UIAction(title: "Remove", image: UIImage(systemName: "trash"), attributes: .destructive) { [weak self] _ in
-			self?.onRemoveImage(sectionData, item: item, section: section)
+			self?.onRemoveImage(media)
 		})
 
 		return UIMenu(children: actions)
 	}
 
-	func showLegacyImageOptions(_ sectionData : SunlitComposition, item : Int, section : Int, sourceView : UIView) {
-		let media = sectionData.media[item]
+	func showLegacyImageOptions(_ media : SunlitMedia, sourceView : UIView) {
 		let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
 		if media.publishedPath == nil {
 			alertController.addAction(UIAlertAction(title: "Crop", style: .default) { [weak self] _ in
-				self?.onCropImage(sectionData, item: item, section: section)
+				self?.onCropImage(media)
 			})
 		}
 
 		let descriptionTitle = media.altText.isEmpty ? "Add Description" : "Edit Description"
 		alertController.addAction(UIAlertAction(title: descriptionTitle, style: .default) { [weak self] _ in
-			self?.onEditAltText(sectionData, item)
+			self?.onEditAltText(media)
 		})
 
 		alertController.addAction(UIAlertAction(title: "Remove", style: .destructive) { [weak self] _ in
-			self?.onRemoveImage(sectionData, item: item, section: section)
+			self?.onRemoveImage(media)
 		})
 		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 
@@ -404,19 +403,20 @@ class ComposeViewController: UIViewController {
 		}
 	}
 
-	func onRemoveImage(_ sectionData : SunlitComposition, item : Int, section : Int) {
-		sectionData.media.remove(at: item)
-		
-		if sectionData.media.count == 0 {
-			self.sections.remove(at: section)
+	func onRemoveImage(_ media : SunlitMedia) {
+		for (sectionIndex, sectionData) in self.sections.enumerated() {
+			if let mediaIndex = sectionData.media.firstIndex(where: { $0 === media }) {
+				sectionData.media.remove(at: mediaIndex)
+				if sectionData.media.isEmpty {
+					self.sections.remove(at: sectionIndex)
+				}
+				self.collectionView.reloadData()
+				return
+			}
 		}
-		
-		self.collectionView.reloadData()
 	}
 
-	func onCropImage(_ sectionData : SunlitComposition, item : Int, section : Int) {
-		
-		let media = sectionData.media[item]
+	func onCropImage(_ media : SunlitMedia) {
 		let image = media.getImage()
 		let cropViewController = Mantis.cropViewController(image: image)
 		cropViewController.delegate = self
@@ -456,12 +456,12 @@ class ComposeViewController: UIViewController {
     MARK: -
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-    func onEditAltText(_ section : SunlitComposition, _ item : Int) {
+    func onEditAltText(_ media : SunlitMedia) {
 
 
 		let storyboard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
 		let controller = storyboard.instantiateViewController(withIdentifier: "AltTextController") as! AltTextController
-        controller.media = section.media[item]
+        controller.media = media
 		self.present(controller, animated: true, completion: nil)
     }
 	
@@ -687,7 +687,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			cell.postImage.image = sectionData.media[mediaIndex].getImage()
 			let size = PostImageCollectionViewCell.size(collectionView.bounds.size.width)
 			cell.widthConstraint.constant = size.width
-			let menu = self.imageOptionsMenu(sectionData, item: mediaIndex, section: indexPath.section)
+			let menu = self.imageOptionsMenu(sectionData.media[mediaIndex])
 			cell.configureOptionsMenu(menu)
 			return cell
 		}
@@ -713,7 +713,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 					cell.showOptionsMenu()
 				}
 				else {
-					self.showLegacyImageOptions(sectionData, item: mediaIndex, section: indexPath.section, sourceView: cell)
+					self.showLegacyImageOptions(sectionData.media[mediaIndex], sourceView: cell)
 				}
 			}
 		}
