@@ -550,6 +550,10 @@
                                     <constraint firstItem="8Td-Zo-NLB" firstAttribute="centerY" secondItem="vpU-s5-4V2" secondAttribute="centerY" id="eSz-kv-J4N"/>
                                 </constraints>
                             </view>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JMm-aW-bQp" userLabel="Background Below Reply Bar">
+                                <rect key="frame" x="0.0" y="844" width="390" height="0.0"/>
+                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                            </view>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="GFK-dA-9Rj">
                                 <rect key="frame" x="176.66666666666666" y="403.66666666666669" width="37" height="37"/>
                             </activityIndicatorView>
@@ -587,6 +591,10 @@
                         <viewLayoutGuide key="safeArea" id="qSu-Ay-kLS"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="JMm-aW-bQp" firstAttribute="top" secondItem="yzi-09-OSy" secondAttribute="bottom" id="lSq-jK-3ne"/>
+                            <constraint firstItem="JMm-aW-bQp" firstAttribute="leading" secondItem="tXz-tJ-Ecf" secondAttribute="leading" id="6Kv-I7-sQt"/>
+                            <constraint firstAttribute="trailing" secondItem="JMm-aW-bQp" secondAttribute="trailing" id="e3D-Hj-qpB"/>
+                            <constraint firstAttribute="bottom" secondItem="JMm-aW-bQp" secondAttribute="bottom" id="yXd-VK-N5V"/>
                             <constraint firstItem="GFK-dA-9Rj" firstAttribute="centerX" secondItem="tXz-tJ-Ecf" secondAttribute="centerX" id="7rl-w4-NzX"/>
                             <constraint firstItem="yzi-09-OSy" firstAttribute="leading" secondItem="qSu-Ay-kLS" secondAttribute="leading" id="9wd-Bj-7aG"/>
                             <constraint firstItem="MnN-6C-PLH" firstAttribute="leading" secondItem="qSu-Ay-kLS" secondAttribute="leading" id="C6G-Er-nN7"/>
