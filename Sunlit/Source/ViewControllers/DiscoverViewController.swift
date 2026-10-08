@@ -182,16 +182,12 @@ class DiscoverViewController: ContentViewController {
 		}
 		
 		self.posts = posts
+		// Both views share this array, including when one is hidden.
+		self.tableView.reloadData()
+		self.collectionView.reloadData()
 		self.tableViewRefreshControl.endRefreshing()
 		self.collectionViewRefreshControl.endRefreshing()
 		self.busyIndicator.isHidden = true
-		
-		if self.isShowingCollectionView {
-			self.collectionView.reloadData()
-		}
-		else {
-			self.tableView.reloadData()
-		}
 	}
 
 	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
@@ -291,9 +287,11 @@ class DiscoverViewController: ContentViewController {
 					}
 					
 					if self.isShowingCollectionView {
+						self.tableView.reloadData()
 						self.collectionView.insertItems(at: indexPaths)
 					}
 					else {
+						self.collectionView.reloadData()
 						self.tableView.insertRows(at: indexPaths, with: .automatic)
 					}
 					self.loadingData = false
@@ -389,10 +387,7 @@ class DiscoverViewController: ContentViewController {
 			return
 		}
 
-		// Saftey code in case the posts get changed out in the middle of a collection view refresh...
-		if indexPath.row >= self.posts.count {
-			return
-		}
+		guard self.posts.indices.contains(indexPath.row) else { return }
 		
 		let post = self.posts[indexPath.row]
 		let imageSource = post.images[0]
@@ -530,6 +525,10 @@ class DiscoverViewController: ContentViewController {
 		}
 
 		DispatchQueue.main.async {
+            guard self.isPresented,
+                  let indexPath = notification.userInfo?["index"] as? IndexPath,
+                  indexPath.section == 0,
+                  self.posts.indices.contains(indexPath.row) else { return }
             if !self.tableView.isHidden {
 				if let userInfo = notification.userInfo,
 				   let indexPath = userInfo["index"] as? IndexPath,
@@ -588,7 +587,7 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "TimelineTableViewCell", for: indexPath) as! TimelineTableViewCell
-		if indexPath.row < self.posts.count {
+		if self.posts.indices.contains(indexPath.row) {
 			let post = self.posts[indexPath.row]
 			cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
 		}
@@ -603,6 +602,7 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 	}
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		guard self.posts.indices.contains(indexPath.row) else { return }
 		self.prefetchImages(indexPath)
 		
 		if indexPath.row > (self.posts.count - 3) {
@@ -611,6 +611,7 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		guard self.posts.indices.contains(indexPath.row) else { return }
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		let post = self.posts[indexPath.row]
@@ -628,6 +629,7 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 	}
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		guard self.posts.indices.contains(indexPath.row) else { return 0.0 }
 		let post = self.posts[indexPath.row]
 		return TimelineTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 		//return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
@@ -665,6 +667,7 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
 		
+		guard self.posts.indices.contains(indexPath.item) else { return }
 		collectionView.deselectItem(at: indexPath, animated: true)
 		
 		let post = self.posts[indexPath.item]
@@ -698,6 +701,7 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard self.posts.indices.contains(indexPath.item) else { return }
         self.prefetchImages(indexPath)
 
 		if indexPath.row > (self.posts.count - 3) {
@@ -712,7 +716,7 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	}
 	
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
-		if indexPath.item < self.posts.count {
+		if self.posts.indices.contains(indexPath.item) {
 			let post = self.posts[indexPath.item]
 			let defaultPhoto = post.defaultPhoto
 			let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
