@@ -30,6 +30,7 @@ class DiscoverViewController: ContentViewController {
 	var collection = "photos"
 	var collectionTitle = "photos"
 	var loadingData = false
+	private var timelineGeneration = 0
 	var isShowingCollectionView = true
 	var isShowingSearch = false
 
@@ -206,26 +207,36 @@ class DiscoverViewController: ContentViewController {
 	}
 
 	
-	func loadTimeline() {
-		if self.loadingData == true {
+	func loadTimeline(force: Bool = false) {
+		if self.loadingData && !force {
 			return
 		}
 		
 		self.loadingData = true
+		self.timelineGeneration += 1
+		let generation = self.timelineGeneration
+		let collection = self.collection
 		
-		Snippets.Microblog.fetchDiscoverTimeline(collection: self.collection) { (error, postObjects, tagmoji) in
+		Snippets.Microblog.fetchDiscoverTimeline(collection: collection) { [weak self] (error, postObjects, tagmoji) in
+			guard let self = self else { return }
 
 			self.setupBlurHashes(postObjects)
 
 			DispatchQueue.main.async {
+				guard generation == self.timelineGeneration, collection == self.collection else { return }
 				
 				// Default to using the collection view...
 				if self.isShowingCollectionView {
 					self.collectionView.isHidden = false
 				}
 
-                if error == nil && postObjects.count > 0 {
+                if error == nil {
                     self.refresh(postObjects)
+                }
+                else {
+                    self.tableViewRefreshControl.endRefreshing()
+                    self.collectionViewRefreshControl.endRefreshing()
+                    self.busyIndicator.isHidden = true
                 }
                 
 				self.loadingData = false
@@ -247,16 +258,24 @@ class DiscoverViewController: ContentViewController {
 
 		if let last = self.posts.last {
 			self.loadingData = true
+			let generation = self.timelineGeneration
+			let collection = self.collection
 	
 			var parameters : [String : String] = [:]
 			parameters["count"] = "10"
 			parameters["before_id"] = last.identifier
 
-			Snippets.Microblog.fetchDiscoverTimeline(collection: self.collection, parameters: parameters) { (error, entries, tagmoji) in
+			Snippets.Microblog.fetchDiscoverTimeline(collection: collection, parameters: parameters) { [weak self] (error, entries, tagmoji) in
+				guard let self = self else { return }
 
 				self.setupBlurHashes(entries)
 
 				DispatchQueue.main.async {
+					guard generation == self.timelineGeneration, collection == self.collection else { return }
+					guard error == nil else {
+						self.loadingData = false
+						return
+					}
 					var row = self.posts.count
 					var indexPaths : [IndexPath] = []
 					for entry in entries {
@@ -341,11 +360,13 @@ class DiscoverViewController: ContentViewController {
 						
 					if name == "photos" {
 						self.stackView.insertArrangedSubview(button, at: 0)
-						self.selectedButton = button
-						button.isSelected = true
 					}
 					else {
 						self.stackView.addArrangedSubview(button)
+					}
+					if Tagmoji.shared.routeFor(tagmoji: tagmoji) == self.collection {
+						self.selectedButton = button
+						button.isSelected = true
 					}
 					buttonOffset.x += 44
 					button.addTarget(self, action: #selector(self.tagmojiSelected(_:)), for: .touchUpInside)
@@ -426,18 +447,10 @@ class DiscoverViewController: ContentViewController {
 			self.collection = collection
 			self.collectionTitle = title
 
-			DispatchQueue.main.async {
-				self.setupNavigation()
-				self.refresh([])
-				
-				self.busyIndicator.isHidden = false
-			}
-			
-			Snippets.Microblog.fetchDiscoverTimeline(collection: collection) { (error, postObjects, tagmoji) in
-				DispatchQueue.main.async {
-					self.refresh(postObjects)
-				}
-			}
+			self.setupNavigation()
+			self.refresh([])
+			self.busyIndicator.isHidden = false
+			self.loadTimeline(force: true)
 		}
 	}
 	

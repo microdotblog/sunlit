@@ -56,7 +56,10 @@ class VideoTranscoder {
 					}
 					break
 				default:
-					print("NextLevelSessionExporter, did not complete")
+					DispatchQueue.main.async {
+						let error = NSError(domain: "Sunlit.VideoTranscoder", code: 1, userInfo: [NSLocalizedDescriptionKey: "Unable to finish preparing the video for upload."])
+						completion(error, destination)
+					}
 					break
 				}
 				break

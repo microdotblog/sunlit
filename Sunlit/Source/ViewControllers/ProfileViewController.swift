@@ -155,6 +155,7 @@ class ProfileViewController: ContentViewController {
             let items = [url]
             let activities = [SafariShareActivity()]
             let viewController = UIActivityViewController(activityItems: items, applicationActivities: activities)
+            viewController.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
             self.present(viewController, animated: true)
         }
     }

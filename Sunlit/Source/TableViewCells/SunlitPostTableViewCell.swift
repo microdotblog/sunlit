@@ -33,11 +33,6 @@ class SunlitPostTableViewCell : UITableViewCell {
 	
 	var post : SunlitPost!
 	
-	// Video playback interface...
-	var player : AVQueuePlayer? = nil
-	var playerLayer : AVPlayerLayer? = nil
-	var playerLooper : AVPlayerLooper? = nil
-
 
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -141,6 +136,9 @@ class SunlitPostTableViewCell : UITableViewCell {
 	
 	func setup(_ index: Int, _ post : SunlitPost, parentWidth : CGFloat) {
 		
+		for cell in self.collectionView.visibleCells {
+			(cell as? SunlitPostCollectionViewCell)?.resetVideoPlayer()
+		}
 		self.post = post
 		
 		self.replyContainer.layer.borderWidth = 0.0
@@ -396,43 +394,10 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 		}
 	}
 	
-	func configureVideoPlayer(_ cell : SunlitPostCollectionViewCell, _ indexPath : IndexPath) {
-	
-		cell.timeStampLabel.text = "00:00"
-		cell.timeStampLabel.alpha = 0.0
-		cell.timeStampLabel.isHidden = false
-
+	func configureVideoPlayer(_ cell: SunlitPostCollectionViewCell, _ indexPath: IndexPath) {
 		let thumbnail = self.post.images[indexPath.item]
-		if let path = self.post.videos[thumbnail],
-		   let url = URL(string: path) {
-
-			let playerItem = AVPlayerItem(url: url)
-			let player = AVQueuePlayer(playerItem: playerItem)
-			let playerLayer = AVPlayerLayer(player: player)
-			cell.contentView.layer.addSublayer(playerLayer)
-			cell.contentView.bringSubviewToFront(cell.timeStampLabel)
-
-			playerLayer.frame = self.collectionView.bounds
-			playerLayer.isHidden = true
-
-			self.player = player
-			self.playerLayer = playerLayer
-			self.playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
-
-			player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main) { (time : CMTime) in
-				var seconds = Int(CMTimeGetSeconds(time))
-				let minutes = (seconds / 60)
-				seconds = seconds - (60 * minutes)
-				let timeString = String(format: "%02d:%02d", minutes, seconds)
-				cell.timeStampLabel.text = timeString
-				
-				// Animate in the timestamp label
-				if player.rate > 0.0 && cell.timeStampLabel.alpha == 0.0 {
-					UIView.animate(withDuration: 0.15) {
-						cell.timeStampLabel.alpha = 1.0
-					}
-				}
-			}
+		if let path = self.post.videos[thumbnail], let url = URL(string: path) {
+			cell.configureVideoPlayer(url: url)
 		}
 	}
 	
@@ -445,6 +410,8 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SunlitPostCollectionViewCell", for: indexPath) as! SunlitPostCollectionViewCell
 		let defaultPhoto = self.post.defaultPhoto
 		let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
+		cell.resetVideoPlayer()
+		cell.postImage.contentMode = .scaleAspectFill
 		cell.videoPlayIndicator.isHidden = true
 		cell.timeStampLabel.isHidden = true
 		cell.postImage.image = nil
@@ -475,31 +442,17 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		
-		// See if we have a valid player...
-		if let player = self.player,
-			let playerLayer = self.playerLayer {
-				player.pause()
-				playerLayer.removeFromSuperlayer()
-		}
+		(cell as? SunlitPostCollectionViewCell)?.pauseVideoPlayback()
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		
-		if self.post.videos.count > 0 {
+		if self.post.videos[self.post.images[indexPath.item]] != nil {
 
-			if let player = self.player,
-				let playerLayer = self.playerLayer {
-				if player.rate == 0.0 {
-					//playerLayer.frame = collectionView.bounds
-					playerLayer.isHidden = false
-					player.play()
-				}
-				else {
-					player.pause()
-				}
+			if let cell = collectionView.cellForItem(at: indexPath) as? SunlitPostCollectionViewCell {
+				cell.toggleVideoPlayback()
 			}
-			
+
 		}
 		else {
 			let imagePath = self.post.images[indexPath.item]

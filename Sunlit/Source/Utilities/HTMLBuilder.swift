@@ -69,7 +69,7 @@ class HTMLBuilder {
 		
 		let imageWidth = "\(Int(imageSize.width))"
 		let imageHeight = "\(Int(imageSize.height))"
-		let imageAlt = media.altText
+		let imageAlt = HTMLBuilder.escapeAttribute(media.altText)
 		var imageText = ""
 		
 		if useSmallerImages {
@@ -97,7 +97,7 @@ class HTMLBuilder {
 		let imageSize = VideoTranscoder.calculateSizeForAsset(asset)
 		let imageWidth = "\(Int(imageSize.width))"
 		let imageHeight = "\(Int(imageSize.height))"
-		let imageAlt = media.altText
+		let imageAlt = HTMLBuilder.escapeAttribute(media.altText)
 
 		var imageText = "<video controls=\"controls\" playsinline=\"playsinline\" src=\"{{url}}\" width=\"{{width}}\" height=\"{{height}}\" alt=\"{{alt}}\" poster=\"{{thumbnail}}\" preload=\"none\" />"
 		
@@ -108,5 +108,12 @@ class HTMLBuilder {
 		imageText = imageText.replacingOccurrences(of: "{{thumbnail}}", with: thumbnailPath)
 
 		return imageText
+	}
+
+	private static func escapeAttribute(_ value: String) -> String {
+		return value.replacingOccurrences(of: "&", with: "&amp;")
+			.replacingOccurrences(of: "\"", with: "&quot;")
+			.replacingOccurrences(of: "<", with: "&lt;")
+			.replacingOccurrences(of: ">", with: "&gt;")
 	}
 }

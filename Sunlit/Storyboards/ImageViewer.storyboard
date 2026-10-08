@@ -109,7 +109,7 @@
                                             <imageReference key="image" image="square.and.arrow.up" catalog="system" symbolScale="large"/>
                                         </state>
                                         <connections>
-                                            <action selector="onShare" destination="PHD-An-Ibq" eventType="touchUpInside" id="15Z-FQ-TEs"/>
+                                            <action selector="onShare:" destination="PHD-An-Ibq" eventType="touchUpInside" id="15Z-FQ-TEs"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ygh-do-vOV">

@@ -159,6 +159,7 @@ class ComposeViewController: UIViewController {
 	var sectionToAddMedia = 0
 	var croppingMedia : SunlitMedia? = nil
 	var uploading = false
+	private var uploadGeneration = 0
 	let mediaUpLoader = MediaUploader()
 	var activeUpload : UUHttpRequest? = nil
 
@@ -470,11 +471,14 @@ class ComposeViewController: UIViewController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func uploadComposition() {
+		self.uploadGeneration += 1
+		let uploadGeneration = self.uploadGeneration
 
         Snippets.Configuration.publishing = BlogSettings.blogForPublishing().snippetsConfiguration!
         
 		let title : String = self.titleField.text ?? ""
-		self.uploadMedia { (mediaDictionary : [SunlitMedia : MediaLocation]) in
+		self.uploadMedia { [weak self] (mediaDictionary : [SunlitMedia : MediaLocation]) in
+			guard let self = self, uploadGeneration == self.uploadGeneration else { return }
 			
 			// If we aren't still uploading, it means the user has requested a cancel...
 			if !self.uploading {
@@ -488,7 +492,7 @@ class ComposeViewController: UIViewController {
                 var videoAltTags : [String] = []
                 let text = self.sections.first?.text ?? ""
 
-                for media in mediaDictionary.keys {
+                for media in self.sections.first?.media ?? [] {
                     let location = mediaDictionary[media]!
 
                     if media.type == .image {
@@ -501,8 +505,9 @@ class ComposeViewController: UIViewController {
                     }
                 }
 
-                self.activeUpload = Snippets.shared.postText(title: title, content: text, isDraft: false, photos: photos, altTags: photoAltTags, videos: videos, videoAltTags: videoAltTags, completion: { (error, remotePath) in
-                    DispatchQueue.main.async {
+                self.activeUpload = Snippets.shared.postText(title: title, content: text, isDraft: false, photos: photos, altTags: photoAltTags, videos: videos, videoAltTags: videoAltTags, completion: { [weak self] (error, remotePath) in
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self, uploadGeneration == self.uploadGeneration else { return }
                         self.handleUploadCompletion(error, remotePath)
                     }
 
@@ -511,8 +516,9 @@ class ComposeViewController: UIViewController {
             else {
                 let string = HTMLBuilder.createHTML(sections: self.sections, mediaPathDictionary: mediaDictionary)
 			
-                self.activeUpload = Snippets.shared.postHtml(title: title, content: string) { (error, remotePath) in
-                    DispatchQueue.main.async {
+                self.activeUpload = Snippets.shared.postHtml(title: title, content: string) { [weak self] (error, remotePath) in
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self, uploadGeneration == self.uploadGeneration else { return }
                         self.handleUploadCompletion(error, remotePath)
                     }
                 }
@@ -528,7 +534,9 @@ class ComposeViewController: UIViewController {
 			}
 		}
 		
-		self.mediaUpLoader.uploadMedia(uploadQueue) { (error, dictionary) in
+		let uploadGeneration = self.uploadGeneration
+		self.mediaUpLoader.uploadMedia(uploadQueue) { [weak self] (error, dictionary) in
+			guard let self = self, uploadGeneration == self.uploadGeneration else { return }
 
 			if let err = error {
                 self.handleUploadCompletion(err, nil)
@@ -541,6 +549,7 @@ class ComposeViewController: UIViewController {
 	
 	func cancelPosting() {
 
+		self.uploadGeneration += 1
 		self.uploading = false
 		self.navigationItem.rightBarButtonItem?.isEnabled = true
 		self.mediaUpLoader.cancelAll()
@@ -564,6 +573,8 @@ class ComposeViewController: UIViewController {
 			})
 		}
 		else {
+			self.uploading = false
+			self.activeUpload = nil
 			let alert = UIAlertController(title: nil, message: "Successfully posted!", preferredStyle: .alert)
 
             // We can only add this action if we received a valid URL AND it's not in the sharing extension
@@ -823,6 +834,10 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 		if let destinationIndexPath = coordinator.destinationIndexPath,
 		   let drop = coordinator.items.first,
 		   let sourceIndexPath = drop.sourceIndexPath{
+			guard sourceIndexPath != destinationIndexPath else {
+				coordinator.drop(drop.dragItem, toItemAt: sourceIndexPath)
+				return
+			}
 
 			// Find and remove the image from the source section...
 			let mediaIndex = sourceIndexPath.item - 1
@@ -831,7 +846,7 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 			sourceSection.media.remove(at: mediaIndex)
 
 			// Do we need to delete this section?
-			let sectionNeedsDelete = sourceSection.media.count == 0
+			let sectionNeedsDelete = sourceIndexPath.section != destinationIndexPath.section && sourceSection.media.isEmpty
 			var sectionNeedsInsert = false
 			
 			// If the destination is less than the total, it just means we are moving it to a different section...
@@ -957,7 +972,7 @@ extension ComposeViewController : PHPickerViewControllerDelegate {
             providers.append(result.itemProvider)
         }
 
-        let processor = ItemProviderProcessor { mediaList, mediaDescription in
+        let processor = ItemProviderProcessor { mediaList, mediaDescription, error in
             if mediaList.count > 0 {
                 for media in mediaList {
 					self.addMedia(media, mediaDescription)
@@ -965,7 +980,11 @@ extension ComposeViewController : PHPickerViewControllerDelegate {
             }
 
 			self.titleField.text = mediaDescription
-            picker.dismiss(animated: true, completion: nil)
+            picker.dismiss(animated: true) {
+                if let error = error {
+                    Dialog(self).information(error.localizedDescription)
+                }
+            }
         }
 
         processor.process(providers)
@@ -1053,9 +1072,12 @@ extension ComposeViewController {
             }
 
             if items.count > 0 {
-                let processor = ItemProviderProcessor { mediaObjects, mediaDescription in
+                let processor = ItemProviderProcessor { mediaObjects, mediaDescription, error in
                     for media in mediaObjects {
 						self.addMedia(media, mediaDescription)
+                    }
+                    if let error = error {
+                        Dialog(self).information(error.localizedDescription)
                     }
                 }
 

@@ -18,9 +18,10 @@ class ItemProviderProcessor : NSObject {
     var providers : [NSItemProvider] = []
     var processedMedia : [SunlitMedia] = []
 	var processedDescription = ""
-    var completion : (([SunlitMedia], String)-> Void)? = nil
+    var completion : (([SunlitMedia], String, Error?)-> Void)? = nil
+    private var processingError: Error?
 
-    init(_ completion : @escaping ([SunlitMedia], String) -> Void) {
+    init(_ completion : @escaping ([SunlitMedia], String, Error?) -> Void) {
         super.init()
         self.completion = completion
     }
@@ -28,6 +29,8 @@ class ItemProviderProcessor : NSObject {
     func process(_ providers : [NSItemProvider]) {
         self.providers = providers
         self.processedMedia = []
+        self.processedDescription = ""
+        self.processingError = nil
         self.processNextProvider()
     }
 
@@ -36,7 +39,8 @@ class ItemProviderProcessor : NSObject {
         if self.providers.count <= 0 {
             DispatchQueue.main.async {
                 if let completion = self.completion {
-					completion(self.processedMedia, self.processedDescription)
+                    self.completion = nil
+					completion(self.processedMedia, self.processedDescription, self.processingError)
                 }
             }
             return
@@ -63,7 +67,14 @@ class ItemProviderProcessor : NSObject {
 
             print("Unknown provider type: \(registeredType)")
         }
+        self.providerFailed(nil)
+    }
 
+    private func providerFailed(_ error: Error?) {
+        DispatchQueue.main.async {
+            self.processingError = error ?? NSError(domain: "Sunlit.MediaImport", code: 1, userInfo: [NSLocalizedDescriptionKey: "Unable to import one of the selected items. Please try selecting it again."])
+            self.processNextProvider()
+        }
     }
 
 	private func specialCaseGlassURL(_ url : URL) {
@@ -74,13 +85,20 @@ class ItemProviderProcessor : NSObject {
 				let description = parser.findGlassDescription()
 				self.processedDescription = description
 				
-				UUHttpSession.get(url: images.first!) { imageResponse in
+				guard let imagePath = images.first else {
+					self.providerFailed(nil)
+					return
+				}
+				UUHttpSession.get(url: imagePath) { imageResponse in
 					if let image = imageResponse.parsedResponse as? UIImage {
 						self.processedMedia.append(SunlitMedia(withImage: image))
 					}
 
 					self.processNextProvider()
 				}
+			}
+			else {
+				self.providerFailed(nil)
 			}
 		})
 	}
@@ -162,7 +180,13 @@ class ItemProviderProcessor : NSObject {
 				let fm = FileManager.default
 				let name = UUID().uuidString
 				let destination = fm.temporaryDirectory.appendingPathComponent(name + ".mov")
-				try! fm.copyItem(at: videoURL, to: destination)
+				do {
+					try fm.copyItem(at: videoURL, to: destination)
+				}
+				catch {
+					self.providerFailed(error)
+					return
+				}
 
 				DispatchQueue.main.async {
 					self.processedMedia.append(SunlitMedia(withVideo: destination))
@@ -170,7 +194,7 @@ class ItemProviderProcessor : NSObject {
 				}
             }
             else {
-                print("*** Unable to process provider of URL type ***")
+                self.providerFailed(error)
             }
 
         })

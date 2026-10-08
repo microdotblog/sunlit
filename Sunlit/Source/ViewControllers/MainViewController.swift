@@ -648,12 +648,16 @@ extension MainViewController : PHPickerViewControllerDelegate {
             providers.append(result.itemProvider)
         }
 
-		let processor = ItemProviderProcessor { media, mediaDescription in
+		let processor = ItemProviderProcessor { media, mediaDescription, error in
 			if media.count > 0 {
-				self.composeWithMedia(media, picker: picker)
+				self.composeWithMedia(media, picker: picker, importError: error)
 			}
 			else {
-				picker.dismiss(animated: true, completion: nil)
+				picker.dismiss(animated: true) {
+					if let error = error {
+						Dialog(self).information(error.localizedDescription)
+					}
+				}
 			}
 		}
 
@@ -663,7 +667,7 @@ extension MainViewController : PHPickerViewControllerDelegate {
 
 extension MainViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    func composeWithMedia(_ media : [SunlitMedia], picker : UIViewController) {
+    func composeWithMedia(_ media : [SunlitMedia], picker : UIViewController, importError: Error? = nil) {
 
         let storyBoard: UIStoryboard = UIStoryboard(name: "Compose", bundle: nil)
         let postViewController = storyBoard.instantiateViewController(withIdentifier: "ComposeViewController") as! ComposeViewController
@@ -676,7 +680,11 @@ extension MainViewController : UIImagePickerControllerDelegate, UINavigationCont
         picker.dismiss(animated: true) {
             let navigationController = UINavigationController(rootViewController: postViewController)
             navigationController.modalPresentationStyle = .fullScreen
-            self.present(navigationController, animated: true, completion: nil)
+            self.present(navigationController, animated: true) {
+                if let importError = importError {
+                    Dialog(postViewController).information(importError.localizedDescription)
+                }
+            }
         }
 
     }

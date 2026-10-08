@@ -23,6 +23,8 @@ class UploadsViewController: UIViewController {
     @IBOutlet var busyIndicator : UIActivityIndicatorView!
 
     var media : [ [String : Any] ] = []
+    private var selectionGeneration = 0
+    private var resolvingSelection = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +49,8 @@ class UploadsViewController: UIViewController {
     }
 
     @objc func onCancel() {
+        self.selectionGeneration += 1
+        self.resolvingSelection = false
         self.dismiss(animated: true) {
             if let delegate = self.delegate {
                 delegate.imagePickerControllerDidCancel(self)
@@ -55,26 +59,62 @@ class UploadsViewController: UIViewController {
     }
 
     @objc func onDone() {
+        guard !self.resolvingSelection else { return }
+        let indexes = (self.collectionView.indexPathsForSelectedItems ?? []).sorted { $0.item < $1.item }
+        let paths = indexes.compactMap { index -> String? in
+            guard self.media.indices.contains(index.item) else { return nil }
+            return self.media[index.item]["url"] as? String
+        }
+        self.selectionGeneration += 1
+        self.resolvingSelection = true
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        self.collectionView.isUserInteractionEnabled = false
+        self.busyIndicator.isHidden = false
+        self.busyIndicator.startAnimating()
+        self.loadSelectedMedia(paths, index: 0, selectedMedia: [], generation: self.selectionGeneration)
+    }
 
-        var selectedMedia : [SunlitMedia] = []
+    private func loadSelectedMedia(_ paths: [String], index: Int, selectedMedia: [SunlitMedia], generation: Int) {
+        guard self.resolvingSelection, generation == self.selectionGeneration else { return }
+        guard index < paths.count else {
+            self.finishResolvingSelection()
+            self.delegate?.imagePickerController(self, didFinishPickingMediaWithInfo: selectedMedia)
+            return
+        }
 
-        if let indexes = self.collectionView.indexPathsForSelectedItems {
-            for index in indexes {
-                let dictionary = self.media[index.item]
-                let remotePath = dictionary["url"] as! String
-                let image = ImageCache.prefetch(self.thumbnailForPath(remotePath))!
+        let path = paths[index]
+        let thumbnailPath = self.thumbnailForPath(path)
+        let acceptImage: (UIImage?) -> Void = { [weak self] image in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self, self.resolvingSelection, generation == self.selectionGeneration else { return }
+                guard let image = image, image.size.width > 1, image.size.height > 1 else {
+                    self.finishResolvingSelection()
+                    Dialog(self).information("Unable to download the selected photo. Check your internet connection and try again.")
+                    return
+                }
                 let media = SunlitMedia(withImage: image)
-                media.publishedPath = remotePath
-                media.thumbnailPath = self.thumbnailForPath(remotePath)
-                selectedMedia.append(media)
+                media.publishedPath = path
+                media.thumbnailPath = thumbnailPath
+                self.loadSelectedMedia(paths, index: index + 1, selectedMedia: selectedMedia + [media], generation: generation)
             }
         }
 
-        DispatchQueue.main.async {
-            if let delegate = self.delegate {
-                delegate.imagePickerController(self, didFinishPickingMediaWithInfo: selectedMedia)
+        ImageCache.fetch(thumbnailPath) { image in
+            if let image = image, image.size.width > 1, image.size.height > 1 {
+                acceptImage(image)
+            }
+            else {
+                ImageCache.fetch(path, completion: acceptImage)
             }
         }
+    }
+
+    private func finishResolvingSelection() {
+        self.resolvingSelection = false
+        self.navigationItem.rightBarButtonItem?.isEnabled = true
+        self.collectionView.isUserInteractionEnabled = true
+        self.busyIndicator.stopAnimating()
+        self.busyIndicator.isHidden = true
     }
 
     @objc func handleImageLoadedNotification(_ notification : Notification) {
@@ -97,11 +137,15 @@ class UploadsViewController: UIViewController {
         self.busyIndicator.startAnimating()
 
         _ = Snippets.Micropub.fetchPublishedMedia(BlogSettings.blogForPublishing().snippetsConfiguration!, completion: { (error, items) in
-            if let items = items {
-                self.media = items
-                DispatchQueue.main.async {
-                    self.busyIndicator.isHidden = true
+            DispatchQueue.main.async {
+                self.busyIndicator.stopAnimating()
+                self.busyIndicator.isHidden = true
+                if let items = items {
+                    self.media = items
                     self.collectionView.reloadData()
+                }
+                else if let error = error {
+                    Dialog(self).information(error.localizedDescription)
                 }
             }
         })

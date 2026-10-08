@@ -125,8 +125,11 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
     }
 
     func setupImage() {
-        ImageCache.fetch(self.pathToImage) { (image) in
-            DispatchQueue.main.async {
+        let path = self.pathToImage
+        self.image.image = ImageCache.prefetch(path)
+        ImageCache.fetch(path) { [weak self] (image) in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self, self.pathToImage == path else { return }
                 self.image.image = image
             }
         }
@@ -277,11 +280,13 @@ class ImageViewerViewController: UIViewController, UIScrollViewDelegate {
 		}
 	}
 
-	@IBAction @objc func onShare() {
+	@IBAction @objc func onShare(_ sender: UIView) {
 		let url = URL(string: self.post.path)!
 		let items : [Any] = [url]
 		let activities : [UIActivity]? = [SafariShareActivity()]
 		let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: activities)
+		activityViewController.popoverPresentationController?.sourceView = sender
+		activityViewController.popoverPresentationController?.sourceRect = sender.bounds
 		self.present(activityViewController, animated: true, completion: nil)
 	}
 

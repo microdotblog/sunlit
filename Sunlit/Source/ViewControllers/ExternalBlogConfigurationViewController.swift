@@ -63,23 +63,26 @@ class ExternalBlogConfigurationViewController: UIViewController {
 			guard accountGeneration == Settings.accountGeneration else {
 				return
 			}
+			guard let xmlrpcEndpoint = xmlrpcEndpoint, let blogId = blogId else {
+				DispatchQueue.main.async {
+					guard accountGeneration == Settings.accountGeneration else { return }
+					self.busyIndicator.isHidden = true
+					Dialog(self).information("Unable to find the blog's publishing endpoint. Check the address and your internet connection.")
+				}
+				return
+			}
 
 			let username = self.usernameText
 			let password = self.passwordText
 			let methodName = "blogger.getUsersBlogs"
 			let appKey = ""
 			let params : [String] = [appKey, username, password]
-			var is_wordpress = false
+			let is_wordpress = xmlrpcEndpoint.contains("/xmlrpc.php")
 			
-			if let endpoint = xmlrpcEndpoint {
-				is_wordpress = endpoint.contains("/xmlrpc.php")
-			}
-			
-            var identity = Snippets.Configuration.xmlRpcConfiguration(username: username, password: password, endpoint: xmlrpcEndpoint!, blogId: blogId!)
+            var identity = Snippets.Configuration.xmlRpcConfiguration(username: username, password: password, endpoint: xmlrpcEndpoint, blogId: blogId)
             if is_wordpress {
-                identity = Snippets.Configuration.wordpressConfiguration(username: username, password: password, endpoint: xmlrpcEndpoint!, blogId: blogId!)
+                identity = Snippets.Configuration.wordpressConfiguration(username: username, password: password, endpoint: xmlrpcEndpoint, blogId: blogId)
             }
-            //SnippetsXMLRPCIdentity.create(username: username, password: password, endpoint: xmlrpcEndpoint!, blogId: blogId!, wordPress: is_wordpress)
             let request = Snippets.XMLRPC.Request(identity: identity, method: methodName)
 			
 			_ = Snippets.XMLRPC.execute(request: request, params: params) { (error, responseData) in
@@ -119,6 +122,13 @@ class ExternalBlogConfigurationViewController: UIViewController {
 								}
 							}
 						}
+					}
+				}
+				else {
+					DispatchQueue.main.async {
+						guard accountGeneration == Settings.accountGeneration else { return }
+						self.busyIndicator.isHidden = true
+						Dialog(self).information(error?.localizedDescription ?? "Unable to connect to the blog's publishing endpoint.")
 					}
 				}
 			}

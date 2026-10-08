@@ -19,137 +19,150 @@ class MediaUploader {
 
     static let maxUploads = 4
 
-	var mediaQueue : [SunlitMedia] = []
-	var results : [SunlitMedia : MediaLocation] = [ : ]
-    var completion : ((Error?, [SunlitMedia : MediaLocation]) -> Void)? = nil
-    var currentUploads : [UUHttpRequest] = []
+    // All upload state, including pending transcodes, belongs to this queue.
+    private let queue = DispatchQueue(label: "io.sunlit.media-uploader", qos: .userInitiated)
+    private var generation = 0
+    private var mediaQueue: [SunlitMedia] = []
+    private var results: [SunlitMedia: MediaLocation] = [:]
+    private var completion: ((Error?, [SunlitMedia: MediaLocation]) -> Void)?
+    private var currentUploads: [SunlitMedia: UUHttpRequest] = [:]
+    private var activeMediaCount = 0
 
-	func cancelAll() {
-
-        for activeUpload in currentUploads {
-            activeUpload.cancel()
+    func cancelAll() {
+        self.queue.async {
+            self.reset()
         }
-        self.currentUploads.removeAll()
-        self.mediaQueue.removeAll()
-	}
-	
-	func uploadMedia(_ media : [SunlitMedia], completion: @escaping (Error?, [SunlitMedia : MediaLocation]) -> Void) {
-        self.completion = completion
-        self.mediaQueue = media
-		self.results = [ : ]
+    }
 
-
-		DispatchQueue.global(qos: .background).async {
-			if self.mediaQueue.count > 0 {
-				self.processUploadQueue()
-			}
-			else {
-				completion(nil, self.results)
-			}
-		}
-	}
-
-    func dataUploaded(error : Error?, media : SunlitMedia) {
-
-        if let path = media.publishedPath,
-           let thumbnailPath = media.thumbnailPath {
-
-            let location = MediaLocation()
-            location.path = path
-            location.thumbnailPath = thumbnailPath
-
-            self.results[media] = location
-        }
-
-        if (self.currentUploads.count == 0 && self.mediaQueue.count == 0 && error == nil) ||
-            (error != nil) {
-            DispatchQueue.main.async {
-                if let completion = self.completion {
-                    completion(error, self.results)
-                }
-            }
-        }
-        else {
+    func uploadMedia(_ media: [SunlitMedia], completion: @escaping (Error?, [SunlitMedia: MediaLocation]) -> Void) {
+        self.queue.async {
+            self.reset()
+            self.completion = completion
+            self.mediaQueue = media
             self.processUploadQueue()
         }
     }
 
-	
-	func processUploadQueue() {
+    private func reset() {
+        self.generation += 1
+        self.completion = nil
+        self.mediaQueue.removeAll()
+        self.results.removeAll()
+        self.activeMediaCount = 0
+        let uploads = Array(self.currentUploads.values)
+        self.currentUploads.removeAll()
+        for upload in uploads {
+            upload.cancel()
+        }
+    }
 
-        while self.mediaQueue.count > 0 && self.currentUploads.count < MediaUploader.maxUploads {
+    private func finish(_ error: Error?) {
+        guard let completion = self.completion else { return }
+        let results = self.results
+        self.reset()
+        DispatchQueue.main.async {
+            completion(error, results)
+        }
+    }
 
+    private func uploadError(_ message: String) -> Error {
+        return NSError(domain: "Sunlit.MediaUploader", code: 1, userInfo: [NSLocalizedDescriptionKey: message])
+    }
+
+    private func processUploadQueue() {
+        while !self.mediaQueue.isEmpty && self.activeMediaCount < Self.maxUploads {
             let media = self.mediaQueue.removeFirst()
-
-            // Check to see if this media has already been published...
-            if media.publishedPath != nil {
-                self.dataUploaded(error: nil, media: media)
+            if let path = media.publishedPath, let thumbnailPath = media.thumbnailPath {
+                self.recordLocation(media, path: path, thumbnailPath: thumbnailPath)
+                continue
             }
-            else if media.type == .image {
-                self.uploadImage(media)
-            }
-            else if media.type == .video {
-                VideoTranscoder.exportVideo(sourceUrl: media.videoURL) { (error, videoURL) in
 
-                    if let err = error {
-                        if let completion = self.completion {
-                            completion(err, [:])
+            self.activeMediaCount += 1
+            let generation = self.generation
+            if media.type == .image {
+                self.uploadImage(media, generation: generation)
+            }
+            else {
+                VideoTranscoder.exportVideo(sourceUrl: media.videoURL) { [weak self] error, videoURL in
+                    guard let self = self else { return }
+                    self.queue.async {
+                        guard generation == self.generation else { return }
+                        if let error = error {
+                            self.finish(error)
+                            return
                         }
-                        return
-                    }
-
-                    if let data = try? Data(contentsOf: videoURL) {
-                        self.uploadVideo(media, data)
+                        do {
+                            let data = try Data(contentsOf: videoURL)
+                            self.uploadVideo(media, data, generation: generation)
+                        }
+                        catch {
+                            self.finish(error)
+                        }
                     }
                 }
             }
         }
-	}
-	
-	func uploadImage(_ media : SunlitMedia) {
 
-        var upload : UUHttpRequest? = nil
-		var type : SnippetsImageFileType = .jpeg
-		if media.fileType == "public.png" {
-			type = .png
-		}
-
-        upload = Snippets.shared.uploadImage(image: SnippetsImage(media.getImage(), type: type)) { (error, remotePath) in
-
-            if let path = remotePath {
-                media.publishedPath = path
-                media.thumbnailPath =  "https://micro.blog/photos/200/" + path
-            }
-
-            if let currentUpload = upload,
-               let index = self.currentUploads.firstIndex(of: currentUpload) {
-                self.currentUploads.remove(at: index)
-            }
-            self.dataUploaded(error: error, media: media)
+        if self.mediaQueue.isEmpty && self.activeMediaCount == 0 {
+            self.finish(nil)
         }
+    }
 
+    private func recordLocation(_ media: SunlitMedia, path: String, thumbnailPath: String) {
+        media.publishedPath = path
+        media.thumbnailPath = thumbnailPath
+        let location = MediaLocation()
+        location.path = path
+        location.thumbnailPath = thumbnailPath
+        self.results[media] = location
+    }
+
+    private func dataUploaded(_ media: SunlitMedia, error: Error?, path: String?, thumbnailPath: String?) {
+        self.currentUploads.removeValue(forKey: media)
+        if let error = error {
+            self.finish(error)
+            return
+        }
+        guard let path = path, let thumbnailPath = thumbnailPath else {
+            self.finish(self.uploadError("The server did not return a URL for the uploaded media."))
+            return
+        }
+        self.recordLocation(media, path: path, thumbnailPath: thumbnailPath)
+        self.activeMediaCount -= 1
+        self.processUploadQueue()
+    }
+
+    private func uploadImage(_ media: SunlitMedia, generation: Int) {
+        let type: SnippetsImageFileType = media.fileType == "public.png" ? .png : .jpeg
+        let upload = Snippets.shared.uploadImage(image: SnippetsImage(media.getImage(), type: type)) { [weak self] error, path in
+            guard let self = self else { return }
+            self.queue.async {
+                guard generation == self.generation else { return }
+                let thumbnailPath = path.map { "https://micro.blog/photos/200/" + $0 }
+                self.dataUploaded(media, error: error, path: path, thumbnailPath: thumbnailPath)
+            }
+        }
         if let upload = upload {
-            self.currentUploads.append(upload)
+            self.currentUploads[media] = upload
         }
-	}
-	
-	func uploadVideo(_ media : SunlitMedia, _ data : Data) {
+        else {
+            self.finish(self.uploadError("Unable to start the image upload. Check your blog's publishing settings."))
+        }
+    }
 
-        var upload : UUHttpRequest? = nil
-        upload = Snippets.shared.uploadVideo(data: data) { (error, publishedPath, posterPath) in
-
-            media.publishedPath = publishedPath
-            media.thumbnailPath = posterPath
-
-            if let currentUpload = upload,
-               let index = self.currentUploads.firstIndex(of: currentUpload) {
-                self.currentUploads.remove(at: index)
+    private func uploadVideo(_ media: SunlitMedia, _ data: Data, generation: Int) {
+        let upload = Snippets.shared.uploadVideo(data: data) { [weak self] error, path, thumbnailPath in
+            guard let self = self else { return }
+            self.queue.async {
+                guard generation == self.generation else { return }
+                self.dataUploaded(media, error: error, path: path, thumbnailPath: thumbnailPath)
             }
-            self.dataUploaded(error: error, media: media)
         }
-
         if let upload = upload {
-            self.currentUploads.append(upload)
+            self.currentUploads[media] = upload
         }
-	}
+        else {
+            self.finish(self.uploadError("Unable to start the video upload. Check that your blog supports video publishing."))
+        }
+    }
 }
