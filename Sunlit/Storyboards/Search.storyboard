@@ -18,10 +18,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" placeholder="Search usernames on Micro.blog" translatesAutoresizingMaskIntoConstraints="NO" id="Wbz-We-dl4">
-                                <rect key="frame" x="0.0" y="88" width="414" height="44"/>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search usernames on Micro.blog" translatesAutoresizingMaskIntoConstraints="NO" id="Wbz-We-dl4">
+                                <rect key="frame" x="0.0" y="44" width="414" height="56"/>
+                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="VXV-zd-OTu"/>
+                                    <constraint firstAttribute="height" constant="56" id="VXV-zd-OTu"/>
                                 </constraints>
                                 <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
                                 <connections>
@@ -29,7 +30,7 @@
                                 </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QV6-w3-bz6">
-                                <rect key="frame" x="0.0" y="132" width="414" height="764"/>
+                                <rect key="frame" x="0.0" y="100" width="414" height="796"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SearchResultTableViewCell" rowHeight="80" id="Eqe-TN-D4v" userLabel="SearchResultTableViewCell" customClass="SearchResultTableViewCell" customModule="Sunlit" customModuleProvider="target">
@@ -97,7 +98,7 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="IGJ-Eb-B5R"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Wbz-We-dl4" firstAttribute="trailing" secondItem="IGJ-Eb-B5R" secondAttribute="trailing" id="7Us-rm-BdE"/>
                             <constraint firstItem="QV6-w3-bz6" firstAttribute="top" secondItem="Wbz-We-dl4" secondAttribute="bottom" id="8ib-Ge-Beh"/>
@@ -105,7 +106,7 @@
                             <constraint firstAttribute="bottom" secondItem="QV6-w3-bz6" secondAttribute="bottom" id="JlU-GY-n9Y"/>
                             <constraint firstItem="QV6-w3-bz6" firstAttribute="trailing" secondItem="IGJ-Eb-B5R" secondAttribute="trailing" id="X2w-88-OXs"/>
                             <constraint firstItem="QV6-w3-bz6" firstAttribute="leading" secondItem="IGJ-Eb-B5R" secondAttribute="leading" id="XcT-Ra-c9j"/>
-                            <constraint firstItem="Wbz-We-dl4" firstAttribute="top" secondItem="IGJ-Eb-B5R" secondAttribute="top" constant="44" id="vDy-eK-R85"/>
+                            <constraint firstItem="Wbz-We-dl4" firstAttribute="top" secondItem="IGJ-Eb-B5R" secondAttribute="top" id="vDy-eK-R85"/>
                         </constraints>
                     </view>
                     <connections>
@@ -122,6 +123,9 @@
         <namedColor name="color_emoji_selection">
             <color white="0.90499997138977051" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
