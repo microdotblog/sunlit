@@ -19,9 +19,11 @@ class ProfileHeaderCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var followingButton: UIButton!
 	
 	static func sizeOf(_ owner : SnippetsUser?, collectionViewWidth : CGFloat) -> CGSize {
-		let height : CGFloat = 8.0 + 10.0 + 60.0 + 8.0 + 29.0 + 8.0
+		var height : CGFloat = 8.0 + 10.0 + 60.0 + 8.0
+		if let address = owner?.siteURL, !address.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+			height += 29.0 + 8.0
+		}
 		return CGSize(width: collectionViewWidth, height: height)
-		//return CGSize(width: collectionViewWidth, height: 120.0)
 	}
 		
 	func configureFollowing(count : Int, complete : Bool) {

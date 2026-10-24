@@ -483,7 +483,8 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		cell.fullName.text = user.fullName
 		cell.userHandle.text = "@" + user.username
 		
-		var address = user.siteURL
+		var address = user.siteURL.trimmingCharacters(in: .whitespacesAndNewlines)
+		cell.blogAddress.isHidden = address.isEmpty
 		if address.count > 0 && !address.contains("http") {
 			address = "https://" + address
 		}
