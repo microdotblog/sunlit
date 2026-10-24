@@ -140,6 +140,9 @@ class DiscoverViewController: ContentViewController {
 	}
 		
 	func setupTableViewAndCollectionView() {
+		// Let the grid's initial top spacing scroll away with the content.
+		self.tableView.contentInset.top = 0
+		self.collectionView.contentInset.top = 12
 		self.tableViewRefreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
 		self.tableView.addSubview(self.tableViewRefreshControl)
 		
