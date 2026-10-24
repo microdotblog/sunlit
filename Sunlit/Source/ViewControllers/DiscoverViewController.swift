@@ -79,6 +79,12 @@ class DiscoverViewController: ContentViewController {
 			segmented_control.selectedSegmentIndex = 1
 		}
 		
+		// Keep icon spacing consistent before and after a navigation-bar transition.
+		for segment in 0..<segmented_control.numberOfSegments {
+			segmented_control.setWidth(48, forSegmentAt: segment)
+		}
+		segmented_control.sizeToFit()
+
 		segmented_control.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
 		self.navigationController?.navigationBar.topItem?.titleView = segmented_control
 	}
