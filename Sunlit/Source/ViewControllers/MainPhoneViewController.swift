@@ -166,8 +166,9 @@ class MainPhoneViewController: UITabBarController {
 			return
 		}
 
-		let mentionCount = SunlitMentions.shared.newMentionCount()
-		self.mentionsViewController.tabBarItem.badgeValue = mentionCount > 0 ? String(mentionCount) : nil
+		self.mentionsViewController.tabBarItem.badgeValue = nil
+		// let mentionCount = SunlitMentions.shared.newMentionCount()
+		// self.mentionsViewController.tabBarItem.badgeValue = mentionCount > 0 ? String(mentionCount) : nil
 	}
 
 	private func transition(to viewController: ContentViewController) {
