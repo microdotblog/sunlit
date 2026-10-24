@@ -15,12 +15,14 @@ class MainPhoneViewController: UITabBarController {
 	let discoverViewController: DiscoverViewController
 	let timelineViewController: TimelineViewController
 	let mentionsViewController: MentionsViewController
+	let placesViewController: PlacesViewController
 	var currentViewController: ContentViewController?
 	private var didPrepareInitialTab = false
 
-	init(timelineViewController: TimelineViewController, mentionsViewController: MentionsViewController, discoverViewController: DiscoverViewController) {
+	init(timelineViewController: TimelineViewController, mentionsViewController: MentionsViewController, placesViewController: PlacesViewController, discoverViewController: DiscoverViewController) {
 		self.timelineViewController = timelineViewController
 		self.mentionsViewController = mentionsViewController
+		self.placesViewController = placesViewController
 		self.discoverViewController = discoverViewController
 		super.init(nibName: nil, bundle: nil)
 	}
@@ -74,6 +76,11 @@ class MainPhoneViewController: UITabBarController {
 			image: UIImage(systemName: "at"),
 			selectedImage: nil
 		)
+		self.placesViewController.tabBarItem = UITabBarItem(
+			title: "Places",
+			image: UIImage(systemName: "mappin.and.ellipse"),
+			selectedImage: nil
+		)
 		self.discoverViewController.tabBarItem = UITabBarItem(
 			title: "Discover",
 			image: UIImage(systemName: "magnifyingglass"),
@@ -95,7 +102,7 @@ class MainPhoneViewController: UITabBarController {
 
 	private func updateAvailableTabs() {
 		let isSignedIn = Settings.isSignedIn
-		if !isSignedIn && self.currentViewController === self.mentionsViewController {
+		if !isSignedIn && (self.currentViewController === self.mentionsViewController || self.currentViewController === self.placesViewController) {
 			self.select(self.timelineViewController)
 		}
 
@@ -104,6 +111,7 @@ class MainPhoneViewController: UITabBarController {
 			availableViewControllers = [
 				self.timelineViewController,
 				self.mentionsViewController,
+				self.placesViewController,
 				self.discoverViewController
 			]
 		}
