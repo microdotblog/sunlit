@@ -9,6 +9,12 @@
 import Foundation
 
 extension Date {
+
+	func timestampFormat(relativeTo now: Date = Date()) -> String {
+		let age = now.timeIntervalSince(self)
+		let isRecent = age >= 0 && age < 24 * 60 * 60
+		return DateFormatter.localizedString(from: self, dateStyle: isRecent ? .none : .short, timeStyle: .short)
+	}
 	
 	func friendlyFormat() -> String {
 		let secondsDifference = abs(self.timeIntervalSinceNow)

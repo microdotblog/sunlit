@@ -33,17 +33,18 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 		self.addUserProfileTapGesture(self.userHandle)
 	}
 	
-	func setup(_ post : SunlitPost, _ indexPath : IndexPath) {
+	func setup(_ post : SunlitPost, _ indexPath : IndexPath, isMention: Bool = false) {
 		self.post = post
 		
-		self.replyText.attributedText = post.attributedText
+		self.replyText.attributedText = isMention ? self.mentionText(post.attributedText) : post.attributedText
 		self.replyText.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 		self.userName.text = post.owner.fullName
 		self.userHandle.text = "@" + post.owner.username
+		self.userHandle.textColor = isMention ? .secondaryLabel : .label
 		self.loadProfilePhoto(post.owner, indexPath)
 
 		if let date = post.publishedDate {
-			self.dateLabel.text = date.friendlyFormat()
+			self.dateLabel.text = isMention ? date.timestampFormat() : date.friendlyFormat()
 		}
 		else {
 			self.dateLabel.text = ""
@@ -60,6 +61,17 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 		}
 	}
 	
+	private func mentionText(_ text: NSAttributedString) -> NSAttributedString {
+		let spacedText = NSMutableAttributedString(attributedString: text)
+		let lineSpacing = UIFontMetrics(forTextStyle: .body).scaledValue(for: 4, compatibleWith: self.traitCollection)
+		text.enumerateAttribute(.paragraphStyle, in: NSRange(location: 0, length: text.length)) { value, range, _ in
+			let paragraph = (value as? NSParagraphStyle)?.mutableCopy() as? NSMutableParagraphStyle ?? NSMutableParagraphStyle()
+			paragraph.lineSpacing = max(paragraph.lineSpacing, lineSpacing)
+			spacedText.addAttribute(.paragraphStyle, value: paragraph, range: range)
+		}
+		return spacedText
+	}
+
 	func addUserProfileTapGesture(_ view : UIView) {
 		view.isUserInteractionEnabled = true
 
