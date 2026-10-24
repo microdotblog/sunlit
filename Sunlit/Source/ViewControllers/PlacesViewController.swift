@@ -26,6 +26,8 @@ final class PlacesViewController: ContentViewController, UITableViewDataSource {
         self.tableView.dataSource = self
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 148
+        self.tableView.separatorInset = .zero
+        self.tableView.separatorInsetReference = .fromCellEdges
         self.tableView.register(PlaceCheckInTableViewCell.self, forCellReuseIdentifier: PlaceCheckInTableViewCell.reuseIdentifier)
         self.refreshControl.addTarget(self, action: #selector(loadCheckIns), for: .valueChanged)
         self.tableView.refreshControl = self.refreshControl
@@ -118,11 +120,11 @@ final class PlacesViewController: ContentViewController, UITableViewDataSource {
 
     @objc private func newCheckIn() {
         let accountGeneration = Settings.accountGeneration
-        let search = PlaceSearchViewController(dataSource: self.dataSource) { [weak self] in
+        let composer = CheckInViewController(dataSource: self.dataSource) { [weak self] in
             guard accountGeneration == Settings.accountGeneration else { return }
             self?.loadCheckIns()
         }
-        self.present(UINavigationController(rootViewController: search), animated: true)
+        self.present(UINavigationController(rootViewController: composer), animated: true)
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { self.checkIns.count }

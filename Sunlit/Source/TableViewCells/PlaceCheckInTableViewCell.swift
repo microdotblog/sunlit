@@ -16,6 +16,7 @@ final class PlaceCheckInTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
+        self.separatorInset = .zero
         self.nameLabel.font = .preferredFont(forTextStyle: .headline)
         self.addressLabel.font = .preferredFont(forTextStyle: .subheadline)
         self.dateLabel.font = .preferredFont(forTextStyle: .caption1)
@@ -32,9 +33,10 @@ final class PlaceCheckInTableViewCell: UITableViewCell {
         self.mapImage.layer.cornerRadius = 10
         self.mapImage.tintColor = .secondaryLabel
         self.mapImage.isAccessibilityElement = false
-        let labels = UIStackView(arrangedSubviews: [self.nameLabel, self.addressLabel, self.dateLabel, self.noteLabel])
+        let labels = UIStackView(arrangedSubviews: [self.nameLabel, self.addressLabel, self.noteLabel, self.dateLabel])
         labels.axis = .vertical
-        labels.spacing = 4
+        labels.spacing = 8
+        labels.setCustomSpacing(6, after: self.nameLabel)
         let row = UIStackView(arrangedSubviews: [self.mapImage, labels])
         row.alignment = .top
         row.spacing = 16
@@ -81,7 +83,7 @@ final class PlaceCheckInTableViewCell: UITableViewCell {
         self.place = checkIn.place
         self.nameLabel.text = checkIn.place.name
         self.addressLabel.text = checkIn.place.address
-        self.dateLabel.text = DateFormatter.localizedString(from: checkIn.date, dateStyle: .medium, timeStyle: .short)
+        self.dateLabel.text = checkIn.date.timestampFormat()
         self.noteLabel.text = checkIn.note
         self.noteLabel.isHidden = checkIn.note.isEmpty
         self.loadSnapshot()
@@ -103,7 +105,7 @@ final class PlaceCheckInTableViewCell: UITableViewCell {
             self.mapImage.image = image
             return
         }
-        self.mapImage.image = UIImage(systemName: "map")
+        self.mapImage.image = nil
         guard self.window != nil, CLLocationCoordinate2DIsValid(coordinate) else { return }
         let options = MKMapSnapshotter.Options()
         options.region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 700, longitudinalMeters: 700)

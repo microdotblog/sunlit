@@ -13,6 +13,7 @@ struct SunlitCheckIn {
     let place: SunlitPlace
     let date: Date
     let note: String
+    var blogName: String? = nil
 }
 
 // The API routes and response format can be added without changing the screens.
@@ -20,7 +21,7 @@ protocol PlacesDataSource {
     var isPreview: Bool { get }
     func fetchCheckIns(completion: @escaping (Result<[SunlitCheckIn], Error>) -> Void)
     func searchPlaces(matching query: String, completion: @escaping (Result<[SunlitPlace], Error>) -> Void)
-    func checkIn(at place: SunlitPlace, note: String, completion: @escaping (Result<SunlitCheckIn, Error>) -> Void)
+    func checkIn(at place: SunlitPlace, note: String, blog: BlogSettings, completion: @escaping (Result<SunlitCheckIn, Error>) -> Void)
 }
 
 func makePlacesDataSource() -> PlacesDataSource {
@@ -46,7 +47,7 @@ private final class UnavailablePlacesDataSource: PlacesDataSource {
         completion(.failure(PlacesUnavailableError()))
     }
 
-    func checkIn(at place: SunlitPlace, note: String, completion: @escaping (Result<SunlitCheckIn, Error>) -> Void) {
+    func checkIn(at place: SunlitPlace, note: String, blog: BlogSettings, completion: @escaping (Result<SunlitCheckIn, Error>) -> Void) {
         completion(.failure(PlacesUnavailableError()))
     }
 }
@@ -79,8 +80,8 @@ final class PreviewPlacesDataSource: PlacesDataSource {
         }))
     }
 
-    func checkIn(at place: SunlitPlace, note: String, completion: @escaping (Result<SunlitCheckIn, Error>) -> Void) {
-        let checkIn = SunlitCheckIn(identifier: UUID().uuidString, place: place, date: Date(), note: note)
+    func checkIn(at place: SunlitPlace, note: String, blog: BlogSettings, completion: @escaping (Result<SunlitCheckIn, Error>) -> Void) {
+        let checkIn = SunlitCheckIn(identifier: UUID().uuidString, place: place, date: Date(), note: note, blogName: blog.blogName)
         self.checkIns.insert(checkIn, at: 0)
         completion(.success(checkIn))
     }
