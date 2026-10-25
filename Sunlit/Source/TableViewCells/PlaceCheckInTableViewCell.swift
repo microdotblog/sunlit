@@ -85,8 +85,17 @@ final class PlaceCheckInTableViewCell: UITableViewCell {
         self.addressLabel.text = checkIn.place.address
         self.addressLabel.isHidden = checkIn.place.address.isEmpty
         self.dateLabel.text = checkIn.date.timestampFormat()
-        self.noteLabel.text = checkIn.note
-        self.noteLabel.isHidden = checkIn.note.isEmpty || checkIn.note == checkIn.place.name + "."
+
+        var note = checkIn.note
+        let locationSentence = checkIn.place.name + "."
+        let locationPrefix = locationSentence + " "
+        if note == locationSentence {
+            note = ""
+        } else if note.hasPrefix(locationPrefix) {
+            note = String(note.dropFirst(locationPrefix.count))
+        }
+        self.noteLabel.text = note
+        self.noteLabel.isHidden = note.isEmpty
         self.loadSnapshot()
     }
 
