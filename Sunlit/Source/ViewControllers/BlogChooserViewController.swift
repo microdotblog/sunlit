@@ -8,11 +8,12 @@ import UIKit
 final class BlogChooserViewController: UITableViewController {
 
 	private let blogs : [BlogSettings]
+	private let purpose: BlogSettings.PublishingPurpose
 	private let onSelection : (BlogSettings) -> Void
 	private let cellIdentifier = "BlogCell"
 
-	static func present(from viewController : UIViewController, blogs : [BlogSettings], onSelection : @escaping (BlogSettings) -> Void) {
-		let chooser = BlogChooserViewController(blogs: blogs, onSelection: onSelection)
+	static func present(from viewController : UIViewController, blogs : [BlogSettings], purpose: BlogSettings.PublishingPurpose = .posts, onSelection : @escaping (BlogSettings) -> Void) {
+		let chooser = BlogChooserViewController(blogs: blogs, purpose: purpose, onSelection: onSelection)
 		let navigationController = UINavigationController(rootViewController: chooser)
 		navigationController.modalPresentationStyle = .pageSheet
 		navigationController.preferredContentSize = CGSize(width: 420.0, height: 520.0)
@@ -27,8 +28,9 @@ final class BlogChooserViewController: UITableViewController {
 		viewController.present(navigationController, animated: true)
 	}
 
-	init(blogs : [BlogSettings], onSelection : @escaping (BlogSettings) -> Void) {
+	init(blogs : [BlogSettings], purpose: BlogSettings.PublishingPurpose = .posts, onSelection : @escaping (BlogSettings) -> Void) {
 		self.blogs = blogs
+		self.purpose = purpose
 		self.onSelection = onSelection
 		super.init(style: .insetGrouped)
 	}
@@ -72,13 +74,13 @@ final class BlogChooserViewController: UITableViewController {
 		cell.textLabel?.text = blog.blogName
 		cell.textLabel?.font = .preferredFont(forTextStyle: .body)
 		cell.textLabel?.textColor = .label
-		cell.accessoryType = blog.blogName == BlogSettings.blogForPublishing().blogName ? .checkmark : .none
+		cell.accessoryType = blog.blogName == self.purpose.blog.blogName ? .checkmark : .none
 		return cell
 	}
 
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let blog = self.blogs[indexPath.row]
-		BlogSettings.setBlogForPublishing(blog)
+		self.purpose.select(blog)
 		self.onSelection(blog)
 		self.dismiss(animated: true)
 	}

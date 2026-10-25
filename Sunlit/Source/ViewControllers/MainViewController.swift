@@ -454,6 +454,7 @@ class MainViewController: ContentViewController {
 				}
 
                 let blogName : String = MicropubState.lookupBlogName(from: state) ?? ""
+                let publishingPurpose = MicropubState.publishingPurpose(from: state)
 
 				if (code.count > 0) && (state.count > 0) && (blogName.count > 0){
 					let accountGeneration = Settings.accountGeneration
@@ -487,7 +488,10 @@ class MainViewController: ContentViewController {
                                     blogSettings.save()
                                     BlogSettings.addPublishedBlog(blogSettings)
 
-                                    if blogSettings.snippetsConfiguration!.type == .micropub {
+                                    if publishingPurpose == .checkIns {
+                                        publishingPurpose.select(blogSettings)
+                                    }
+                                    else if blogSettings.snippetsConfiguration!.type == .micropub {
 										Dialog(self).selectBlog()
 									}
 

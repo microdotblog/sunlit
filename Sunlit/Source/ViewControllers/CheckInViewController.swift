@@ -142,7 +142,7 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
 
     private func updateBlogSelectorButton() {
         var configuration = UIButton.Configuration.plain()
-        configuration.title = BlogSettings.blogForPublishing().blogName
+        configuration.title = BlogSettings.blogForCheckIns().blogName
         configuration.image = UIImage(systemName: "chevron.down", withConfiguration: UIImage.SymbolConfiguration(pointSize: 10, weight: .regular))
         configuration.imagePlacement = .trailing
         configuration.imagePadding = 5
@@ -156,12 +156,14 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
         }
         self.blogSelectorButton.configuration = configuration
         self.blogSelectorButton.isUserInteractionEnabled = !self.saving && BlogSettings.publishedBlogs().count > 1
-        self.blogSelectorButton.accessibilityLabel = "Publishing to \(BlogSettings.blogForPublishing().blogName)"
+        self.blogSelectorButton.accessibilityLabel = "Publishing to \(BlogSettings.blogForCheckIns().blogName)"
     }
 
     @objc private func selectBlog() {
         self.view.endEditing(true)
-        Dialog(self).selectBlog { [weak self] in self?.updateBlogSelectorButton() }
+        BlogChooserViewController.present(from: self, blogs: BlogSettings.publishedBlogs(), purpose: .checkIns) { [weak self] _ in
+            self?.updateBlogSelectorButton()
+        }
     }
 
     @objc private func endEditing() { self.view.endEditing(true) }
@@ -296,7 +298,7 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
     @objc private func postCheckIn() {
         guard !self.saving, !self.loading,
               let place = self.results.first(where: { $0.identifier == self.selectedPlaceID }) else { return }
-        let blog = BlogSettings.blogForPublishing()
+        let blog = BlogSettings.blogForCheckIns()
         let note = self.noteTextView.text ?? ""
         self.saving = true
         self.view.endEditing(true)

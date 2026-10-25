@@ -26,6 +26,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
 	var usernameText = ""
 	var passwordText = ""
     var externalServerPath = ""
+    var publishingPurpose: BlogSettings.PublishingPurpose = .posts
 
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,7 +116,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
                                 let settings = BlogSettings(name)
                                 settings.snippetsConfiguration = identity
                                 BlogSettings.addPublishedBlog(settings)
-                                BlogSettings.setBlogForPublishing(settings)
+                                self.publishingPurpose.select(settings)
 
                                 Dialog(self).information("Successfully configured for publishing!") {
 									self.navigationController?.popViewController(animated: true)
@@ -170,7 +171,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
 
                 settings.save()
 
-                MicropubState.save(state: micropubState, name: blogName)
+                MicropubState.save(state: micropubState, name: blogName, purpose: self.publishingPurpose)
             
 				DispatchQueue.main.async {
 					UIApplication.shared.open(URL(string: authEndpoint)!)

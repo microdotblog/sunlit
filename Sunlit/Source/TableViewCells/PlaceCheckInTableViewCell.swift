@@ -83,9 +83,10 @@ final class PlaceCheckInTableViewCell: UITableViewCell {
         self.place = checkIn.place
         self.nameLabel.text = checkIn.place.name
         self.addressLabel.text = checkIn.place.address
+        self.addressLabel.isHidden = checkIn.place.address.isEmpty
         self.dateLabel.text = checkIn.date.timestampFormat()
         self.noteLabel.text = checkIn.note
-        self.noteLabel.isHidden = checkIn.note.isEmpty
+        self.noteLabel.isHidden = checkIn.note.isEmpty || checkIn.note == checkIn.place.name + "."
         self.loadSnapshot()
     }
 

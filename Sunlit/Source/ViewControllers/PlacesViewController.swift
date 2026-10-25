@@ -3,10 +3,12 @@ import UIKit
 final class PlacesViewController: ContentViewController, UITableViewDataSource {
     private let tableView = UITableView(frame: .zero, style: .plain)
     private let refreshControl = UIRefreshControl()
+    private let busyIndicator = UIActivityIndicatorView(style: .large)
     private let statusLabel = UILabel()
     private var dataSource: PlacesDataSource
     private var checkIns: [SunlitCheckIn] = []
     private var loadGeneration = 0
+    private var loadedBlogName: String?
     private weak var hostNavigationItem: UINavigationItem?
     private var previousRightButton: UIBarButtonItem?
 
@@ -46,15 +48,26 @@ final class PlacesViewController: ContentViewController, UITableViewDataSource {
             self.tableView.tableHeaderView = header
         }
         self.view.addSubview(self.tableView)
+        self.busyIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.busyIndicator.hidesWhenStopped = true
+        self.busyIndicator.accessibilityLabel = "Loading check-ins"
+        self.view.addSubview(self.busyIndicator)
         NSLayoutConstraint.activate([
             self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            self.busyIndicator.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
+            self.busyIndicator.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor)
         ])
     }
 
     override func navbarTitle() -> String { "Places" }
+
+    override func setupNotifications() {
+        super.setupNotifications()
+        NotificationCenter.default.addObserver(self, selector: #selector(loadCheckIns), name: BlogSettings.checkInBlogChangedNotification, object: nil)
+    }
 
     override func setupNavigation() {
         super.setupNavigation()
@@ -86,13 +99,28 @@ final class PlacesViewController: ContentViewController, UITableViewDataSource {
     }
 
     @objc private func loadCheckIns() {
+        let blogName = BlogSettings.blogForCheckIns().blogName
+        let accountGeneration = Settings.accountGeneration
+        if self.loadedBlogName != blogName {
+            self.checkIns = []
+            self.loadedBlogName = blogName
+            self.tableView.reloadData()
+        }
         self.loadGeneration += 1
         let generation = self.loadGeneration
-        self.statusLabel.text = self.checkIns.isEmpty ? "Loading check-ins…" : nil
+        self.statusLabel.text = nil
+        if self.checkIns.isEmpty && !self.refreshControl.isRefreshing {
+            self.busyIndicator.startAnimating()
+        } else {
+            self.busyIndicator.stopAnimating()
+        }
         self.dataSource.fetchCheckIns { [weak self] result in
             DispatchQueue.main.async {
-                guard let self = self, generation == self.loadGeneration else { return }
+                guard let self = self, generation == self.loadGeneration,
+                      accountGeneration == Settings.accountGeneration,
+                      blogName == BlogSettings.blogForCheckIns().blogName else { return }
                 self.refreshControl.endRefreshing()
+                self.busyIndicator.stopAnimating()
                 switch result {
                 case .success(let checkIns):
                     self.checkIns = checkIns.sorted { $0.date > $1.date }
@@ -109,9 +137,11 @@ final class PlacesViewController: ContentViewController, UITableViewDataSource {
     func resetForLogout() {
         self.loadGeneration += 1
         self.checkIns = []
+        self.loadedBlogName = nil
         self.dataSource = makePlacesDataSource()
         if self.isViewLoaded {
             self.refreshControl.endRefreshing()
+            self.busyIndicator.stopAnimating()
             self.statusLabel.text = nil
             self.tableView.reloadData()
             self.dismiss(animated: false)

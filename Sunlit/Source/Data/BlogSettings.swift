@@ -10,6 +10,26 @@ import Foundation
 import Snippets
 
 class BlogSettings : NSObject {
+    static let checkInBlogChangedNotification = Notification.Name("Check-in Blog Changed Notification")
+
+    enum PublishingPurpose: String {
+        case posts
+        case checkIns
+
+        var blog: BlogSettings {
+            switch self {
+            case .posts: return BlogSettings.blogForPublishing()
+            case .checkIns: return BlogSettings.blogForCheckIns()
+            }
+        }
+
+        func select(_ blog: BlogSettings) {
+            switch self {
+            case .posts: BlogSettings.setBlogForPublishing(blog)
+            case .checkIns: BlogSettings.setBlogForCheckIns(blog)
+            }
+        }
+    }
         
     static func publishedBlogs() -> [BlogSettings] {
         
@@ -59,6 +79,9 @@ class BlogSettings : NSObject {
                 if settings.blogName == BlogSettings.publishingName {
                     BlogSettings.publishingName = list.first ?? "Micro.blog"
                 }
+                if settings.blogName == (Settings.object(forKey: BlogSettings.savedCheckInPublishingKey) as? String) {
+                    BlogSettings.setBlogForCheckIns(BlogSettings(list.first ?? "Micro.blog"))
+                }
             }
         }
     }
@@ -69,6 +92,24 @@ class BlogSettings : NSObject {
 
     static func setBlogForPublishing(_ blog : BlogSettings) {
         BlogSettings.publishingName = blog.blogName
+    }
+
+    static func blogForCheckIns() -> BlogSettings {
+        if let name = Settings.object(forKey: BlogSettings.savedCheckInPublishingKey) as? String {
+            return BlogSettings(name)
+        }
+        // Start with the existing destination, then remember it independently.
+        let blog = BlogSettings.blogForPublishing()
+        BlogSettings.setBlogForCheckIns(blog)
+        return blog
+    }
+
+    static func setBlogForCheckIns(_ blog: BlogSettings) {
+        let previousName = Settings.object(forKey: BlogSettings.savedCheckInPublishingKey) as? String
+        Settings.setValue(blog.blogName, forKey: BlogSettings.savedCheckInPublishingKey)
+        if let previousName = previousName, previousName != blog.blogName {
+            NotificationCenter.default.post(name: self.checkInBlogChangedNotification, object: nil)
+        }
     }
 
     static func blogForTimeline() -> BlogSettings {
@@ -103,6 +144,9 @@ class BlogSettings : NSObject {
 		if let publishingName = Settings.object(forKey: BlogSettings.savedPublishingKey) as? String {
 			blogNames.insert(publishingName)
 		}
+		if let checkInName = Settings.object(forKey: BlogSettings.savedCheckInPublishingKey) as? String {
+			blogNames.insert(checkInName)
+		}
 
 		blogNames.formUnion(["https://micro.blog", "Micro.blog"])
 		for blogName in blogNames {
@@ -112,6 +156,7 @@ class BlogSettings : NSObject {
 		Settings.removeObject(forKey: BlogSettings.listOfPublishingBlogsKey)
 		Settings.removeObject(forKey: BlogSettings.savedTimelineKey)
 		Settings.removeObject(forKey: BlogSettings.savedPublishingKey)
+		Settings.removeObject(forKey: BlogSettings.savedCheckInPublishingKey)
 
 		let legacyKeys = [
 			BlogSettings.xmlRPCBlogUsernameKey,
@@ -477,6 +522,7 @@ class BlogSettings : NSObject {
     private static let listOfPublishingBlogsKey = "SunlitListOfPublishingBlogsKey"
     private static let savedTimelineKey = "SunlitTimelineKey"
     private static let savedPublishingKey = "SunlitPublishingKey"
+    private static let savedCheckInPublishingKey = "SunlitCheckInPublishingKey"
     private static let publishingSettingsKey = "SunlitServerConfiguration."
 
 
