@@ -49,6 +49,7 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
 
     private func configureNote() {
         self.noteCell.selectionStyle = .none
+        self.noteCell.separatorInset = .zero
         self.noteTextView.font = .preferredFont(forTextStyle: .body)
         self.noteTextView.adjustsFontForContentSizeCategory = true
         self.noteTextView.backgroundColor = .clear
@@ -100,6 +101,7 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
         self.tableView.delegate = self
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 68
+        self.tableView.separatorInsetReference = .fromCellEdges
         self.tableView.sectionHeaderTopPadding = 0
         self.tableView.keyboardDismissMode = .interactive
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
