@@ -20,8 +20,11 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 	@IBOutlet var dateLabel : UILabel!
 
 	var post : SunlitPost? = nil
+	private var configurationGeneration = 0
+	private var avatarSource: String?
 	
 	override func awakeFromNib() {
+		super.awakeFromNib()
 		self.avatar.clipsToBounds = true
 		self.avatar.layer.cornerRadius = (self.avatar.bounds.size.height - 1) / 2.0
 
@@ -32,8 +35,19 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 		self.addUserProfileTapGesture(self.avatar)
 		self.addUserProfileTapGesture(self.userHandle)
 	}
+
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		self.configurationGeneration += 1
+		self.post = nil
+		self.avatarSource = nil
+		self.avatar.image = nil
+		self.photosCollectionHeightConstraint?.constant = 0
+		self.photosCollectionView?.reloadData()
+	}
 	
 	func setup(_ post : SunlitPost, _ indexPath : IndexPath, isMention: Bool = false) {
+		self.configurationGeneration += 1
 		self.post = post
 		
 		self.replyText.attributedText = isMention ? self.mentionText(post.attributedText) : post.attributedText
@@ -41,7 +55,7 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 		self.userName.text = post.owner.fullName
 		self.userHandle.text = "@" + post.owner.username
 		self.userHandle.textColor = isMention ? .secondaryLabel : .label
-		self.loadProfilePhoto(post.owner, indexPath)
+		self.loadProfilePhoto(post.owner)
 
 		if let date = post.publishedDate {
 			self.dateLabel.text = isMention ? date.timestampFormat() : date.friendlyFormat()
@@ -59,6 +73,7 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 				collection_height_constraint.constant = 48
 			}
 		}
+		self.photosCollectionView?.reloadData()
 	}
 	
 	private func mentionText(_ text: NSAttributedString) -> NSAttributedString {
@@ -87,35 +102,48 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 		NotificationCenter.default.post(name: .viewUserProfileNotification, object: self.post?.owner)
 	}
 	
-	func loadProfilePhoto(_ owner: SnippetsUser, _ indexPath: IndexPath) {
+	private func loadProfilePhoto(_ owner: SnippetsUser) {
 		let avatarSource = owner.avatarURL
+		self.avatarSource = avatarSource
+		self.avatar.image = nil
+		let generation = self.configurationGeneration
 		if let avatar = ImageCache.prefetch(avatarSource) {
 			self.avatar.image = avatar
 		}
 		else {
-			ImageCache.fetch(avatarSource) { (image) in
-				if let _ = image {
-					DispatchQueue.main.async {
-						NotificationCenter.default.post(name: .refreshCellNotification, object: self, userInfo: [ "index": indexPath ])
-					}
+			ImageCache.fetch(avatarSource) { [weak self] image in
+				guard let image = image else { return }
+				DispatchQueue.main.async { [weak self] in
+					guard let self = self, generation == self.configurationGeneration,
+					      self.avatarSource == avatarSource else { return }
+					self.avatar.image = image
 				}
 			}
 		}
 	}
 	
 	func loadPostPhotos(_ cell: ConversationPhotoCollectionViewCell, _ indexPath: IndexPath) {
-		if let post = self.post {
-			let url = post.images[indexPath.item]
-			if let image = ImageCache.prefetch(url) {
-				cell.imageView.image = image
-			}
-			else {
-				ImageCache.fetch(url) { image in
-					if let _ = image {
-						DispatchQueue.main.async {
-							self.photosCollectionView?.reloadItems(at: [ indexPath ])
-						}
-					}
+		cell.imageView.image = nil
+		cell.imageSource = nil
+		guard let post = self.post, indexPath.section == 0,
+		      post.images.indices.contains(indexPath.item) else { return }
+		let url = post.images[indexPath.item]
+		let generation = self.configurationGeneration
+		cell.imageSource = url
+		if let image = ImageCache.prefetch(url) {
+			cell.imageView.image = image
+		} else {
+			ImageCache.fetch(url) { [weak self, weak cell] image in
+				guard let image = image else { return }
+				DispatchQueue.main.async { [weak self, weak cell] in
+					guard let self = self, let cell = cell,
+					      generation == self.configurationGeneration,
+					      cell.imageSource == url,
+					      self.photosCollectionView?.cellForItem(at: indexPath) === cell,
+					      let currentPost = self.post,
+					      currentPost.images.indices.contains(indexPath.item),
+					      currentPost.images[indexPath.item] == url else { return }
+					cell.imageView.image = image
 				}
 			}
 		}
@@ -142,7 +170,7 @@ class ConversationTableViewCell : UITableViewCell, UICollectionViewDataSource, U
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		if let post = self.post {
+		if let post = self.post, indexPath.section == 0, post.images.indices.contains(indexPath.item) {
 			let url = post.images[indexPath.item]
 
 			var dictionary : [String : Any] = [:]
