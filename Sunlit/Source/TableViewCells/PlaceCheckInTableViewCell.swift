@@ -16,6 +16,10 @@ final class PlaceCheckInTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
+        var background = UIBackgroundConfiguration.clear()
+        background.backgroundColor = .systemBackground
+        self.backgroundConfiguration = background
+        self.automaticallyUpdatesBackgroundConfiguration = false
         self.separatorInset = .zero
         self.nameLabel.font = .preferredFont(forTextStyle: .headline)
         self.addressLabel.font = .preferredFont(forTextStyle: .subheadline)

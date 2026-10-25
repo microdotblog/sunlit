@@ -16,6 +16,7 @@ struct SunlitCheckIn {
     let date: Date
     let note: String
     var blogName: String? = nil
+    var postURL: URL? = nil
 }
 
 protocol PlacesDataSource {
@@ -24,6 +25,7 @@ protocol PlacesDataSource {
     func searchPlaces(matching query: String, completion: @escaping (Result<[SunlitPlace], Error>) -> Void)
     func cancelPlaceSearch()
     func checkIn(at place: SunlitPlace, note: String, blog: BlogSettings, completion: @escaping (Result<SunlitCheckIn, Error>) -> Void)
+    func deleteCheckIn(_ checkIn: SunlitCheckIn, blog: BlogSettings, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 extension PlacesDataSource {
@@ -129,7 +131,7 @@ final class MicropubPlacesDataSource: PlacesDataSource {
             let place = SunlitPlace(identifier: placeURL ?? "\(latitude),\(longitude)", name: name, address: "", coordinate: coordinate, url: placeURL.flatMap(URL.init(string:)))
             let content = (properties["content"] as? [Any])?.first
             let note = (content as? String) ?? (content as? [String: String])?["value"] ?? ""
-            return SunlitCheckIn(identifier: identifier, place: place, date: date, note: note.trimmingCharacters(in: .whitespacesAndNewlines), blogName: blogName)
+            return SunlitCheckIn(identifier: identifier, place: place, date: date, note: note.trimmingCharacters(in: .whitespacesAndNewlines), blogName: blogName, postURL: url.flatMap(URL.init(string:)))
         }
     }
 
@@ -141,7 +143,7 @@ final class MicropubPlacesDataSource: PlacesDataSource {
     }
 
     private enum SourceError: LocalizedError {
-        case invalidConfiguration, missingToken, invalidResponse, invalidPlace
+        case invalidConfiguration, missingToken, invalidResponse, invalidPlace, missingDestination, invalidPostURL
         case httpStatus(Int)
 
         var errorDescription: String? {
@@ -150,6 +152,8 @@ final class MicropubPlacesDataSource: PlacesDataSource {
             case .missingToken: return "Please sign in to the selected check-in blog again."
             case .invalidResponse: return "The blog returned an invalid check-in response."
             case .invalidPlace: return "Please choose a place with a name and valid coordinates."
+            case .missingDestination: return "The check-in blog is missing its publishing destination. Please select the blog again in Settings."
+            case .invalidPostURL: return "This check-in does not have a valid post URL to delete."
             case .httpStatus(let status): return "Unable to load check-ins (\(status): \(HTTPURLResponse.localizedString(forStatusCode: status)))."
             }
         }
@@ -182,7 +186,8 @@ final class MicropubPlacesDataSource: PlacesDataSource {
                     return
                 }
                 let identifier = response.value(forHTTPHeaderField: "Location") ?? UUID().uuidString
-                completion(.success(SunlitCheckIn(identifier: identifier, place: place, date: date, note: note, blogName: blog.blogName)))
+                let postURL = response.value(forHTTPHeaderField: "Location").flatMap { URL(string: $0, relativeTo: request.url)?.absoluteURL }
+                completion(.success(SunlitCheckIn(identifier: identifier, place: place, date: date, note: note, blogName: blog.blogName, postURL: postURL)))
             }.resume()
         } catch {
             completion(.failure(error))
@@ -208,6 +213,44 @@ final class MicropubPlacesDataSource: PlacesDataSource {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        return request
+    }
+
+    func deleteCheckIn(_ checkIn: SunlitCheckIn, blog: BlogSettings, completion: @escaping (Result<Void, Error>) -> Void) {
+        do {
+            let request = try Self.deleteRequest(for: checkIn, blog: blog)
+            self.session.dataTask(with: request) { _, response, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                guard let response = response as? HTTPURLResponse else {
+                    completion(.failure(SourceError.invalidResponse))
+                    return
+                }
+                guard (200..<300).contains(response.statusCode) else {
+                    let message = "Unable to delete check-in (\(response.statusCode): \(HTTPURLResponse.localizedString(forStatusCode: response.statusCode)))."
+                    completion(.failure(NSError(domain: "SunlitCheckIn", code: response.statusCode, userInfo: [NSLocalizedDescriptionKey: message])))
+                    return
+                }
+                completion(.success(()))
+            }.resume()
+        } catch {
+            completion(.failure(error))
+        }
+    }
+
+    static func deleteRequest(for checkIn: SunlitCheckIn, blog: BlogSettings) throws -> URLRequest {
+        guard checkIn.blogName == nil || checkIn.blogName == blog.blogName else { throw SourceError.invalidConfiguration }
+        guard let postURL = checkIn.postURL, postURL.host != nil,
+              ["http", "https"].contains(postURL.scheme?.lowercased() ?? "") else { throw SourceError.invalidPostURL }
+        var request = try Self.authenticatedRequest(for: blog)
+        guard let destination = blog.snippetsConfiguration?.micropubUid, !destination.isEmpty else { throw SourceError.missingDestination }
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONSerialization.data(withJSONObject: [
+            "action": "delete", "url": postURL.absoluteString, "mp-destination": destination
+        ])
         return request
     }
 }
@@ -244,6 +287,11 @@ final class PreviewPlacesDataSource: PlacesDataSource {
         let checkIn = SunlitCheckIn(identifier: UUID().uuidString, place: place, date: Date(), note: note, blogName: blog.blogName)
         self.checkIns.insert(checkIn, at: 0)
         completion(.success(checkIn))
+    }
+
+    func deleteCheckIn(_ checkIn: SunlitCheckIn, blog: BlogSettings, completion: @escaping (Result<Void, Error>) -> Void) {
+        self.checkIns.removeAll { $0.identifier == checkIn.identifier }
+        completion(.success(()))
     }
 }
 #endif
