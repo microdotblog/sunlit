@@ -9,6 +9,7 @@
 import UIKit
 
 class PostTextCollectionViewCell: UICollectionViewCell {
+	static let placeholderText = "Blog post text for these photos…"
 	@IBOutlet var postText : UITextView!
 	@IBOutlet var widthConstraint : NSLayoutConstraint!
 
@@ -21,7 +22,7 @@ class PostTextCollectionViewCell: UICollectionViewCell {
 			- textInsets.right
 			- (ComposeCollectionViewMetrics.textLineFragmentPadding * 2.0)
 		let font = UIFont.preferredFont(forTextStyle: .body)
-		let measuredText = text.isEmpty ? " " : text
+		let measuredText = text.isEmpty ? Self.placeholderText : text
 		let textRect = measuredText.boundingRect(
 			with: CGSize(width: textWidth, height: .greatestFiniteMagnitude),
 			options: [.usesLineFragmentOrigin, .usesFontLeading],
