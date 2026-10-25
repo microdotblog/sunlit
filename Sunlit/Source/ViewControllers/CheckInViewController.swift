@@ -18,6 +18,8 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
     private var searchGeneration = 0
     private var loading = false
     private var saving = false
+    private var searchFailed = false
+    private var needsLocationSettings = false
 
     init(dataSource: PlacesDataSource, onCheckIn: @escaping () -> Void) {
         self.dataSource = dataSource
@@ -39,12 +41,28 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
         self.configureNearbyHeader()
         self.configureLayout()
         self.updateBlogSelectorButton()
+        NotificationCenter.default.addObserver(self, selector: #selector(retryLocationSearch), name: UIApplication.didBecomeActiveNotification, object: nil)
         self.search("")
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.updateBlogSelectorButton()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if self.isBeingDismissed || self.navigationController?.isBeingDismissed == true {
+            self.searchWork?.cancel()
+            self.searchGeneration += 1
+            self.dataSource.cancelPlaceSearch()
+        }
+    }
+
+    @objc private func retryLocationSearch() {
+        if self.needsLocationSettings && self.viewIfLoaded?.window != nil && !self.saving {
+            self.search(self.searchBar.text ?? "")
+        }
     }
 
     private func configureNote() {
@@ -183,16 +201,22 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
 
     private func search(_ query: String) {
         self.searchWork?.cancel()
+        self.dataSource.cancelPlaceSearch()
         self.searchGeneration += 1
         let generation = self.searchGeneration
         self.loading = true
+        self.searchFailed = false
+        self.needsLocationSettings = false
         self.statusText = query.isEmpty ? "Finding nearby places…" : "Searching places…"
         if self.results.isEmpty {
-            self.tableView.cellForRow(at: IndexPath(row: 0, section: 1))?.textLabel?.text = self.statusText
+            let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 1))
+            cell?.textLabel?.text = self.statusText
+            cell?.accessoryType = .none
+            cell?.accessibilityTraits = .staticText
         }
         self.updatePostButton()
         let work = DispatchWorkItem { [weak self] in
-            guard let self = self else { return }
+            guard let self = self, generation == self.searchGeneration else { return }
             self.dataSource.searchPlaces(matching: query) { [weak self] result in
                 DispatchQueue.main.async {
                     guard let self = self, generation == self.searchGeneration,
@@ -211,6 +235,8 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
                         self.results = []
                         self.selectedPlaceID = nil
                         self.statusText = error.localizedDescription
+                        self.searchFailed = true
+                        self.needsLocationSettings = (error as? AppleMapsPlacesSearch.SearchError) == .permissionDenied
                     }
                     // Keep the search field and note attached while replacing results.
                     self.tableView.performBatchUpdates {
@@ -226,11 +252,13 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     private func updatePostButton() {
+        self.navigationItem.rightBarButtonItem?.title = self.saving ? "Posting…" : "Post"
         self.navigationItem.rightBarButtonItem?.isEnabled = !self.loading && !self.saving && self.selectedPlaceID != nil
     }
 
     @objc private func cancel() {
         self.searchWork?.cancel()
+        self.dataSource.cancelPlaceSearch()
         self.searchGeneration += 1
         self.view.endEditing(true)
         self.dismiss(animated: true)
@@ -260,14 +288,15 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
         if indexPath.section == 0 { return self.noteCell }
         let cell = tableView.dequeueReusableCell(withIdentifier: "Place") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "Place")
         guard !self.results.isEmpty else {
-            cell.textLabel?.text = self.statusText
+            let action = self.needsLocationSettings ? "Open Settings" : "Tap to try again."
+            cell.textLabel?.text = self.searchFailed ? self.statusText + "\n" + action : self.statusText
             cell.textLabel?.font = .preferredFont(forTextStyle: .body)
             cell.textLabel?.adjustsFontForContentSizeCategory = true
             cell.textLabel?.textColor = .secondaryLabel
             cell.textLabel?.numberOfLines = 0
             cell.detailTextLabel?.text = nil
-            cell.accessoryType = .none
-            cell.accessibilityTraits = .staticText
+            cell.accessoryType = self.needsLocationSettings ? .disclosureIndicator : .none
+            cell.accessibilityTraits = self.searchFailed ? .button : .staticText
             return cell
         }
         let place = self.results[indexPath.row]
@@ -289,6 +318,14 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.section == 1, self.results.isEmpty, self.searchFailed, !self.loading, !self.saving {
+            if self.needsLocationSettings, let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url)
+            } else {
+                self.search(self.searchBar.text ?? "")
+            }
+            return
+        }
         guard indexPath.section == 1, !self.saving, !self.loading, self.results.indices.contains(indexPath.row) else { return }
         self.selectedPlaceID = self.results[indexPath.row].identifier
         self.tableView.reloadRows(at: self.tableView.indexPathsForVisibleRows?.filter { $0.section == 1 } ?? [], with: .none)
@@ -300,6 +337,9 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
               let place = self.results.first(where: { $0.identifier == self.selectedPlaceID }) else { return }
         let blog = BlogSettings.blogForCheckIns()
         let note = self.noteTextView.text ?? ""
+        self.searchWork?.cancel()
+        self.searchGeneration += 1
+        self.dataSource.cancelPlaceSearch()
         self.saving = true
         self.view.endEditing(true)
         self.tableView.isUserInteractionEnabled = false

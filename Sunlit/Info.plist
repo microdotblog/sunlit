@@ -49,7 +49,7 @@
 	<key>NSLocationUsageDescription</key>
 	<string>Sunlit can use your location to allow you to post check-ins.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Sunlit uses your location to add a check-in to a story.</string>
+	<string>Sunlit uses your location to find nearby places for check-ins.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Sunlit needs access to your photos to help you create beautiful stories.</string>
 	<key>NSUserActivityTypes</key>

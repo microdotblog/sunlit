@@ -23,6 +23,7 @@
 		A15F00012C5D000100000001 /* BlogChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F00032C5D000100000001 /* BlogChooserViewController.swift */; };
 		A15F00022C5D000100000001 /* BlogChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F00032C5D000100000001 /* BlogChooserViewController.swift */; };
 		A1F4048DD4AC45EB9925AA8A /* PlacesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41079D2A3054475BC1A2D29 /* PlacesDataSource.swift */; };
+		A1F4048DD4AC45EB9925AA8B /* AppleMapsPlacesSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41079D2A3054475BC1A2D30 /* AppleMapsPlacesSearch.swift */; };
 		B0BE641821B2474A85617E14 /* PlaceCheckInTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA733CEB3D3D4BF3908E8675 /* PlaceCheckInTableViewCell.swift */; };
 		C51051DA26F05CB100533E31 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51051D926F05CB100533E31 /* HTMLParser.swift */; };
 		C51051DB26F05CD000533E31 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51051D926F05CB100533E31 /* HTMLParser.swift */; };
@@ -588,6 +589,7 @@
 		C5FBC2382541434C0070E4DA /* SunlitWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitWidgetView.swift; sourceTree = "<group>"; };
 		C5FBC251254143AD0070E4DA /* SunlitWidgetTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitWidgetTextView.swift; sourceTree = "<group>"; };
 		E41079D2A3054475BC1A2D29 /* PlacesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlacesDataSource.swift; path = Source/Data/PlacesDataSource.swift; sourceTree = "<group>"; };
+		E41079D2A3054475BC1A2D30 /* AppleMapsPlacesSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppleMapsPlacesSearch.swift; path = Source/Data/AppleMapsPlacesSearch.swift; sourceTree = "<group>"; };
 		FA733CEB3D3D4BF3908E8675 /* PlaceCheckInTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlaceCheckInTableViewCell.swift; path = Source/TableViewCells/PlaceCheckInTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1075,6 +1077,7 @@
 			isa = PBXGroup;
 			children = (
 				E41079D2A3054475BC1A2D29 /* PlacesDataSource.swift */,
+				E41079D2A3054475BC1A2D30 /* AppleMapsPlacesSearch.swift */,
 				C5F5F94626E57ECC0095D5F2 /* BlurHash.swift */,
 				C53375C726C080390084C66F /* LocationQuery.swift */,
 				C5A1DE6124901DBC00B50B54 /* Settings.swift */,
@@ -1609,6 +1612,7 @@
 				126CCF5ADE6B49B2A1E2C172 /* PlacesViewController.swift in Sources */,
 				B0BE641821B2474A85617E14 /* PlaceCheckInTableViewCell.swift in Sources */,
 				A1F4048DD4AC45EB9925AA8A /* PlacesDataSource.swift in Sources */,
+				A1F4048DD4AC45EB9925AA8B /* AppleMapsPlacesSearch.swift in Sources */,
 				C5E26A3A249EB85100F9E158 /* MainTabletViewController.swift in Sources */,
 				C5A1DE7F24901DCC00B50B54 /* ImageViewerViewController.swift in Sources */,
 				C5A1DE5224901D9D00B50B54 /* Date+Sunlit.swift in Sources */,
