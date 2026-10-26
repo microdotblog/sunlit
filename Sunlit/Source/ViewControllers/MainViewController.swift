@@ -104,11 +104,9 @@ class MainViewController: ContentViewController {
 		self.navigationItem.rightBarButtonItem = nil
 		self.navigationItem.leftBarButtonItem = nil
 
-            var postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
+            let postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(onNewPost))
 
             if #available(iOS 14, *) {
-                postButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: nil)
-
                 let libraryAction = UIAction(title: "Photo Library", image: UIImage(systemName: "photo.stack")) { (action) in
                     self.onNewPost()
                 }

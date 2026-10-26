@@ -8,8 +8,14 @@
 
 import UIKit
 
-class SectionTextView: UITextView {
+class SectionTextView: UITextView, PostTextPlaceholder {
 	private let placeholderLabel = UILabel()
+	var placeholderText = PostTextCollectionViewCell.placeholderText(photoCount: 0) {
+		didSet {
+			self.placeholderLabel.text = self.placeholderText
+			self.setNeedsLayout()
+		}
+	}
 
 	override var text: String! {
 		didSet { self.updatePlaceholder() }
@@ -24,7 +30,7 @@ class SectionTextView: UITextView {
 		
 		self.textContainerInset = ComposeCollectionViewMetrics.textContainerInsets
 		self.textContainer.lineFragmentPadding = ComposeCollectionViewMetrics.textLineFragmentPadding
-		self.placeholderLabel.text = PostTextCollectionViewCell.placeholderText
+		self.placeholderLabel.text = self.placeholderText
 		self.placeholderLabel.textColor = .placeholderText
 		self.placeholderLabel.numberOfLines = 0
 		self.placeholderLabel.isUserInteractionEnabled = false

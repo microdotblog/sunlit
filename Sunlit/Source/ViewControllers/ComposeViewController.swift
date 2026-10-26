@@ -634,7 +634,7 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 		
 		let section = self.sections[indexPath.section]
 		if indexPath.item == 0 {
-			let size = PostTextCollectionViewCell.size(collectionView.bounds.size.width, section.text)
+			let size = PostTextCollectionViewCell.size(collectionView.bounds.size.width, section.text, photoCount: section.media.count)
 			return size
 		}
 		else if indexPath.item > section.media.count {
@@ -675,7 +675,8 @@ extension ComposeViewController : UICollectionViewDelegate, UICollectionViewData
 			self.textViewDictionary[cell.postText] = sectionData
 			
 			cell.postText.text = sectionData.text
-			cell.widthConstraint.constant = PostTextCollectionViewCell.size(collectionView.bounds.size.width, sectionData.text).width
+			cell.updatePlaceholder(photoCount: sectionData.media.count)
+			cell.widthConstraint.constant = PostTextCollectionViewCell.size(collectionView.bounds.size.width, sectionData.text, photoCount: sectionData.media.count).width
 			
 			// This is somewhat of a hack, however we want the keyboard to be up and the text view to have focus when we very first come into
 			// the compose view. This is the simplest/safest way to ensure that there is a "one time" focus activation.
@@ -915,7 +916,13 @@ extension ComposeViewController : UICollectionViewDropDelegate, UICollectionView
 					self.collectionView.deleteItems(at: deleteItems)
 				}
 			})
-			{ (complete) in
+			{ [weak self] _ in
+				guard let self = self else { return }
+				for indexPath in collectionView.indexPathsForVisibleItems where indexPath.item == 0 && indexPath.section < self.sections.count {
+					let cell = collectionView.cellForItem(at: indexPath) as? PostTextCollectionViewCell
+					cell?.updatePlaceholder(photoCount: self.sections[indexPath.section].media.count)
+				}
+				collectionView.collectionViewLayout.invalidateLayout()
 			}
 			
 		}

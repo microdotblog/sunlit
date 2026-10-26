@@ -8,12 +8,23 @@
 
 import UIKit
 
+protocol PostTextPlaceholder: AnyObject {
+	var placeholderText: String { get set }
+}
+
 class PostTextCollectionViewCell: UICollectionViewCell {
-	static let placeholderText = "Blog post text for these photos…"
 	@IBOutlet var postText : UITextView!
 	@IBOutlet var widthConstraint : NSLayoutConstraint!
 
-	static func size(_ collectionViewWidth : CGFloat, _ text : String) -> CGSize {
+	static func placeholderText(photoCount: Int) -> String {
+		return photoCount == 1 ? "Text for this photo…" : "Text for these photos…"
+	}
+
+	func updatePlaceholder(photoCount: Int) {
+		(self.postText as? PostTextPlaceholder)?.placeholderText = Self.placeholderText(photoCount: photoCount)
+	}
+
+	static func size(_ collectionViewWidth : CGFloat, _ text : String, photoCount: Int) -> CGSize {
 		let horizontalInsets = ComposeCollectionViewMetrics.sectionHorizontalInset * 2.0
 		let cellWidth = collectionViewWidth - horizontalInsets
 		let textInsets = ComposeCollectionViewMetrics.textContainerInsets
@@ -22,7 +33,7 @@ class PostTextCollectionViewCell: UICollectionViewCell {
 			- textInsets.right
 			- (ComposeCollectionViewMetrics.textLineFragmentPadding * 2.0)
 		let font = UIFont.preferredFont(forTextStyle: .body)
-		let measuredText = text.isEmpty ? Self.placeholderText : text
+		let measuredText = text.isEmpty ? Self.placeholderText(photoCount: photoCount) : text
 		let textRect = measuredText.boundingRect(
 			with: CGSize(width: textWidth, height: .greatestFiniteMagnitude),
 			options: [.usesLineFragmentOrigin, .usesFontLeading],
