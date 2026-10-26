@@ -11,6 +11,7 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
     private let searchBar = UISearchBar()
     private let nearbyHeader = UIView()
     private let blogSelectorButton = UIButton(type: .system)
+    private let postingIndicator = UIActivityIndicatorView(style: .large)
     private var results: [SunlitPlace] = []
     private var selectedPlaceID: String?
     private var statusText = "Finding nearby places…"
@@ -36,6 +37,8 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
         self.title = "New Check-in"
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancel))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(postCheckIn))
+        self.postingIndicator.accessibilityLabel = "Posting check-in"
+        self.postingIndicator.isAccessibilityElement = true
         self.view.backgroundColor = .secondarySystemBackground
         self.configureNote()
         self.configureNearbyHeader()
@@ -84,8 +87,11 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
         self.notePlaceholder.isUserInteractionEnabled = false
         self.notePlaceholder.isAccessibilityElement = false
         self.notePlaceholder.translatesAutoresizingMaskIntoConstraints = false
+        self.postingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.postingIndicator.hidesWhenStopped = true
         self.noteCell.contentView.addSubview(self.noteTextView)
         self.noteTextView.addSubview(self.notePlaceholder)
+        self.noteCell.contentView.addSubview(self.postingIndicator)
         NSLayoutConstraint.activate([
             self.noteTextView.leadingAnchor.constraint(equalTo: self.noteCell.contentView.layoutMarginsGuide.leadingAnchor),
             self.noteTextView.trailingAnchor.constraint(equalTo: self.noteCell.contentView.layoutMarginsGuide.trailingAnchor),
@@ -94,7 +100,9 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
             self.noteTextView.heightAnchor.constraint(greaterThanOrEqualToConstant: 160),
             self.notePlaceholder.leadingAnchor.constraint(equalTo: self.noteTextView.leadingAnchor),
             self.notePlaceholder.topAnchor.constraint(equalTo: self.noteTextView.topAnchor),
-            self.notePlaceholder.trailingAnchor.constraint(lessThanOrEqualTo: self.noteTextView.trailingAnchor)
+            self.notePlaceholder.trailingAnchor.constraint(lessThanOrEqualTo: self.noteTextView.trailingAnchor),
+            self.postingIndicator.centerXAnchor.constraint(equalTo: self.noteTextView.centerXAnchor),
+            self.postingIndicator.centerYAnchor.constraint(equalTo: self.noteTextView.centerYAnchor)
         ])
     }
 
@@ -252,7 +260,11 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     private func updatePostButton() {
-        self.navigationItem.rightBarButtonItem?.title = self.saving ? "Posting…" : "Post"
+        if self.saving {
+            self.postingIndicator.startAnimating()
+        } else {
+            self.postingIndicator.stopAnimating()
+        }
         self.navigationItem.rightBarButtonItem?.isEnabled = !self.loading && !self.saving && self.selectedPlaceID != nil
     }
 
@@ -350,16 +362,17 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
         self.dataSource.checkIn(at: place, note: note, blog: blog) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self = self, self.accountGeneration == Settings.accountGeneration else { return }
-                self.saving = false
-                self.tableView.isUserInteractionEnabled = true
-                self.navigationItem.leftBarButtonItem?.isEnabled = true
-                self.navigationController?.isModalInPresentation = false
-                self.updateBlogSelectorButton()
-                self.updatePostButton()
                 switch result {
                 case .success:
-                    self.dismiss(animated: true, completion: self.onCheckIn)
+                    self.onCheckIn()
+                    self.dismiss(animated: true)
                 case .failure(let error):
+                    self.saving = false
+                    self.tableView.isUserInteractionEnabled = true
+                    self.navigationItem.leftBarButtonItem?.isEnabled = true
+                    self.navigationController?.isModalInPresentation = false
+                    self.updateBlogSelectorButton()
+                    self.updatePostButton()
                     Dialog(self).information(error.localizedDescription)
                 }
             }

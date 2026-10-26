@@ -157,6 +157,10 @@ final class PlacesViewController: ContentViewController, UITableViewDataSource, 
     }
 
     @objc private func loadCheckIns() {
+        self.fetchCheckIns(limit: 500)
+    }
+
+    private func fetchCheckIns(limit: Int, merging: Bool = false) {
         let blogName = BlogSettings.blogForCheckIns().blogName
         let accountGeneration = Settings.accountGeneration
         if self.loadedBlogName != blogName {
@@ -172,7 +176,7 @@ final class PlacesViewController: ContentViewController, UITableViewDataSource, 
         } else {
             self.busyIndicator.stopAnimating()
         }
-        self.dataSource.fetchCheckIns { [weak self] result in
+        self.dataSource.fetchCheckIns(limit: limit) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self = self, generation == self.loadGeneration,
                       accountGeneration == Settings.accountGeneration,
@@ -181,8 +185,15 @@ final class PlacesViewController: ContentViewController, UITableViewDataSource, 
                 self.busyIndicator.stopAnimating()
                 switch result {
                 case .success(let checkIns):
-                    self.checkIns = checkIns.sorted { $0.date > $1.date }
-                    self.statusLabel.text = checkIns.isEmpty ? "No check-ins yet.\nTap + to add your first place." : nil
+                    if merging {
+                        let refreshedIDs = Set(checkIns.map { $0.identifier })
+                        self.checkIns.removeAll { refreshedIDs.contains($0.identifier) }
+                        self.checkIns.append(contentsOf: checkIns)
+                    } else {
+                        self.checkIns = checkIns
+                    }
+                    self.checkIns.sort { $0.date > $1.date }
+                    self.statusLabel.text = self.checkIns.isEmpty ? "No check-ins yet.\nTap + to add your first place." : nil
                     self.tableView.reloadData()
                 case .failure(let error):
                     self.statusLabel.text = self.checkIns.isEmpty ? error.localizedDescription : nil
@@ -211,7 +222,7 @@ final class PlacesViewController: ContentViewController, UITableViewDataSource, 
         let accountGeneration = Settings.accountGeneration
         let composer = CheckInViewController(dataSource: self.dataSource) { [weak self] in
             guard accountGeneration == Settings.accountGeneration else { return }
-            self?.loadCheckIns()
+            self?.fetchCheckIns(limit: 5, merging: true)
         }
         self.present(UINavigationController(rootViewController: composer), animated: true)
     }

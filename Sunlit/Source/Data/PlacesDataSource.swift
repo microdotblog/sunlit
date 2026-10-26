@@ -21,7 +21,7 @@ struct SunlitCheckIn {
 
 protocol PlacesDataSource {
     var isPreview: Bool { get }
-    func fetchCheckIns(completion: @escaping (Result<[SunlitCheckIn], Error>) -> Void)
+    func fetchCheckIns(limit: Int, completion: @escaping (Result<[SunlitCheckIn], Error>) -> Void)
     func searchPlaces(matching query: String, completion: @escaping (Result<[SunlitPlace], Error>) -> Void)
     func cancelPlaceSearch()
     func checkIn(at place: SunlitPlace, note: String, blog: BlogSettings, completion: @escaping (Result<SunlitCheckIn, Error>) -> Void)
@@ -47,19 +47,21 @@ final class MicropubPlacesDataSource: PlacesDataSource {
         self.session = session
     }
 
-    func fetchCheckIns(completion: @escaping (Result<[SunlitCheckIn], Error>) -> Void) {
+    func fetchCheckIns(limit: Int = 500, completion: @escaping (Result<[SunlitCheckIn], Error>) -> Void) {
         let blog = BlogSettings.blogForCheckIns()
+        let postLimit = min(max(limit, 0), Self.sourcePostLimit)
         Task {
             do {
                 var items: [Any] = []
-                for offset in stride(from: 0, to: Self.sourcePostLimit, by: Self.sourcePageSize) {
-                    let request = try Self.sourceRequest(for: blog, offset: offset)
+                for offset in stride(from: 0, to: postLimit, by: Self.sourcePageSize) {
+                    let pageSize = min(Self.sourcePageSize, postLimit - offset)
+                    let request = try Self.sourceRequest(for: blog, offset: offset, limit: pageSize)
                     let (data, response) = try await self.session.data(for: request)
                     guard let response = response as? HTTPURLResponse else { throw SourceError.invalidResponse }
                     guard (200..<300).contains(response.statusCode) else { throw SourceError.httpStatus(response.statusCode) }
                     let page = try Self.sourceItems(from: data)
-                    items.append(contentsOf: page.prefix(Self.sourcePageSize))
-                    if page.count < Self.sourcePageSize { break }
+                    items.append(contentsOf: page.prefix(pageSize))
+                    if page.count < pageSize { break }
                 }
                 completion(.success(Self.checkIns(from: items, blogName: blog.blogName)))
             } catch {
@@ -68,13 +70,13 @@ final class MicropubPlacesDataSource: PlacesDataSource {
         }
     }
 
-    static func sourceRequest(for blog: BlogSettings, offset: Int = 0) throws -> URLRequest {
+    static func sourceRequest(for blog: BlogSettings, offset: Int = 0, limit: Int = 100) throws -> URLRequest {
         var request = try Self.authenticatedRequest(for: blog)
         guard let endpoint = request.url,
               var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: false) else { throw SourceError.invalidConfiguration }
         var query = (components.queryItems ?? []).filter { !["q", "mp-destination", "limit", "offset"].contains($0.name) }
         query.append(URLQueryItem(name: "q", value: "source"))
-        query.append(URLQueryItem(name: "limit", value: String(Self.sourcePageSize)))
+        query.append(URLQueryItem(name: "limit", value: String(limit)))
         query.append(URLQueryItem(name: "offset", value: String(offset)))
         if let destination = blog.snippetsConfiguration?.micropubUid, !destination.isEmpty {
             query.append(URLQueryItem(name: "mp-destination", value: destination))
@@ -292,8 +294,8 @@ final class PreviewPlacesDataSource: PlacesDataSource {
         }
     }
 
-    func fetchCheckIns(completion: @escaping (Result<[SunlitCheckIn], Error>) -> Void) {
-        completion(.success(self.checkIns))
+    func fetchCheckIns(limit: Int = 500, completion: @escaping (Result<[SunlitCheckIn], Error>) -> Void) {
+        completion(.success(Array(self.checkIns.prefix(max(limit, 0)))))
     }
 
     func searchPlaces(matching query: String, completion: @escaping (Result<[SunlitPlace], Error>) -> Void) {
