@@ -270,15 +270,15 @@ class CropView: UIView {
     private func adaptAngleDashboardToCropBox() {
         guard let rotationDial = rotationDial else { return }
 
-        if UIApplication.shared.statusBarOrientation.isPortrait {
+        if cropInterfaceOrientation.isPortrait {
             rotationDial.transform = CGAffineTransform(rotationAngle: 0)
             rotationDial.frame.origin.x = gridOverlayView.frame.origin.x +  (gridOverlayView.frame.width - rotationDial.frame.width) / 2
             rotationDial.frame.origin.y = gridOverlayView.frame.maxY
-        } else if UIApplication.shared.statusBarOrientation == .landscapeLeft {
+        } else if cropInterfaceOrientation == .landscapeLeft {
             rotationDial.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
             rotationDial.frame.origin.x = gridOverlayView.frame.maxX
             rotationDial.frame.origin.y = gridOverlayView.frame.origin.y + (gridOverlayView.frame.height - rotationDial.frame.height) / 2
-        } else if UIApplication.shared.statusBarOrientation == .landscapeRight {
+        } else if cropInterfaceOrientation == .landscapeRight {
             rotationDial.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
             rotationDial.frame.origin.x = gridOverlayView.frame.minX - rotationDial.frame.width
             rotationDial.frame.origin.y = gridOverlayView.frame.origin.y + (gridOverlayView.frame.height - rotationDial.frame.height) / 2
@@ -364,18 +364,18 @@ extension CropView {
         let rect = self.bounds
         var contentRect = CGRect.zero
         
-        if UIApplication.shared.statusBarOrientation.isPortrait {
+        if cropInterfaceOrientation.isPortrait {
             contentRect.origin.x = rect.origin.x + cropViewPadding
             contentRect.origin.y = rect.origin.y + cropViewPadding
             
             contentRect.size.width = rect.width - 2 * cropViewPadding
             contentRect.size.height = rect.height - 2 * cropViewPadding - angleDashboardHeight
-        } else if UIApplication.shared.statusBarOrientation.isLandscape {
+        } else if cropInterfaceOrientation.isLandscape {
             contentRect.size.width = rect.width - 2 * cropViewPadding - angleDashboardHeight
             contentRect.size.height = rect.height - 2 * cropViewPadding
             
             contentRect.origin.y = rect.origin.y + cropViewPadding
-            if UIApplication.shared.statusBarOrientation == .landscapeLeft {
+            if cropInterfaceOrientation == .landscapeLeft {
                 contentRect.origin.x = rect.origin.x + cropViewPadding
             } else {
                 contentRect.origin.x = rect.origin.x + cropViewPadding + angleDashboardHeight

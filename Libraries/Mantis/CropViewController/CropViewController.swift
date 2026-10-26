@@ -65,6 +65,7 @@ public class CropViewController: UIViewController {
     private var ratioPresenter: RatioPresenter?
     private var stackView: UIStackView?
     private var initialLayout = false
+    private var transitioningLayout = false
     private var disableRotation = false
     
     deinit {
@@ -129,13 +130,21 @@ public class CropViewController: UIViewController {
         createCropToolbar()        
         initLayout()
         updateLayout()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: UIApplication.didChangeStatusBarOrientationNotification, object: nil)
     }
     
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if initialLayout == false {
+
+        let restoreCrop = initialLayout && !transitioningLayout && orientation != view.cropInterfaceOrientation
+        if restoreCrop {
+            cropView.prepareForDeviceRotation()
+        }
+        updateLayout()
+
+        if restoreCrop {
+            view.layoutIfNeeded()
+            cropView.handleRotate()
+        } else if !initialLayout && cropView.getContentBounds().width > 0 && cropView.getContentBounds().height > 0 {
             initialLayout = true
             view.layoutIfNeeded()
             cropView.adaptForCropBox()
@@ -152,32 +161,24 @@ public class CropViewController: UIViewController {
     
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        cropView.prepareForDeviceRotation()
-    }    
-    
-    @objc func rotated() {
-        let statusBarOrientation = UIApplication.shared.statusBarOrientation
-        
-        guard statusBarOrientation != .unknown else { return }
-        guard statusBarOrientation != orientation else { return }
-        
-        orientation = statusBarOrientation
-        
-        if UIDevice.current.userInterfaceIdiom == .phone
-            && statusBarOrientation == .portraitUpsideDown {
-            return
+        let restoreCrop = initialLayout
+        transitioningLayout = true
+        if restoreCrop {
+            cropView.prepareForDeviceRotation()
         }
-        
-        updateLayout()
-        view.layoutIfNeeded()
-        
-        // When it is embedded in a container, the timing of viewDidLayoutSubviews
-        // is different with the normal mode.
-        // So delay the execution to make sure handleRotate runs after the final
-        // viewDidLayoutSubviews
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            self?.cropView.handleRotate()
-        }
+
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            self?.updateLayout()
+            self?.view.layoutIfNeeded()
+        }, completion: { [weak self] _ in
+            guard let self = self else { return }
+            self.updateLayout()
+            self.view.layoutIfNeeded()
+            if restoreCrop {
+                self.cropView.handleRotate()
+            }
+            self.transitioningLayout = false
+        })
     }
     
     func setFixedRatio(_ ratio: Double) {
@@ -295,9 +296,9 @@ extension CropViewController {
     }
     
     fileprivate func setStackViewAxis() {
-        if UIApplication.shared.statusBarOrientation.isPortrait {
+        if orientation.isPortrait {
             stackView?.axis = .vertical
-        } else if UIApplication.shared.statusBarOrientation.isLandscape {
+        } else if orientation.isLandscape {
             stackView?.axis = .horizontal
         }
     }
@@ -306,19 +307,22 @@ extension CropViewController {
         stackView?.removeArrangedSubview(cropView)
         stackView?.removeArrangedSubview(cropToolbar)
         
-        if UIApplication.shared.statusBarOrientation.isPortrait || UIApplication.shared.statusBarOrientation == .landscapeRight {
+        if orientation.isPortrait || orientation == .landscapeRight {
             stackView?.addArrangedSubview(cropView)
             stackView?.addArrangedSubview(cropToolbar)
-        } else if UIApplication.shared.statusBarOrientation == .landscapeLeft {
+        } else if orientation == .landscapeLeft {
             stackView?.addArrangedSubview(cropToolbar)
             stackView?.addArrangedSubview(cropView)
         }
     }
     
     fileprivate func updateLayout() {
+        let currentOrientation = view.cropInterfaceOrientation
+        guard currentOrientation != orientation else { return }
+        orientation = currentOrientation
         setStackViewAxis()
-        cropToolbar.respondToOrientationChange()
         changeStackViewOrder()
+        cropToolbar.respondToOrientationChange()
     }
 }
 

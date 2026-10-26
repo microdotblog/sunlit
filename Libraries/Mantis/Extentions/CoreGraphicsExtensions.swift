@@ -25,6 +25,22 @@
 import Foundation
 import UIKit
 
+extension UIView {
+    var cropInterfaceOrientation: UIInterfaceOrientation {
+        if let orientation = window?.windowScene?.effectiveGeometry.interfaceOrientation,
+           orientation != .unknown {
+            return orientation
+        }
+
+        // A view may be laid out before it is attached to its window scene.
+        var container = self
+        while let parent = container.superview {
+            container = parent
+        }
+        return container.bounds.width > container.bounds.height ? .landscapeRight : .portrait
+    }
+}
+
 extension UIColor {
     var greyscale: UIColor{
         var (hue, saturation, brightness, alpha) = (CGFloat(0.0), CGFloat(0.0), CGFloat(0.0), CGFloat(0.0))
