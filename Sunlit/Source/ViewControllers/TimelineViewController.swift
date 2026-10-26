@@ -216,16 +216,14 @@ class TimelineViewController: ContentViewController {
 
 		var parameters : [String : String] = [:]
 		parameters["count"] = "20"
+		parameters["filter"] = "photos,videos"
 
 		Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters) { (error, postObjects : [SnippetsPost]) in
 			guard accountGeneration == Settings.accountGeneration else {
 				return
 			}
 
-			// remove non-JPEGs
-			let photos = postObjects.filter { post in
-				return post.htmlText.contains(".jpg") || post.htmlText.contains(".jpeg")
-			}
+			let photos = postObjects
 			
 			self.setupBlurHashes(photos)
 
@@ -235,7 +233,8 @@ class TimelineViewController: ContentViewController {
 				}
 
 				self.loadingData = false
-				if error == nil && photos.count > 0 {
+				if error == nil {
+                    self.noMoreToLoad = photos.isEmpty
                     self.refreshTableView(photos)
                 }
                 else {
@@ -270,6 +269,7 @@ class TimelineViewController: ContentViewController {
 	
 			var parameters : [String : String] = [:]
 			parameters["count"] = "20"
+			parameters["filter"] = "photos,videos"
 			parameters["before_id"] = last.identifier
 
 			Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters, completion:
@@ -278,10 +278,7 @@ class TimelineViewController: ContentViewController {
 					return
 				}
 
-				// remove non-JPEGs
-				let photos = entries.filter { post in
-					return post.htmlText.contains(".jpg") || post.htmlText.contains(".jpeg")
-				}
+				let photos = entries
 
 				self.setupBlurHashes(photos)
 
