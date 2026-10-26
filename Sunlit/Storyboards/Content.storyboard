@@ -564,7 +564,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="15Q-m6-Yb3">
-                                <rect key="frame" x="0.0" y="132" width="414" height="764"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="J3H-mX-yeG">
                                     <size key="itemSize" width="128" height="176"/>
@@ -617,7 +617,7 @@
                                 </connections>
                             </collectionView>
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VsO-36-aZm">
-                                <rect key="frame" x="0.0" y="132" width="414" height="764"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TimelineTableViewCell" id="Gdt-pV-eNI" customClass="TimelineTableViewCell" customModule="Sunlit" customModuleProvider="target">
@@ -802,34 +802,6 @@
                                     <outlet property="prefetchDataSource" destination="oIs-Z4-tFH" id="COp-Da-ems"/>
                                 </connections>
                             </tableView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qZo-n7-ubL">
-                                <rect key="frame" x="0.0" y="88" width="414" height="44"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="lq5-Pq-V2f">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="414" id="8Hy-bc-Lnb"/>
-                                            <constraint firstAttribute="height" constant="44" id="qLQ-1M-ntd"/>
-                                        </constraints>
-                                        <edgeInsets key="layoutMargins" top="4" left="4" bottom="4" right="4"/>
-                                    </stackView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="lq5-Pq-V2f" firstAttribute="bottom" secondItem="o2J-8N-OQO" secondAttribute="bottom" id="4yt-Ho-gDo"/>
-                                    <constraint firstItem="lq5-Pq-V2f" firstAttribute="bottom" secondItem="Fm7-Zq-l9s" secondAttribute="bottom" id="7IT-gT-rMu"/>
-                                    <constraint firstItem="lq5-Pq-V2f" firstAttribute="top" secondItem="Fm7-Zq-l9s" secondAttribute="top" id="ANj-AN-BdD"/>
-                                    <constraint firstItem="lq5-Pq-V2f" firstAttribute="leading" secondItem="Fm7-Zq-l9s" secondAttribute="leading" id="NQw-rL-bmo"/>
-                                    <constraint firstAttribute="height" constant="44" id="V5E-AD-eaN"/>
-                                    <constraint firstItem="lq5-Pq-V2f" firstAttribute="trailing" secondItem="o2J-8N-OQO" secondAttribute="trailing" id="WxG-Ug-rvO"/>
-                                    <constraint firstItem="lq5-Pq-V2f" firstAttribute="top" secondItem="o2J-8N-OQO" secondAttribute="top" id="XwX-ir-aQw"/>
-                                    <constraint firstItem="lq5-Pq-V2f" firstAttribute="leading" secondItem="o2J-8N-OQO" secondAttribute="leading" id="hBw-L3-ohH"/>
-                                </constraints>
-                                <viewLayoutGuide key="contentLayoutGuide" id="o2J-8N-OQO"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="Fm7-Zq-l9s"/>
-                                <connections>
-                                    <outlet property="delegate" destination="oIs-Z4-tFH" id="JM1-Oa-W0o"/>
-                                </connections>
-                            </scrollView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="V4W-dv-gYU">
                                 <rect key="frame" x="188.66666666666666" y="462.66666666666669" width="37" height="37"/>
                             </activityIndicatorView>
@@ -841,23 +813,17 @@
                             <constraint firstItem="15Q-m6-Yb3" firstAttribute="trailing" secondItem="sH2-gQ-nXw" secondAttribute="trailing" id="56M-aL-XC0"/>
                             <constraint firstItem="15Q-m6-Yb3" firstAttribute="leading" secondItem="sH2-gQ-nXw" secondAttribute="leading" id="Cwx-y2-HQe"/>
                             <constraint firstAttribute="bottom" secondItem="15Q-m6-Yb3" secondAttribute="bottom" id="DOk-90-vQU"/>
-                            <constraint firstItem="VsO-36-aZm" firstAttribute="top" secondItem="qZo-n7-ubL" secondAttribute="bottom" id="Isl-IP-jTh"/>
-                            <constraint firstItem="V4W-dv-gYU" firstAttribute="centerY" secondItem="sH2-gQ-nXw" secondAttribute="centerY" constant="22" id="QkK-HE-X0f"/>
-                            <constraint firstItem="qZo-n7-ubL" firstAttribute="trailing" secondItem="sH2-gQ-nXw" secondAttribute="trailing" id="bBF-IF-Jaz"/>
+                            <constraint firstItem="VsO-36-aZm" firstAttribute="top" secondItem="7St-pR-d8y" secondAttribute="top" id="Isl-IP-jTh"/>
+                            <constraint firstItem="V4W-dv-gYU" firstAttribute="centerY" secondItem="sH2-gQ-nXw" secondAttribute="centerY" id="QkK-HE-X0f"/>
                             <constraint firstAttribute="bottom" secondItem="VsO-36-aZm" secondAttribute="bottom" id="f3T-g6-wiq"/>
                             <constraint firstItem="VsO-36-aZm" firstAttribute="trailing" secondItem="sH2-gQ-nXw" secondAttribute="trailing" id="fOn-Kz-uNQ"/>
-                            <constraint firstItem="15Q-m6-Yb3" firstAttribute="top" secondItem="qZo-n7-ubL" secondAttribute="bottom" id="gS5-Cd-M30"/>
+                            <constraint firstItem="15Q-m6-Yb3" firstAttribute="top" secondItem="7St-pR-d8y" secondAttribute="top" id="gS5-Cd-M30"/>
                             <constraint firstItem="V4W-dv-gYU" firstAttribute="centerX" secondItem="VsO-36-aZm" secondAttribute="centerX" id="rUR-qj-3wt"/>
-                            <constraint firstItem="qZo-n7-ubL" firstAttribute="top" secondItem="sH2-gQ-nXw" secondAttribute="top" id="vdX-9N-ASG"/>
-                            <constraint firstItem="qZo-n7-ubL" firstAttribute="leading" secondItem="sH2-gQ-nXw" secondAttribute="leading" id="z8r-3R-WKq"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="busyIndicator" destination="V4W-dv-gYU" id="NJA-46-JDl"/>
                         <outlet property="collectionView" destination="15Q-m6-Yb3" id="nVA-rN-Z8n"/>
-                        <outlet property="scrollView" destination="qZo-n7-ubL" id="AKi-ZD-Iel"/>
-                        <outlet property="stackView" destination="lq5-Pq-V2f" id="fRr-c7-kR7"/>
-                        <outlet property="stackViewWidthConstraint" destination="8Hy-bc-Lnb" id="2Wh-xZ-AQs"/>
                         <outlet property="tableView" destination="VsO-36-aZm" id="jQM-G0-Zxp"/>
                     </connections>
                 </viewController>

@@ -102,7 +102,7 @@ extension MentionsViewController : UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationTableViewCell", for: indexPath) as! ConversationTableViewCell
 		let post = self.posts[indexPath.row]
-		cell.setup(post, indexPath)
+		cell.setup(post, indexPath, isMention: true)
 		return cell
 	}
 	

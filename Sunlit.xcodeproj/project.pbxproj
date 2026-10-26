@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		102D7CC4B2694AA09499E746 /* CheckInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BBDB01B34B4E449655A8C2 /* CheckInViewController.swift */; };
+		126CCF5ADE6B49B2A1E2C172 /* PlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E558F89DF1742F3845FB21C /* PlacesViewController.swift */; };
 		4B556FF624F1C4C10012C6C7 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FF524F1C4C10012C6C7 /* SearchViewController.swift */; };
 		4B556FF824F1C4F40012C6C7 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B556FF724F1C4F40012C6C7 /* Search.storyboard */; };
 		4B556FFA24F1CDF30012C6C7 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FF924F1CDF30012C6C7 /* SearchResultTableViewCell.swift */; };
@@ -17,9 +19,13 @@
 		4B9D143624C889BA004E7EAF /* SectionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9D143524C889BA004E7EAF /* SectionTextView.swift */; };
 		4BA1209626C069BB00320E80 /* AltTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1209526C069BB00320E80 /* AltTextController.swift */; };
 		4BA1209726C06AF900320E80 /* AltTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1209526C069BB00320E80 /* AltTextController.swift */; };
+		4BB0C672308E9C5A0053A328 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BB0C671308E9C5A0053A328 /* MapKit.framework */; };
 		4BE1FFAE251D82BA0037FEFA /* BlogSelectionAddNewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */; };
 		A15F00012C5D000100000001 /* BlogChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F00032C5D000100000001 /* BlogChooserViewController.swift */; };
 		A15F00022C5D000100000001 /* BlogChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15F00032C5D000100000001 /* BlogChooserViewController.swift */; };
+		A1F4048DD4AC45EB9925AA8A /* PlacesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41079D2A3054475BC1A2D29 /* PlacesDataSource.swift */; };
+		A1F4048DD4AC45EB9925AA8B /* AppleMapsPlacesSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41079D2A3054475BC1A2D30 /* AppleMapsPlacesSearch.swift */; };
+		B0BE641821B2474A85617E14 /* PlaceCheckInTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA733CEB3D3D4BF3908E8675 /* PlaceCheckInTableViewCell.swift */; };
 		C51051DA26F05CB100533E31 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51051D926F05CB100533E31 /* HTMLParser.swift */; };
 		C51051DB26F05CD000533E31 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51051D926F05CB100533E31 /* HTMLParser.swift */; };
 		C5235AFB252D0670002F9CC6 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5235AFA252D0670002F9CC6 /* ShareViewController.swift */; };
@@ -358,7 +364,10 @@
 		4B55700124F56D010012C6C7 /* ConversationPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationPhotoCollectionViewCell.swift; path = Source/CollectionViewCells/ConversationPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		4B9D143524C889BA004E7EAF /* SectionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SectionTextView.swift; path = Source/Views/SectionTextView.swift; sourceTree = "<group>"; };
 		4BA1209526C069BB00320E80 /* AltTextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AltTextController.swift; path = Source/ViewControllers/AltTextController.swift; sourceTree = "<group>"; };
+		4BB0C671308E9C5A0053A328 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogSelectionAddNewCell.swift; path = Source/TableViewCells/BlogSelectionAddNewCell.swift; sourceTree = "<group>"; };
+		52BBDB01B34B4E449655A8C2 /* CheckInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CheckInViewController.swift; path = Source/ViewControllers/CheckInViewController.swift; sourceTree = "<group>"; };
+		8E558F89DF1742F3845FB21C /* PlacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlacesViewController.swift; path = Source/ViewControllers/PlacesViewController.swift; sourceTree = "<group>"; };
 		A15F00032C5D000100000001 /* BlogChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlogChooserViewController.swift; path = Source/ViewControllers/BlogChooserViewController.swift; sourceTree = "<group>"; };
 		C51051D926F05CB100533E31 /* HTMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HTMLParser.swift; path = Source/Utilities/HTMLParser.swift; sourceTree = "<group>"; };
 		C5235AF8252D0670002F9CC6 /* sharing.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = sharing.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -581,6 +590,9 @@
 		C5FBC2372541430C0070E4DA /* SunlitTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitTimelineProvider.swift; sourceTree = "<group>"; };
 		C5FBC2382541434C0070E4DA /* SunlitWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitWidgetView.swift; sourceTree = "<group>"; };
 		C5FBC251254143AD0070E4DA /* SunlitWidgetTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunlitWidgetTextView.swift; sourceTree = "<group>"; };
+		E41079D2A3054475BC1A2D29 /* PlacesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlacesDataSource.swift; path = Source/Data/PlacesDataSource.swift; sourceTree = "<group>"; };
+		E41079D2A3054475BC1A2D30 /* AppleMapsPlacesSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppleMapsPlacesSearch.swift; path = Source/Data/AppleMapsPlacesSearch.swift; sourceTree = "<group>"; };
+		FA733CEB3D3D4BF3908E8675 /* PlaceCheckInTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlaceCheckInTableViewCell.swift; path = Source/TableViewCells/PlaceCheckInTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -625,6 +637,7 @@
 				C5EC12FC248D64A50032B84D /* Mantis.framework in Frameworks */,
 				C5FA2E0726EEB8590053DE8E /* Snippets in Frameworks */,
 				C539FF1B26E46B9C00439934 /* BlurHash.framework in Frameworks */,
+				4BB0C672308E9C5A0053A328 /* MapKit.framework in Frameworks */,
 				C5A1DEB7249066E900B50B54 /* SwiftSoup.framework in Frameworks */,
 				C55DC4A2248A158F00C1F8A5 /* NextLevelSessionExporter.framework in Frameworks */,
 			);
@@ -728,6 +741,7 @@
 		C55DC494248A151000C1F8A5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4BB0C671308E9C5A0053A328 /* MapKit.framework */,
 				C5EC472B253BB27400DDE4AC /* WidgetKit.framework */,
 				C5EC472D253BB27400DDE4AC /* SwiftUI.framework */,
 			);
@@ -1032,6 +1046,7 @@
 		C5FC6ADE2476083D00ACB77E /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				FA733CEB3D3D4BF3908E8675 /* PlaceCheckInTableViewCell.swift */,
 				4BE1FFAD251D82BA0037FEFA /* BlogSelectionAddNewCell.swift */,
 				C56316AB2504AE6400CC447C /* BlogSelectionTableViewCell.swift */,
 				C5A1DE8224901DD800B50B54 /* ConversationTableViewCell.swift */,
@@ -1065,6 +1080,8 @@
 		C5FFB1D22469C7A20015368A /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				E41079D2A3054475BC1A2D29 /* PlacesDataSource.swift */,
+				E41079D2A3054475BC1A2D30 /* AppleMapsPlacesSearch.swift */,
 				C5F5F94626E57ECC0095D5F2 /* BlurHash.swift */,
 				C53375C726C080390084C66F /* LocationQuery.swift */,
 				C5A1DE6124901DBC00B50B54 /* Settings.swift */,
@@ -1083,6 +1100,8 @@
 		C5FFB1D32469C7AD0015368A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				52BBDB01B34B4E449655A8C2 /* CheckInViewController.swift */,
+				8E558F89DF1742F3845FB21C /* PlacesViewController.swift */,
 				C5A1DE7624901DCC00B50B54 /* AboutViewController.swift */,
 				4BA1209526C069BB00320E80 /* AltTextController.swift */,
 				A15F00032C5D000100000001 /* BlogChooserViewController.swift */,
@@ -1593,6 +1612,11 @@
 				C5A1DE9024901DE600B50B54 /* PostAddPhotoCollectionViewCell.swift in Sources */,
 				C5A1DE8424901DD800B50B54 /* ConversationTableViewCell.swift in Sources */,
 				C5A1DE7B24901DCC00B50B54 /* MainViewController.swift in Sources */,
+				102D7CC4B2694AA09499E746 /* CheckInViewController.swift in Sources */,
+				126CCF5ADE6B49B2A1E2C172 /* PlacesViewController.swift in Sources */,
+				B0BE641821B2474A85617E14 /* PlaceCheckInTableViewCell.swift in Sources */,
+				A1F4048DD4AC45EB9925AA8A /* PlacesDataSource.swift in Sources */,
+				A1F4048DD4AC45EB9925AA8B /* AppleMapsPlacesSearch.swift in Sources */,
 				C5E26A3A249EB85100F9E158 /* MainTabletViewController.swift in Sources */,
 				C5A1DE7F24901DCC00B50B54 /* ImageViewerViewController.swift in Sources */,
 				C5A1DE5224901D9D00B50B54 /* Date+Sunlit.swift in Sources */,
@@ -1782,7 +1806,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Sharing Extension/sharing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 512;
+				CURRENT_PROJECT_VERSION = 514;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = "Sharing Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -1791,7 +1815,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.sharing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1806,7 +1830,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Sharing Extension/sharing.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 512;
+				CURRENT_PROJECT_VERSION = 514;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = "Sharing Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -1815,7 +1839,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.sharing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2156,7 +2180,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sunlit/Sunlit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 512;
+				CURRENT_PROJECT_VERSION = 514;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2168,7 +2192,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
@@ -2184,7 +2208,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Sunlit/Sunlit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 512;
+				CURRENT_PROJECT_VERSION = 514;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2196,7 +2220,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
@@ -2286,7 +2310,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = widget_background;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 512;
+				CURRENT_PROJECT_VERSION = 514;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -2295,7 +2319,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.widget;
 				PRODUCT_NAME = "Sunlit Widget";
 				SKIP_INSTALL = YES;
@@ -2312,7 +2336,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = widget_background;
 				CODE_SIGN_ENTITLEMENTS = WidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 512;
+				CURRENT_PROJECT_VERSION = 514;
 				DEVELOPMENT_TEAM = 3F9MDJ6K4E;
 				INFOPLIST_FILE = Widget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
@@ -2321,7 +2345,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.6.3;
+				MARKETING_VERSION = 4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = blog.micro.sunlit.widget;
 				PRODUCT_NAME = "Sunlit Widget";
 				SKIP_INSTALL = YES;

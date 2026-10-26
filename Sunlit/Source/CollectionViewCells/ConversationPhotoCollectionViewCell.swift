@@ -11,5 +11,12 @@ import UIKit
 class ConversationPhotoCollectionViewCell: UICollectionViewCell {
 
 	@IBOutlet var imageView : UIImageView!
+	var imageSource: String?
+
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		self.imageSource = nil
+		self.imageView.image = nil
+	}
 
 }

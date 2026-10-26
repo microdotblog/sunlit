@@ -44,6 +44,7 @@ class MainViewController: ContentViewController {
 	var timelineViewController : TimelineViewController!
 	var myProfileViewController : ProfileViewController!
 	var mentionsViewController : MentionsViewController!
+	var placesViewController : PlacesViewController!
     var bookmarksViewController : BookmarksViewController!
 
 	private var signInInProgress = false
@@ -180,6 +181,7 @@ class MainViewController: ContentViewController {
 		let storyboard = UIStoryboard(name: "Content", bundle: nil)
 		self.timelineViewController = storyboard.instantiateViewController(identifier: "TimelineViewController")
 		self.discoverViewController = storyboard.instantiateViewController(identifier: "DiscoverViewController")
+		self.placesViewController = PlacesViewController()
 
 		let profileStoryboard = UIStoryboard(name: "Profile", bundle: nil)
 		self.myProfileViewController = profileStoryboard.instantiateViewController(identifier: "ProfileViewController")
@@ -243,6 +245,7 @@ class MainViewController: ContentViewController {
 		self.bookmarksViewController.resetForLogout()
 		self.myProfileViewController.resetForLogout()
 		self.mentionsViewController.posts = []
+		self.placesViewController.resetForLogout()
 		if self.mentionsViewController.isViewLoaded {
 			self.mentionsViewController.tableView.reloadData()
 		}
@@ -451,6 +454,7 @@ class MainViewController: ContentViewController {
 				}
 
                 let blogName : String = MicropubState.lookupBlogName(from: state) ?? ""
+                let publishingPurpose = MicropubState.publishingPurpose(from: state)
 
 				if (code.count > 0) && (state.count > 0) && (blogName.count > 0){
 					let accountGeneration = Settings.accountGeneration
@@ -484,7 +488,10 @@ class MainViewController: ContentViewController {
                                     blogSettings.save()
                                     BlogSettings.addPublishedBlog(blogSettings)
 
-                                    if blogSettings.snippetsConfiguration!.type == .micropub {
+                                    if publishingPurpose == .checkIns {
+                                        publishingPurpose.select(blogSettings)
+                                    }
+                                    else if blogSettings.snippetsConfiguration!.type == .micropub {
 										Dialog(self).selectBlog()
 									}
 
@@ -608,6 +615,7 @@ class MainViewController: ContentViewController {
 		let phoneViewController = MainPhoneViewController(
 			timelineViewController: self.timelineViewController,
 			mentionsViewController: self.mentionsViewController,
+			placesViewController: self.placesViewController,
 			discoverViewController: self.discoverViewController
 		)
 		self.phoneViewController = phoneViewController

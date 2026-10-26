@@ -15,20 +15,15 @@ class DiscoverViewController: ContentViewController {
 	@IBOutlet var busyIndicator : UIActivityIndicatorView!
 	@IBOutlet var collectionView : UICollectionView!
 	@IBOutlet var tableView : UITableView!
-	@IBOutlet var scrollView : UIScrollView!
-	@IBOutlet var stackView : UIStackView!
 	var keyboardAccessoryView : UIView!
 
-	@IBOutlet var stackViewWidthConstraint : NSLayoutConstraint!
-	var selectedButton : UIButton? = nil
 	
 	var tableViewRefreshControl = UIRefreshControl()
 	var collectionViewRefreshControl = UIRefreshControl()
 	var searchController: SearchViewController? = nil
 	
 	var posts : [SunlitPost] = []
-	var collection = "photos"
-	var collectionTitle = "photos"
+	let collection = "photos"
 	var loadingData = false
 	private var timelineGeneration = 0
 	var isShowingCollectionView = true
@@ -49,7 +44,6 @@ class DiscoverViewController: ContentViewController {
         super.prepareToDisplay()
 
 		self.setupSnippets()
-        self.loadTagmoji()
 		
         self.collectionView.reloadData()
         self.tableView.reloadData()
@@ -79,6 +73,12 @@ class DiscoverViewController: ContentViewController {
 			segmented_control.selectedSegmentIndex = 1
 		}
 		
+		// Keep icon spacing consistent before and after a navigation-bar transition.
+		for segment in 0..<segmented_control.numberOfSegments {
+			segmented_control.setWidth(48, forSegmentAt: segment)
+		}
+		segmented_control.sizeToFit()
+
 		segmented_control.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
 		self.navigationController?.navigationBar.topItem?.titleView = segmented_control
 	}
@@ -140,6 +140,9 @@ class DiscoverViewController: ContentViewController {
 	}
 		
 	func setupTableViewAndCollectionView() {
+		// Let the grid's initial top spacing scroll away with the content.
+		self.tableView.contentInset.top = 0
+		self.collectionView.contentInset.top = 12
 		self.tableViewRefreshControl.addTarget(self, action: #selector(setupSnippets), for: .valueChanged)
 		self.tableView.addSubview(self.tableViewRefreshControl)
 		
@@ -213,7 +216,7 @@ class DiscoverViewController: ContentViewController {
 		let generation = self.timelineGeneration
 		let collection = self.collection
 		
-		Snippets.Microblog.fetchDiscoverTimeline(collection: collection) { [weak self] (error, postObjects, tagmoji) in
+		Snippets.Microblog.fetchDiscoverTimeline(collection: collection) { [weak self] (error, postObjects, _) in
 			guard let self = self else { return }
 
 			self.setupBlurHashes(postObjects)
@@ -237,11 +240,6 @@ class DiscoverViewController: ContentViewController {
                 
 				self.loadingData = false
                 
-				if let tagmojiData = tagmoji {
-					if Tagmoji.shared.updateFromServerResponse(tagmojiData) {
-						self.loadTagmoji()
-					}
-				}
 			}
 		}
 	}
@@ -261,7 +259,7 @@ class DiscoverViewController: ContentViewController {
 			parameters["count"] = "10"
 			parameters["before_id"] = last.identifier
 
-			Snippets.Microblog.fetchDiscoverTimeline(collection: collection, parameters: parameters) { [weak self] (error, entries, tagmoji) in
+			Snippets.Microblog.fetchDiscoverTimeline(collection: collection, parameters: parameters) { [weak self] (error, entries, _) in
 				guard let self = self else { return }
 
 				self.setupBlurHashes(entries)
@@ -332,50 +330,6 @@ class DiscoverViewController: ContentViewController {
 	}
 
 
-	func loadTagmoji() {
-		
-		DispatchQueue.main.async {
-			
-			for subview in self.stackView.arrangedSubviews {
-				subview.removeFromSuperview()
-			}
-			
-			var buttonOffset = CGPoint(x: 0, y: 0)
-			let tagmojiArray = Tagmoji.shared.all()
-			self.selectedButton  = nil
-				
-			for tagmoji in tagmojiArray {
-				if let name = Tagmoji.shared.tileFor(tagmoji: tagmoji) {
-					
-					let button = UIButton(type: .custom)
-					button.frame = CGRect(x: buttonOffset.x, y: buttonOffset.y, width: 36, height: 36)
-					button.setTitle(tagmoji, for: .normal)
-					if let color_img = UIImage.uuSolidColorImage(color: UIColor(named: "color_emoji_selection")!) {
-						button.setBackgroundImage(color_img, for: .selected)
-					}
-					button.layer.cornerRadius = 6
-					button.clipsToBounds = true
-						
-					if name == "photos" {
-						self.stackView.insertArrangedSubview(button, at: 0)
-					}
-					else {
-						self.stackView.addArrangedSubview(button)
-					}
-					if Tagmoji.shared.routeFor(tagmoji: tagmoji) == self.collection {
-						self.selectedButton = button
-						button.isSelected = true
-					}
-					buttonOffset.x += 44
-					button.addTarget(self, action: #selector(self.tagmojiSelected(_:)), for: .touchUpInside)
-				}
-			}
-			
-			self.stackViewWidthConstraint.constant = buttonOffset.x
-			self.scrollView.contentSize = CGSize(width: buttonOffset.x, height: buttonOffset.y)
-		}
-	}
-	
 	@objc func setupSnippets() {
 		self.loadTimeline()
 	}
@@ -425,27 +379,6 @@ class DiscoverViewController: ContentViewController {
 	@objc func emojiSelected(_ button : UIButton) {
 		if let emoji = button.title(for: .normal) {
 			NotificationCenter.default.post(name: .emojiSelectedNotification, object: emoji)
-		}
-	}
-	
-	@objc func tagmojiSelected(_ button : UIButton) {
-		if let selected = self.selectedButton {
-			selected.isSelected = false
-		}
-		
-		self.selectedButton = button
-		button.isSelected = true
-		
-		if let emoji = button.title(for: .normal),
-			let title = Tagmoji.shared.tileFor(tagmoji: emoji),
-			let collection = Tagmoji.shared.routeFor(tagmoji: emoji) {
-			self.collection = collection
-			self.collectionTitle = title
-
-			self.setupNavigation()
-			self.refresh([])
-			self.busyIndicator.isHidden = false
-			self.loadTimeline(force: true)
 		}
 	}
 	

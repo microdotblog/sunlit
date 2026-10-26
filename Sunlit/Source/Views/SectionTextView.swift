@@ -9,11 +9,43 @@
 import UIKit
 
 class SectionTextView: UITextView {
+	private let placeholderLabel = UILabel()
+
+	override var text: String! {
+		didSet { self.updatePlaceholder() }
+	}
+
+	override var attributedText: NSAttributedString! {
+		didSet { self.updatePlaceholder() }
+	}
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
 		self.textContainerInset = ComposeCollectionViewMetrics.textContainerInsets
 		self.textContainer.lineFragmentPadding = ComposeCollectionViewMetrics.textLineFragmentPadding
+		self.placeholderLabel.text = PostTextCollectionViewCell.placeholderText
+		self.placeholderLabel.textColor = .placeholderText
+		self.placeholderLabel.numberOfLines = 0
+		self.placeholderLabel.isUserInteractionEnabled = false
+		self.placeholderLabel.isAccessibilityElement = false
+		self.addSubview(self.placeholderLabel)
+		NotificationCenter.default.addObserver(self, selector: #selector(updatePlaceholder), name: UITextView.textDidChangeNotification, object: self)
+		self.updatePlaceholder()
+	}
+
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		self.placeholderLabel.font = self.font
+		self.placeholderLabel.textAlignment = self.textAlignment
+		let padding = self.textContainer.lineFragmentPadding
+		let width = max(0, self.bounds.width - self.textContainerInset.left - self.textContainerInset.right - padding * 2)
+		let size = self.placeholderLabel.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
+		self.placeholderLabel.frame = CGRect(x: self.textContainerInset.left + padding, y: self.textContainerInset.top, width: width, height: size.height)
+	}
+
+	@objc private func updatePlaceholder() {
+		self.placeholderLabel.isHidden = !(self.text ?? "").isEmpty
+		self.setNeedsLayout()
 	}
 }
