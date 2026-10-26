@@ -185,7 +185,7 @@ final class MicropubPlacesDataSource: PlacesDataSource {
     }
 
     func checkIn(at place: SunlitPlace, note: String, blog: BlogSettings, completion: @escaping (Result<SunlitCheckIn, Error>) -> Void) {
-        let date = Date()
+        let date = CheckInPostDelay.selected.publishedDate()
         do {
             let request = try Self.checkInRequest(at: place, note: note, blog: blog, date: date)
             self.session.dataTask(with: request) { _, response, error in
@@ -211,7 +211,7 @@ final class MicropubPlacesDataSource: PlacesDataSource {
         }
     }
 
-    static func checkInRequest(at place: SunlitPlace, note: String, blog: BlogSettings, date: Date = Date()) throws -> URLRequest {
+    static func checkInRequest(at place: SunlitPlace, note: String, blog: BlogSettings, date: Date = CheckInPostDelay.selected.publishedDate()) throws -> URLRequest {
         guard !place.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
               place.coordinate.latitude.isFinite, place.coordinate.longitude.isFinite,
               CLLocationCoordinate2DIsValid(place.coordinate) else { throw SourceError.invalidPlace }

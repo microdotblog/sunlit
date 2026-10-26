@@ -5,6 +5,8 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
     private let onCheckIn: () -> Void
     private let accountGeneration = Settings.accountGeneration
     private let tableView = UITableView(frame: .zero, style: .plain)
+    private let scheduleBanner = UIView()
+    private let scheduleLabel = UILabel()
     private let noteTextView = UITextView()
     private let notePlaceholder = UILabel()
     private let noteCell = UITableViewCell()
@@ -43,6 +45,7 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
         self.configureNote()
         self.configureNearbyHeader()
         self.configureLayout()
+        self.configureScheduleBanner()
         self.updateBlogSelectorButton()
         NotificationCenter.default.addObserver(self, selector: #selector(retryLocationSearch), name: UIApplication.didBecomeActiveNotification, object: nil)
         self.search("")
@@ -51,6 +54,7 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.updateBlogSelectorButton()
+        self.updateScheduleBanner()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -122,6 +126,33 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
         ])
     }
 
+    private func configureScheduleBanner() {
+        self.scheduleBanner.backgroundColor = UIColor { traits in
+            traits.userInterfaceStyle == .dark ? .tertiarySystemBackground : UIColor(white: 0.97, alpha: 1)
+        }
+        self.scheduleLabel.font = .preferredFont(forTextStyle: .callout)
+        self.scheduleLabel.adjustsFontForContentSizeCategory = true
+        self.scheduleLabel.numberOfLines = 0
+        self.scheduleLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.scheduleBanner.addSubview(self.scheduleLabel)
+        let bottom = self.scheduleLabel.bottomAnchor.constraint(equalTo: self.scheduleBanner.bottomAnchor, constant: -12)
+        // Let the stack collapse the banner completely when scheduling is off.
+        bottom.priority = .init(999)
+        NSLayoutConstraint.activate([
+            self.scheduleLabel.leadingAnchor.constraint(equalTo: self.tableView.layoutMarginsGuide.leadingAnchor),
+            self.scheduleLabel.trailingAnchor.constraint(equalTo: self.tableView.layoutMarginsGuide.trailingAnchor),
+            self.scheduleLabel.topAnchor.constraint(equalTo: self.scheduleBanner.topAnchor, constant: 12),
+            bottom
+        ])
+        self.updateScheduleBanner()
+    }
+
+    private func updateScheduleBanner() {
+        let delay = CheckInPostDelay.selected
+        self.scheduleLabel.text = "Check-ins will be scheduled with delay: \(delay.title)"
+        self.scheduleBanner.isHidden = delay == .noDelay
+    }
+
     private func configureLayout() {
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -131,6 +162,9 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
         self.tableView.sectionHeaderTopPadding = 0
         self.tableView.keyboardDismissMode = .interactive
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
+        let content = UIStackView(arrangedSubviews: [self.scheduleBanner, self.tableView])
+        content.axis = .vertical
+        content.translatesAutoresizingMaskIntoConstraints = false
         let toolbar = UIView()
         toolbar.backgroundColor = .secondarySystemBackground
         toolbar.translatesAutoresizingMaskIntoConstraints = false
@@ -142,15 +176,15 @@ final class CheckInViewController: UIViewController, UITableViewDataSource, UITa
         dismissKeyboard.accessibilityLabel = "Dismiss keyboard"
         dismissKeyboard.translatesAutoresizingMaskIntoConstraints = false
         dismissKeyboard.addTarget(self, action: #selector(endEditing), for: .touchUpInside)
-        self.view.addSubview(self.tableView)
+        self.view.addSubview(content)
         self.view.addSubview(toolbar)
         toolbar.addSubview(self.blogSelectorButton)
         toolbar.addSubview(dismissKeyboard)
         NSLayoutConstraint.activate([
-            self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.tableView.bottomAnchor.constraint(equalTo: toolbar.topAnchor),
+            content.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            content.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            content.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            content.bottomAnchor.constraint(equalTo: toolbar.topAnchor),
             toolbar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             toolbar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             toolbar.bottomAnchor.constraint(equalTo: self.view.keyboardLayoutGuide.topAnchor),

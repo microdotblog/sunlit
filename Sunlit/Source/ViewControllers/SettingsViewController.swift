@@ -57,6 +57,7 @@ class SettingsViewController: UIViewController {
 		button.addTarget(self, action: action, for: .touchUpInside)
 		return button
 	}
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -135,7 +136,7 @@ class SettingsViewController: UIViewController {
 extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
 
 	func numberOfSections(in tableView: UITableView) -> Int {
-		return 4
+		return 5
 	}
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -165,8 +166,16 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
 		}
 
 		let cell = tableView.dequeueReusableCell(withIdentifier: self.currentBlogCellIdentifier, for: indexPath)
-		let purpose: BlogSettings.PublishingPurpose = indexPath.section == 2 ? .checkIns : .posts
-		cell.textLabel?.text = purpose.blog.blogName
+		if indexPath.section == 4 {
+			cell.textLabel?.text = CheckInPostDelay.selected.title
+			cell.accessibilityLabel = "Schedule check-in posts"
+			cell.accessibilityValue = CheckInPostDelay.selected.title
+		} else {
+			let purpose: BlogSettings.PublishingPurpose = indexPath.section == 2 ? .checkIns : .posts
+			cell.textLabel?.text = purpose.blog.blogName
+			cell.accessibilityLabel = nil
+			cell.accessibilityValue = nil
+		}
 		cell.textLabel?.font = .preferredFont(forTextStyle: .body)
 		cell.textLabel?.textColor = .label
 		cell.textLabel?.textAlignment = .natural
@@ -183,6 +192,12 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
 		if indexPath.section == 1 || indexPath.section == 3 {
 			return
 		}
+		if indexPath.section == 4 {
+			CheckInPostDelayChooserViewController.present(from: self) { [weak self] _ in
+				self?.tableView.reloadData()
+			}
+			return
+		}
 
 		let purpose: BlogSettings.PublishingPurpose = indexPath.section == 2 ? .checkIns : .posts
 		BlogChooserViewController.present(from: self, blogs: self.tableData, purpose: purpose) { [weak self] _ in
@@ -195,10 +210,10 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
     }
 
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		guard section == 2 else { return nil }
+		guard section == 2 || section == 4 else { return nil }
 		let header = UIView()
 		let label = UILabel()
-		label.text = "For location check-ins, use blog:"
+		label.text = section == 2 ? "For location check-ins, use blog:" : "Schedule check-in posts:"
 		label.font = .preferredFont(forTextStyle: .body)
 		label.adjustsFontForContentSizeCategory = true
 		label.numberOfLines = 0
@@ -208,18 +223,18 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
 		NSLayoutConstraint.activate([
 			label.leadingAnchor.constraint(equalTo: header.leadingAnchor),
 			label.trailingAnchor.constraint(equalTo: header.trailingAnchor),
-			label.topAnchor.constraint(equalTo: header.topAnchor, constant: 16),
-			label.bottomAnchor.constraint(equalTo: header.bottomAnchor, constant: -24)
+			label.topAnchor.constraint(equalTo: header.topAnchor, constant: section == 4 ? 8 : 16),
+			label.bottomAnchor.constraint(equalTo: header.bottomAnchor, constant: -12)
 		])
 		return header
 	}
 
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return section == 2 ? UITableView.automaticDimension : .leastNormalMagnitude
+		return section == 2 || section == 4 ? UITableView.automaticDimension : .leastNormalMagnitude
 	}
 
 	func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-		return section == 2 ? 64 : 0
+		return section == 2 || section == 4 ? 48 : 0
 	}
 
 	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -229,7 +244,7 @@ extension SettingsViewController : UITableViewDataSource, UITableViewDelegate {
 
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 		if section == 0 || section == 2 { return .leastNormalMagnitude }
-		return section == 1 ? 8 : tableView.sectionFooterHeight
+		return section == 1 || section == 3 ? 8 : tableView.sectionFooterHeight
 	}
     
 }
