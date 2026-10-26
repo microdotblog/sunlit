@@ -159,7 +159,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
 				authEndpoint = authEndpoint + "&redirect_uri=" + String("https://sunlit.io/micropub/redirect").uuUrlEncoded()
 				authEndpoint = authEndpoint + "&client_id=" + (String("https://sunlit.io/").uuUrlEncoded())
 				authEndpoint = authEndpoint + "&state=" + micropubState
-				authEndpoint = authEndpoint + "&scope=create"
+				authEndpoint = authEndpoint + "&scope=" + "create delete".uuUrlEncoded()
 				authEndpoint = authEndpoint + "&response_type=code"
 
                 let blogName : String = URL(string:self.externalServerPath)?.host ?? ""
