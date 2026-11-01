@@ -9,8 +9,22 @@
 import UIKit
 import SafariServices
 import Snippets
+import UUSwiftNetworking
 
 class ProfileViewController: ContentViewController {
+	private enum FollowState {
+		case loading
+		case ready(Bool)
+		case updating(Bool)
+		case failed
+
+		var isFollowing: Bool? {
+			switch self {
+			case .ready(let value), .updating(let value): return value
+			case .loading, .failed: return nil
+			}
+		}
+	}
 
     /* Include bios */
     static let headerSection = 0
@@ -31,8 +45,10 @@ class ProfileViewController: ContentViewController {
 	var userPosts : [SunlitPost] = []
 	var loadInProgress = false
 	var isCurrentUserProfile = false
-	private var followingUsers : [SnippetsUser] = []
-	private var followingUsersLoaded = false
+	private var followingCount: Int?
+	private var followingCountRequestGeneration = 0
+	private var followState: FollowState = .loading
+	private var followRequestGeneration = 0
     var refreshControl = UIRefreshControl()
 	private let profileSectionInset : CGFloat = 8.0
 	private let photoSectionInset : CGFloat = 16.0
@@ -129,8 +145,10 @@ class ProfileViewController: ContentViewController {
 	func resetForLogout() {
 		self.user = nil
 		self.userPosts = []
-		self.followingUsers = []
-		self.followingUsersLoaded = false
+		self.followingCount = nil
+		self.followingCountRequestGeneration += 1
+		self.followRequestGeneration += 1
+		self.followState = .loading
 		self.loadInProgress = false
 
 		guard self.isViewLoaded else {
@@ -144,7 +162,13 @@ class ProfileViewController: ContentViewController {
 	@objc func handleFollowingButtonClickedNotification() {
 		let storyboard = UIStoryboard(name: "Following", bundle: nil)
 		let followingViewController = storyboard.instantiateViewController(withIdentifier: "FollowingViewController") as! FollowingViewController
-		followingViewController.following = self.followingUsers
+		let accountGeneration = Settings.accountGeneration
+		followingViewController.userToLoad = self.user
+		followingViewController.onFollowingLoaded = { [weak self] users in
+			guard let self = self, accountGeneration == Settings.accountGeneration, self.user != nil else { return }
+			self.followingCountRequestGeneration += 1
+			self.updateFollowingCount(users.count)
+		}
 		self.navigationController?.pushViewController(followingViewController, animated: true)
 	}
 	
@@ -173,14 +197,19 @@ class ProfileViewController: ContentViewController {
 		let accountGeneration = Settings.accountGeneration
 
 		if self.isCurrentUserProfile {
-			self.followingUsersLoaded = false
+			self.checkFollowingCount()
 			Snippets.Microblog.fetchCurrentUserInfo { [weak self] (error, updatedUser) in
-				self?.finishFetchingUser(updatedUser, accountGeneration: accountGeneration)
+				DispatchQueue.main.async {
+					self?.finishFetchingUser(updatedUser, accountGeneration: accountGeneration)
+				}
 			}
 		}
 		else {
+			self.checkFollowingStatus()
 			Snippets.Microblog.fetchUserDetails(user: self.user) { [weak self] (error, updatedUser, posts : [SnippetsPost]) in
-				self?.finishFetchingUser(updatedUser, accountGeneration: accountGeneration)
+				DispatchQueue.main.async {
+					self?.finishFetchingUser(updatedUser, accountGeneration: accountGeneration)
+				}
 			}
 		}
 	}
@@ -198,7 +227,11 @@ class ProfileViewController: ContentViewController {
 			return
 		}
 
-		self.user = self.isCurrentUserProfile ? SnippetsUser.saveAsCurrent(updatedUser) : SnippetsUser.save(updatedUser)
+		// The dedicated check or a follow action may have finished before this response.
+		if !self.isCurrentUserProfile, let isFollowing = self.followState.isFollowing {
+			updatedUser.isFollowing = isFollowing
+		}
+		self.user = self.isCurrentUserProfile ? SnippetsUser.saveAsCurrent(updatedUser, followingCount: self.followingCount) : SnippetsUser.save(updatedUser)
 
 		DispatchQueue.main.async {
 			guard accountGeneration == Settings.accountGeneration else {
@@ -222,31 +255,41 @@ class ProfileViewController: ContentViewController {
 
 				self.loadInProgress = false
 				self.userPosts = posts
+				self.saveFollowStatus()
 				self.collectionView.reloadData()
 				self.refreshControl.endRefreshing()
 			}
 		}
 
-		if self.isCurrentUserProfile {
-			Snippets.Microblog.listFollowing(user: updatedUser, completeList: true) { (error, users) in
-				guard accountGeneration == Settings.accountGeneration else {
-					return
-				}
+	}
 
-				self.followingUsers = users
-				self.followingUsersLoaded = true
-				self.user.followingCount = users.count
-				self.user = SnippetsUser.saveAsCurrent(self.user)
-
-				DispatchQueue.main.async {
-					guard accountGeneration == Settings.accountGeneration else {
-						return
-					}
-
-					self.collectionView.reloadData()
-				}
+	private func checkFollowingCount() {
+		guard let user = self.user else { return }
+		let configuration = Snippets.Configuration.timeline
+		guard !configuration.micropubToken.isEmpty else { return }
+		self.followingCountRequestGeneration += 1
+		let generation = self.followingCountRequestGeneration
+		let accountGeneration = Settings.accountGeneration
+		let username = user.username
+		let request = Snippets.secureGet(configuration,
+			path: configuration.microBlogPathForRoute("posts/\(username)"), arguments: ["count": "0"])
+		_ = UUHttpSession.executeRequest(request) { [weak self] response in
+			guard response.httpError == nil,
+				let feed = response.parsedResponse as? [String: Any],
+				let metadata = feed["_microblog"] as? [String: Any],
+				let count = metadata["following_count"] as? Int, count >= 0 else { return }
+			DispatchQueue.main.async {
+				guard let self = self, accountGeneration == Settings.accountGeneration,
+					generation == self.followingCountRequestGeneration, self.user?.username == username else { return }
+				self.updateFollowingCount(count)
 			}
 		}
+	}
+
+	private func updateFollowingCount(_ count: Int) {
+		self.followingCount = count
+		self.user = SnippetsUser.saveAsCurrent(self.user, followingCount: count)
+		self.collectionView.reloadData()
 	}
 	
 	
@@ -266,38 +309,59 @@ class ProfileViewController: ContentViewController {
 		}
 	}
 	
-	@objc func onFollowUser() {
+	private func checkFollowingStatus() {
+		guard !self.isCurrentUserProfile, self.user != nil else { return }
+		if case .updating = self.followState { return }
+		self.followRequestGeneration += 1
+		let generation = self.followRequestGeneration
+		let accountGeneration = Settings.accountGeneration
+		let username = self.user.username
+		self.followState = .loading
+		self.collectionView.reloadData()
 
-        self.loadInProgress = true
-        self.collectionView.reloadData()
-
-        if self.user.isFollowing {
-            
-			Snippets.Microblog.unfollow(user: self.user) { (error) in
-				if error == nil {
-					self.user.isFollowing = false
-					self.user = SnippetsUser.save(self.user)
-				}
-                
-                DispatchQueue.main.async {
-                    self.loadInProgress = false
-                    self.collectionView.reloadData()
-                }
+		Snippets.Microblog.checkFollowingStatus(user: self.user) { [weak self] error, isFollowing in
+			DispatchQueue.main.async {
+				guard let self = self, accountGeneration == Settings.accountGeneration,
+					generation == self.followRequestGeneration, self.user?.username == username else { return }
+				self.followState = error == nil ? .ready(isFollowing) : .failed
+				self.saveFollowStatus()
+				self.collectionView.reloadData()
 			}
 		}
-		else {
-			Snippets.Microblog.follow(user: self.user) { (error) in
-				if error == nil {
-					self.user.isFollowing = true
-					self.user = SnippetsUser.save(self.user)
-				}
-                
-                DispatchQueue.main.async {
-                    self.loadInProgress = false
-                    self.collectionView.reloadData()
-                }
-			}
+	}
 
+	private func saveFollowStatus() {
+		guard !self.isCurrentUserProfile, let isFollowing = self.followState.isFollowing,
+			let user = self.user else { return }
+		user.isFollowing = isFollowing
+		self.user = SnippetsUser.save(user)
+	}
+
+	@objc func onFollowUser() {
+		if case .failed = self.followState {
+			self.checkFollowingStatus()
+			return
+		}
+		guard case .ready(let wasFollowing) = self.followState, let user = self.user else { return }
+		self.followState = .updating(wasFollowing)
+		self.followRequestGeneration += 1
+		let generation = self.followRequestGeneration
+		let accountGeneration = Settings.accountGeneration
+		self.collectionView.reloadData()
+
+		let completion: (Error?) -> Void = { [weak self] error in
+			DispatchQueue.main.async {
+				guard let self = self, accountGeneration == Settings.accountGeneration,
+					generation == self.followRequestGeneration, self.user?.username == user.username else { return }
+				self.followState = .ready(error == nil ? !wasFollowing : wasFollowing)
+				self.saveFollowStatus()
+				self.collectionView.reloadData()
+			}
+		}
+		if wasFollowing {
+			Snippets.Microblog.unfollow(user: user, completion: completion)
+		} else {
+			Snippets.Microblog.follow(user: user, completion: completion)
 		}
 	}
 }
@@ -438,35 +502,34 @@ extension ProfileViewController : UICollectionViewDataSource, UICollectionViewDe
 		cell.followButton.removeTarget(nil, action: nil, for: .allEvents)
 
 		if self.isCurrentUserProfile {
-			if self.followingUsersLoaded {
-				cell.busyIndicator.stopAnimating()
-				cell.followButton.setTitle("Following \(self.followingUsers.count)", for: .normal)
-				let trailingInset = cell.contentView.bounds.width - cell.followButton.frame.maxX
-				let centerY = cell.followButton.center.y
-				cell.followButton.contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 18.0, bottom: 0.0, right: 18.0)
-				cell.followButton.sizeToFit()
-				cell.followButton.frame.size.width = max(cell.followButton.frame.width, 100.0)
-				cell.followButton.frame.size.height = 40.0
-				cell.followButton.frame.origin.x = cell.contentView.bounds.width - trailingInset - cell.followButton.frame.width
-				cell.followButton.center.y = centerY
-				cell.followButton.isHidden = false
-				cell.followButton.addTarget(self, action: #selector(handleFollowingButtonClickedNotification), for: .touchUpInside)
-			}
-			else {
-				cell.busyIndicator.startAnimating()
-			}
+			cell.busyIndicator.stopAnimating()
+			cell.followButton.setTitle(self.followingCount.map { "Following \($0)" } ?? "Following", for: .normal)
+			let trailingInset = cell.contentView.bounds.width - cell.followButton.frame.maxX
+			let centerY = cell.followButton.center.y
+			cell.followButton.contentEdgeInsets = UIEdgeInsets(top: 0.0, left: 18.0, bottom: 0.0, right: 18.0)
+			cell.followButton.sizeToFit()
+			cell.followButton.frame.size.width = max(cell.followButton.frame.width, 100.0)
+			cell.followButton.frame.size.height = 40.0
+			cell.followButton.frame.origin.x = cell.contentView.bounds.width - trailingInset - cell.followButton.frame.width
+			cell.followButton.center.y = centerY
+			cell.followButton.isHidden = false
+			cell.followButton.addTarget(self, action: #selector(handleFollowingButtonClickedNotification), for: .touchUpInside)
 		}
 		else {
 			cell.followButton.contentEdgeInsets = .zero
 			cell.followButton.addTarget(self, action: #selector(onFollowUser), for: .touchUpInside)
 
-			if self.loadInProgress {
+			switch self.followState {
+			case .loading, .updating:
 				cell.busyIndicator.startAnimating()
-			}
-			else {
+			case .ready(let isFollowing):
 				cell.busyIndicator.stopAnimating()
 				cell.followButton.isHidden = false
-				cell.followButton.setTitle(self.user.isFollowing ? "Unfollow" : "Follow", for: .normal)
+				cell.followButton.setTitle(isFollowing ? "Unfollow" : "Follow", for: .normal)
+			case .failed:
+				cell.busyIndicator.stopAnimating()
+				cell.followButton.isHidden = false
+				cell.followButton.setTitle("Retry", for: .normal)
 			}
 
 			if self.user.username == SnippetsUser.current()?.username {

@@ -14,13 +14,54 @@ class FollowingViewController: UIViewController {
 	@IBOutlet var tableView : UITableView!
 	
 	var following : [SnippetsUser] = []
+	var userToLoad: SnippetsUser?
+	var onFollowingLoaded: (([SnippetsUser]) -> Void)?
 	var visible = false
+	private var loading = false
+	private let loadingIndicator = UIActivityIndicatorView(style: .large)
 	
     override func viewDidLoad() {
         super.viewDidLoad()
 
 		self.setupNavigation()
 		self.setupGesture()
+		if self.userToLoad != nil {
+			self.loadingIndicator.hidesWhenStopped = true
+			self.loadingIndicator.accessibilityLabel = "Loading following"
+			self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+			self.view.addSubview(self.loadingIndicator)
+			NSLayoutConstraint.activate([
+				self.loadingIndicator.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
+				self.loadingIndicator.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor)
+			])
+			let refreshControl = UIRefreshControl()
+			refreshControl.addTarget(self, action: #selector(loadFollowing), for: .valueChanged)
+			self.tableView.refreshControl = refreshControl
+			self.loadFollowing()
+		}
+	}
+
+	@objc private func loadFollowing() {
+		guard !self.loading, let user = self.userToLoad else { return }
+		self.loading = true
+		let accountGeneration = Settings.accountGeneration
+		if self.following.isEmpty { self.loadingIndicator.startAnimating() }
+		Snippets.Microblog.listFollowing(user: user, completeList: true) { [weak self] error, users in
+			DispatchQueue.main.async {
+				guard let self = self, accountGeneration == Settings.accountGeneration,
+					self.userToLoad?.username == user.username else { return }
+				self.loading = false
+				self.loadingIndicator.stopAnimating()
+				self.tableView.refreshControl?.endRefreshing()
+				if let error = error {
+					if self.visible { Dialog(self).information(error.localizedDescription) }
+					return
+				}
+				self.following = users
+				self.tableView.reloadData()
+				self.onFollowingLoaded?(users)
+			}
+		}
 	}
 
 	func setupNavigation() {
@@ -57,16 +98,12 @@ class FollowingViewController: UIViewController {
 		
 		ImageCache.fetch(path) { (image) in
 			
-			if let _ = image {
+			if let image = image {
 				DispatchQueue.main.async {
-					if self.visible {
-						self.tableView.performBatchUpdates({
-							self.tableView.reloadRows(at: [index], with: .fade)
-						}, completion: nil)
-					}
-					else {
-						print("Image fetch complete, but ignoring because not visible...")
-					}
+					guard self.visible, self.following.indices.contains(index.row),
+						self.following[index.row].avatarURL == path,
+						let cell = self.tableView.cellForRow(at: index) as? ProfileTableViewCell else { return }
+					cell.avatar.image = image
 				}
 			}
 		}

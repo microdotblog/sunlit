@@ -85,8 +85,8 @@ extension SnippetsUser {
 
 	
 	// saveAsCurrent and save both merge the user with any extended attributes that have already been stored...
-	static func saveAsCurrent(_ user : SnippetsUser) -> SnippetsUser {
-		return SnippetsUser.save(user, key: "Current User")
+	static func saveAsCurrent(_ user : SnippetsUser, followingCount: Int? = nil) -> SnippetsUser {
+		return SnippetsUser.save(user, key: "Current User", followingCount: followingCount)
 	}
 	
 	static func current() -> SnippetsUser? {
@@ -118,7 +118,7 @@ extension SnippetsUser {
         Settings.removeObject(forKey: "Current User")
 	}
 	
-	static func save(_ user : SnippetsUser, key : String? = nil) -> SnippetsUser {
+	static func save(_ user : SnippetsUser, key : String? = nil, followingCount: Int? = nil) -> SnippetsUser {
 		
 		var saveKey = user.username
 		if let k = key {
@@ -127,7 +127,10 @@ extension SnippetsUser {
 		
 		// See if there is an existing dictionary to see if we need to merge...
 		let master = Settings.object(forKey: saveKey) as? [String : Any]
-		let dictionary = user.dictionary(mergeWith: master)
+		var dictionary = user.dictionary(mergeWith: master)
+		if let followingCount = followingCount {
+			dictionary["following_count"] = followingCount
+		}
 		
         Settings.setValue(dictionary, forKey: saveKey)
 		
