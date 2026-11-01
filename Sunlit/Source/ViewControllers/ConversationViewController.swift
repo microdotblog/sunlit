@@ -106,8 +106,13 @@ class ConversationViewController: UIViewController {
 	}
 	
 	func setupTable() {
+		self.updateTableBackground()
 		self.tableViewRefreshControl.addTarget(self, action: #selector(refreshConversation), for: .valueChanged)
 		self.tableView.addSubview(self.tableViewRefreshControl)
+	}
+
+	private func updateTableBackground() {
+		self.tableView.backgroundColor = self.posts.count <= 1 ? UIColor(named: "color_timeline_cell") : .systemBackground
 	}
 	
     func setupNavigation() {
@@ -173,6 +178,7 @@ class ConversationViewController: UIViewController {
 					}
 
 					self.setupUsernames()
+					self.updateTableBackground()
 					self.tableView.reloadData()
 					self.spinner.stopAnimating()
 					self.tableViewRefreshControl.endRefreshing()
