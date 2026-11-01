@@ -21,6 +21,7 @@ class TimelineViewController: ContentViewController {
 	var tableViewData : [SunlitPost] = []
 	var loadingData = false
     var noMoreToLoad = false
+	private var tableLayoutWidth: CGFloat = 0
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,10 +33,34 @@ class TimelineViewController: ContentViewController {
 	}
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        self.loadTimeline()
+        super.traitCollectionDidChange(previousTraitCollection)
+		guard self.isViewLoaded, let previous = previousTraitCollection,
+			previous.userInterfaceStyle != self.traitCollection.userInterfaceStyle ||
+			previous.accessibilityContrast != self.traitCollection.accessibilityContrast ||
+			previous.preferredContentSizeCategory != self.traitCollection.preferredContentSizeCategory else {
+			return
+		}
+
+		// Update cached text locally without discarding the timeline's older pages.
+		for post in self.tableViewData {
+			post.attributedText = SunlitPost.create(post).attributedText
+		}
+		self.tableView.reloadData()
     }
 
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		let width = self.tableView.bounds.width
+		guard width > 0, width != self.tableLayoutWidth else { return }
+		self.tableLayoutWidth = width
+		self.tableView.reloadData()
+	}
+
 	func setupTableView() {
+		// Row heights are cheap to calculate exactly; estimates can shift a deep scroll position on reload.
+		self.tableView.estimatedRowHeight = 0
+		self.tableView.estimatedSectionHeaderHeight = 0
+		self.tableView.estimatedSectionFooterHeight = 0
 		self.refreshControl.addTarget(self, action: #selector(onPullToRefresh), for: .valueChanged)
 		self.tableView.addSubview(self.refreshControl)
 		if #available(iOS 26.0, *) {

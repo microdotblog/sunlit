@@ -53,7 +53,6 @@ class MainPhoneViewController: UITabBarController {
 		super.viewWillAppear(animated)
 
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
-		self.reloadTabs()
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
@@ -137,15 +136,6 @@ class MainPhoneViewController: UITabBarController {
 		self.currentViewController = self.timelineViewController
 		self.timelineViewController.prepareToDisplay()
 		self.updateMentionsBadge()
-	}
-
-	func reloadTabs() {
-		self.timelineViewController.tableView.reloadData()
-		self.discoverViewController.tableView.reloadData()
-		self.discoverViewController.collectionView.reloadData()
-		if self.mentionsViewController.isViewLoaded {
-			self.mentionsViewController.tableView.reloadData()
-		}
 	}
 
 	@objc func handleCurrentUserUpdated() {
