@@ -61,6 +61,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 
 	func sceneDidBecomeActive(_ scene: UIScene) {
+		DispatchQueue.main.async { [weak self] in
+			self?.showCheckInDelayResetWarningIfNeeded()
+		}
+	}
+
+	private func showCheckInDelayResetWarningIfNeeded() {
+		guard CheckInPostDelay.needsResetWarning,
+			let window = self.window, window.windowScene?.activationState == .foregroundActive,
+			var presenter = window.rootViewController else { return }
+		while let presented = presenter.presentedViewController {
+			presenter = presented
+		}
+		if let alert = presenter as? UIAlertController, alert.message == CheckInPostDelay.resetWarningMessage {
+			return
+		}
+		if let transition = presenter.transitionCoordinator {
+			transition.animate(alongsideTransition: nil) { [weak self] _ in
+				DispatchQueue.main.async {
+					self?.showCheckInDelayResetWarningIfNeeded()
+				}
+			}
+			return
+		}
+		guard presenter.viewIfLoaded?.window != nil, !presenter.isBeingDismissed else { return }
+		let alert = UIAlertController(title: nil, message: CheckInPostDelay.resetWarningMessage, preferredStyle: .alert)
+		alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+			CheckInPostDelay.needsResetWarning = false
+		})
+		presenter.present(alert, animated: true)
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {

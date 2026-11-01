@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Disable disk caching...
         UURemoteImage.useDiskCache = false
+		CheckInPostDelay.resetUnsupportedDelayIfNeeded()
         
         if let token = Settings.snippetsToken() {
             Snippets.Configuration.timeline = Snippets.Configuration.microblogConfiguration(token: token)
