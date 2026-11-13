@@ -16,8 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        // Disable disk caching...
-        UURemoteImage.useDiskCache = false
 		CheckInPostDelay.resetUnsupportedDelayIfNeeded()
         
         if let token = Settings.snippetsToken() {
@@ -30,22 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				SceneDelegate.handleURL(url)
 			}
 		}
-
-		/*
-		let clearCacheKey = "CacheClearKey-" +  (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "") + "-" + (Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "")
-		var shouldClearCache = true
-		// Comment this out to test a fresh install scenario...
-        shouldClearCache = Settings.bool(forKey: clearCacheKey) != true
-
-		if shouldClearCache {
-			UUDataCache.shared.clearCache()
-		}
-        Settings.setValue(true, forKey: clearCacheKey)
-		
-		// Content should only hang around for a day...
-		UUDataCache.shared.contentExpirationLength = 24.0 * 60.0 * 60.0
-		UUDataCache.shared.purgeExpiredData()
-		*/
 
 		// We might want to change this in the future but for now, it covers basically a single view in one of the collection views
 		UURemoteData.shared.maxActiveRequests = 6

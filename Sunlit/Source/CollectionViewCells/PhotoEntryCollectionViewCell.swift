@@ -17,6 +17,22 @@ class PhotoEntryCollectionViewCell : UICollectionViewCell {
 	@IBOutlet var date : UILabel!
     @IBOutlet var selectionIndicator : UIImageView? = nil
 	@IBOutlet var selectionBackgroundView : UIView? = nil
+	private var photoPath: String?
+
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		self.photoPath = nil
+	}
+
+	func loadPhoto(_ path: String?) {
+		self.photoPath = path
+		self.photo.image = nil
+		guard let path else { return }
+		ImageCache.loadForDisplay(path) { [weak self] image in
+			guard let self, self.photoPath == path else { return }
+			self.photo.image = image
+		}
+	}
 
 	static func sizeOf(collectionViewWidth : CGFloat) -> CGSize {
 		var sections = Int(collectionViewWidth / 160.0)

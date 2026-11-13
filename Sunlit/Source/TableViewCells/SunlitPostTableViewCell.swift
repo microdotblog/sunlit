@@ -9,7 +9,6 @@
 import UIKit
 import AVKit
 import Snippets
-import BlurHash
 
 class SunlitPostTableViewCell : UITableViewCell {
 
@@ -344,11 +343,11 @@ class SunlitPostTableViewCell : UITableViewCell {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 	
 	func setupAvatar() {
-		
 		self.userAvatar.image = nil
-		let avatarSource = self.post.owner.avatarURL
-		if let avatar = ImageCache.prefetch(avatarSource) {
-			self.userAvatar.image = avatar
+		let source = self.post.owner.avatarURL
+		ImageCache.loadForDisplay(source) { [weak self] image in
+			guard let self, self.post?.owner.avatarURL == source else { return }
+			self.userAvatar.image = image
 		}
 	}
 }
@@ -394,13 +393,6 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 		}
 	}
 	
-	func configureVideoPlayer(_ cell: SunlitPostCollectionViewCell, _ indexPath: IndexPath) {
-		let thumbnail = self.post.images[indexPath.item]
-		if let path = self.post.videos[thumbnail], let url = URL(string: path) {
-			cell.configureVideoPlayer(url: url)
-		}
-	}
-	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.post.images.count
 	}
@@ -408,32 +400,19 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let imagePath = self.post.images[indexPath.item]
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SunlitPostCollectionViewCell", for: indexPath) as! SunlitPostCollectionViewCell
-		let defaultPhoto = self.post.defaultPhoto
-		let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
 		cell.resetVideoPlayer()
-		cell.postImage.contentMode = .scaleAspectFill
-		cell.videoPlayIndicator.isHidden = true
+		let isVideo = self.post.videos[indexPath.item] != nil
+		cell.postImage.contentMode = isVideo ? .scaleAspectFit : .scaleAspectFill
+		cell.videoPlayIndicator.isHidden = !isVideo
 		cell.timeStampLabel.isHidden = true
 		cell.postImage.image = nil
-		cell.timeStampLabel.isHidden = true
+		cell.representedImagePath = imagePath
 
-		if let image = ImageCache.prefetch(imagePath) {
+		ImageCache.loadForDisplay(imagePath) { [weak cell] image in
+			guard let cell, cell.representedImagePath == imagePath else { return }
 			cell.postImage.image = image
 		}
-		else if blurHash.count > 0 {
-			if let image = ImageCache.prefetch(blurHash) {
-				cell.postImage.image = image
-			}
-		}
 
-		let thumbnail = self.post.images[indexPath.item]
-		let hasVideo = self.post.videos[thumbnail] != nil
-		
-		cell.videoPlayIndicator.isHidden = !hasVideo
-		if hasVideo {
-			self.configureVideoPlayer(cell, indexPath)
-		}
-		
 		return cell
 	}
 	
@@ -447,12 +426,11 @@ extension SunlitPostTableViewCell : UICollectionViewDataSource, UICollectionView
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		
-		if self.post.videos[self.post.images[indexPath.item]] != nil {
-
-			if let cell = collectionView.cellForItem(at: indexPath) as? SunlitPostCollectionViewCell {
-				cell.toggleVideoPlayback()
+		if let source = self.post.videos[indexPath.item] {
+			if let url = URL(string: source),
+			   let cell = collectionView.cellForItem(at: indexPath) as? SunlitPostCollectionViewCell {
+				cell.toggleVideoPlayback(url: url)
 			}
-
 		}
 		else {
 			let imagePath = self.post.images[indexPath.item]

@@ -45,7 +45,7 @@ struct Widget_Previews:
 extension SunlitPost {
     convenience init(_ text : String, _ images : [String]) {
         self.init()
-        self.attributedText = NSAttributedString(string: text)
+        self.htmlText = text
         self.images = images
         self.publishedDate = Date()
         self.owner = SnippetsUser()

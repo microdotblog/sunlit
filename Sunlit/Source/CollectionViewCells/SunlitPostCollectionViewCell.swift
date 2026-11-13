@@ -55,7 +55,7 @@ class SunlitPostCollectionViewCell: UICollectionViewCell {
 		self.player = nil
 	}
 
-	func configureVideoPlayer(url: URL) {
+	private func configureVideoPlayer(url: URL) {
 		self.resetVideoPlayer()
 		self.timeStampLabel.text = "00:00"
 		self.timeStampLabel.alpha = 0.0
@@ -92,7 +92,10 @@ class SunlitPostCollectionViewCell: UICollectionViewCell {
 		self.player?.pause()
 	}
 
-	func toggleVideoPlayback() {
+	func toggleVideoPlayback(url: URL) {
+		if self.player == nil {
+			self.configureVideoPlayer(url: url)
+		}
 		guard let player = self.player else { return }
 		if player.rate == 0.0 {
 			self.playerLayer?.isHidden = false

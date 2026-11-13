@@ -9,7 +9,6 @@
 import UIKit
 import Snippets
 import SwiftSoup
-//import UUSwift
 
 class SunlitPost : SnippetsPost {
 	
@@ -17,135 +16,90 @@ class SunlitPost : SnippetsPost {
 	var aspectRatio : Float = 0.0
 	var altText : [String] = []
 	var images : [String] = []
-	var videos : [String:String] = [:]
-	var htmlString : String = ""
-	var attributedText : NSAttributedString = NSAttributedString(string: "")
-
-	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MARK: -
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-	// These are exclusion patterns in the image source that can help remove any images from displaying, like emojis.
-	static let exclusionPatterns : [String] = ["/images/core/emoji"]
-	static let miniThumbnailsURL = "https://micro.blog/photos/50/"
-	
-	static func create(_ snippet : SnippetsPost, font : UIFont = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body), textColor : UIColor = UIColor.label) -> SunlitPost {
-
-		let html = addTextStyle(string: snippet.htmlText, font: font, textColor: textColor)
-		
-		var string = html
-		
-		// We create an allowedList for most of the html elements as well as strip out the image tags
-		if let allowedList = try? AllowedList.basicWithImages() {
-			_ = try? allowedList.removeTags("p")
-			_ = try? allowedList.addTags("style")
-			_ = try? allowedList.addTags("video").addAttributes("video", "src", "width", "height", "alt", "poster")
-			if let cleanString = try? SwiftSoup.clean(html, allowedList) {
-				string = cleanString
-			}
-		}
-
-		// For now, we are going to keep the original snippet object
-		let parsedEntry = SunlitPost()
-		parsedEntry.defaultPhoto = snippet.defaultPhoto
-		parsedEntry.identifier = snippet.identifier
-		parsedEntry.owner = snippet.owner
-		parsedEntry.htmlText = snippet.htmlText
-		parsedEntry.path = snippet.path
-		parsedEntry.publishedDate = snippet.publishedDate
-		parsedEntry.hasConversation = snippet.hasConversation
-		parsedEntry.replies = snippet.replies
-		parsedEntry.isDraft = snippet.isDraft
-        parsedEntry.isBookmark = snippet.isBookmark
-
-		// Calling this both saves and merges any existing user info/data...
-		parsedEntry.owner = SnippetsUser.save(snippet.owner)
-		
-		// Grab the published date...
-		parsedEntry.publishedDate = snippet.publishedDate
-		
-		// Use SwiftSoup to parse the post.
-		// We also calculate the aspect ratio from the width and height tags (if they exists) so that we can properly
-		// size the table cells when it's time to display the images.
-		if let document = try? SwiftSoup.parse(string) {
-			let images = findImageElements(document)
-			let videos = findVideoElements(document)
-			let text = stripImagesAndVideos(document, images, videos)
-			parsedEntry.htmlString = text
-			
-			var aspectRatio : Float = 0.0
-
-			// Store the image paths and the alt-text objects (if they exist)
-			for image in images {
-				var source = imageTag(tag: "src", image)
-				let altText = imageTag(tag: "alt", image)
-				
-				// expand the mini thumbnails
-				if source.contains(miniThumbnailsURL) {
-					source = source.replaceAll(of: miniThumbnailsURL, with: "")
-				}
-				
-				parsedEntry.images.append(source)
-				parsedEntry.altText.append(altText)
-			
-				let width = imageTag(tag: "width", image) as NSString
-				let height = imageTag(tag: "height", image) as NSString
-
-				if width.integerValue > 0 && height.integerValue > 0 {
-					let ratio = height.floatValue / width.floatValue
-					if ratio > aspectRatio {
-						aspectRatio = ratio
-					}
-				}
-
-				// Override what's in the HTML if we've already pre-calculated...
-				let defaultPhotoHeight : Float = Float(parsedEntry.defaultPhoto["height"] as? Int ?? 0)
-				let defaultPhotoWidth : Float = Float(parsedEntry.defaultPhoto["width"] as? Int ?? 0)
-				if defaultPhotoWidth > 0 && defaultPhotoHeight > 0 && (width.floatValue != defaultPhotoWidth || height.floatValue != defaultPhotoHeight) {
-					let ratio = defaultPhotoHeight / defaultPhotoWidth
-					if ratio > aspectRatio {
-						aspectRatio = ratio
-					}
-				}
-
-			}
-			
-			for video in videos {
-				let source = imageTag(tag: "src", video)
-				let poster = imageTag(tag: "poster", video)
-				let altText = imageTag(tag: "alt", video)
-				let width = imageTag(tag: "width", video) as NSString
-				let height = imageTag(tag: "height", video) as NSString
-
-				parsedEntry.altText.append(altText)
-				parsedEntry.videos[poster] = source
-				parsedEntry.images.append(poster)
-				if width.floatValue > 0.0 && height.floatValue > 0.0 {
-					let ratio = height.floatValue / width.floatValue
-					if ratio > aspectRatio {
-						aspectRatio = ratio
-					}
-				}
-			}
-
-			
-			// If there is no aspect ratio, we will default to a square/1.0 aspect ratio
-			if aspectRatio == 0.0 {
-				aspectRatio = 1.0
-			}
-			
-			parsedEntry.aspectRatio = aspectRatio
-		}
-		
-		parsedEntry.attributedText = NSAttributedString(string: parsedEntry.htmlString).html()
-		
-		return parsedEntry
+	var videos: [Int: String] = [:]
+	private lazy var caption = Self.captionHTML(self.htmlText)
+	var htmlString: String {
+		return Self.addTextStyle(string: self.caption, font: .preferredFont(forTextStyle: .body), textColor: .label)
 	}
-	
+	var attributedText: NSAttributedString {
+		return NSAttributedString(string: self.htmlString).html()
+	}
+
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+	private static let miniThumbnailsURL = "https://micro.blog/photos/50/"
 	
+	static func create(_ snippet: SnippetsPost, cacheAuthor: Bool = true) -> SunlitPost {
+		let post = SunlitPost()
+		post.defaultPhoto = snippet.defaultPhoto
+		post.identifier = snippet.identifier
+		post.owner = cacheAuthor ? SnippetsUser.save(snippet.owner) : snippet.owner
+		post.htmlText = snippet.htmlText
+		post.path = snippet.path
+		post.publishedDate = snippet.publishedDate
+		post.hasConversation = snippet.hasConversation
+		post.replies = snippet.replies
+		post.isDraft = snippet.isDraft
+		post.isBookmark = snippet.isBookmark
+
+		if let document = try? cleanDocument(post.htmlText) {
+			let elements = mediaElements(in: document)
+			post.setMedia(from: elements)
+			post.caption = captionHTML(document, removing: elements)
+		}
+		return post
+	}
+
+	private func setMedia(from elements: [Element]) {
+		var aspectRatio: Float = 0
+		let defaultWidth = self.defaultPhoto["width"] as? Int ?? 0
+		let defaultHeight = self.defaultPhoto["height"] as? Int ?? 0
+
+		for element in elements {
+			let source = Self.imageTag(tag: "src", element)
+			if element.tagName() == "video" {
+				self.videos[self.images.count] = source
+				self.images.append(Self.imageTag(tag: "poster", element))
+			} else {
+				self.images.append(source.replacingOccurrences(of: Self.miniThumbnailsURL, with: ""))
+				if defaultWidth > 0 && defaultHeight > 0 {
+					aspectRatio = max(aspectRatio, Float(defaultHeight) / Float(defaultWidth))
+				}
+			}
+			self.altText.append(Self.imageTag(tag: "alt", element))
+
+			let width = (Self.imageTag(tag: "width", element) as NSString).integerValue
+			let height = (Self.imageTag(tag: "height", element) as NSString).integerValue
+			if width > 0 && height > 0 {
+				aspectRatio = max(aspectRatio, Float(height) / Float(width))
+			}
+		}
+		self.aspectRatio = aspectRatio > 0 ? aspectRatio : 1
+	}
+
+	private static func cleanDocument(_ html: String) throws -> Document {
+		let allowedList = try AllowedList.basicWithImages()
+		_ = try allowedList.removeTags("p")
+		_ = try allowedList.addAttributes("img", "class")
+		_ = try allowedList.addTags("video").addAttributes("video", "src", "width", "height", "alt", "poster")
+		let document = try SwiftSoup.parseBodyFragment(html)
+		return try Cleaner(allowedList).clean(document)
+	}
+
+	private static func captionHTML(_ html: String) -> String {
+		guard let document = try? cleanDocument(html) else { return "" }
+		return captionHTML(document, removing: mediaElements(in: document))
+	}
+
+	private static func captionHTML(_ document: Document, removing media: [Element]) -> String {
+		for element in media {
+			try? element.remove()
+		}
+		return (try? document.body()?.html()) ?? ""
+	}
+
 	static func addTextStyle(string : String, font : UIFont, textColor : UIColor) -> String {
 		
 		let cssString = """
@@ -161,53 +115,22 @@ class SunlitPost : SnippetsPost {
 		return cssString + string
 	}
 	
-	static func findVideoElements(_ document : Document) -> [Element] {
-		var elements : [Element] = []
-		
-		if let sources : Elements = try? document.select("video[src]") {
-			for video in sources.array() {
-				elements.append(video)
+	private static func mediaElements(in document: Document) -> [Element] {
+		let elements = (try? document.select("img[src], video[src]"))?.array() ?? []
+		return elements.filter { element in
+			let source = imageTag(tag: "src", element)
+			if element.tagName() == "img" &&
+				(source.contains("/images/core/emoji") || element.hasClass("custom_emoji")) {
+				let replacement = Element(Tag("b"), "")
+				_ = try? replacement.appendText(imageTag(tag: "alt", element))
+				try? element.parent()?.replaceChild(element, replacement)
+				return false
 			}
+			return !source.isEmpty
 		}
-		
-		return elements
 	}
-	
-	static func findImageElements(_ document : Document) -> [Element] {
-		var elements : [Element] = []
-		
-		if let srcs : Elements = try? document.select("img[src]") {
-			for image in srcs.array() {
-				
-				var exclude = false
 
-				for excludedPattern in SunlitPost.exclusionPatterns {
-					
-                    if let text = try? image.attr("src"),
-                        text.contains(excludedPattern)
-                    {
-                        exclude = true
-
-                        let alt : String = (try? image.attr("alt")) ?? ""
-                        let replacementTag = Element(Tag("b"), "")
-
-                        _ = try? replacementTag.appendText(alt)
-                        
-                        try? image.parent()?.replaceChild(image, replacementTag)
-					}
-				}
-
-
-				if !exclude {
-					elements.append(image)
-				}
-			}
-		}
-
-		return elements
-	}
-	
-	static func imageTag(tag : String, _ element : Element) -> String {
+	private static func imageTag(tag : String, _ element : Element) -> String {
 		if let attributes = element.getAttributes() {
 			let value = attributes.get(key: tag)
 			return value
@@ -216,23 +139,7 @@ class SunlitPost : SnippetsPost {
 		return ""
 	}
 		
-	static func stripImagesAndVideos(_ document : Document, _ images : [Element], _ videos : [Element]) -> String {
-		
-		for image in images {
-            try? image.remove()
-		}
-		
-		for video in videos {
-			try? video.remove()
-		}
-		
-		if let text = try? document.html() {
-			return text
-		}
 
-		return ""
-	}
-	
 }
 
 

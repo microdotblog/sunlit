@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import SafariServices
 import Snippets
+import UUSwiftNetworking
 
 class TimelineViewController: ContentViewController {
 
@@ -17,10 +17,11 @@ class TimelineViewController: ContentViewController {
 	@IBOutlet var spinner: UIActivityIndicatorView!
 		
 	var refreshControl = UIRefreshControl()
-	var keyboardAccessoryView : UIView!
 	var tableViewData : [SunlitPost] = []
-	var loadingData = false
-    var noMoreToLoad = false
+	private var loadingData = false
+	private var refreshPending = false
+	private var noMoreToLoad = false
+	private var nextPageCursor: String?
 	private var tableLayoutWidth: CGFloat = 0
 	
     override func viewDidLoad() {
@@ -32,22 +33,6 @@ class TimelineViewController: ContentViewController {
 		self.loadTimeline()
 	}
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-		guard self.isViewLoaded, let previous = previousTraitCollection,
-			previous.userInterfaceStyle != self.traitCollection.userInterfaceStyle ||
-			previous.accessibilityContrast != self.traitCollection.accessibilityContrast ||
-			previous.preferredContentSizeCategory != self.traitCollection.preferredContentSizeCategory else {
-			return
-		}
-
-		// Update cached text locally without discarding the timeline's older pages.
-		for post in self.tableViewData {
-			post.attributedText = SunlitPost.create(post).attributedText
-		}
-		self.tableView.reloadData()
-    }
-
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		let width = self.tableView.bounds.width
@@ -83,7 +68,6 @@ class TimelineViewController: ContentViewController {
 
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
     }
 
     @objc override func handleScrollToTopGesture() {
@@ -105,37 +89,6 @@ class TimelineViewController: ContentViewController {
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-	@objc func emojiSelected(_ button : UIButton) {
-		if let emoji = button.title(for: .normal) {
-			NotificationCenter.default.post(name: .emojiSelectedNotification, object: emoji)
-		}
-	}
-		
-	@objc func handleImageLoadedNotification(_ notification : Notification) {
-
-		// Don't do anything if we aren't onscreen...
-		if !self.isPresented {
-			return
-		}
-
-
-		if let userInfo = notification.userInfo,
-		   let indexPath = userInfo["index"] as? IndexPath,
-		   let visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
-
-			if visibleIndexPaths.contains(indexPath) {
-                if let cell = self.tableView.cellForRow(at: indexPath) as? TimelineTableViewCell {
-                    cell.reloadImages()
-                }
-				//self.tableView.reloadData()
-				//self.tableView.beginUpdates()
-				//self.tableView.reloadRows(at: [ IndexPath(row: indexPath.row, section: 0) ], with: .fade)
-				//self.tableView.endUpdates()
-			}
-		}
-
-	}
-	
 	@objc func handleViewConversationNotification(_ notification : Notification) {
 		if let post = notification.object as? SunlitPost {
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Conversation", bundle: nil)
@@ -156,7 +109,9 @@ class TimelineViewController: ContentViewController {
 
 	func resetForLogout() {
 		self.loadingData = false
+		self.refreshPending = false
 		self.noMoreToLoad = false
+		self.nextPageCursor = nil
 		self.tableViewData = []
 
 		guard self.isViewLoaded else {
@@ -174,274 +129,101 @@ class TimelineViewController: ContentViewController {
 	MARK: -
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
-	func loadFrequentlyUsedEmoji() {
-		let emoji = Tagmoji.shared.frequentlyUsedEmoji()
-		let scrollView = UIScrollView()
-		let contentView = UIView()
-		scrollView.addSubview(contentView)
-		scrollView.backgroundColor = UIColor(named: "color_emoji_selection")!
-		
-		var buttonOffset = CGPoint(x: 0, y: 0)
-		for symbol in emoji {
-			let button = UIButton(frame: CGRect(x: buttonOffset.x, y: buttonOffset.y, width: 44, height: 44))
-			button.setTitle(symbol, for: .normal)
-			contentView.addSubview(button)
-			buttonOffset.x += 44
-			button.addTarget(self, action: #selector(self.emojiSelected(_:)), for: .touchUpInside)
-			
-			if let backgroundImage = UIImage.uuSolidColorImage(color: UIColor(named: "color_emoji_selection")!) {
-				button.setBackgroundImage(backgroundImage, for: .highlighted)
-			}
-		}
-		
-		contentView.frame = CGRect(x: 0, y: 0, width: buttonOffset.x, height: 44)
-		scrollView.addSubview(contentView)
-		scrollView.contentSize = CGSize(width: buttonOffset.x, height: buttonOffset.y)
-		scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44)
-		scrollView.showsHorizontalScrollIndicator = false
-		self.keyboardAccessoryView = scrollView
-		self.keyboardAccessoryView.alpha = 0.0
-	}
-
-	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
-		for object in postObjects {
-			let defaultPhoto = object.defaultPhoto
-			let hash : String = defaultPhoto["blurhash"] as? String ?? ""
-			let width : Int = (defaultPhoto["width"] as? Int ?? 0) / 10
-			let height : Int = (defaultPhoto["height"] as? Int ?? 0) / 10
-			if hash.count > 0 && width > 0 && height > 0 {
-				BlurHash.precalculate(hash, width: width, height: height)
-			}
-		}
-	}
-
 	@objc func onPullToRefresh() {
-		self.noMoreToLoad = false
 		self.loadTimeline()
 	}
 
-
-
 	func loadTimeline() {
+		self.fetchTimeline()
+	}
+
+	private func loadMoreTimeline() {
+		guard !self.noMoreToLoad, let cursor = self.nextPageCursor else { return }
+		self.fetchTimeline(before: cursor)
+	}
+
+	private func fetchTimeline(before cursor: String? = nil) {
 		guard Settings.isSignedIn else {
 			self.resetForLogout()
 			return
 		}
-
-		self.loggedOutView.isHidden = true
-		self.loggedOutView.superview?.bringSubviewToFront(self.loggedOutView)
-
-		// Safety check for double loads...
-		if self.loadingData == true {
+		guard !self.loadingData else {
+			if cursor == nil && self.refreshControl.isRefreshing {
+				self.refreshPending = true
+			}
 			return
 		}
-		
+
 		self.loadingData = true
+		self.loggedOutView.isHidden = true
+		if self.tableViewData.isEmpty && !self.refreshControl.isRefreshing {
+			self.spinner.startAnimating()
+		}
 		let accountGeneration = Settings.accountGeneration
 
-		var parameters : [String : String] = [:]
-		parameters["count"] = "20"
-		parameters["filter"] = "photos,videos"
+		var parameters = ["count": "20", "filter": "photos,videos"]
+		parameters["before_id"] = cursor
 
-		Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters) { (error, postObjects : [SnippetsPost]) in
-			guard accountGeneration == Settings.accountGeneration else {
-				return
+		let configuration = Snippets.Configuration.timeline
+		let request = Snippets.secureGet(configuration,
+			path: configuration.microBlogPathForRoute("posts/media"), arguments: parameters)
+		_ = UUHttpSession.executeRequest(request) { [weak self] response in
+			let feed = response.parsedResponse as? [String: Any]
+			let items = response.httpError == nil ? feed?["items"] as? [[String: Any]] : nil
+			let posts = items?.map { entry in
+				SunlitPost.create(SnippetsPost(entry), cacheAuthor: false)
 			}
-
-			let photos = postObjects
-			
-			self.setupBlurHashes(photos)
 
 			DispatchQueue.main.async {
-				guard accountGeneration == Settings.accountGeneration else {
-					return
-				}
-
+				guard let self, accountGeneration == Settings.accountGeneration else { return }
 				self.loadingData = false
-				if error == nil {
-                    self.noMoreToLoad = photos.isEmpty
-                    self.refreshTableView(photos)
-                }
-                else {
-                    self.handleTimelineError(error as NSError?)
-					self.refreshControl.endRefreshing()
-                }
-
 				self.spinner.stopAnimating()
-			}
-		}
-	}
+				if self.refreshPending {
+					self.refreshPending = false
+					self.loadTimeline()
+					return
+				}
+				self.refreshControl.endRefreshing()
 
-	@objc func loadMoreTimeline() {
-		guard Settings.isSignedIn else {
-			self.resetForLogout()
-			return
-		}
-
-		// Safety check for double loads...
-		if self.loadingData == true {
-			return
-		}
-        
-        // Don't keep reloading the same stuff over and over again...
-        if self.noMoreToLoad == true {
-            return
-        }
-
-		if let last = self.tableViewData.last {
-			self.loadingData = true
-			let accountGeneration = Settings.accountGeneration
-	
-			var parameters : [String : String] = [:]
-			parameters["count"] = "20"
-			parameters["filter"] = "photos,videos"
-			parameters["before_id"] = last.identifier
-
-			Snippets.Microblog.fetchCurrentUserMediaTimeline(parameters: parameters, completion:
-			{ (error, entries : [SnippetsPost]) in
-				guard accountGeneration == Settings.accountGeneration else {
+				guard let posts else {
+					self.handleTimelineError(response.httpError as NSError?)
 					return
 				}
 
-				let photos = entries
-
-				self.setupBlurHashes(photos)
-
-				DispatchQueue.main.async {
-					guard accountGeneration == Settings.accountGeneration else {
-						return
-					}
-
-                    if photos.count == 0 {
-                        self.noMoreToLoad = true
-						self.loadingData = false
-						self.tableView.beginUpdates()
-                        let indexPath = IndexPath(row: self.tableViewData.count, section: 0)
-						self.tableView.insertRows(at: [indexPath], with: .none)
-						self.tableView.endUpdates()
-                        return
-                    }
-					
-					var row = self.tableViewData.count
-					var indexPaths : [IndexPath] = []
-					for entry in photos {
-						let post = SunlitPost.create(entry)
-                        
-                        if post.images.count > 0 {
-                            self.tableViewData.append(post)
-                            
-                            let indexPath = IndexPath(row: row, section: 0)
-                            indexPaths.append(indexPath)
-                            row = row + 1
-                        }
-					}
-
-					//self.tableView.reloadData()
-					
-					self.tableView.beginUpdates()
-					self.tableView.insertRows(at: indexPaths, with: .automatic)
-					self.tableView.endUpdates()
-					self.loadingData = false
-				}
-			})
-		}
-
-	}
-
-
-	func prefetchPostImages(_ post : SunlitPost, indexPath : IndexPath) {
-
-		for imageSource in post.images {
-			if ImageCache.prefetch(imageSource) == nil {
-				ImageCache.fetch(imageSource) { (image) in
-					if let _ = image {
-						DispatchQueue.main.async {
-							if self.isPresented {
-								NotificationCenter.default.post(name: .refreshCellNotification, object: self, userInfo: [ "index": indexPath ])
-							}
-						}
-					}
-				}
+				self.applyPage(posts, after: cursor)
 			}
 		}
 	}
 
-	
-	func prefetchImages(_ indexPath : IndexPath) {
+	private func applyPage(_ posts: [SunlitPost], after cursor: String?) {
+		let lastID = posts.last?.identifier ?? ""
+		self.nextPageCursor = lastID.isEmpty ? nil : lastID
+		self.noMoreToLoad = self.nextPageCursor == nil || self.nextPageCursor == cursor
+		let mediaPosts = posts.filter { !$0.images.isEmpty }
 
-		// Don't prefetch images for things that aren't visible...
-		if !self.isPresented {
-			return
-		}
-
-        if indexPath.row >= self.tableViewData.count {
-            return
-        }
-        
-		let post = self.tableViewData[indexPath.row]
-
-		let avatarSource = post.owner.avatarURL
-		if ImageCache.prefetch(avatarSource) == nil {
-			ImageCache.fetch(avatarSource) { (image) in
-				self.prefetchPostImages(post, indexPath: indexPath)
+		if cursor == nil {
+			self.tableViewData = mediaPosts
+			self.tableView.reloadData()
+		} else {
+			let start = self.tableViewData.count
+			self.tableViewData.append(contentsOf: mediaPosts)
+			let rows = start..<(self.tableViewData.count + (self.noMoreToLoad ? 1 : 0))
+			if !rows.isEmpty {
+				self.tableView.insertRows(at: rows.map { IndexPath(row: $0, section: 0) }, with: .automatic)
 			}
 		}
-		else {
-			self.prefetchPostImages(post, indexPath: indexPath)
-		}
 
+		// Keep paging if none of the returned posts have displayable media.
+		if mediaPosts.isEmpty && !self.noMoreToLoad {
+			self.loadMoreTimeline()
+		}
 	}
 
-    func handleTimelineError(_ error : NSError?) {
+	private func handleTimelineError(_ error: NSError?) {
+		guard let error, [401, 402, 451].contains(error.code) else { return }
+		Dialog(self).information(error.localizedDescription)
+	}
 
-        if let err = error as NSError? {
-
-            switch err.code {
-            case 401, // Not authorized
-                 402, // Payment required
-                 451: // Unavailable for legal reasonse
-                Dialog(self).information(err.localizedDescription)
-
-            case 403: // Forbidden
-                break
-            case 404: // Not found
-                break
-
-            case 408: // Timeout
-                // wait a few seconds before re-trying after an error
-				DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                    //self.loadTimeline()
-                }
-
-            case 405, // Method not allowed
-                 406, // Not acceptable
-                 407, // Proxy authentication required
-                 409, // Conflict
-                 410, // Gone
-                 411, // Length required
-                 412, // Precondition failed
-                 413, // Payload too large
-                 414, // URI too long
-                 415, // Unsupported media type
-                 416, // Range not satisfiable
-                 417, // Expectation failed
-                 418: // I'm a teapot
-
-                // wait a few seconds before re-trying after an error
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                    //self.loadTimeline()
-                }
-
-            default:
-                // wait a few seconds before re-trying after an error
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                    //self.loadTimeline()
-                }
-            }
-
-        }
-    }
-	
 }
 
 
@@ -451,22 +233,6 @@ MARK: -
 
 extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching {
 	
-	func refreshTableView(_ entries : [SnippetsPost]) {
-		
-		var posts : [SunlitPost] = []
-		
-		for entry in entries {
-			let post = SunlitPost.create(entry)
-            if post.images.count > 0 {
-                posts.append(post)
-            }
-		}
-		
-		self.tableViewData = posts
-		self.refreshControl.endRefreshing()
-		self.tableView.reloadData()
-	}
-
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = self.tableViewData.count
         if self.noMoreToLoad == true {
@@ -488,23 +254,23 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
         }
 
 		let cell = tableView.dequeueReusableCell(withIdentifier: "TimelineTableViewCell", for: indexPath) as! TimelineTableViewCell
-		//let cell = tableView.dequeueReusableCell(withIdentifier: "SunlitPostTableViewCell", for: indexPath) as! SunlitPostTableViewCell
 		let post = self.tableViewData[indexPath.row]
 		cell.setup(indexPath.row, post, parentWidth: tableView.bounds.size.width)
 		return cell
 	}
 
 	func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-
-		for indexPath in indexPaths {
-			self.prefetchImages(indexPath)
+		guard self.isPresented else { return }
+		for indexPath in indexPaths where self.tableViewData.indices.contains(indexPath.row) {
+			if let image = self.tableViewData[indexPath.row].images.first {
+				ImageCache.loadForDisplay(image)
+			}
 		}
 	}
 
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		self.prefetchImages(indexPath)
-		
-		if indexPath.row > (self.tableViewData.count - 10) {
+		(cell as? TimelineTableViewCell)?.loadImages()
+		if indexPath.row >= self.tableViewData.count - 3 {
 			self.loadMoreTimeline()
 		}
 	}
@@ -519,10 +285,6 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		let post = self.tableViewData[indexPath.row]
-		//let imagePath = post.images[0]
-		//var dictionary : [String : Any] = [:]
-		//dictionary["imagePath"] = imagePath
-		//dictionary["post"] = post
 		
 		NotificationCenter.default.post(name: .viewConversationNotification, object: post)
 	}
@@ -538,7 +300,6 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
         }
         
 		let post = self.tableViewData[indexPath.row]
-		//return SunlitPostTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 		return TimelineTableViewCell.height(post, parentWidth: tableView.bounds.size.width)
 	}
 
@@ -552,28 +313,3 @@ extension TimelineViewController : UITableViewDataSource, UITableViewDelegate, U
 		return footer
 	}
 }
-
-
-/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MARK: -
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
-
-extension TimelineViewController : UITextViewDelegate {
-
-	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-		UIView.setAnimationsEnabled(false)
-		self.tableView.beginUpdates()
-		self.tableView.endUpdates()
-		UIView.setAnimationsEnabled(true)
-			
-		return true
-	}
-	
-	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-		let safariViewController = SFSafariViewController(url: URL)
-		self.present(safariViewController, animated: true, completion: nil)
-		return false
-	}
-
-}
-

@@ -157,7 +157,6 @@ class DiscoverViewController: ContentViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHideNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
 	}
 
@@ -193,18 +192,6 @@ class DiscoverViewController: ContentViewController {
 		self.busyIndicator.isHidden = true
 	}
 
-	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
-		for object in postObjects {
-			let defaultPhoto = object.defaultPhoto
-			let hash : String = defaultPhoto["blurhash"] as? String ?? ""
-			let width : Int = (defaultPhoto["width"] as? Int ?? 0) / 10
-			let height : Int = (defaultPhoto["height"] as? Int ?? 0) / 10
-			if hash.count > 0 && width > 0 && height > 0 {
-				BlurHash.precalculate(hash, width: width, height: height)
-			}
-		}
-	}
-
 	
 	func loadTimeline(force: Bool = false) {
 		if self.loadingData && !force {
@@ -218,8 +205,6 @@ class DiscoverViewController: ContentViewController {
 		
 		Snippets.Microblog.fetchDiscoverTimeline(collection: collection) { [weak self] (error, postObjects, _) in
 			guard let self = self else { return }
-
-			self.setupBlurHashes(postObjects)
 
 			DispatchQueue.main.async {
 				guard generation == self.timelineGeneration, collection == self.collection else { return }
@@ -262,7 +247,6 @@ class DiscoverViewController: ContentViewController {
 			Snippets.Microblog.fetchDiscoverTimeline(collection: collection, parameters: parameters) { [weak self] (error, entries, _) in
 				guard let self = self else { return }
 
-				self.setupBlurHashes(entries)
 
 				DispatchQueue.main.async {
 					guard generation == self.timelineGeneration, collection == self.collection else { return }
@@ -334,43 +318,12 @@ class DiscoverViewController: ContentViewController {
 		self.loadTimeline()
 	}
 		
-	func prefetchImages(_ indexPath : IndexPath) {
-
-		// Don't prefetch images for things that aren't visible...
-		if !self.isPresented {
-			return
-		}
-
-		guard self.posts.indices.contains(indexPath.row) else { return }
-		
-		let post = self.posts[indexPath.row]
-		let imageSource = post.images[0]
-		
-		if ImageCache.prefetch(imageSource) == nil {
-			ImageCache.fetch(imageSource) { (image) in
-				if let _ = image {
-					DispatchQueue.main.async {
-						if self.isPresented {
-							NotificationCenter.default.post(name: .refreshCellNotification, object: self, userInfo: [ "index": indexPath ])
-						}
-					}
-				}
-			}
-		}
-		
-		let avatarSource = post.owner.avatarURL
-		if ImageCache.prefetch(avatarSource) == nil {
-			ImageCache.fetch(avatarSource) { (image) in
-				if let _ = image {
-					DispatchQueue.main.async {
-						if self.isPresented {
-							NotificationCenter.default.post(name: .refreshCellNotification, object: self, userInfo: [ "index": indexPath ])
-						}
-					}
-				}
-			}
-		}
+	func prefetchImages(_ indexPath: IndexPath) {
+		guard self.isPresented, self.posts.indices.contains(indexPath.row),
+			let image = self.posts[indexPath.row].images.first else { return }
+		ImageCache.loadForDisplay(image)
 	}
+
 	
 	/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	MARK: -
@@ -450,51 +403,6 @@ class DiscoverViewController: ContentViewController {
 		}
 	}
 
-	@objc func handleImageLoadedNotification(_ notification : Notification) {
-
-		// Don't do anything if we aren't onscreen...
-		if !self.isPresented {
-			return
-		}
-
-		DispatchQueue.main.async {
-            guard self.isPresented,
-                  let indexPath = notification.userInfo?["index"] as? IndexPath,
-                  indexPath.section == 0,
-                  self.posts.indices.contains(indexPath.row) else { return }
-            if !self.tableView.isHidden {
-				if let userInfo = notification.userInfo,
-				   let indexPath = userInfo["index"] as? IndexPath,
-                   let visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
-                    
-                    if visibleIndexPaths.contains(indexPath) {
-                        self.tableView.performBatchUpdates({
-                            self.tableView.reloadRows(at: [indexPath], with: .fade)
-						}) { complete in
-						}
-                    }
-                }
-            }
-            
-            if !self.collectionView.isHidden {
-				if let userInfo = notification.userInfo,
-				   let indexPath = userInfo["index"] as? IndexPath {
-                    
-                    let visibleIndexPaths = self.collectionView.indexPathsForVisibleItems
-                    if visibleIndexPaths.contains(indexPath) {
-						self.collectionView.reloadData()
-                        //self.collectionView.performBatchUpdates {
-                        //    self.collectionView.reloadItems(at: [indexPath])
-                        //}
-                        //completion: { (complete) in
-						//
-                        //}
-                    }
-                }
-            }
-		}
-	}
-			
 	@objc func handleViewConversationNotification(_ notification : Notification) {
 		if let post = notification.object as? SunlitPost {
 			let storyBoard: UIStoryboard = UIStoryboard(name: "Conversation", bundle: nil)
@@ -536,7 +444,7 @@ extension DiscoverViewController : UITableViewDelegate, UITableViewDataSource, U
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		guard self.posts.indices.contains(indexPath.row) else { return }
-		self.prefetchImages(indexPath)
+		(cell as? TimelineTableViewCell)?.loadImages()
 		
 		if indexPath.row > (self.posts.count - 3) {
 			self.loadMoreTimeline()
@@ -635,7 +543,6 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard self.posts.indices.contains(indexPath.item) else { return }
-        self.prefetchImages(indexPath)
 
 		if indexPath.row > (self.posts.count - 3) {
 			self.loadMoreTimeline()
@@ -651,19 +558,9 @@ extension DiscoverViewController : UICollectionViewDataSource, UICollectionViewD
 	func configurePhotoCell(_ cell : PhotoEntryCollectionViewCell, _ indexPath : IndexPath) {
 		if self.posts.indices.contains(indexPath.item) {
 			let post = self.posts[indexPath.item]
-			let defaultPhoto = post.defaultPhoto
-			let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
 			cell.date.text = "@\(post.owner.username)"
 
-			cell.photo.image = nil
-			if let image = ImageCache.prefetch(post.images.first ?? "") {
-				cell.photo.image = image
-			}
-			else if blurHash.count > 0 {
-				if let image = ImageCache.prefetch(blurHash) {
-					cell.photo.image = image
-				}
-			}
+			cell.loadPhoto(post.images.first)
 
 			cell.photo.layer.cornerRadius = 6.0
 			cell.photo.layer.cornerCurve = .continuous

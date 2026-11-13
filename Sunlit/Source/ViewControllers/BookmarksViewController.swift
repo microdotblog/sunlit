@@ -58,7 +58,6 @@ class BookmarksViewController: ContentViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShowNotification(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleViewConversationNotification(_:)), name: .viewConversationNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleCurrentUserUpdatedNotification), name: .currentUserUpdatedNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleImageLoadedNotification(_:)), name: .refreshCellNotification, object: nil)
     }
 
     @objc override func handleScrollToTopGesture() {
@@ -141,19 +140,6 @@ class BookmarksViewController: ContentViewController {
         }
     }
 
-    @objc func handleImageLoadedNotification(_ notification : Notification) {
-		if let userInfo = notification.userInfo,
-		   let indexPath = userInfo["index"] as? IndexPath {
-            if indexPath.row < self.tableViewData.count {
-                if let visibleCells = self.tableView.indexPathsForVisibleRows {
-                    if visibleCells.contains(indexPath) {
-                        self.tableView.reloadRows(at: [ indexPath ], with: .none)
-                    }
-                }
-            }
-        }
-    }
-
     @objc func handleViewConversationNotification(_ notification : Notification) {
         if let post = notification.object as? SunlitPost {
             let storyBoard: UIStoryboard = UIStoryboard(name: "Conversation", bundle: nil)
@@ -218,18 +204,6 @@ class BookmarksViewController: ContentViewController {
         self.keyboardAccessoryView.alpha = 0.0
     }
 
-	func setupBlurHashes(_ postObjects : [SnippetsPost]) {
-		for object in postObjects {
-			let defaultPhoto = object.defaultPhoto
-			let hash : String = defaultPhoto["blurhash"] as? String ?? ""
-			let width : Int = (defaultPhoto["width"] as? Int ?? 0) / 10
-			let height : Int = (defaultPhoto["height"] as? Int ?? 0) / 10
-			if hash.count > 0 && width > 0 && height > 0 {
-				BlurHash.precalculate(hash, width: width, height: height)
-			}
-		}
-	}
-
 	@objc func loadTimeline() {
 		guard Settings.snippetsToken() != nil else {
 			self.resetForLogout()
@@ -247,8 +221,6 @@ class BookmarksViewController: ContentViewController {
 			guard accountGeneration == Settings.accountGeneration else {
 				return
 			}
-
-			self.setupBlurHashes(postObjects)
 
 			DispatchQueue.main.async {
 				guard accountGeneration == Settings.accountGeneration else {
@@ -274,46 +246,12 @@ class BookmarksViewController: ContentViewController {
         }
     }
 
-    func prefetchImages(_ indexPath : IndexPath) {
+	func prefetchImages(_ indexPath: IndexPath) {
+		guard self.isPresented, self.tableViewData.indices.contains(indexPath.row),
+			let image = self.tableViewData[indexPath.row].images.first else { return }
+		ImageCache.loadForDisplay(image)
+	}
 
-		// Don't prefetch images for things that aren't visible...
-		if !self.isPresented {
-			return
-		}
-
-        if indexPath.row >= self.tableViewData.count {
-            return
-        }
-
-        let post = self.tableViewData[indexPath.row]
-
-        for imageSource in post.images {
-            if ImageCache.prefetch(imageSource) == nil {
-                ImageCache.fetch(imageSource) { (image) in
-                    if let _ = image {
-                        DispatchQueue.main.async {
-							if self.isPresented {
-								NotificationCenter.default.post(name: .refreshCellNotification, object: self, userInfo: [ "index": indexPath ])
-							}
-                        }
-                    }
-                }
-            }
-        }
-
-        let avatarSource = post.owner.avatarURL
-        if ImageCache.prefetch(avatarSource) == nil {
-            ImageCache.fetch(avatarSource) { (image) in
-                if let _ = image {
-                    DispatchQueue.main.async {
-						if self.isPresented {
-							NotificationCenter.default.post(name: .refreshCellNotification, object: self, userInfo: [ "index": indexPath ])
-						}
-                    }
-                }
-            }
-        }
-    }
 
 }
 
@@ -366,7 +304,7 @@ extension BookmarksViewController : UITableViewDelegate, UITableViewDataSource, 
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        self.prefetchImages(indexPath)
+        (cell as? TimelineTableViewCell)?.loadImages()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

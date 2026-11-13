@@ -9,7 +9,6 @@
 import UIKit
 import AVKit
 import Snippets
-import BlurHash
 
 class TimelineTableViewCell : UITableViewCell {
 
@@ -23,7 +22,6 @@ class TimelineTableViewCell : UITableViewCell {
 	@IBOutlet var collectionViewWidthConstraint : NSLayoutConstraint!
 
 	var post : SunlitPost!
-	private var avatarSource: String?
 	private let identityBubble = UIView()
 
 
@@ -115,28 +113,6 @@ class TimelineTableViewCell : UITableViewCell {
 		])
 	}
 
-	private func setPreparedAvatar(_ image: UIImage, source: String) {
-		self.avatarSource = source
-
-		image.prepareForDisplay { [weak self] preparedImage in
-			DispatchQueue.main.async {
-				guard let self = self, self.avatarSource == source else { return }
-				self.userAvatar.image = preparedImage ?? image
-			}
-		}
-	}
-
-	private func setPreparedPostImage(_ image: UIImage, source: String, in cell: SunlitPostCollectionViewCell) {
-		cell.representedImagePath = source
-
-		image.prepareForDisplay { [weak cell] preparedImage in
-			DispatchQueue.main.async {
-				guard let cell = cell, cell.representedImagePath == source else { return }
-				cell.postImage.image = preparedImage ?? image
-			}
-		}
-	}
-
 	func setup(_ index: Int, _ post : SunlitPost, parentWidth : CGFloat) {
 
 		for cell in self.collectionView.visibleCells {
@@ -156,7 +132,7 @@ class TimelineTableViewCell : UITableViewCell {
 		self.pageViewIndicator.numberOfPages = self.post.images.count
 		self.pageViewIndicatorContainer.isHidden = self.post.images.count < 2
 
-		self.setupAvatar()
+		self.userAvatar.image = nil
 	}
 
 	func setupPhotoAspectRatio(_ post : SunlitPost, parentWidth : CGFloat) -> CGFloat {
@@ -166,12 +142,15 @@ class TimelineTableViewCell : UITableViewCell {
 		return height
 	}
 
-	func setupAvatar() {
-		self.userAvatar.image = nil
-		let avatarSource = self.post.owner.avatarURL
-		self.avatarSource = avatarSource
-		if let avatar = ImageCache.prefetch(avatarSource) {
-			self.setPreparedAvatar(avatar, source: avatarSource)
+	func loadImages() {
+		if let firstImage = self.post.images.first {
+			ImageCache.loadForDisplay(firstImage)
+		}
+
+		let source = self.post.owner.avatarURL
+		ImageCache.loadForDisplay(source) { [weak self] image in
+			guard let self, self.post?.owner.avatarURL == source else { return }
+			self.userAvatar.image = image
 		}
 	}
 
@@ -193,79 +172,24 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 		}
 	}
 
-	func configureVideoPlayer(_ cell: SunlitPostCollectionViewCell, _ indexPath: IndexPath) {
-		let thumbnail = self.post.images[indexPath.item]
-		if let path = self.post.videos[thumbnail], let url = URL(string: path) {
-			cell.configureVideoPlayer(url: url)
-		}
-	}
-
-    func reloadImages()
-    {
-        let defaultPhoto = self.post.defaultPhoto
-        let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
-
-        let avatarSource = self.post.owner.avatarURL
-		self.avatarSource = avatarSource
-        if let avatar = ImageCache.prefetch(avatarSource)
-        {
-            self.setPreparedAvatar(avatar, source: avatarSource)
-        }
-
-        
-        let visibleIndexPaths = self.collectionView.indexPathsForVisibleItems
-        for indexPath in visibleIndexPaths {
-            if indexPath.item >= self.post.images.count {
-                continue
-            }
-
-            let imagePath = self.post.images[indexPath.item]
-            if let image = ImageCache.prefetch(imagePath) {
-                if let cell = self.collectionView.cellForItem(at: indexPath) as? SunlitPostCollectionViewCell {
-                    self.setPreparedPostImage(image, source: imagePath, in: cell)
-                }
-            }
-            else if blurHash.count > 0 {
-                if let image = ImageCache.prefetch(blurHash) {
-                    if let cell = self.collectionView.cellForItem(at: indexPath) as? SunlitPostCollectionViewCell {
-                        self.setPreparedPostImage(image, source: imagePath, in: cell)
-                    }
-                }
-            }
-        }
-    }
-    
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.post.images.count
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let imagePath = self.post.images[indexPath.item]
-		let defaultPhoto = self.post.defaultPhoto
-		let blurHash : String = defaultPhoto["blurhash"] as? String ?? ""
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SunlitPostCollectionViewCell", for: indexPath) as! SunlitPostCollectionViewCell
 		cell.resetVideoPlayer()
-		cell.postImage.contentMode = .scaleAspectFill
-		cell.videoPlayIndicator.isHidden = true
+		let isVideo = self.post.videos[indexPath.item] != nil
+		cell.postImage.contentMode = isVideo ? .scaleAspectFit : .scaleAspectFill
+		cell.videoPlayIndicator.isHidden = !isVideo
 		cell.timeStampLabel.isHidden = true
 		cell.postImage.image = nil
-		cell.timeStampLabel.isHidden = true
 		cell.representedImagePath = imagePath
 
-		if let image = ImageCache.prefetch(imagePath) {
-			self.setPreparedPostImage(image, source: imagePath, in: cell)
-		}
-		else if blurHash.count > 0 {
-			if let image = ImageCache.prefetch(blurHash) {
-				self.setPreparedPostImage(image, source: imagePath, in: cell)
-			}
-		}
-
-		let thumbnail = self.post.images[indexPath.item]
-		let hasVideo = self.post.videos[thumbnail] != nil
-		cell.videoPlayIndicator.isHidden = !hasVideo
-		if hasVideo {
-			self.configureVideoPlayer(cell, indexPath)
+		ImageCache.loadForDisplay(imagePath) { [weak cell] image in
+			guard let cell, cell.representedImagePath == imagePath else { return }
+			cell.postImage.image = image
 		}
 
 		return cell
@@ -281,15 +205,12 @@ extension TimelineTableViewCell : UICollectionViewDataSource, UICollectionViewDe
 
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
-		let thumbnail = self.post.images[indexPath.item]
-		if self.post.videos[thumbnail] != nil {
-
-			if let cell = collectionView.cellForItem(at: indexPath) as? SunlitPostCollectionViewCell {
-				cell.toggleVideoPlayback()
+		if let source = self.post.videos[indexPath.item] {
+			if let url = URL(string: source),
+			   let cell = collectionView.cellForItem(at: indexPath) as? SunlitPostCollectionViewCell {
+				cell.toggleVideoPlayback(url: url)
 			}
-
-		}
-		else {
+		} else {
 			NotificationCenter.default.post(name: .viewConversationNotification, object: self.post)
 		}
 	}
