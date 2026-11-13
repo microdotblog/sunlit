@@ -161,7 +161,8 @@ class TimelineViewController: ContentViewController {
 		}
 		let accountGeneration = Settings.accountGeneration
 
-		var parameters = ["count": "20", "filter": "photos,videos"]
+		let pageSize = cursor == nil ? 10 : 20
+		var parameters = ["count": String(pageSize), "filter": "photos,videos"]
 		parameters["before_id"] = cursor
 
 		let configuration = Snippets.Configuration.timeline
@@ -213,8 +214,8 @@ class TimelineViewController: ContentViewController {
 			}
 		}
 
-		// Keep paging if none of the returned posts have displayable media.
-		if mediaPosts.isEmpty && !self.noMoreToLoad {
+		// Fetch the next page after showing the first, and skip pages with no displayable media.
+		if cursor == nil || mediaPosts.isEmpty {
 			self.loadMoreTimeline()
 		}
 	}

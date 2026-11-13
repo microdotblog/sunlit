@@ -1,4 +1,5 @@
 import UIKit
+import SafariServices
 
 private final class PlacesTableView: UITableView {
     private let rowSeparators = PlacesRowSeparatorsView()
@@ -157,7 +158,7 @@ final class PlacesViewController: ContentViewController, UITableViewDataSource, 
     }
 
     @objc private func loadCheckIns() {
-        self.fetchCheckIns(limit: 500)
+        self.fetchCheckIns(limit: 50)
     }
 
     private func fetchCheckIns(limit: Int, merging: Bool = false) {
@@ -228,6 +229,16 @@ final class PlacesViewController: ContentViewController, UITableViewDataSource, 
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { self.checkIns.count }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard self.checkIns.indices.contains(indexPath.row),
+              let url = self.checkIns[indexPath.row].postURL,
+              url.host != nil,
+              ["http", "https"].contains(url.scheme?.lowercased() ?? "") else { return }
+
+        self.present(SFSafariViewController(url: url), animated: true)
+    }
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         guard self.checkIns.indices.contains(indexPath.row),
