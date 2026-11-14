@@ -453,21 +453,19 @@ class MainViewController: ContentViewController {
 
                 let blogName : String = MicropubState.lookupBlogName(from: state) ?? ""
                 let publishingPurpose = MicropubState.publishingPurpose(from: state)
+                if components.queryItems?.contains(where: { $0.name == "error" }) == true, !blogName.isEmpty {
+                    MicropubState.remove(state: state)
+                    return
+                }
 
 				if (code.count > 0) && (state.count > 0) && (blogName.count > 0){
 					let accountGeneration = Settings.accountGeneration
 
                     let blogSettings = BlogSettings(blogName)
-                    let me = "https://" + blogName
+                    guard blogSettings.stateKey == state else { return }
+                    let me = MicropubState.identity(from: state) ?? "https://" + blogName
                     let token_endpoint = blogSettings.tokenEndpoint
-					var params = ""
-					params = params + "grant_type=authorization_code"
-					params = params + "&code=" + code
-					params = params + "&client_id=" + String("https://sunlit.io/").uuUrlEncoded()
-					params = params + "&redirect_uri=" + String("https://sunlit.io/micropub/redirect").uuUrlEncoded()
-                    params = params + "&me=" + me.uuUrlEncoded()
-
-                    let d = params.data(using: .utf8)
+                    let d = MicropubClient.tokenBody(code: code, me: me, verifier: MicropubState.codeVerifier(from: state))
 
 					UUHttpSession.post(url: token_endpoint, queryArguments: [ : ], body: d, contentType: "application/x-www-form-urlencoded") { (parsedServerResponse) in
 						guard accountGeneration == Settings.accountGeneration else {
@@ -475,28 +473,37 @@ class MainViewController: ContentViewController {
 						}
 
 						if let dictionary = parsedServerResponse.parsedResponse as? [ String : Any ] {
-							if let access_token = dictionary["access_token"] as? String {
-								DispatchQueue.main.async {
-									guard accountGeneration == Settings.accountGeneration else {
-										return
-									}
+							if let access_token = dictionary["access_token"] as? String, !access_token.isEmpty,
+                               let endpoint = MicropubClient.endpointURL(blogSettings.blogPublishingAddress) {
+                                MicropubClient.discoverMediaEndpoint(endpoint: endpoint, token: access_token) { mediaEndpoint in
+                                    DispatchQueue.main.async {
+                                        guard accountGeneration == Settings.accountGeneration,
+                                              BlogSettings(blogName).stateKey == state,
+                                              MicropubState.lookupBlogName(from: state) == blogName else { return }
 
-                                    blogSettings.microblogToken = access_token
-                                    blogSettings.snippetsConfiguration = Snippets.Configuration.micropubConfiguration(token: access_token, endpoint: blogSettings.blogPublishingAddress)
-                                    blogSettings.save()
-                                    BlogSettings.addPublishedBlog(blogSettings)
+                                        blogSettings.microblogToken = access_token
+                                        blogSettings.snippetsConfiguration = Snippets.Configuration.micropubConfiguration(token: access_token, endpoint: blogSettings.blogPublishingAddress, mediaEndPoint: mediaEndpoint?.absoluteString)
+                                        blogSettings.save()
+                                        BlogSettings.addPublishedBlog(blogSettings)
+                                        MicropubState.remove(state: state)
 
-                                    if publishingPurpose == .checkIns {
-                                        publishingPurpose.select(blogSettings)
+                                        if publishingPurpose == .checkIns {
+                                            publishingPurpose.select(blogSettings)
+                                        }
+                                        else if blogSettings.snippetsConfiguration!.type == .micropub {
+                                            Dialog(self).selectBlog()
+                                        }
+
+                                        NotificationCenter.default.post(name: .finishedExternalConfigNotification, object: self)
                                     }
-                                    else if blogSettings.snippetsConfiguration!.type == .micropub {
-										Dialog(self).selectBlog()
-									}
-
-									NotificationCenter.default.post(name: .finishedExternalConfigNotification, object: self)
-								}
+                                }
+								return
 							}
 						}
+                        DispatchQueue.main.async {
+                            guard accountGeneration == Settings.accountGeneration else { return }
+                            Dialog(self).information("Unable to finish signing in to the blog. Please try again.")
+                        }
 					}
 				}
 			}
