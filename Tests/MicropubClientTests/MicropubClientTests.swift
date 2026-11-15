@@ -28,6 +28,13 @@ final class MicropubClientTests: XCTestCase {
         XCTAssertEqual(MicropubClient.codeChallenge(for: verifier), "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM")
     }
 
+    func testAuthorizationErrorsWithStateReachTheReturnHandler() {
+        XCTAssertTrue(MicropubClient.isAuthorizationResponse(URL(string: "sunlit://micropub/?code=fixture-code&state=fixture-state")!))
+        XCTAssertTrue(MicropubClient.isAuthorizationResponse(URL(string: "sunlit://micropub/?error=access_denied&state=fixture-state")!))
+        XCTAssertFalse(MicropubClient.isAuthorizationResponse(URL(string: "sunlit://micropub/?error=access_denied")!))
+        XCTAssertFalse(MicropubClient.isAuthorizationResponse(URL(string: "sunlit://micropub/fixture-token")!))
+    }
+
     func testVerifiersAreFreshAndUseThePKCEAlphabet() {
         let verifiers = (0..<10).map { _ in MicropubClient.makeCodeVerifier() }
         XCTAssertEqual(Set(verifiers).count, 10)

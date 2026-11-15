@@ -30,6 +30,12 @@ enum MicropubClient {
         return responseURL.flatMap { endpointURL($0.absoluteString) } ?? entered
     }
 
+    static func isAuthorizationResponse(_ url: URL) -> Bool {
+        let query = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+        return query.contains { $0.name == "code" } ||
+            (query.contains { $0.name == "error" } && query.contains { $0.name == "state" })
+    }
+
     static func makeCodeVerifier() -> String {
         return base64URL(Data((0..<32).map { _ in UInt8.random(in: .min ... .max) }))
     }
