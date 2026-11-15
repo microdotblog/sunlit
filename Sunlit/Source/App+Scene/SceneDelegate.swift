@@ -132,7 +132,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		case "micropub":
 			let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
 			let queryItems = components?.queryItems ?? []
-			if queryItems.contains(where: { $0.name == "code" }) {
+			if MicropubClient.isAuthorizationResponse(url) {
 				DispatchQueue.main.async {
 					NotificationCenter.default.post(name: .micropubTokenReceivedNotification, object: url)
 				}

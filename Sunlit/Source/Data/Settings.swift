@@ -115,6 +115,7 @@ class Settings {
 	
 	static func logout() {
 		accountGeneration += 1
+		MicropubState.clear()
 
 		BlogSettings.deleteAllAccountInfo()
 		Settings.deleteSnippetsToken()

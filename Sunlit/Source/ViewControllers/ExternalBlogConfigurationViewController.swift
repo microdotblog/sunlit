@@ -142,39 +142,36 @@ class ExternalBlogConfigurationViewController: UIViewController {
 			let authStrings = SnippetsXMLLinkParser.parse(data, relValue: "authorization_endpoint")
 			let tokenStrings = SnippetsXMLLinkParser.parse(data, relValue: "token_endpoint")
 			
-			if var authEndpoint = authStrings.first,
-               let tokenEndpoint = tokenStrings.first,
-               let micropubEndpoint = links.first {
+			if let me = MicropubClient.endpointURL(path),
+               let authString = authStrings.first, let authURL = MicropubClient.endpointURL(authString, relativeTo: me),
+               let tokenString = tokenStrings.first, let tokenURL = MicropubClient.endpointURL(tokenString, relativeTo: me),
+               let micropubString = links.first, let micropubURL = MicropubClient.endpointURL(micropubString, relativeTo: me) {
 
 				let micropubState = UUID().uuidString
-				
-				if !authEndpoint.contains("?") {
-					authEndpoint = authEndpoint + "?"
-				}
-				else {
-					authEndpoint = authEndpoint + "&"
-				}
-				
-				authEndpoint = authEndpoint + "me=" + path.uuUrlEncoded()
-				authEndpoint = authEndpoint + "&redirect_uri=" + String("https://sunlit.io/micropub/redirect").uuUrlEncoded()
-				authEndpoint = authEndpoint + "&client_id=" + (String("https://sunlit.io/").uuUrlEncoded())
-				authEndpoint = authEndpoint + "&state=" + micropubState
-				authEndpoint = authEndpoint + "&scope=" + "create delete".uuUrlEncoded()
-				authEndpoint = authEndpoint + "&response_type=code"
+                let verifier = MicropubClient.makeCodeVerifier()
+                let authEndpoint = MicropubClient.authorizationURL(endpoint: authURL, me: me, state: micropubState, verifier: verifier)
 
-                let blogName : String = URL(string:self.externalServerPath)?.host ?? ""
+                let blogName : String = me.host ?? ""
                 let settings = BlogSettings(blogName)
-                settings.tokenEndpoint = tokenEndpoint
+                settings.tokenEndpoint = tokenURL.absoluteString
                 settings.stateKey = micropubState
-                settings.authEndpoint = authEndpoint
-                settings.blogPublishingAddress = micropubEndpoint
+                settings.authEndpoint = authEndpoint.absoluteString
+                settings.blogPublishingAddress = micropubURL.absoluteString
 
                 settings.save()
 
-                MicropubState.save(state: micropubState, name: blogName, purpose: self.publishingPurpose)
+                MicropubState.save(state: micropubState, name: blogName, purpose: self.publishingPurpose, verifier: verifier, me: me.absoluteString)
+                guard MicropubState.codeVerifier(from: micropubState) == verifier else {
+                    MicropubState.remove(state: micropubState)
+                    DispatchQueue.main.async {
+                        self.busyIndicator.isHidden = true
+                        Dialog(self).information("Unable to save the sign-in details. Please try again.")
+                    }
+                    return
+                }
             
 				DispatchQueue.main.async {
-					UIApplication.shared.open(URL(string: authEndpoint)!)
+					UIApplication.shared.open(authEndpoint)
 					self.navigationController?.popViewController(animated: true)
 				}
 				
@@ -185,23 +182,16 @@ class ExternalBlogConfigurationViewController: UIViewController {
 	func interrogateURL() {
 		
 		// Sanity checking...
-		var path = self.blogAddress.text
-		if !(path?.contains(".") ?? false) {
+		guard let address = self.blogAddress.text, address.contains("."),
+              let enteredURL = MicropubClient.blogURL(address) else {
 			Dialog(self).information("Please enter a valid URL")
 			return
 		}
 
-		// Make sure we have a valid, qualified domain
-		path = path!.uuTrimWhitespace()
-		if !path!.contains("http:") && !path!.contains("https:") {
-			path = "http://" + path!
-		}
-
-		self.externalServerPath = path!
-		let fullURL = path!
+		self.externalServerPath = enteredURL.absoluteString
 		let accountGeneration = Settings.accountGeneration
 		
-		let request = UUHttpRequest(url: path!)
+		let request = UUHttpRequest(url: enteredURL.absoluteString)
 		//request.processMimeTypes = false
 		self.busyIndicator.isHidden = false
 
@@ -211,9 +201,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
 			}
 
 			if let rawResponse = response.rawResponse {
-				// uncomment to force Micropub testing
-//				self.interrogateMicropubURL(path: fullURL, rawResponse)
-//				return
+                let discoveredURL = MicropubClient.discoveryURL(entered: enteredURL, responseURL: response.httpResponse?.url)
 
 				let links = SnippetsXMLLinkParser.parse(rawResponse, relValue: "EditURI")
 				if let link = links.first {
@@ -236,7 +224,7 @@ class ExternalBlogConfigurationViewController: UIViewController {
 					return
 				}
 				else {
-					self.interrogateMicropubURL(path: fullURL, rawResponse)
+					self.interrogateMicropubURL(path: discoveredURL.absoluteString, rawResponse)
 					return
 				}
 			}

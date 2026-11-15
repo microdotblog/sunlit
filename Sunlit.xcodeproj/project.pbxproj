@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EF9F98C8D4164E608C6B4DF0 /* MicropubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96395FA2301B4FA181CE41A2 /* MicropubClient.swift */; };
 		102D7CC4B2694AA09499E746 /* CheckInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BBDB01B34B4E449655A8C2 /* CheckInViewController.swift */; };
 		126CCF5ADE6B49B2A1E2C172 /* PlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E558F89DF1742F3845FB21C /* PlacesViewController.swift */; };
 		4B556FF624F1C4C10012C6C7 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B556FF524F1C4C10012C6C7 /* SearchViewController.swift */; };
@@ -342,6 +343,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		96395FA2301B4FA181CE41A2 /* MicropubClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MicropubClient.swift; path = Source/Micropub/MicropubClient.swift; sourceTree = "<group>"; };
 		4B556FF524F1C4C10012C6C7 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = Source/ViewControllers/SearchViewController.swift; sourceTree = "<group>"; };
 		4B556FF724F1C4F40012C6C7 /* Search.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Search.storyboard; path = Storyboards/Search.storyboard; sourceTree = "<group>"; };
 		4B556FF924F1CDF30012C6C7 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchResultTableViewCell.swift; path = Source/TableViewCells/SearchResultTableViewCell.swift; sourceTree = "<group>"; };
@@ -1032,6 +1034,7 @@
 		C5FFB1D22469C7A20015368A /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				96395FA2301B4FA181CE41A2 /* MicropubClient.swift */,
 				E41079D2A3054475BC1A2D29 /* PlacesDataSource.swift */,
 				E41079D2A3054475BC1A2D30 /* AppleMapsPlacesSearch.swift */,
 				E41079D2A3054475BC1A2D31 /* CheckInPostDelay.swift */,
@@ -1493,6 +1496,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF9F98C8D4164E608C6B4DF0 /* MicropubClient.swift in Sources */,
 				C5A1DE5E24901DAD00B50B54 /* ImageCache.swift in Sources */,
 				C5A1DF3C2491948B00B50B54 /* BlogSettings.swift in Sources */,
 				C5BEDF5124DA30DA0068CBF1 /* ProfileTableViewCell.swift in Sources */,
